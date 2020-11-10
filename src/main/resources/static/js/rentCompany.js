@@ -27,9 +27,10 @@ var RMCRUD = '';	// 회원사 특정기간 저장 구분자
 var HCRUD = '';		// 휴무일 저장 구분자
 var CURRENT_PAGE = 0;
 
-//TODO 로그인 해결
-var GLOBAL_LOGIN_USER_ROLE = 'RA';
-var GLOBAL_LOGIN_USER_IDX = 'jungsoonLee';
+var GLOBAL_LOGIN_USER_IDX;
+var GLOBAL_LOGIN_USER_ROLE;
+
+var today = new Date();
 
 function initializingPageData() {
 	loadApi(drawTable, null, null);
@@ -446,7 +447,6 @@ function initDetailInfo(seq) {
 	let target = 'rentCompanyDetailInfo';
 	let method = 'select';
 
-	// TODO staffEmail disabled true 전부 수정정	// $("#btnstaffEmail").attr("disabled", true);
 
 	fn_callApi(method, target, req, function (response) {
 		let res = response;
@@ -525,8 +525,8 @@ function initDetailInfo(seq) {
 			let weekendReserveMinimumTime = data.weekendReserveMinimumTime; // 주말공휴일최소예약시간(분)
 
 			let minIdx = data.minIdx; // 특정기간idx
-			let minimumStartDt = data.minimumStartDt; // 최소예약시간시작일
-			let minimumEndDt = data.minimumEndDt; // 최소에약시간종료일
+			let minimumStartDt = data.minimumStartDt !== null? data.minimumStartDt : today; // 최소예약시간시작일
+			let minimumEndDt = data.minimumEndDt!== null? data.minimumEndDt : today; // 최소에약시간종료일
 			let minimumTime = data.minimumTime; // 최소시간(분)
 			let raGbnLt = data.raGbnLt;
 			if (raGbnLt > 0) {
@@ -664,7 +664,7 @@ function initDetailInfo(seq) {
 
 			initDatePicker('minimumStartDt' , minimumStartDt);
 			initDatePicker('minimumEndDt' , minimumEndDt);
-			$('#sel_minimumTime').val(minimumMi);
+			$('#sel_minimumTime').val(minimumTime);
 
 			CRUD = 'modify';
 //			openIziModal(MODAL_NAME);
@@ -679,8 +679,6 @@ function staffListGrid(_rtIdx) {
 	let target = 'rentCompanyStaffList';
 	let method = 'select';
 
-	MCRUD = 'insert';
-
 	let req = {
 		rtIdx: _rtIdx
 	};
@@ -689,17 +687,27 @@ function staffListGrid(_rtIdx) {
 		let res = response;
 
 		if (res.code == 200) {
-
 			let data = res.result[0];
-			var row = {
-				rsIdx : data.rsIdx,
-				staffName : data.staffName,
-				staffContact1 : data.staffContact1,
-				staffEmail : data.staffEmail,
-				staffTitle : data.staffTitle,
-				ownerYn : data.ownerYn,
-				urIdx : data.urIdx
-			};
+			var ownerYn = data.ownerYn === 1 ? 'Y' : 'N';
+
+			$('#staffurIdx').val(data.urIdx);
+			$('#rsIdx').val(data.rsIdx);
+			$('#staffEmail').val(data.staffEmail);
+			$('#staffName').val(data.staffName);
+			$('#staffTitle').val(data.staffTitle);
+			$("#sel_ownerYn").val(ownerYn).prop("selected", "selected");
+			$('#staffContact1').val(data.staffContact1);
+
+			let rows = [{
+				"rsIdx": data.rsIdx,
+				"staffName" :data.staffName,
+				"staffContact1" :data.staffContact1,
+				"staffEmail" : data.staffEmail,
+				"staffTitle" : data.staffTitle,
+				"ownerYn" : data.ownerYn,
+				"urIdx" : data.urIdx
+			}];
+
 			let columns;
 			columns = [
 				{"name": "rsIdx", "id": "rsIdx", "title": "직원번호"},
@@ -744,6 +752,7 @@ function staffListGrid(_rtIdx) {
 				{"name": "urIdx", "id": "urIdx", "title": "회원순번", "visible": false}
 			];
 
+
 			$('#rentStaffList').empty();
 			$('#rentStaffList').footable({
 				'calculateWidthOverride': function () {
@@ -754,7 +763,7 @@ function staffListGrid(_rtIdx) {
 					}
 				},
 				"columns": columns,
-				"rows": row
+				"rows": rows
 			});
 
 		}// end 200 check
@@ -786,7 +795,6 @@ function rentReserveMinListGrid(_rtIdx) {
 				"minimumStartDt": rentReserveMinList_rows.minimumStartDt,
 				"minimumEndDt": rentReserveMinList_rows.minimumEndDt,
 				"minimumTime": rentReserveMinList_rows.minimumTime,
-				"delYn": rentReserveMinList_rows.delYn
 			}];
 
 			let columns;
@@ -796,7 +804,6 @@ function rentReserveMinListGrid(_rtIdx) {
 				{"name": "minimumStartDt", "title": "최소예약시간시작일", "breakpoints": "xs"},
 				{"name": "minimumEndDt", "title": "최소예약시간종료일", "breakpoints": "xs"},
 				{"name": "minimumTime", "title": "최소시간", "breakpoints": "xs"},
-				{"name": "delYn", "id": "delYn", "title": "사용여부", "visible": false}
 			];
 
 			$('#rentReserveMinList').empty();
@@ -842,7 +849,6 @@ function holidayListGrid(_rtIdx) {
 				{"name": "holidayStartDt", "title": "휴무일시작일", "breakpoints": "xs"},
 				{"name": "holidayEndDt", "title": "휴무일종료일", "breakpoints": "xs"},
 				{"name": "holidayName", "title": "휴무일명", "breakpoints": "xs"},
-				{"name": "delYn", "id": "delYn", "title": "사용여부", "visible": false}
 			];
 
 			$('#holidayList').empty();
@@ -855,7 +861,7 @@ function holidayListGrid(_rtIdx) {
 					}
 				},
 				"columns": columns,
-				"rows": holidayList_rows
+				"rows": data
 			});
 
 		}// end 200 check
@@ -876,6 +882,12 @@ function detailValidation(save_type) {
 	let method = '';
 
 	var _rtIdx = $('#rtIdx').val().trim();
+
+	var loginUser = getLoginUser();
+
+	GLOBAL_LOGIN_USER_IDX = loginUser.urIdx;
+	GLOBAL_LOGIN_USER_ROLE = loginUser.userRole;
+
 
 	if (save_type !== 'saveRentCompanyInfo' && isEmpty(_rtIdx)) {
 		errorAlert('회원사정보', '회원사 정보를 먼저 저장해 주세요.');
@@ -964,7 +976,7 @@ function detailValidation(save_type) {
 						carCount: carCount,
 						regCarCount: regCarCount,
 						regId: GLOBAL_LOGIN_USER_IDX,
-						modId: GLOBAL_LOGIN_USER_IDX,
+						regDt: today,
 						alarmYn: alarmYn
 					}
 				} else if (CRUD === 'modify') {
@@ -985,8 +997,8 @@ function detailValidation(save_type) {
 						regCarCount: regCarCount,
 						companyRegistrationName: companyRegistrationName,
 						branchName: branchName,
-						regId: GLOBAL_LOGIN_USER_IDX,
 						modId: GLOBAL_LOGIN_USER_IDX,
+						modDt: today,
 						alarmYn: alarmYn
 					};
 				}
@@ -1008,12 +1020,10 @@ function detailValidation(save_type) {
 				let staffurIdx = $('#staffurIdx').val(); 				// 직원회원순번
 				let staffName = $('#staffName').val(); 					// 직원명
 				let staffContact1 = getPureText($('#staffContact1').val()); 			// 연락처1
-				let staffContact2 = $('#staffContact2').val(); 			// 연락처2
 				let staffEmail = $('#staffEmail').val(); 				// 이메일
 				let staffTitle = $('#staffTitle').val(); 				// 직위
 				let ownerYn = $("#sel_ownerYn option:selected").val();	// 대표여부
 				let staffTypeCode = $('#staffTypeCode').val(); 			// 직원분류code
-				let alramYn = $("#sel_alarmYn option:selected").val();	// 알람여부
 
 				if (isEmpty(staffName)) { // is not empty
 					errorAlert('직원이름', '직원이름은 필수 입력값 입니다.\n\r회원검색을 하여주세요');
@@ -1036,11 +1046,11 @@ function detailValidation(save_type) {
 
 				}
 
-				if (isEmpty(MCRUD)) {
+				if (rsIdx === ""){
 					MCRUD = 'insert';
-				}
+				}else MCRUD = 'modify';
 
-				if (MCRUD == 'modify') {
+				if (MCRUD === 'modify') {
 					if (!isEmpty(_rtIdx)) { //If This is not empty,
 						MCRUD = 'modify';
 						staffContact1 = removeHypen(staffContact1);
@@ -1054,9 +1064,8 @@ function detailValidation(save_type) {
 							staffTitle : staffTitle,
 							staffContact1 : staffContact1,
 							ownYn: ownerYn,
-							delYn: staffdelYn,
-							regId : GLOBAL_LOGIN_USER_IDX,
-							modId : GLOBAL_LOGIN_USER_IDX
+							modId : GLOBAL_LOGIN_USER_IDX,
+							modDt : today
 //								ownerYn : ownerYn
 						};
 
@@ -1082,7 +1091,7 @@ function detailValidation(save_type) {
 						staffTitle: staffTitle,
 						staffContact1: staffContact1,
 						regId: GLOBAL_LOGIN_USER_IDX,
-						modId: GLOBAL_LOGIN_USER_IDX,
+						regDt: today,
 						ownerYn: ownerYn
 
 					};
@@ -1103,7 +1112,7 @@ function detailValidation(save_type) {
 									staffTitle: staffTitle,
 									staffContact1: staffContact1,
 									regId: GLOBAL_LOGIN_USER_IDX,
-									modId: GLOBAL_LOGIN_USER_IDX,
+									regDt: today,
 									ownerYn: ownerYn
 								};
 							}
@@ -1121,26 +1130,29 @@ function detailValidation(save_type) {
 				break;
 			case 'updateCommission': // 수수료 정보 업데이트
 				let commissionPer = $('#commissionPer').val(); // 부가세 포함 수수료
-//			let taxInvoiceCode = $('#taxInvoiceCode').val(); // 세금계산서발행주체
 
 				if (isEmpty(commissionPer)) { // is not empty
 					errorAlert('부가세 포함 수수료', '부가세 포함 수수료는 필수 입력값 입니다.');
 					return;
 				}
 
-//			if (isEmpty(taxInvoiceCode)) { // is not empty
-//				errorAlert('세금계산서발행주체', '세금계산서발행주체은 필수 입력값 입니다.');
-//				return;
-//			}
-
 				req = {};
-				req = {
-					rtIdx: _rtIdx,
-					commissionPer: commissionPer
-					// TODO 로그인 해결
-					// regId : GLOBAL_LOGIN_USER_IDX,
-					// modId : GLOBAL_LOGIN_USER_IDX
-				};
+
+				if (CRUD === 'insert'){
+					req = {
+						rtIdx: _rtIdx,
+						commissionPer: commissionPer,
+						regId : GLOBAL_LOGIN_USER_IDX,
+						regDt : today
+					};
+				}else if(CRUD === 'modify'){
+					req = {
+						rtIdx: _rtIdx,
+						commissionPer: commissionPer,
+						modId : GLOBAL_LOGIN_USER_IDX,
+						modDt : today
+					};
+				}
 
 				title = '수수료정보 저장';
 				text = '저장하시겠습니까?';
@@ -1247,25 +1259,46 @@ function detailValidation(save_type) {
 				}
 
 				req = {};
-				req = {
-					rtIdx: _rtIdx,
-					weekdayOpenStart: weekdayOpenStart,
-					weekdayOpenEnd: weekdayOpenEnd,
-					weekendOpenStart: weekendOpenStart,
-					weekendOpenEnd: weekendOpenEnd,
-					weekdayDeliveryStart: weekdayDeliveryStart,
-					weekdayDeliveryEnd: weekdayDeliveryEnd,
-					weekendDeliveryStart: weekendDeliveryStart,
-					weekendDeliveryEnd: weekendDeliveryEnd,
-					weekdayAbleDeliveryTime: weekdayAbleDeliveryTime,
-					weekendAbleDeliveryTime: weekendAbleDeliveryTime,
-					returnInspectionTime: returnInspectionTime,
-					weekendReserveMinimumTime: weekendReserveMinimumTime,
-					weekendReserveMinimumRate: weekendReserveMinimumRate
-					// TODO 로그인 정보
-					// regId : GLOBAL_LOGIN_USER_IDX,
-					// modId : GLOBAL_LOGIN_USER_IDX
-				};
+
+				if (CRUD === 'insert'){
+					req = {
+						rtIdx: _rtIdx,
+						weekdayOpenStart: weekdayOpenStart,
+						weekdayOpenEnd: weekdayOpenEnd,
+						weekendOpenStart: weekendOpenStart,
+						weekendOpenEnd: weekendOpenEnd,
+						weekdayDeliveryStart: weekdayDeliveryStart,
+						weekdayDeliveryEnd: weekdayDeliveryEnd,
+						weekendDeliveryStart: weekendDeliveryStart,
+						weekendDeliveryEnd: weekendDeliveryEnd,
+						weekdayAbleDeliveryTime: weekdayAbleDeliveryTime,
+						weekendAbleDeliveryTime: weekendAbleDeliveryTime,
+						returnInspectionTime: returnInspectionTime,
+						weekendReserveMinimumTime: weekendReserveMinimumTime,
+						weekendReserveMinimumRate: weekendReserveMinimumRate,
+						regId : GLOBAL_LOGIN_USER_IDX,
+						regDt : today
+					};
+				}else if (CRUD === 'modify'){
+					req = {
+						rtIdx: _rtIdx,
+						weekdayOpenStart: weekdayOpenStart,
+						weekdayOpenEnd: weekdayOpenEnd,
+						weekendOpenStart: weekendOpenStart,
+						weekendOpenEnd: weekendOpenEnd,
+						weekdayDeliveryStart: weekdayDeliveryStart,
+						weekdayDeliveryEnd: weekdayDeliveryEnd,
+						weekendDeliveryStart: weekendDeliveryStart,
+						weekendDeliveryEnd: weekendDeliveryEnd,
+						weekdayAbleDeliveryTime: weekdayAbleDeliveryTime,
+						weekendAbleDeliveryTime: weekendAbleDeliveryTime,
+						returnInspectionTime: returnInspectionTime,
+						weekendReserveMinimumTime: weekendReserveMinimumTime,
+						weekendReserveMinimumRate: weekendReserveMinimumRate,
+						modId : GLOBAL_LOGIN_USER_IDX,
+						modDt : today
+					};
+				}
 
 				title = '예약정보 저장';
 				text = '저장하시겠습니까?';
@@ -1279,7 +1312,6 @@ function detailValidation(save_type) {
 				let minimumStartDt = formatDate(getMinimumStartDt()); 			// 특정기간 최소 예약  시간 시작
 				let minimumEndDt = formatDate(getMinimumEndDt());               // 특정기간 최소 예약  시간 종료
 				let minimumTime = $("#sel_minimumTime option:selected").val();	// 특정기간 최소시간
-				let mindelYn = $("#sel_mindelYn option:selected").val();		// 사용여부
 
 				if (isEmpty(minimumStartDt) && chkValDate(minimumStartDt) == null) { // is not empty
 					errorAlert('특정 기간 최소 예약 시간', '시작일은 필수 입력값 입니다');
@@ -1331,7 +1363,7 @@ function detailValidation(save_type) {
 										minimumEndDt: minimumEndDt,
 										minimumTime: minimumTime,
 										delYn: mindelYn,
-										regId: GLOBAL_LOGIN_USER_IDX,
+										modDt: today,
 										modId: GLOBAL_LOGIN_USER_IDX
 									};
 
@@ -1351,7 +1383,7 @@ function detailValidation(save_type) {
 									minimumTime: minimumTime,
 									delYn: mindelYn,
 									regId: GLOBAL_LOGIN_USER_IDX,
-									modId: GLOBAL_LOGIN_USER_IDX
+									regDt: today
 								};
 
 								title = '특정시간정보 저장';
@@ -1378,7 +1410,6 @@ function detailValidation(save_type) {
 				let holidayStartDt = formatDate(getHolidayStartDt()); 			// 휴무일 시작일
 				let holidayEndDt = formatDate(getHolidayEndDt());				// 휴무일 종료일
 				let holidayName = $("#holidayName").val();						// 휴무일명
-				let holidaydelYn = $("#sel_holidaydelYn option:selected").val();// 사용여부
 
 				if (isEmpty(holidayStartDt) && chkValDate(holidayStartDt) == null) { // is not empty
 					errorAlert('휴무일 시작일', '시작일은 필수 입력값 입니다');
@@ -1433,8 +1464,7 @@ function detailValidation(save_type) {
 										holidayStartDt: holidayStartDt,
 										holidayEndDt: holidayEndDt,
 										holidayName: holidayName,
-										delYn: holidaydelYn,
-										regId: GLOBAL_LOGIN_USER_IDX,
+										modDt: today,
 										modId: GLOBAL_LOGIN_USER_IDX
 									};
 
@@ -1454,7 +1484,7 @@ function detailValidation(save_type) {
 									holidayName: holidayName,
 									delYn: holidaydelYn,
 									regId: GLOBAL_LOGIN_USER_IDX,
-									modId: GLOBAL_LOGIN_USER_IDX
+									regDt: today
 								};
 
 								title = '휴무일정보 저장';

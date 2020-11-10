@@ -21,8 +21,8 @@
 
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 th:if="${CRUD == 'insert'}" class="m-0 font-weight-bold text-primary" style="cursor: pointer" onclick="changeCardView('rentShopInfoCard')">회원사 - 신규등록</h6>
-                        <h6 th:if="${CRUD == 'modify'}" id="rentShopTitle" class="m-0 font-weight-bold text-primary" style="cursor: pointer" onclick="changeCardView('rentShopInfoCard')"></h6>
+                        <h6 th:if="${CRUD == 'insert'}" class="m-0 font-weight-bold text-primary" style="cursor: pointer">회원사 - 신규등록</h6>
+                        <h6 th:if="${CRUD == 'modify'}" id="rentShopTitle" class="m-0 font-weight-bold text-primary" style="cursor: pointer"></h6>
                     </div>
 
                     <div class="row">
@@ -163,7 +163,12 @@
                                         </div>
                                         <div class="col-lg-12 mb-3 float-l">
                                             <table id="rentStaffList" class="table table-hover" data-show-toggle="false" data-sorting="true">
-                                                
+                                                <thead>
+
+                                                </thead>
+                                                <tbody>
+
+                                                </tbody>
                                             </table>
                                         </div>
                                     </div>
@@ -328,13 +333,6 @@
                                     <select id="sel_minimumTime" name="sel_minimumTime" class="custom-select" >
                                     </select>
                                 </div>
-                                <div class="col-lg-3 mb-3 float-l flex-1" >
-                                    <label>사용유무</label>
-                                    <select id="sel_mindelYn" name="sel_mindelYn" class="custom-select" >
-                                        <option value="N">예</option>
-                                        <option value="Y">아니요</option>
-                                    </select>
-                                </div>
                             </div>
                             <br/>
                             <div class="col-lg-12 mb-3 float-l text-right">
@@ -370,13 +368,6 @@
                                 <div class="col-lg-3 mb-3 float-l flex-1" >
                                     <label>휴일명</label>
                                     <input type="text" id="holidayName" placeholder="휴일명" value="" class="form-control" />
-                                </div>
-                                <div class="col-lg-2 float-l flex-1" >
-                                    <label>사용유무</label>
-                                    <select id="sel_holidaydelYn" name="sel_holidaydelYn" class="custom-select" >
-                                        <option value="N">예</option>
-                                        <option value="Y">아니요</option>
-                                    </select>
                                 </div>
                             </div>
                             <br/>
@@ -475,6 +466,10 @@
 
     rtIdx = /*[[${rtIdx}]]*/'';
     CRUD = /*[[${CRUD}]]*/'';
+
+    function getLoginUser() {
+        return /*[[${session.LOGIN_SESSION}]]*/ '';
+    }
 
     if(CRUD === "insert"){
         openCreateRentCompany();

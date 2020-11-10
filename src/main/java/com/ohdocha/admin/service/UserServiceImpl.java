@@ -176,7 +176,7 @@ public class UserServiceImpl extends ServiceExtension implements UserService {
     public void addUserLicenseInfo(ServiceMessage message) {
         DochaAdminUserInfoUserLicenseInfoRequest userLicenseInfo = message.getObject("insertUserLicenseInfo", DochaAdminUserInfoUserLicenseInfoRequest.class);
         int res = 0;
-        if (!userLicenseInfo.getUlIdx().equals("")){
+        if (userLicenseInfo.getUlIdx() != null){
             res = userInfoMntMapper.updateUserLicenseInfo(userLicenseInfo);
         }else {
             String ulIdx = TextUtils.getKeyDefault("UL");
@@ -429,7 +429,8 @@ public class UserServiceImpl extends ServiceExtension implements UserService {
         DochaAdminDcRentCompanyStaffRequest rentCompanyStaffRequest = message.getObject("rentCompanyStaffRequest", DochaAdminDcRentCompanyStaffRequest.class);
 
         int res = rentCompanyInfoMapper.insertDcRentCompanyStaff(rentCompanyStaffRequest);
-        if (res == 1){
+        int res2 = rentCompanyInfoMapper.updateDcRentStaffUserinfo(rentCompanyStaffRequest);
+        if (res == 1 && res2 == 1){
             message.addData("code", 200);
         }else {
             message.addData("code", 400);
@@ -442,6 +443,7 @@ public class UserServiceImpl extends ServiceExtension implements UserService {
         DochaAdminDcRentCompanyStaffRequest rentCompanyStaffRequest = message.getObject("rentCompanyStaffRequest", DochaAdminDcRentCompanyStaffRequest.class);
 
         int res = rentCompanyInfoMapper.updateDcRentStaff(rentCompanyStaffRequest);
+
         if (res == 1){
             message.addData("code", 200);
         }else {

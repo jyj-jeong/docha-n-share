@@ -389,7 +389,7 @@ function initDetailInfo(urIdx) {
             let userId 			= data.userId;
             let userName 		= data.userName;
             let joinChannel 	= data.joinChannel;
-            let userBirthday 	= data.userBirthday;
+            let userBirthday 	= data.userBirthday != null ? data.userBirthday : new Date();
             let userContact1 	= phoneFomatter(data.userContact1);
             let regDt 			= dateFormatter(data.regDt , "-") != null ? dateFormatter(data.regDt , "-") : new Date();
             let useYn 			= data.useYn == 1? true : false ;
@@ -599,12 +599,13 @@ function detailValidation(save_type){
                 }).always(function () {
                 });
 
-                if (responseCode === 200){
-                    errorAlert('아이디', '이미 등록된 아이디 입니다.');
-                    $('#userId').focus();
-                    return;
+                if (CRUD === 'insert'){
+                    if (responseCode === 200){
+                        errorAlert('아이디', '이미 등록된 아이디 입니다.');
+                        $('#userId').focus();
+                        return;
+                    }
                 }
-
 
                 if(isEmpty(userName)) { //is not empty
                     errorAlert('이름', '이름는 필수 입력값 입니다.');

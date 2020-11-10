@@ -78,7 +78,7 @@
                                     <td th:text="${rentCompany.getStaffName()}"></td>
                                     <td th:text="${rentCompany.getStaffContact1()}"></td>
                                     <td th:text="${#numbers.formatInteger(rentCompany.getCarCount(), 0, 'COMMA')}"></td>
-                                    <td th:text="${rentCompany.getRtIdx()}"></td>
+                                    <td th:text="${#numbers.formatInteger(rentCompany.getRegCarCount(), 0, 'COMMA')}"></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -125,6 +125,10 @@
     </div>
 </div>
 <script>
+
+    function getLoginUser() {
+        return /*[[${session.LOGIN_SESSION}]]*/ '';
+    }
 
     initDataTables();
 
