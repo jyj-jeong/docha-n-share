@@ -29,7 +29,9 @@ public class CarController extends ControllerExtension {
     /* 등록차량 리스트 */
     @GetMapping(value = "/car")
     public String regCarList(HttpServletRequest request, ModelMap modelMap) {
-        ServiceMessage serviceMessage = createServiceMessage(request);
+        ServiceMessage serviceMessage = createServiceMessage(request)
+                .addData("rtIdx", getLoginUserRtIdx(request));
+
         carService.regCarList(serviceMessage);
 
         modelMap.addAllAttributes(serviceMessage);
@@ -55,18 +57,6 @@ public class CarController extends ControllerExtension {
         serviceMessage.addData("regCarDetailRequest", regCarDetailRequest);
 
         carService.regCarAdd(serviceMessage);
-
-        return serviceMessage;
-    }
-
-    /* 등록차량 보험 추가 */
-    @PostMapping(value = "/api/v1.0/insertDcCarInsuranceInfo.do")
-    @ResponseBody
-    public Object insertRegCarInsurance(@RequestBody DochaAdminInsuranceTemplateDetailRequest insuranceTemplateRequest, HttpServletRequest request) {
-        ServiceMessage serviceMessage = createServiceMessage(request);
-        serviceMessage.addData("insuranceTemplateRequest", insuranceTemplateRequest);
-
-        carService.insertRegCarInsurance(serviceMessage);
 
         return serviceMessage;
     }
@@ -118,14 +108,38 @@ public class CarController extends ControllerExtension {
         return serviceMessage.get("result");
     }
 
-    /* 등록차량 수정 */
+    /* 등록차량 차량 부분 수정 */
     @PostMapping(value = "/api/v1.0/updateDcCarInfo.do")
     @ResponseBody
-    public Object updateCdtCarInfo(@RequestBody DochaAdminRegCarDetailRequest regCarDetailRequest, HttpServletRequest request) {
+    public Object updateCarInfo(@RequestBody DochaAdminRegCarDetailRequest regCarDetailRequest, HttpServletRequest request) {
         ServiceMessage serviceMessage = createServiceMessage(request);
         serviceMessage.addData("regCarRequest", regCarDetailRequest);
 
-        carService.updateCdtCarInfo(serviceMessage);
+        carService.updateDcCarInfo(serviceMessage);
+
+        return serviceMessage;
+    }
+
+    /* 등록차량 보험 부분 수정 */
+    @PostMapping(value = "/api/v1.0/updateDcInsurance.do")
+    @ResponseBody
+    public Object updateCarInsuranceInfo(@RequestBody DochaAdminInsuranceTemplateDetailRequest insuranceTemplateRequest, HttpServletRequest request) {
+        ServiceMessage serviceMessage = createServiceMessage(request);
+        serviceMessage.addData("insuranceTemplateRequest", insuranceTemplateRequest);
+
+        carService.updateDcInsuranceInfo(serviceMessage);
+
+        return serviceMessage;
+    }
+
+    /* 등록차량 요금제 부분 수정 */
+    @PostMapping(value = "/api/v1.0/updateDcPayment.do")
+    @ResponseBody
+    public Object updateCarPaymentInfo(@RequestBody DochaAdminBaiscPlanDetailRequest basicPlanDetailRequest, HttpServletRequest request) {
+        ServiceMessage serviceMessage = createServiceMessage(request);
+        serviceMessage.addData("basicPlanDetailRequest", basicPlanDetailRequest);
+
+        carService.updateDcPaymentInfo(serviceMessage);
 
         return serviceMessage;
     }
@@ -505,10 +519,10 @@ public class CarController extends ControllerExtension {
     }
 
     /* 기본요금제 상세 화면 */
-    @GetMapping(value = "/car/payment/basic/{pyIdx}")
-    public String updateBasicPlanView(@PathVariable String pyIdx, HttpServletRequest request, ModelMap modelMap) {
+    @GetMapping(value = "/car/payment/basic/{pyTIdx}")
+    public String updateBasicPlanView(@PathVariable String pyTIdx, HttpServletRequest request, ModelMap modelMap) {
         ServiceMessage serviceMessage = createServiceMessage(request);
-        serviceMessage.addData("pyIdx", pyIdx);
+        serviceMessage.addData("pyTIdx", pyTIdx);
         serviceMessage.addData("CRUD", "modify");
 
         modelMap.addAllAttributes(serviceMessage);
@@ -574,10 +588,10 @@ public class CarController extends ControllerExtension {
     }
 
     /* 보험템플릿 상세 화면 */
-    @GetMapping(value = "/car/payment/insurance/{ciIdx}")
-    public String InsuranceTemplateDetailView(@PathVariable String ciIdx, HttpServletRequest request, ModelMap modelMap) {
+    @GetMapping(value = "/car/payment/insurance/{ciTIdx}")
+    public String InsuranceTemplateDetailView(@PathVariable String ciTIdx, HttpServletRequest request, ModelMap modelMap) {
         ServiceMessage serviceMessage = createServiceMessage(request);
-        serviceMessage.addData("ciIdx", ciIdx);
+        serviceMessage.addData("ciTIdx", ciTIdx);
         serviceMessage.addData("CRUD", "modify");
 
         modelMap.addAllAttributes(serviceMessage);

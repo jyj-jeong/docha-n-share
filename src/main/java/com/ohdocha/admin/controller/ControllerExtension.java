@@ -1,5 +1,6 @@
 package com.ohdocha.admin.controller;
 
+import com.ohdocha.admin.util.DochaMap;
 import com.ohdocha.admin.util.ServiceMessage;
 import com.ohdocha.admin.util.TextUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -88,6 +89,13 @@ public class ControllerExtension {
         } catch (Exception e) {
             log.error("Redirect Error: ", e);
         }
+    }
+
+
+    public String getLoginUserRtIdx(HttpServletRequest request){
+        DochaMap sessionObj = (DochaMap) request.getSession().getAttribute("LOGIN_SESSION");
+
+        return sessionObj.get("rtIdx").toString();
     }
 
 }

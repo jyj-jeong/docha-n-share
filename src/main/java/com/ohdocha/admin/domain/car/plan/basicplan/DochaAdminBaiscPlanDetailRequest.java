@@ -10,6 +10,7 @@ public class DochaAdminBaiscPlanDetailRequest extends CommonRequestDto {
 	
 	private String rtIdx;				//회원사 idx
 	private String pyIdx;				//요금제번호
+	private String pyTIdx;				//요금제번호
 	private String pyEtc;				//제목
 	private String dailyStandardPay;	//일 기본요금
 	private String dailyMaxRate;		//일대여 최대 할인율
@@ -37,6 +38,12 @@ public class DochaAdminBaiscPlanDetailRequest extends CommonRequestDto {
 	}
 	public void setPyIdx(String pyIdx) {
 		this.pyIdx = pyIdx;
+	}
+	public String getPyTIdx() {
+		return pyTIdx;
+	}
+	public void setPyTIdx(String pyTIdx) {
+		this.pyTIdx = pyTIdx;
 	}
 	public String getPyEtc() {
 		return pyEtc;

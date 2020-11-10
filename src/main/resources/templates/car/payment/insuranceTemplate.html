@@ -20,7 +20,7 @@
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4 mt-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary" th:text="${ciIdx == null ? '보험 템플릿 등록' : '보험 템플릿 - ' +  ciIdx}"></h6>
+                        <h6 class="m-0 font-weight-bold text-primary" th:text="${ciTIdx == null ? '보험 템플릿 등록' : '보험 템플릿 - ' +  ciTIdx}"></h6>
                     </div>
 
                     <!--region 차량정보 카드  -->
@@ -28,7 +28,7 @@
 
                         <!-- 차량 정보 -->
                         <div class="row">
-                            <input type="text" class="form-control d-none" name="ciIdx" id="ciIdx"/>
+                            <input type="text" class="form-control d-none" name="ciTIdx" id="ciTIdx"/>
                             <div class="col-3 mb-3">
                                 <label class="form-label" for="companyName">회사명(지점)</label>
                                 <select class="custom-select" name="companyName" id="companyName"></select>
@@ -149,27 +149,12 @@
                                 </div>
                             </div>
                         </div>
-
-
                     </div>
                 </div>
-
-
-
-
             </div>
         </div>
         <!-- #endregion -->
-
-
         <!-- endregion -->
-
-
-
-
-
-
-
         <div class="card-footer">
             <div class="text-right">
                 <button class="btn btn-primary" type="button" onclick="detailValidation();">저장</button>
@@ -218,12 +203,12 @@
 </div>
 <script th:inline="javascript">
     CRUD = /*[[${CRUD}]]*/'';
-    ciIdx = /*[[${ciIdx}]]*/'';
+    ciTIdx = /*[[${ciTIdx}]]*/'';
 
     if(CRUD === "insert"){
         initDetailData('insert');
     }else if (CRUD === "modify"){
-        initDetailInfo(ciIdx)
+        initDetailInfo(ciTIdx)
     }
 </script>
 </body>

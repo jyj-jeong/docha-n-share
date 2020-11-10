@@ -31,11 +31,23 @@ public interface DochaAdminRegCarMapper {
     //등록차량 사진 수정 ( 모델에서 수정 시 )
     public int updateRegCarImgByMdIdx(DochaAdminRegCarDetailRequest reqParam);
 
-    //등록차량 보험 저장
+    //등록차량 보험 추가
     public int insertRegCarInsurance(DochaAdminInsuranceTemplateDetailRequest reqParam);
 
-    //등록차량 요금제 저장
+    //등록차량 보험 조회 ( 차량 1:1 )
+    public int countRegCarInsuranceInfo(DochaAdminInsuranceTemplateDetailRequest insuranceTemplateDetailRequest);
+
+    //등록차량 보험 수정
+    public int updateRegCarInsuranceInfo(DochaAdminInsuranceTemplateDetailRequest insuranceTemplateDetailRequest);
+
+    //등록차량 요금 조회 ( 차량 1:1 )
+    public int countRegCarPaymentInfo(DochaAdminBaiscPlanDetailRequest basicPlanDetailRequest);
+
+    //등록차량 요금제 추가
     public int insertRegCarPayment(DochaAdminBaiscPlanDetailRequest reqParam);
+
+    //등록차량 요금 수정
+    public int updateRegCarPaymentInfo(DochaAdminBaiscPlanDetailRequest insuranceTemplateDetailRequest);
 
     //등록차량 수정
     public int updateDcCarInfo(DochaAdminRegCarDetailRequest reqParam);

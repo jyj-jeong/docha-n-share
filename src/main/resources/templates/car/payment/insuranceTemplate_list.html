@@ -70,8 +70,8 @@
                                 </tr>
                                 </tfoot>
                                 <tbody>
-                                <tr th:each="insurance, index : ${insuranceList}" th:data-value="${insurance.getCiIdx()}" style="cursor: pointer">
-                                    <td th:text="${insurance.getCiIdx()}"></td>
+                                <tr th:each="insurance, index : ${insuranceList}" th:data-value="${insurance.getCiTIdx()}" style="cursor: pointer">
+                                    <td th:text="${insurance.getCiTIdx()}"></td>
                                     <td th:text="${insurance.getCompanyName() + '(' + insurance.getBranchName() + ')'}"></td>
                                     <td th:text="${insurance.getCiEtc()}"></td>
                                     <td th:text="${insurance.getPersonalCover()}"></td>
@@ -82,10 +82,10 @@
                                 <script th:inline="javascript">
                                     // 상세보기 이동
                                     $('#dataTable > tbody > tr >').click(function () {
-                                        var ciIdx = $(this).parent().attr('data-value');
-                                        if (ciIdx === "") return;
+                                        var ciTIdx = $(this).parent().attr('data-value');
+                                        if (ciTIdx === "") return;
 
-                                        var url = "../../car/payment/insurance/" + ciIdx;
+                                        var url = "../../car/payment/insurance/" + ciTIdx;
                                         var name = "보험템플릿 수정";
                                         var option = "width=1200, height=800, location=no, left=500, top=50";
 

@@ -66,8 +66,8 @@
                                 </tr>
                                 </tfoot>
                                 <tbody>
-                                <tr th:each="basicPlan, index : ${basicPlanList}" style="cursor: pointer" th:data-value="${basicPlan.getPyIdx()}">
-                                    <td th:text="${basicPlan.getPyIdx()}"></td>
+                                <tr th:each="basicPlan, index : ${basicPlanList}" style="cursor: pointer" th:data-value="${basicPlan.getPyTIdx()}">
+                                    <td th:text="${basicPlan.getPyTIdx()}"></td>
                                     <td th:text="${basicPlan.getCompanyName() + '(' + basicPlan.getBranchName() + ')'}"></td>
                                     <td th:text="${basicPlan.getPyEtc()}"></td>
                                     <td th:text="${#numbers.formatInteger(basicPlan.getDailyStandardPay(), 0, 'COMMA')}"></td>
@@ -77,10 +77,10 @@
                                 <script th:inline="javascript">
                                     // 상세보기 이동
                                     $('#dataTable > tbody > tr >').click(function () {
-                                        var pyIdx = $(this).parent().attr('data-value');
-                                        if (pyIdx === "") return;
+                                        var pyTIdx = $(this).parent().attr('data-value');
+                                        if (pyTIdx === "") return;
 
-                                        var url = "../../car/payment/basic/" + pyIdx;
+                                        var url = "../../car/payment/basic/" + pyTIdx;
                                         var name = "기본 요금제 수정";
                                         var option = "width=600, height=800, location=no, left=500, top=50";
 

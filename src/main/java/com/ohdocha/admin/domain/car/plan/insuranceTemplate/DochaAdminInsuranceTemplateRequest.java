@@ -12,6 +12,7 @@ public class DochaAdminInsuranceTemplateRequest {
 	private String rtIdx;		//회원사 idx
 	private String userRole;	//회원사 권한
 	private String ciIdx;		//보험료템플릿 idx
+	private String ciTIdx;		//보험료템플릿 idx
 
 	public String getRtIdx() {
 		return rtIdx;
@@ -30,5 +31,11 @@ public class DochaAdminInsuranceTemplateRequest {
 	}
 	public void setCiIdx(String ciIdx) {
 		this.ciIdx = ciIdx;
+	}
+	public String getCiTIdx() {
+		return ciTIdx;
+	}
+	public void setCiTIdx(String ciTIdx) {
+		this.ciTIdx = ciTIdx;
 	}
 }

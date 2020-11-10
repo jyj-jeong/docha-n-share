@@ -20,9 +20,7 @@ public interface CarService {
 
     void selectRegCarDetailOption(ServiceMessage message);
 
-    void updateCdtCarInfo(ServiceMessage message);
-
-    void insertRegCarInsurance(ServiceMessage message);
+    void updateDcCarInfo(ServiceMessage message);
 
     void insertCarModelInfo(ServiceMessage message);
 
@@ -83,4 +81,8 @@ public interface CarService {
     void insertRegCarPayment(ServiceMessage message);
 
     void uploadCarImage(ServiceMessage message);
+
+    void updateDcInsuranceInfo(ServiceMessage message);
+
+    void updateDcPaymentInfo(ServiceMessage message);
 }

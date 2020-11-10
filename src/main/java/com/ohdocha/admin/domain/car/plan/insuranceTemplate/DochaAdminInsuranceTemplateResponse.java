@@ -9,6 +9,7 @@ import org.apache.ibatis.type.Alias;
 public class DochaAdminInsuranceTemplateResponse extends CommonResponseDto {
 	
 	private String ciIdx                 ;   //보험정보idx
+	private String ciTIdx                 ;   //보험정보idx
 	private String crIdx                 ;   //차량idx
 	private String insuranceFee          ;   //보험요금
 	private String carDamageCover        ;   //자차보상금액
@@ -218,6 +219,12 @@ public class DochaAdminInsuranceTemplateResponse extends CommonResponseDto {
 	}
 	public void setSettingCarCnt(int settingCarCnt) {
 		this.settingCarCnt = settingCarCnt;
+	}
+	public String getCiTIdx() {
+		return ciTIdx;
+	}
+	public void setCiTIdx(String ciTIdx) {
+		this.ciTIdx = ciTIdx;
 	}
 
 	

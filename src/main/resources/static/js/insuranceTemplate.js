@@ -91,9 +91,9 @@ var drawTable = function drawTable(res, page, displayPageNum){
 	columns = [
 
 		{ "name": "rowNumber", "id" : "rowNum" ,"title": "No" , "visible": false },          
-		{ "name": "ciIdx", "title": "보험템플릿번호" ,
+		{ "name": "ciTIdx", "title": "보험템플릿번호" ,
 			"formatter" : function(value, options, rowData){
-				var seq = rowData.ciIdx;
+				var seq = rowData.ciTIdx;
 				return '<a href="javascript:initDetailInfo(' + "'" +seq + "'" +');"  >'+value+'</a>';               
 			}
 		},
@@ -195,7 +195,7 @@ function initSelectBox(){
 	var delYnItem = "";
 	
 	searchOption += '<option value="" >선택</option>';
-	searchOption += '<option value="ciIdx" >보험템플릿번호</option>';
+	searchOption += '<option value="ciTIdx" >보험템플릿번호</option>';
 	searchOption += '<option value="companyName" >회원사</option>';
 	searchOption += '<option value="branchName" >지점</option>';
 	searchOption += '<option value="ciEtc" >제목</option>';
@@ -227,6 +227,7 @@ function initSelectBox(){
 	$("input:checkbox[name='carDamage2Yn']:checkbox[value='Y']").prop('checked', true);
 	$("input:checkbox[name='carDamage3Yn']:checkbox[value='Y']").prop('checked', true);
 	$("input:checkbox[name='carDamage4Yn']:checkbox[value='Y']").prop('checked', true);
+
 }
 
 function bindEvent(){  
@@ -310,15 +311,15 @@ function initDetailInfo(seq){
 	// input box 초기화
 	initInput();
 
-	let ciIdx = '';
+	let ciTIdx = '';
 	
-	let target = 'insuranceTemplateinfoDetail';
+	let target = 'insuranceTemplateDetail';
 	let method = 'select';
 
-	ciIdx = seq;
+	ciTIdx = seq;
 	
 	let req = {
-			ciIdx : ciIdx
+			ciTIdx : ciTIdx
 	};
 	
 	fn_callApi(method, target, req, function(response) {
@@ -333,7 +334,7 @@ function initDetailInfo(seq){
 			
 			let companyName 				= nullCheck(data.companyName);
 			let branchName 				    = nullCheck(data.branchName);
-			let ciIdx                      	= nullCheck(data.ciIdx);
+			let ciTIdx                      	= nullCheck(data.ciTIdx);
 			let rtIdx                       = nullCheck(data.rtIdx);
 			let onselfDamageCover           = nullCheck(data.onselfDamageCover) == '' ? '' : objectConvertToPriceFormat(nullCheck(data.onselfDamageCover));;
 			let personalCover               = nullCheck(data.personalCover) == '' ? '' : objectConvertToPriceFormat(nullCheck(data.personalCover));;
@@ -364,7 +365,7 @@ function initDetailInfo(seq){
 			$('#companyName').append(companyNameItem); 
 			$('#companyName').attr('disabled', true);
 
-			$('#ciIdx').val(ciIdx);
+			$('#ciTIdx').val(ciTIdx);
 			$('#ciEtc').val(ciEtc);
 
 			let delYnItem = "";
@@ -483,7 +484,7 @@ function detailValidation(){
 	let title, text, icon, cancel_text;
 
 	let companyName 			=  getPureText($('#companyName').val());
-	let ciIdx                   =  getPureText($('#ciIdx').val());
+	let ciTIdx                   =  getPureText($('#ciTIdx').val());
 	let personalCover           =  getPureText($('#personalCover').val());
 	let onselfDamageCover       =  getPureText($('#onselfDamageCover').val());
 	let propertyDamageCover     =  getPureText($('#propertyDamageCover').val());
@@ -571,7 +572,7 @@ function detailValidation(){
 	
 	let req = {
 		    'rtIdx'	: rtIdx
-		,	'ciIdx' : ciIdx
+		,	'ciTIdx' : ciTIdx
 		,	'personalCover' : personalCover
 		,	'onselfDamageCover' : onselfDamageCover
 		,	'propertyDamageCover' : propertyDamageCover  

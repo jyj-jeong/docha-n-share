@@ -57,7 +57,10 @@ public class CarServiceImpl extends ServiceExtension implements CarService {
     /* 등록차량 리스트 */
     @Override
     public void regCarList(ServiceMessage message) {
+        String rtIdx = message.getString("rtIdx");
         DochaAdminRegCarRequest regCarRequest = new DochaAdminRegCarRequest();
+
+        regCarRequest.setRtIdx(rtIdx);
 
         List<DochaAdminRegCarResponse> responseDto = regCarMapper.selectRegCarInfo(regCarRequest);
 
@@ -76,22 +79,12 @@ public class CarServiceImpl extends ServiceExtension implements CarService {
         DochaAdminCarModelDetailResponse carModelResponse = carModelMapper.selectCarModelImg(regCarDetailRequest.getMdIdx());
 
         regCarDetailRequest.setImgIdx(carModelResponse.getImgIdx());
+        regCarDetailRequest.setCartypeCode(carModelResponse.getCartypeCode());
 
         regCarMapper.updateRegCarImg(regCarDetailRequest);
 
         message.addData("res", res);
         message.addData("crIdx", regCarDetailRequest.getCrIdx());
-    }
-
-    /* 등록차량 보험 추가 */
-    @Override
-    public void insertRegCarInsurance(ServiceMessage message) {
-        DochaAdminInsuranceTemplateDetailRequest insuranceTemplateRequest = message.getObject("insuranceTemplateRequest", DochaAdminInsuranceTemplateDetailRequest.class);
-
-        int res = regCarMapper.insertRegCarInsurance(insuranceTemplateRequest);
-
-        message.addData("res", res);
-        message.addData("crIdx", insuranceTemplateRequest.getCrIdx());
     }
 
     /* 등록차량 요금제 추가 */
@@ -125,9 +118,9 @@ public class CarServiceImpl extends ServiceExtension implements CarService {
         message.addData("result", regCarDetailResponseList);
     }
 
-    /* 등록차량 수정 */
+    /* 등록차량 수정 ( 차량 부분 ) */
     @Override
-    public void updateCdtCarInfo(ServiceMessage message) {
+    public void updateDcCarInfo(ServiceMessage message) {
         DochaAdminRegCarDetailRequest regCarRequest = message.getObject("regCarRequest", DochaAdminRegCarDetailRequest.class);
 
         int res = regCarMapper.updateDcCarInfo(regCarRequest);
@@ -136,6 +129,47 @@ public class CarServiceImpl extends ServiceExtension implements CarService {
 
     }
 
+    /* 등록차량 수정 ( 보험 부분 ) */
+    @Override
+    public void updateDcInsuranceInfo(ServiceMessage message) {
+        int res;
+        DochaAdminInsuranceTemplateDetailRequest insuranceTemplateDetailRequest = message.getObject("insuranceTemplateRequest", DochaAdminInsuranceTemplateDetailRequest.class);
+
+        // 보험 테이블에 해당 차량이 있는지 확인
+        int countRegCar = regCarMapper.countRegCarInsuranceInfo(insuranceTemplateDetailRequest);
+
+        // 차량이 있으면 update
+        if (countRegCar > 0 ) {
+            res = regCarMapper.updateRegCarInsuranceInfo(insuranceTemplateDetailRequest);
+        // 차량이 없으면 insert
+        } else {
+            res = regCarMapper.insertRegCarInsurance(insuranceTemplateDetailRequest);
+        }
+
+        message.addData("res", res);
+        message.addData("crIdx", insuranceTemplateDetailRequest.getCrIdx());
+    }
+
+    /* 등록차량 수정 ( 요금제 부분 ) */
+    @Override
+    public void updateDcPaymentInfo(ServiceMessage message) {
+        int res;
+        DochaAdminBaiscPlanDetailRequest basicPlanDetailRequest = message.getObject("basicPlanDetailRequest", DochaAdminBaiscPlanDetailRequest.class);
+
+        // 요금 테이블에 해당 차량이 있는지 확인
+        int countRegCar = regCarMapper.countRegCarPaymentInfo(basicPlanDetailRequest);
+
+        // 차량이 있으면 update
+        if (countRegCar > 0 ) {
+            res = regCarMapper.updateRegCarPaymentInfo(basicPlanDetailRequest);
+            // 차량이 없으면 insert
+        } else {
+            res = regCarMapper.insertRegCarPayment(basicPlanDetailRequest);
+        }
+
+        message.addData("res", res);
+        message.addData("crIdx", basicPlanDetailRequest.getCrIdx());
+    }
 
     //region [ 등록차량 옵션 선택]
     /* 회사 옵션 선택 */
@@ -578,11 +612,10 @@ public class CarServiceImpl extends ServiceExtension implements CarService {
         message.addData("result", basicPlanDetailResponseList);
     }
 
-    /* 기본 요금제 수정 */
+    /* 보험 템플릿 수정 */
     @Override
     public void updateInsuranceTemplate(ServiceMessage message) {
         DochaAdminInsuranceTemplateDetailRequest insuranceTemplateDetailRequest = message.getObject("insuranceTemplateDetailRequest", DochaAdminInsuranceTemplateDetailRequest.class);
-
 
         int res = insuranceTemplateMapper.updateInsuranceTemplate(insuranceTemplateDetailRequest);
 

@@ -7,6 +7,7 @@ import org.apache.ibatis.type.Alias;
 @Alias("insuranceTemplateDetailRequest")
 public class DochaAdminInsuranceTemplateDetailRequest  {
 	private String ciIdx                 ;   //보험정보idx
+	private String ciTIdx                 ;   //보험정보idx
 	private String crIdx                 ;   //차량idx
 	private String rtIdx                 ;   //회원사idx
 	private String insuranceFee          ;   //보험요금
@@ -37,6 +38,12 @@ public class DochaAdminInsuranceTemplateDetailRequest  {
 	}
 	public void setCiIdx(String ciIdx) {
 		this.ciIdx = ciIdx;
+	}
+	public String getciTIdx() {
+		return ciTIdx;
+	}
+	public void setCiTIdx(String ciTIdx) {
+		this.ciTIdx = ciTIdx;
 	}
 	public String getCrIdx() {
 		return crIdx;

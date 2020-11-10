@@ -14,6 +14,7 @@ public class DochaAdminBasicPlanDetailResponse extends CommonResponseDto {
 	private int    settingCarCnt       ; //설정 차량 대수
 	
 	private String pyIdx               ; //요금idx
+	private String pyTIdx               ; //요금idx
 	private String rtIdx               ; //회원사idx
 	private String mdIdx               ; //모델상세idx
 	private String dailyStandardPay    ; //일기본요금
@@ -52,6 +53,12 @@ public class DochaAdminBasicPlanDetailResponse extends CommonResponseDto {
 	}
 	public void setPyIdx(String pyIdx) {
 		this.pyIdx = pyIdx;
+	}
+	public String getPyTIdx() {
+		return pyTIdx;
+	}
+	public void setPyTIdx(String pyTIdx) {
+		this.pyTIdx = pyTIdx;
 	}
 	public String getRtIdx() {
 		return rtIdx;

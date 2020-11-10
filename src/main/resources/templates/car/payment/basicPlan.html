@@ -20,14 +20,14 @@
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4 mt-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary" style="cursor: pointer" th:text="${pyIdx == null ? '기본 요금제 등록' : '기본 요금제 - ' +  pyIdx}"></h6></h6>
+                        <h6 class="m-0 font-weight-bold text-primary" style="cursor: pointer" th:text="${pyTIdx == null ? '기본 요금제 등록' : '기본 요금제 - ' +  pyTIdx}"></h6></h6>
                     </div>
 
                     <div id="regCarDetail" class="card-body">
 
                         <!-- 회원사 -->
                         <div class="row mt-2">
-                            <input type="text" class="form-control d-none" name="pyIdx" id="pyIdx"/>
+                            <input type="text" class="form-control d-none" name="pyTIdx" id="pyTIdx"/>
                             <label class="form-label mb-3" for="companyName">
                                 <b class="-bold col-1">회원사</b></label>
                             <div class="col-12 mb-3">
@@ -180,12 +180,12 @@
 </div>
 <script th:inline="javascript">
     CRUD = /*[[${CRUD}]]*/'';
-    pyIdx = /*[[${pyIdx}]]*/'';
+    pyTIdx = /*[[${pyTIdx}]]*/'';
 
     if(CRUD === "insert"){
         initDetailData('insert');
     }else if (CRUD === "modify"){
-        initDetailInfo(pyIdx)
+        initDetailInfo(pyTIdx)
     }
 </script>
 </body>

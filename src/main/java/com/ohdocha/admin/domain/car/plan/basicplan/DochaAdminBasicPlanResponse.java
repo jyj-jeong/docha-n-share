@@ -9,6 +9,7 @@ import org.apache.ibatis.type.Alias;
 public class DochaAdminBasicPlanResponse extends CommonResponseDto {
 	
 	private String pyIdx               ;  // 요금idx
+	private String pyTIdx               ;  // 요금idx
 	private String mdIdx               ;  // 모델상세idx
 	private String dailyStandardPay    ;  // 일기본요금
 	private String monthlyStandardPay  ;  // 월기본요금
@@ -35,6 +36,12 @@ public class DochaAdminBasicPlanResponse extends CommonResponseDto {
 	}
 	public void setPyIdx(String pyIdx) {
 		this.pyIdx = pyIdx;
+	}
+	public String getPyTIdx() {
+		return pyTIdx;
+	}
+	public void setPyTIdx(String pyTIdx) {
+		this.pyTIdx = pyTIdx;
 	}
 	public String getMdIdx() {
 		return mdIdx;
