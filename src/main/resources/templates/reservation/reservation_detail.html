@@ -42,7 +42,7 @@
                                 </div>
                                 <div class=" col-lg-3 mb-3 float-l flex-1">
                                     <label>생년월일</label>
-                                    <input type="date" class="form-control reserveUserInfo" id="reserveUserBirthDay" placeholder=""  />
+                                    <a id="reserveUserBirthday" name="reserveUserBirthday"></a>
                                 </div>
                             </div>
                         </div>
@@ -71,7 +71,7 @@
                             </div>
                             <div class="col-lg-4 float-l" style="flex:1;">
                                 <label>생년월일</label>
-                                <input type="date" id="firstDriverBirthDay" class="form-control" value="">
+                                <a id="firstDriverBirthDay" name="firstDriverBirthDay"></a>
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -90,7 +90,7 @@
                             </div>
                             <div class="col-lg-3 float-l" style="flex:1;">
                                 <label>발급일</label>
-                                <input type="date" id="firstDriverLicenseIsDate" class="form-control" value="">
+                                <a id="firstDriverLicenseIsDate" name="firstDriverLicenseIsDate"></a>
                             </div>
                         </div>
                     </div>
@@ -109,7 +109,7 @@
                             </div>
                             <div class="col-lg-4 float-l" style="flex:1;">
                                 <label>생년월일</label>
-                                <input type="date" id="secondDriverBirthDay" class="form-control" value="">
+                                <a id="secondDriverBirthDay" name="secondDriverBirthDay"></a>
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -124,11 +124,11 @@
                             </div>
                             <div class="col-lg-3 float-l" style="flex:1;">
                                 <label>적성검사 만료일</label>
-                                <input type="date" id="secondDriverExpirationDate" class="form-control" value="">
+                                <a id="secondDriverExpirationDate" name="secondDriverExpirationDate"></a>
                             </div>
                             <div class="col-lg-3 float-l" style="flex:1;">
                                 <label>발급일</label>
-                                <input type="date" id="secondDriverLicenseIsDate" class="form-control" value="">
+                                <a id="secondDriverLicenseIsDate" name="secondDriverLicenseIsDate"></a>
                             </div>
                         </div>
                     </div>
@@ -164,16 +164,16 @@
                             <div class="col-lg-3 float-l" style="flex:1;">
                                 <label>대여일시</label>
                                 <input type="text" id="rentStartDay" class="form-control" name="rentStartDay2" data-mask="____-__-__ __:__">
-                                <input type="date" class="form-control" id="rentStartDay" name="rentStartDay" />
+                                <input type="datetime-local" class="form-control" id="rentStartDay" name="rentStartDay" />
                             </div>
                             <div class="col-lg-3 float-l" style="flex:1;">
                                 <label>반납일시</label>
                                 <input type="text" class="form-control" id="rentEndDay" name="rentEndDay2"  data-mask="____-__-__ __:__">
-                                <input type="date" class="form-control" id="rentEndDay" name="rentEndDay" />
+                                <input type="datetime-local" class="form-control" id="rentEndDay" name="rentEndDay" />
                             </div>
                             <div class="col-lg-3 float-l" style="flex:1;">
                                 <label>사용기간</label>
-                                <input type="text" id="periodDt" class="form-control" value="" placeholder="'요금 계산'시 확인 가능" readonly>
+                                <input type="text" class="form-control" id="periodDt" value="0개월 0일 0시 0분" readonly/>
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -326,93 +326,6 @@
                     </div>
                 </div>
 
-                <!-- ppt 삭제된 부분
-                                <div id="reserveMasterInfo2">
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <div class="main-card mb-3 card">
-                                                <div class="card-body"><h5 class="card-title">차액환불</h5>
-                                                    <div class="col-lg-12 float-l flex-1" >
-                                                        <label>총 금액</label>
-                                                        <input type="text" readonly class="form-control" id="rp_paymentTotalAmount" />
-                                                    </div>
-                                                    <div class="col-lg-12 float-l flex-1" >
-                                                        <label>왕복배달금액</label>
-                                                        <input type="text" readonly class="form-control" id="rp_deliveryFee" />
-                                                    </div>
-                                                    <div class="col-lg-12 float-l" style="flex:1;">
-                                                        <label>자차보험</label>
-                                                        <input type="text" readonly class="form-control" id="rp_insuranceFee" />
-                                                    </div>
-                                                    <div class="col-lg-12 float-l" style="flex:1;">
-                                                        <label>대여금액</label>
-                                                        <input type="text" readonly class="form-control" id="rp_rentFee" />
-                                                    </div>
-                                                    <div class="col-lg-12 float-l" style="flex:1;">
-                                                        <label>추가 수루료</label>
-                                                        <input type="text" readonly class="form-control" id="rp_addFee" />
-                                                    </div>
-                                                    <div class="col-lg-12 float-l" style="flex:1;">
-                                                        <label>할인금액</label>
-                                                        <input type="text" readonly class="form-control" id="rp_discountFee" />
-                                                    </div>
-                                                    <div class="col-lg-12 float-l" style="flex:1;">
-                                                        <label>결제금액</label>
-                                                        <input type="text" readonly class="form-control" id="rp_paymentAmount" />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="main-card mb-3 card">
-                                                <div class="card-body returnFeeDiv"><h5 class="card-title">차액환불</h5>
-                                                    <div class="col-lg-12 float-l flex-1" >
-                                                        <label>총 금액 수정</label>
-                                                        <input type="text" class="form-control" id="return_paymentTotalAmount"  readonly/>
-                                                    </div>
-                                                    <div class="col-lg-12 float-l flex-1" >
-                                                        <label>왕복배달금액</label>
-                                                        <input type="text" class="form-control returnSum" id="return_deliveryFee" onfocusout="returnFeeSetting();" />
-                                                    </div>
-                                                    <div class="col-lg-12 float-l" style="flex:1;">
-                                                        <label>자차보험</label>
-                                                        <input type="text" class="form-control returnSum" id="return_insuranceFee" onfocusout="returnFeeSetting();" />
-                                                    </div>
-                                                    <div class="col-lg-12 float-l" style="flex:1;">
-                                                        <label>대여금액</label>
-                                                        <input type="text" class="form-control returnSum" id="return_rentFee" />
-                                                    </div>
-                                                    <div class="col-lg-12 float-l" style="flex:1;">
-                                                        <label>추가 수수료</label>
-                                                        <input type="text" class="form-control returnSum" id="return_addFee" onfocusout="returnFeeSetting();" />
-                                                    </div>
-                                                    <div class="col-lg-12 float-l" style="flex:1;">
-                                                        <label>할인금액</label>
-                                                        <input type="text" class="form-control returnMinus" id="return_discountFee" onfocusout="returnFeeSetting();" />
-                                                    </div>
-                                                    <div class="col-lg-12 float-l" style="flex:1;">
-                                                        <label>취소 수수료</label>
-                                                        <input type="text" class="form-control returnSum" id="return_cancelFee" onfocusout="returnFeeSetting();" />
-                                                    </div>
-                                                    <div class="col-lg-12 float-l" style="flex:1;">
-                                                        <label>결제금액</label>
-                                                        <input type="text" class="form-control" id="return_paymentAmount" readonly>
-                                                    </div>
-                                                    <div class="col-lg-12 float-l" style="flex:1;">
-                                                        <label>환불금액</label>
-                                                        <input type="text" class="form-control" id="return_refundFee" readonly>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="p-t-15">
-                                        <button class="btn btn-primary" type="button" onclick="repatmentValidation();">예약금액수정</button>
-                                        <button class="btn btn-danger" type="button" onClick="closeRepatmentDetail();">닫기</button>
-                                    </div>
-                                </div>
-                -->
-
                 <div class="card-footer">
                     <div class="text-right">
                         <div class="row mb-3">
@@ -477,7 +390,111 @@
     rmIdx = /*[[${rmIdx}]]*/'';
     CRUD_METHOD = 'update';
 
-    initDetailInfo(rmIdx)
+    initDetailInfo(rmIdx);
+
+    var reserveUserBirthday = new WinkelCalendar({
+        container: 'reserveUserBirthday',
+        bigBanner: true,
+        defaultDate: new Date(),
+        format: "YYYY년 MM월 DD일"
+    });
+
+    var firstDriverBirthDay = new WinkelCalendar({
+        container: 'firstDriverBirthDay',
+        bigBanner: true,
+        defaultDate: new Date(),
+        format: "YYYY년 MM월 DD일"
+    });
+
+    var firstDriverExpirationDate = new WinkelCalendar({
+        container: 'firstDriverExpirationDate',
+        bigBanner: true,
+        defaultDate: new Date(),
+        format: "YYYY년 MM월 DD일"
+    });
+
+    var firstDriverLicenseIsDate = new WinkelCalendar({
+        container: 'firstDriverLicenseIsDate',
+        bigBanner: true,
+        defaultDate: new Date(),
+        format: "YYYY년 MM월 DD일"
+    });
+
+    var secondDriverBirthDay = new WinkelCalendar({
+        container: 'secondDriverBirthDay',
+        bigBanner: true,
+        defaultDate: new Date(),
+        format: "YYYY년 MM월 DD일"
+    });
+
+    var secondDriverExpirationDate = new WinkelCalendar({
+        container: 'secondDriverExpirationDate',
+        bigBanner: true,
+        defaultDate: new Date(),
+        format: "YYYY년 MM월 DD일"
+    });
+
+    var secondDriverLicenseIsDate = new WinkelCalendar({
+        container: 'secondDriverLicenseIsDate',
+        bigBanner: true,
+        defaultDate: new Date(),
+        format: "YYYY년 MM월 DD일"
+    });
+
+    function getDatePickerValue(id) {
+        var date;
+        switch (id) {
+            case 'reserveUserBirthday':
+                date = reserveUserBirthday.date;
+                break;
+            case 'firstDriverBirthDay':
+                date = firstDriverBirthDay.date;
+                break;
+            case 'firstDriverExpirationDate':
+                date = firstDriverExpirationDate.date;
+                break;
+            case 'firstDriverLicenseIsDate':
+                date = firstDriverLicenseIsDate.date;
+                break;
+            case 'secondDriverBirthDay':
+                date = secondDriverBirthDay.date;
+                break;
+            case 'secondDriverExpirationDate':
+                date = secondDriverExpirationDate.date;
+                break;
+            case 'secondDriverLicenseIsDate':
+                date = secondDriverLicenseIsDate.date;
+                break;
+        }
+
+        return date;
+    }
+
+    function initDatePicker(id, value) {
+        switch (id) {
+            case 'reserveUserBirthday':
+                reserveUserBirthday.setDate(new Date(value));
+                break;
+            case 'firstDriverBirthDay':
+                firstDriverBirthDay.setDate(new Date(value));
+                break;
+            case 'firstDriverExpirationDate':
+                firstDriverExpirationDate.setDate(new Date(value));
+                break;
+            case 'firstDriverLicenseIsDate':
+                firstDriverLicenseIsDate.setDate(new Date(value));
+                break;
+            case 'secondDriverBirthDay':
+                secondDriverBirthDay.setDate(new Date(value));
+                break;
+            case 'secondDriverExpirationDate':
+                secondDriverExpirationDate.setDate(new Date(value));
+                break;
+            case 'secondDriverLicenseIsDate':
+                secondDriverLicenseIsDate.setDate(new Date(value));
+                break;
+        }
+    }
 
 </script>
 </body>

@@ -5,8 +5,6 @@ import com.ohdocha.admin.domain.admin.DochaAdminAdminUserInfoRequest;
 import com.ohdocha.admin.domain.admin.DochaAdminAdminUserInfoResponse;
 import com.ohdocha.admin.domain.authTemplate.DochaAdminAuthTemplateRequest;
 import com.ohdocha.admin.domain.authTemplate.DochaAdminAuthTemplateResponse;
-import com.ohdocha.admin.domain.car.model.DochaAdminCarModelDetailRequest;
-import com.ohdocha.admin.domain.car.regcar.DochaAdminRegCarDetailRequest;
 import com.ohdocha.admin.domain.menu.DochaAdminMenuTemplateResponse;
 import com.ohdocha.admin.domain.rentCompany.*;
 import com.ohdocha.admin.domain.user.*;
@@ -461,6 +459,8 @@ public class UserServiceImpl extends ServiceExtension implements UserService {
         if (rentCompanyReserveMinResponseList.size() != 0){
             message.addData("code", 200);
             message.addData("result", rentCompanyReserveMinResponseList);
+        }else {
+            message.addData("code", 400);
         }
     }
 
@@ -494,9 +494,11 @@ public class UserServiceImpl extends ServiceExtension implements UserService {
     @Override
     public void selectRentCompanyHoliday(ServiceMessage message) {
         DochaAdminRentCompanyHolidayRequest rentCompanyHolidayRequest = message.getObject("rentCompanyHolidayRequest", DochaAdminRentCompanyHolidayRequest.class);
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String today = simpleDateFormat.format(new Date());
-        rentCompanyHolidayRequest.setHolidayStartDt(today);
+        if(rentCompanyHolidayRequest.getHolidayStartDt() == null || rentCompanyHolidayRequest.getHolidayStartDt().equals("")){
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            String today = simpleDateFormat.format(new Date());
+            rentCompanyHolidayRequest.setHolidayStartDt(today);
+        }
 
         List<DochaAdminRentCompanyHolidayResponse> rentCompanyHolidayResponseList = rentCompanyInfoMapper.selectRentCompanyHoliday(rentCompanyHolidayRequest);
 

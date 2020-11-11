@@ -165,12 +165,12 @@
                         <span class="top-right">
                                 <div class="custom-control custom-radio custom-control-inline mb-3">
                                 <input type="radio" id="radioVisitCompany" name="deliveryTypeCode"
-                                       class="custom-control-input">
+                                       class="custom-control-input" value="DL">
                                 <label class="custom-control-label" for="radioVisitCompany">지점방문</label>
                             </div>
                             <div class="custom-control custom-radio custom-control-inline">
                                 <input type="radio" id="radioDelivery" name="deliveryTypeCode"
-                                       class="custom-control-input">
+                                       class="custom-control-input" value="OF">
                                 <label class="custom-control-label" for="radioDelivery">배달대여</label>
                             </div>
                         </span>
@@ -198,15 +198,15 @@
                         <div class="row mb-3">
                             <div class="col-lg-4 float-l flex-1" >
                                 <label>대여일시</label>
-                                <input type="datetime-local" class="form-control" id="rentStartDay" placeholder="" />
+                                <input type="datetime-local" class="form-control" id="rentStartDay" onchange="calcPeriodDt()" placeholder="" />
                             </div>
                             <div class="col-lg-4 float-l flex-1" >
                                 <label>반납일시</label>
-                                <input type="datetime-local" class="form-control" id="rentEndDay" placeholder="" />
+                                <input type="datetime-local" class="form-control" id="rentEndDay" onchange="calcPeriodDt()" placeholder="" />
                             </div>
                             <div class="col-lg-4 float-l flex-1" >
                                 <label>대여기간</label>
-                                <input type="text" class="form-control" id="periodDt" readonly/>
+                                <input type="text" class="form-control" id="periodDt" value="0개월 0일 0시 0분" readonly/>
                             </div>
                         </div>
                         <div class="row mb-3">
@@ -337,11 +337,11 @@
                         <div class="row mb-3">
                             <div class="col-lg-3 float-l" style="flex:1;">
                                 <label>쿠폰</label>
-                                <input type="text"  class="form-control" value="">
+                                <input type="text"  class="form-control" value="" readonly>
                             </div>
                             <div class="col-lg-3 float-l flex-1" >
                                 <label>포인트</label>
-                                <input type="text"  class="form-control" placeholder=""  value="0" />
+                                <input type="text"  class="form-control" placeholder=""  value="0" readonly/>
                             </div>
                             <div class="col-lg-6 float-l" style="flex:1;">
                                 <label>결제 예정 금액</label>
@@ -410,31 +410,108 @@
 
     initDetailData('insert');
 
-    calendarList = [
-        'reserveUserBirthDay',
-        'firstDriverBirthDay',
-        'firstDriverExpirationDate',
-        'firstDriverLicenseIsDate',
-        'secondDriverBirthDay',
-        'secondDriverExpirationDate',
-        'secondDriverLicenseIsDate'
-    ];
+    var reserveUserBirthDay = new WinkelCalendar({
+        container: 'reserveUserBirthDay',
+        bigBanner: true,
+        defaultDate: new Date(),
+        format: "YYYY년 MM월 DD일"
+    });
 
-    calendarList.forEach(function (value) {
-        var value = new WinkelCalendar({
-            container: value,
-            bigBanner: true,
-            defaultDate: new Date(),
-            format: "YYYY년 MM월 DD일"
-        });
+    var firstDriverBirthDay = new WinkelCalendar({
+        container: 'firstDriverBirthDay',
+        bigBanner: true,
+        defaultDate: new Date(),
+        format: "YYYY년 MM월 DD일"
+    });
+
+    var firstDriverExpirationDate = new WinkelCalendar({
+        container: 'firstDriverExpirationDate',
+        bigBanner: true,
+        defaultDate: new Date(),
+        format: "YYYY년 MM월 DD일"
+    });
+
+    var firstDriverLicenseIsDate = new WinkelCalendar({
+        container: 'firstDriverLicenseIsDate',
+        bigBanner: true,
+        defaultDate: new Date(),
+        format: "YYYY년 MM월 DD일"
+    });
+
+    var secondDriverBirthDay = new WinkelCalendar({
+        container: 'secondDriverBirthDay',
+        bigBanner: true,
+        defaultDate: new Date(),
+        format: "YYYY년 MM월 DD일"
+    });
+
+    var secondDriverExpirationDate = new WinkelCalendar({
+        container: 'secondDriverExpirationDate',
+        bigBanner: true,
+        defaultDate: new Date(),
+        format: "YYYY년 MM월 DD일"
+    });
+
+    var secondDriverLicenseIsDate = new WinkelCalendar({
+        container: 'secondDriverLicenseIsDate',
+        bigBanner: true,
+        defaultDate: new Date(),
+        format: "YYYY년 MM월 DD일"
     });
 
     function getDatePickerValue(id) {
-        return id.date;
+        var date;
+        switch (id) {
+            case 'reserveUserBirthDay':
+                date = reserveUserBirthDay.date;
+                break;
+            case 'firstDriverBirthDay':
+                date = firstDriverBirthDay.date;
+                break;
+            case 'firstDriverExpirationDate':
+                date = firstDriverExpirationDate.date;
+                break;
+            case 'firstDriverLicenseIsDate':
+                date = firstDriverLicenseIsDate.date;
+                break;
+            case 'secondDriverBirthDay':
+                date = secondDriverBirthDay.date;
+                break;
+            case 'secondDriverExpirationDate':
+                date = secondDriverExpirationDate.date;
+                break;
+            case 'secondDriverLicenseIsDate':
+                date = secondDriverLicenseIsDate.date;
+                break;
+        }
+
+        return date;
     }
 
     function initDatePicker(id, value) {
-        id.setDate(new Date(value));
+        switch (id) {
+            case 'reserveUserBirthDay':
+                reserveUserBirthDay.setDate(new Date(value));
+                break;
+            case 'firstDriverBirthDay':
+                firstDriverBirthDay.setDate(new Date(value));
+                break;
+            case 'firstDriverExpirationDate':
+                firstDriverExpirationDate.setDate(new Date(value));
+                break;
+            case 'firstDriverLicenseIsDate':
+                firstDriverLicenseIsDate.setDate(new Date(value));
+                break;
+            case 'secondDriverBirthDay':
+                secondDriverBirthDay.setDate(new Date(value));
+                break;
+            case 'secondDriverExpirationDate':
+                secondDriverExpirationDate.setDate(new Date(value));
+                break;
+            case 'secondDriverLicenseIsDate':
+                secondDriverLicenseIsDate.setDate(new Date(value));
+                break;
+        }
     }
 
 

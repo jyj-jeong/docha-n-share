@@ -1564,10 +1564,6 @@ function initDetailData(data){
 	// select box 가져오기
 	initDetailSelectBox(null);
 
-	// 모달 오픈
-	// TODO openIziModal 지우기
-	// openIziModal(MODAL_NAME);
-
 }
 
 $("#" + MODAL_NAME).iziModal({

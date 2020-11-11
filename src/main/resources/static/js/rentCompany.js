@@ -654,17 +654,8 @@ function initDetailInfo(seq) {
 			// 예약정보(선택입력) 정보 - 휴무일 정보
 			holidayListGrid(rtIdx);
 
-
-//			if (!isEmpty(weekdayAbleDeliveryTime)) {
-//				$("#sel_minimumTime").val(minimumTime).prop("sel_minimumTime", true);
-//			}
-
 			// 예약정보(선택사항) 설정
 			$('#minIdx').val(minIdx);
-
-			initDatePicker('minimumStartDt' , minimumStartDt);
-			initDatePicker('minimumEndDt' , minimumEndDt);
-			$('#sel_minimumTime').val(minimumTime);
 
 			CRUD = 'modify';
 //			openIziModal(MODAL_NAME);
@@ -776,8 +767,6 @@ function rentReserveMinListGrid(_rtIdx) {
 	let target = 'rentCompanyReserveMinList';
 	let method = 'select';
 
-	RMRUD = 'insert';
-
 	let req = {
 		rtIdx: _rtIdx
 	};
@@ -790,16 +779,14 @@ function rentReserveMinListGrid(_rtIdx) {
 			let data = res.result[0];
 
 			rows = [{
-				// "rowNumber" : rentReserveMinList_rows.rowNumber,
-				"minIdx": rentReserveMinList_rows.minIdx,
-				"minimumStartDt": rentReserveMinList_rows.minimumStartDt,
-				"minimumEndDt": rentReserveMinList_rows.minimumEndDt,
-				"minimumTime": rentReserveMinList_rows.minimumTime,
+				"minIdx": data.minIdx,
+				"minimumStartDt": data.minimumStartDt,
+				"minimumEndDt": data.minimumEndDt,
+				"minimumTime": data.minimumTime,
 			}];
 
 			let columns;
 			columns = [
-				// {"name" : "rowNumber","id" : "rowNum","title" : "No","visible" : false},
 				{"name": "minIdx", "id": "minIdx", "title": "특정기간번호"},
 				{"name": "minimumStartDt", "title": "최소예약시간시작일", "breakpoints": "xs"},
 				{"name": "minimumEndDt", "title": "최소예약시간종료일", "breakpoints": "xs"},
@@ -828,8 +815,6 @@ function holidayListGrid(_rtIdx) {
 	// 휴무일을 조회한다.
 	let target = 'selectRentCompanyHoliday';
 	let method = 'select';
-
-	RMRUD = 'insert';
 
 	let req = {
 		rtIdx: _rtIdx
@@ -1098,31 +1083,31 @@ function detailValidation(save_type) {
 
 					fn_callApi(method, target, req, function (response) {
 						let res = response;
-							let data = res.result;
-							//TODO 중복검사
+						let data = res.result;
+						//TODO 중복검사
 
-							// 	if (data.length == 0) {
-							if (MCRUD == 'insert') {
-								req = {};
-								req = {
-									rtIdx: _rtIdx,
-									urIdx: staffurIdx,
-									staffName: staffName,
-									staffEmail: staffEmail,
-									staffTitle: staffTitle,
-									staffContact1: staffContact1,
-									regId: GLOBAL_LOGIN_USER_IDX,
-									regDt: today,
-									ownerYn: ownerYn
-								};
-							}
+						// 	if (data.length == 0) {
+						if (MCRUD == 'insert') {
+							req = {};
+							req = {
+								rtIdx: _rtIdx,
+								urIdx: staffurIdx,
+								staffName: staffName,
+								staffEmail: staffEmail,
+								staffTitle: staffTitle,
+								staffContact1: staffContact1,
+								regId: GLOBAL_LOGIN_USER_IDX,
+								regDt: today,
+								ownerYn: ownerYn
+							};
+						}
 
-							title = '스텝정보 저장';
-							text = '저장하시겠습니까?'
-							icon = 'info';
-							cancel_text = '취소하셨습니다.';
+						title = '스텝정보 저장';
+						text = '저장하시겠습니까?'
+						icon = 'info';
+						cancel_text = '취소하셨습니다.';
 
-							call_before_save(title, text, icon, cancel_text, save_type, req);
+						call_before_save(title, text, icon, cancel_text, save_type, req);
 //
 
 					});// end fn_callApi
@@ -1328,9 +1313,9 @@ function detailValidation(save_type) {
 					return;
 				}
 
-				if (isEmpty(RMCRUD)) {
+				if (minIdx === "") {
 					RMCRUD = 'insert';
-				}
+				}else RMCRUD = 'modify';
 
 				// 중복검사
 				target = 'rentCompanyReserveMinList';
@@ -1346,44 +1331,21 @@ function detailValidation(save_type) {
 
 				fn_callApi(method, target, req, function (response) {
 					let res = response;
-					if (res.code == 200) {
+					if (res.code === 400) {
 						let data = res.result;
-						// TODO if 조건 수정
-						if (data == null) {
+						if (RMCRUD == 'modify') {
+							if (!isEmpty(_rtIdx)) { //If This is not empty,
+								RMCRUD = 'modify';
 
-							if (RMCRUD == 'modify') {
-								if (!isEmpty(_rtIdx)) { //If This is not empty,
-									RMCRUD = 'modify';
-
-									req = {};
-									req = {
-										rtIdx: _rtIdx,
-										minIdx: minIdx,
-										minimumStartDt: minimumStartDt,
-										minimumEndDt: minimumEndDt,
-										minimumTime: minimumTime,
-										delYn: mindelYn,
-										modDt: today,
-										modId: GLOBAL_LOGIN_USER_IDX
-									};
-
-									title = '특정시간정보 저장';
-									text = '저장하시겠습니까?'
-									icon = 'info';
-									cancel_text = '취소하셨습니다.';
-
-									call_before_save(title, text, icon, cancel_text, save_type, req);
-								}
-							} else if (RMCRUD == 'insert') {
 								req = {};
 								req = {
 									rtIdx: _rtIdx,
+									minIdx: minIdx,
 									minimumStartDt: minimumStartDt,
 									minimumEndDt: minimumEndDt,
 									minimumTime: minimumTime,
-									delYn: mindelYn,
-									regId: GLOBAL_LOGIN_USER_IDX,
-									regDt: today
+									modDt: today,
+									modId: GLOBAL_LOGIN_USER_IDX
 								};
 
 								title = '특정시간정보 저장';
@@ -1393,13 +1355,25 @@ function detailValidation(save_type) {
 
 								call_before_save(title, text, icon, cancel_text, save_type, req);
 							}
+						} else if (RMCRUD == 'insert') {
+							req = {};
+							req = {
+								rtIdx: _rtIdx,
+								minimumStartDt: minimumStartDt,
+								minimumEndDt: minimumEndDt,
+								minimumTime: minimumTime,
+								regId: GLOBAL_LOGIN_USER_IDX,
+								regDt: today
+							};
+
+							title = '특정시간정보 저장';
+							text = '저장하시겠습니까?';
+							icon = 'info';
+							cancel_text = '취소하셨습니다.';
+
+							call_before_save(title, text, icon, cancel_text, save_type, req);
 
 						} else {
-//						$('#minIdx').val('');
-//						$('#minimumStartDt').val('');
-//						$('#minimumEndDt').val('');
-//						$('#sel_minimumTime').val('0');
-
 							errorAlert('특정 기간 최소 예약 시간', '중복된 날짜가 존재하여 저장 할 수 없습니다.');
 						}
 					}
@@ -1431,9 +1405,9 @@ function detailValidation(save_type) {
 					return;
 				}
 
-				if (isEmpty(HCRUD)) {
+				if (holIdx === "") {
 					HCRUD = 'insert';
-				}
+				}else HCRUD = 'modify';
 
 				// 중복검사
 				target = 'selectRentCompanyHoliday';
@@ -1448,8 +1422,9 @@ function detailValidation(save_type) {
 				};
 
 				fn_callApi(method, target, req, function (response) {
+
 					let res = response;
-					if (res.code == 200) {
+					if (res.code == 400) {
 						let data = res.result;
 						if (data == null) {
 
@@ -1482,7 +1457,6 @@ function detailValidation(save_type) {
 									holidayStartDt: holidayStartDt,
 									holidayEndDt: holidayEndDt,
 									holidayName: holidayName,
-									delYn: holidaydelYn,
 									regId: GLOBAL_LOGIN_USER_IDX,
 									regDt: today
 								};
@@ -1495,14 +1469,9 @@ function detailValidation(save_type) {
 								call_before_save(title, text, icon, cancel_text, save_type, req);
 							}
 
-						} else {
-//						$('#holIdx').val('');
-//						$('#holidayStartDt').val('');
-//						$('#holidayEndDt').val('');
-//						$('#holidayName').val('');
-
-							errorAlert('휴무일정보', '중복된 날짜가 존재하여 저장 할 수 없습니다.');
 						}
+					}else {
+						errorAlert('휴무일정보', '중복된 날짜가 존재하여 저장 할 수 없습니다.');
 					}
 				}); //fn_callApi saveRentCompanyHoliday
 				break;
@@ -1627,20 +1596,6 @@ function detailSubmit(save_type, req) {
 
 }// end detailSubmit
 
-$("#" + MODAL_NAME).iziModal({
-	radius: 5,
-	padding: 20,
-	closeButton: true,
-	overlayClose: false,
-	width: MODAL_WIDTH,
-	height: MODAL_HEIGHT,
-	title: MODAL_TITLE,
-	headerColor: '#002e5b',
-	backdrop: 'static',
-	keyboard: false
-});
-
-
 /*
  * 스텝 그리드 onclick
  *
@@ -1660,24 +1615,24 @@ function initStaffDetail(seq) {
 		// 200이라면 페이징을 구한다.
 		if (res.code == 200) {
 
-		let data = res.result[0];
+			let data = res.result[0];
 
-		// $('#staffName').val(data.staffName);
-		$('#staffContact1').val(data.staffContact1);
-		$('#staffContact2').val(data.staffContact2);
-		$('#staffEmail').val(data.staffEmail);
-		$('#staffTitle').val(data.stafftitle);
-		$('#ownerYn').val('');
-		$('#rsIdx').val(data.rsIdx);
+			// $('#staffName').val(data.staffName);
+			$('#staffContact1').val(data.staffContact1);
+			$('#staffContact2').val(data.staffContact2);
+			$('#staffEmail').val(data.staffEmail);
+			$('#staffTitle').val(data.stafftitle);
+			$('#ownerYn').val('');
+			$('#rsIdx').val(data.rsIdx);
 
-		let ownerYn = data.ownerYn;
-		$("#sel_alarmYn option:selected").val();
+			let ownerYn = data.ownerYn;
+			$("#sel_alarmYn option:selected").val();
 
-		$("#sel_alarmYn").val(ownerYn).prop("selected", true);
+			$("#sel_alarmYn").val(ownerYn).prop("selected", true);
 
-		let staffTypeCode = data.staffTypeCode;
+			let staffTypeCode = data.staffTypeCode;
 
-		$('#staffTypeCode').val('');
+			$('#staffTypeCode').val('');
 		}
 	});// end fn_callApi
 }
@@ -1728,7 +1683,7 @@ function openCreateRentCompany() {
 
 }
 
-$('#rentStaffList').on("click", "tbody tr ", function () {
+$('#rentStaffList tbody > tr').click(function () {
 
 	let str = ""
 	let tdArr = new Array(); // 배열 선언
@@ -1823,18 +1778,12 @@ $('#holidayList').on("click", "tbody tr ", function () {
 	let holidayStartDt = td.eq(2).text();
 	let holidayEndDt = td.eq(3).text();
 	let holidayName = td.eq(4).text();
-	let holidaydelYn = td.eq(5).text();
 
 	$("#holIdx").val(holIdx);
 	initDatePicker('holidayStartDt' , holidayStartDt);
 	initDatePicker('holidayEndDt' , holidayEndDt);
 	$("#holidayName").val(holidayName);
 
-	if (isEmpty(holidaydelYn)) {
-		$("#sel_holidaydelYn").val("N").prop("selected", true);
-	} else {
-		$("#sel_holidaydelYn").val(holidaydelYn).prop("selected", true);
-	}
 
 });
 
@@ -1930,7 +1879,6 @@ function cancelData(cancel_type) {
 			$("#holidayStartDt").val('');
 			$("#holidayEndDt").val('');
 			$("#holidayName").val('');
-			$("#sel_holidaydelYn").val('N');
 			break;
 	}
 
@@ -1956,23 +1904,23 @@ function searchUserInfo() {
 		// 200이라면 페이징을 구한다.
 		if (res.code === 200) {
 			var data = res.result[0];
-		if (isEmpty(data)) {
-			errorAlert('회원정보', '회원정보가 존재하지 않습니다.');
-			cancelData('saveStaff');
-		} else {
-			// 기본정보 셋팅
-			let urIdx = data.urIdx;
-			let userId = data.userId;
-			let userName = data.userName;
-			let userContact1 = phoneFomatter(data.userContact1);
+			if (isEmpty(data)) {
+				errorAlert('회원정보', '회원정보가 존재하지 않습니다.');
+				cancelData('saveStaff');
+			} else {
+				// 기본정보 셋팅
+				let urIdx = data.urIdx;
+				let userId = data.userId;
+				let userName = data.userName;
+				let userContact1 = phoneFomatter(data.userContact1);
 
-			$("#staffurIdx").val(urIdx);
-			$("#staffEmail").val(userId);
-			$("#staffName").val(userName);
-			$("#staffContact1").val(userContact1);
-			// $("#btnstaffEmail").attr("disabled", true);
-			swal("회원정보 조회 완료", {icon: "success"});
-		}
+				$("#staffurIdx").val(urIdx);
+				$("#staffEmail").val(userId);
+				$("#staffName").val(userName);
+				$("#staffContact1").val(userContact1);
+				// $("#btnstaffEmail").attr("disabled", true);
+				swal("회원정보 조회 완료", {icon: "success"});
+			}
 
 		} else { // 200이 아닐때 empty처리 error처리 등을 기록한다.
 			errorAlert('API ERROR', '전체 메일을 입력 후 검색을 해야합니다.');
@@ -2028,7 +1976,7 @@ var chkValDate = function (date) {
 	}
 };
 
-function openDaumPolygon(ragbncode) {
+function setDeliveryLocation(ragbncode) {
 	let _rtIdx = $('#rtIdx').val();
 	let companyAddress = "";
 	if (!isEmpty($('#companyAddressDetail').val())) {

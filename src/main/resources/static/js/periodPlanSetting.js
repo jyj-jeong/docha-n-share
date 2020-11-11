@@ -396,8 +396,6 @@ function initDetailInfo(seq){
 			//내용
 			$('#periodEtc').val(periodEtc);
 
-			//TODO : IziModal
-			// openIziModal(modalName);
 			CRUD_METHOD = 'update';
 			
 		// } else { // 200이 아닐때 empty처리 error처리 등을 기록한다.
