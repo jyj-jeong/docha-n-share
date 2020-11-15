@@ -1919,6 +1919,146 @@ function applyDataMask(field) {
 	field.addEventListener('click', changed)
 	field.addEventListener('keyup', changed)
 }
+
+// 대여기간 계산
+function calcPeriodDt() {
+
+	var rtValue = [];
+
+	var stDateTime =  new Date($('#calRentStartDt').val());
+	var endDateTime = new Date($('#calRentEndDt').val());
+
+	// 날짜 유효성 검사
+	if(endDateTime <= stDateTime){
+		errorAlert('반납일시','반납일시는 대여일시보다 미래여야 합니다.');
+		return;
+	}
+
+
+	var startYear = stDateTime.getFullYear();
+	var startMonth = stDateTime.getMonth();
+	var startDate = stDateTime.getDate();
+	var startHours = stDateTime.getHours();
+	var startMinute = stDateTime.getMinutes();
+
+	var endYear = endDateTime.getFullYear();
+	var endMonth = endDateTime.getMonth();
+	var endDate = endDateTime.getDate();
+	var endHours = endDateTime.getHours();
+	var endMinute = endDateTime.getMinutes();
+
+	is_same_day = endDate == startDate ? true : false;
+
+	// 마지막날은 30일 이하여야함 ( 28~30 ) 카썸정책
+	var dayOfLast = Number((new Date(endYear, endMonth + 1, 0)).getDate()) != 31 ? 30 : Number((new Date(endYear, endMonth + 1, 0)).getDate());
+	var startDate_dayOfLast = Number((new Date(startYear, startMonth + 1, 0)).getDate());
+	var endDate_dayOfLast = Number((new Date(endYear, endMonth + 1, 0)).getDate());
+
+	// 시간 차이 계산 => 밀리세컨드
+	var diffMs = (endDateTime.getTime() - stDateTime.getTime());
+	// 밀리세컨드를 date 객체로
+	var timeGap = new Date(0, 0, 0, 0, 0, 0, diffMs);
+
+	var setMonth = Math.floor((diffMs / (86400000 * 30))); // 개월
+	var setDay = Math.floor((diffMs % (86400000 * 30)) / (1000 * 60 * 60 * 24)); // 일수
+	var setTime = Math.floor(diffMs / (1000 * 60 * 60)) % 24;
+	var setMinute = Math.floor(diffMs / (1000 * 60)) % 60;
+
+	//console.log("월 : " + setMonth +"\n일 : " + setDay + "\n 시간 : " + setTime + "\n 분 : " + setMinute + "\n 마지막일 : " + startDate_dayOfLast );
+
+	rtValue.push(setMonth);
+	rtValue.push(setDay);
+	rtValue.push(setTime);
+	rtValue.push(setMinute);
+
+	renderingSumTime(rtValue[0], rtValue[1], rtValue[2], rtValue[3]);
+
+}
+
+function renderingSumTime(strMm, strDd, strHh, strMin) {
+
+	var setMm = isNaN(strMm) ? '0개월 ' : strMm + '개월 ';
+	var setDd = isNaN(strDd) ? '0일 ' : strDd + '일 ';
+	var setHh = isNaN(strHh) ? '0시 ' : strHh + '시 ';
+	var setMin = isNaN(strMin) ? '0분 ' : strMin + '분';
+
+	var periodDtText = setMm + setDd + setHh + setMin;
+
+	$('#calRentPeriod').val(periodDtText);
+}
+
+function cf_DisplayDay(strDate) {
+
+	var strDate = strDate;
+	var regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-+<>@\#$%&\\\=\(\'\"]/gi;
+
+	strDate = strDate.replace(regExp, '');
+
+	var str_yyyy = strDate.substring(0, 4) + '/';
+	var str_mm = strDate.substring(4, 6) + '/';
+	var str_dd = strDate.substring(6, 8);
+	var setDate = String(str_yyyy + str_mm + str_dd + ' 00:00:00');
+
+	var week = ['일', '월', '화', '수', '목', '금', '토'];
+	var getday = new Date(setDate).getDay();
+	var day = week[getday];
+
+	return day;
+}
+
+function cf_Display_AmPm_By_Times(time) {
+
+
+	var date = new Date();
+	var hours = time.substr(0, 2);
+	var minutes = time.substr(0, 4);
+
+
+	if (hours == '') {
+		hours = date.getHours();
+	} else if (minutes == '') {
+		minutes = date.getMinutes() > 9 ? date.getMinutes() : '0' + date.getMinutes();
+	}
+
+	var ampm = hours >= 12 ? 'PM' : 'AM';
+	hours = hours % 12;
+	hours = hours ? hours : 12; // the hour '0' should be '12'
+	minutes = minutes < 10 ? '0' + minutes : minutes;
+	var strTime = ampm;
+
+	return strTime;
+}
+
+// 24hhmm 를 12hhmm
+function convertTimeFormat12MIS(_time) {
+	var regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-+<>@\#$%&\\\=\(\'\"]/gi;
+
+	var setTime = regExp.test(_time) ? _time.replace(regExp, '') : _time;
+	var hh;
+	var mm;
+	if (setTime.length < 4) {
+		hh = setTime.substring(0, 1);
+		mm = setTime.substring(1, 3);
+	} else {
+		hh = setTime.substring(0, 2);
+		mm = setTime.substring(2, 4);
+	}
+
+	if (Number(hh) == 12) {
+
+	} else {
+		hh = Number(hh % 12);
+	}
+
+	if (mm == 60) {
+		mm = 0;
+	}
+
+	hh = String(hh).length == 1 ? '0' + hh : String(hh);
+	mm = String(mm).length == 1 ? '0' + mm : String(mm);
+
+	return hh + ':' + mm;
+}
 //$("#calRentStartDt").keyup(function(e) {
 //	let num = $("#calRentStartDt").val();
 //	num = getOnlyNumber(num);

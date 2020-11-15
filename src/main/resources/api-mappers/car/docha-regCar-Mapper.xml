@@ -20,31 +20,31 @@
                           ,   IFNULL(T1.YEAR , '' )                  AS YEAR                       /*년도 */
                           ,   IFNULL(T4.DAILY_STANDARD_PAY, '0')         AS DAILY_STANDARD_PAY         /* 일 기본요금*/
                           ,   IFNULL(T4.MONTHLY_STANDARD_PAY, '0')      AS MONTHLY_STANDARD_PAY       /* 월 기본요금*/
-                            ,   CASE WHEN IFNULL(RESERVE_ABLE_YN, 'Y') = 'N' THEN 'UnableReserve'
+                            ,   CASE WHEN IFNULL(RESERVE_ABLE_YN, 'Y') = 'N' THEN '예약불가'
                                       WHEN ( SELECT COUNT(CR_IDX)
                                           FROM DC_RESERVE_MASTER
                                           WHERE CR_IDX = T1.CR_IDX
-                                          AND RESERVE_STATUS_CODE = 'RS'
-                                          AND DATE_FORMAT(IFNULL(NOW(), ''), 'YYYY-MM-DD HH24:mi') >= DATE_FORMAT(DATE_FORMAT(RENT_START_DAY||RENT_START_TIME, 'YYYY-MM-DD HH24:mi'), 'YYYY-MM-DD HH24:mi')
-                                          AND DATE_FORMAT(IFNULL(NOW(), ''), 'YYYY-MM-DD HH24:mi') <= DATE_FORMAT(DATE_FORMAT(RENT_END_DAY||RENT_END_TIME, 'YYYY-MM-DD HH24:mi'), 'YYYY-MM-DD HH24:mi')
-                                        ) > 0 THEN 'rantal'
+                                          AND RESERVE_STATUS_CODE = '예약'
+                                         AND DATE(NOW()) >= DATE(DATE_FORMAT(CONCAT(RENT_START_DAY,' ', RENT_START_TIME), '%Y-%m-%d %H:%i:%s'))
+                                         AND DATE(NOW()) <= DATE(DATE_FORMAT(CONCAT(RENT_END_DAY,' ', RENT_END_TIME), '%Y-%m-%d %H:%i:%s'))
+                                        ) > 0 THEN '대여중'
                                        WHEN ( SELECT COUNT(CR_IDX)
                                           FROM DC_RESERVE_MASTER
                                           WHERE CR_IDX = T1.CR_IDX
-                                          AND RESERVE_STATUS_CODE = 'RS'
-                                          AND DATE_FORMAT(IFNULL(NOW(), ''), 'YYYY-MM-DD HH24:mi') >= DATE_FORMAT(RESERVE_DATE-(IFNULL(T3.RETURN_INSPECTION_TIME, 0)/24), 'YYYY-MM-DD HH24:mi')
-                                          AND DATE_FORMAT(IFNULL(NOW(), ''), 'YYYY-MM-DD HH24:mi') < DATE_FORMAT(DATE_FORMAT(RENT_START_DAY||RENT_START_TIME, 'YYYY-MM-DD HH24:mi'), 'YYYY-MM-DD HH24:mi')
-                                        ) > 0 THEN 'booking'
+                                          AND RESERVE_STATUS_CODE = '예약'
+                                          AND DATE_FORMAT(IFNULL(NOW(), ''), '%Y-%m-%d %H:%i:%s') >= DATE_FORMAT(RESERVE_DATE-(IFNULL(T3.RETURN_INSPECTION_TIME, 0)/24), '%Y-%m-%d %H:%i:%s')
+                                          AND DATE_FORMAT(IFNULL(NOW(), ''), '%Y-%m-%d %H:%i:%s') < DATE_FORMAT(DATE_FORMAT(RENT_START_DAY||RENT_START_TIME, 'YYYY-MM-DD HH24:mi'), 'YYYY-MM-DD HH24:mi')
+                                        ) > 0 THEN '예약중'
                                        WHEN ( SELECT COUNT(CR_IDX)
                                           FROM DC_RESERVE_MASTER
                                           WHERE CR_IDX = T1.CR_IDX
-                                          AND RESERVE_STATUS_CODE = 'RS'
+                                          AND RESERVE_STATUS_CODE = '예약'
                                           AND DATE_FORMAT(IFNULL(NOW(), ''), 'YYYY-MM-DD HH24:mi') >= DATE_FORMAT(DATE_FORMAT(RENT_END_DAY||RENT_END_TIME, 'YYYY-MM-DD HH24:mi')+(IFNULL(T3.RETURN_INSPECTION_TIME, 0)/24), 'YYYY-MM-DD HH24:mi')
                                           AND DATE_FORMAT(IFNULL(NOW(), ''), 'YYYY-MM-DD HH24:mi') < DATE_FORMAT(DATE_FORMAT(RENT_END_DAY||RENT_END_TIME, 'YYYY-MM-DD HH24:mi'), 'YYYY-MM-DD HH24:mi')
-                                        ) > 0 THEN 'waiting'
-                                 ELSE 'waiting' END AS RESERVE_STATUS       /* 상태 */
-                        ,   IFNULL(DAILY_YN, 'Y') AS DAILY_YN            /* 일대여 사용유무 */
-                        ,   IFNULL(MONTHLY_YN, 'Y') AS MONTHLY_YN         /* 월대여 사용유무 */
+                                        ) > 0 THEN '대기'
+                                 ELSE '대기' END AS RESERVE_STATUS       /* 상태 */
+                        ,   IFNULL(T1.DAILY_YN, 'Y') AS DAILY_YN            /* 일대여 사용유무 */
+                        ,   IFNULL(T1.MONTHLY_YN, 'Y') AS MONTHLY_YN         /* 월대여 사용유무 */
 --                         ,   (SELECT COUNT(SU_IDX) FROM DC_CAR_INFO_SUSPEND WHERE CR_IDX = T1.CR_IDX AND DEL_YN != 'Y') AS  SUSPEND_CNT      /* 휴차일 카운트 */
                   FROM   DC_CAR_INFO T1
                   INNER JOIN DC_RENT_COMPANY T2

@@ -287,7 +287,7 @@
                         <div class="text-right">
                             <div class="row">
                                 <div class="mr-2 font-weight-bold" style="cursor: pointer" onclick="changeCardView('userReviewCard')">후기</div>
-                                <div class="mr-2 font-weight-bold" style="cursor: pointer" onclick="changeCardView('userReservationHisCard')">예약내역</div>
+                                <div class="mr-2 font-weight-bold" style="cursor: pointer" onclick="reserveList()">예약내역</div>
                                 <div class="mr-2 font-weight-bold" style="cursor: pointer" onclick="changeCardView('userCouponCard')">쿠폰발급내역</div>
                                 <div class="mr-2 font-weight-bold" style="cursor: pointer" onclick="changeCardView('userPointHisCard')">포인트적립내역</div>
                                 <div class="mr-2 font-weight-bold" style="cursor: pointer" onclick="changeCardView('userLicenseCard')">면허사진</div>
@@ -447,6 +447,11 @@
                 licenseUserBirthday.setDate(new Date(value));
                 break;
         }
+    }
+
+    function reserveList() {
+        opener.location.href = '/reserve';
+        window.close();
     }
 
 </script>

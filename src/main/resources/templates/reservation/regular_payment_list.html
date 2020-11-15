@@ -72,8 +72,7 @@
                                 </tr>
                                 </tfoot>
                                 <tbody>
-                                <tr>
-                                    <td></td>
+                                <tr th:each="payment, index : ${result}" style="cursor: pointer" >
                                     <td></td>
                                     <td></td>
                                     <td></td>
@@ -87,20 +86,6 @@
                                     <td></td>
                                     <td></td>
                                 </tr>
-<!--                                <tr th:each="reservation, index : ${reserveInfoResponseList}" style="cursor: pointer" th:data-value="${reservation.getRmIdx()}">-->
-<!--                                    <td th:text="${reservation.getRmIdx()}"></td>-->
-<!--                                    <td th:text="${reservation.getReserveDate()}"></td>-->
-<!--                                    <td th:text="${reservation.getReserveStatusName()}"></td>-->
-<!--                                    <td th:text="${reservation.getUserName() +'/' +reservation.getUserContact1()}"></td>-->
-<!--                                    <td th:text="${reservation.getModelName()+'/'+reservation.getCarNumber()}"></td>-->
-<!--                                    <td th:text="${reservation.getRentStartDay()}"></td>-->
-<!--                                    <td th:text="${reservation.getRentEndDay()}"></td>-->
-<!--                                    <td th:text="${reservation.getPeriodDt()}"></td>-->
-<!--                                    <td th:text="${reservation.getCompanyName()+'/'+reservation.getBranchName()}"></td>-->
-<!--                                    <td th:text="${reservation.getDeliveryTypeName()}"></td>-->
-<!--                                    <td th:text="${reservation.getPaymentTotalAmount()}"></td>-->
-<!--                                    <td th:text="${reservation.getPaymentAmount()}"></td>-->
-<!--                                </tr>-->
                                 </tbody>
                             </table>
                         </div>
@@ -150,30 +135,6 @@
 
     initializingPageData();
     initDataTables();
-
-    $('#dataTable').DataTable( {} );
-
-
-    /* 회원 상세 페이지 이동 */
-    $('table > tbody').on('click', 'tr', function () {
-        let rmIdx = $(this).attr('data-value');
-        if (rmIdx === "") return;
-
-        var url = "/reserve/detail/" + rmIdx;
-        var name = "test";
-        var option = "width = 1000, height =800 ,location=no, left=500, top=50";
-
-        window.open(url, name, option);
-    });
-
-    /* 예약 등록 */
-    function registerReservation() {
-        var url = 'reserve/register';
-        var name = "test";
-        var option = "width = 1000, height =800 ,location=no, left=500, top=50";
-
-        window.open(url, name, option);
-    }
 
 </script>
 </body>

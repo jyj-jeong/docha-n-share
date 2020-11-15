@@ -2,8 +2,6 @@ package com.ohdocha.admin.controller;
 
 import com.ohdocha.admin.domain.reserve.reserveInfoMnt.DochaAdminReserveInfoDetailRequest;
 import com.ohdocha.admin.domain.reserve.reserveInfoMnt.DochaAdminReserveInfoRequest;
-import com.ohdocha.admin.domain.reserve.reserveInfoMnt.DochaCarDto;
-import com.ohdocha.admin.domain.reserve.reserveInfoMnt.DochaRentCompanyDto;
 import com.ohdocha.admin.service.ReserveService;
 import com.ohdocha.admin.util.DochaMap;
 import com.ohdocha.admin.util.ServiceMessage;
@@ -14,7 +12,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 @Slf4j
 @Controller
@@ -29,6 +26,7 @@ public class ReserveController extends ControllerExtension{
     @GetMapping(value = "/reserve")
     public String reserveInfoListView(HttpServletRequest request, ModelMap modelMap) {
         ServiceMessage serviceMessage = createServiceMessage(request);
+        serviceMessage.addData("loginUser", request.getSession().getAttribute("LOGIN_SESSION"));
 
         reserveService.getReserveInfoList(serviceMessage);
 
@@ -144,7 +142,7 @@ public class ReserveController extends ControllerExtension{
         ServiceMessage serviceMessage = createServiceMessage(request);
 
         modelMap.addAllAttributes(serviceMessage);
-        return "reservation/payment_list";
+        return "reservation/regular_payment_list";
     }
 
     // endregion

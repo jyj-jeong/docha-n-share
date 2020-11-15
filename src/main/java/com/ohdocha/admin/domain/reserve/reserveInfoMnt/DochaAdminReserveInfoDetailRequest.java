@@ -139,12 +139,6 @@ public class DochaAdminReserveInfoDetailRequest extends CommonRequestDto {
 	public void setReserveUserContact1(String reserveUserContact1) {
 		this.reserveUserContact1 = reserveUserContact1;
 	}
-	public String getreserveUserBirthday() {
-		return reserveUserBirthday;
-	}
-	public void setreserveUserBirthday(String reserveUserBirthday) {
-		this.reserveUserBirthday = reserveUserBirthday;
-	}
 	public String getUserFlag() {
 		return userFlag;
 	}
@@ -565,6 +559,12 @@ public class DochaAdminReserveInfoDetailRequest extends CommonRequestDto {
 	public void setMsg(String msg) {
 		this.msg = msg;
 	}
-	
-	
+
+	public String getReserveUserBirthday() {
+		return reserveUserBirthday;
+	}
+
+	public void setReserveUserBirthday(String reserveUserBirthday) {
+		this.reserveUserBirthday = reserveUserBirthday;
+	}
 }

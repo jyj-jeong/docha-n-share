@@ -324,13 +324,13 @@
                             <h6 class="col-12 mb-3 font-weight-bold">요금 계산기 [최초 사용 시 요금계산기 초기화를 누르신 후 사용해주세요]</h6>
                             <div class="col-3 mb-3">
                                 <label class="form-label" for="calRentStartDt">대여일시</label>
-                                <input type="text" class="form-control" vlaue="" id="calRentStartDt" name="calRentStartDt" data-mask="____-__-__ __:__"  />
-                                <input type="datetime-local" class="form-control" vlaue="" id="calRentStartDt" name="calRentStartDt2" />
+                                <input type="text" class="form-control" vlaue="" id="calRentStartDt" name="calRentStartDt" onblur="calcPeriodDt()" data-mask="____-__-__ __:__"  />
+                                <input type="datetime-local" class="form-control" vlaue="" id="calRentStartDt" name="calRentStartDt2" onblur="calcPeriodDt()" />
                             </div>
                             <div class="col-3 mb-3">
                                 <label class="form-label" for="calRentEndDt">반납일시</label>
-                                <input type="text" class="form-control" vlaue="" id="calRentEndDt" name="calRentEndDt" data-mask="____-__-__ __:__"  />
-                                <input type="datetime-local" class="form-control" vlaue="" id="calRentEndDt" name="calRentEndDt2" />
+                                <input type="text" class="form-control" vlaue="" id="calRentEndDt" name="calRentEndDt" onblur="calcPeriodDt()" data-mask="____-__-__ __:__"  />
+                                <input type="datetime-local" class="form-control" vlaue="" id="calRentEndDt" name="calRentEndDt2" onblur="calcPeriodDt()" />
                             </div>
                             <div class="col-3 mb-3">
                                 <label class="form-label" for="calRentPeriod">대여기간</label>
@@ -504,16 +504,16 @@
             <div class="text-right">
                 <div class="row">
                     <div class="mr-2 font-weight-bold" style="cursor: pointer"
-                         onclick="changeCardView('regCarDetail')">정비내역
+                         onclick="openSwal()">정비내역
                     </div>
                     <div class="mr-2 font-weight-bold" style="cursor: pointer"
-                         onclick="changeCardView('userReviewCard')">후기
+                         onclick="openSwal()">후기
                     </div>
                     <div class="mr-2 font-weight-bold" style="cursor: pointer"
-                         onclick="changeCardView('userReservationHisCard')">예약내역
+                         onclick="reserveList()">예약내역
                     </div>
                     <div class="mr-2 font-weight-bold" style="cursor: pointer"
-                         onclick="changeCardView('userGradeCard')">휴차일
+                         onclick="holidayList()">휴차일
                     </div>
                 </div>
             </div>
@@ -577,6 +577,20 @@
     }else{
         $("input[name=calRentStartDt]").remove();
         $("input[name=calRentEndDt]").remove();
+    }
+
+    function openSwal() {
+        swal("상세화면은 순차적으로 오픈할 예정입니다.", { icon: "warning", });
+    }
+
+    function reserveList() {
+        opener.location.href = '/reserve';
+        window.close();
+    }
+
+    function holidayList() {
+        opener.location.href = '/mem/rentshop';
+        window.close();
     }
 </script>
 </body>

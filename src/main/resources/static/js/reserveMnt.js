@@ -29,6 +29,7 @@ var BROWSEYN = "";			// 브라우저에 따른 대여일시, 반납일시 입력
 
 var GLOBAL_LOGIN_USER_IDX;
 var GLOBAL_LOGIN_USER_ROLE;
+var GLOBAL_LOGIN_USER_RTIDX;
 
 var today = new Date();
 
@@ -166,28 +167,6 @@ function loadApi(fnc, page, displayPageNum, division){
         GLOBAL_LINK_RTIDX = "";
     }
 
-    var req = {
-        'page': CURRENT_PAGE,
-        'rtIdx' : _rtIdx,
-        'gbnStatus' : gbnStatus,
-        'gbnDay' : gbnDay,
-        'gbnLocation' : gbnLocation,
-        'gbnReserve' : gbnReserve
-    };
-
-    var target = 'reserveInfoList';
-    var method = 'select';
-
-    fn_callApi(method, target, req, function (response) {
-        var res = response;
-
-        //200이라면 페이징을 구한다.
-        // if(res.code == 200) {
-        fnc(res.result, page, displayPageNum);
-        // }else { //200이 아닐때 empty처리 error처리 등을 기록한다.
-        //  errorAlert('조회중 에러가 발생했습니다. \r\n 관리자에게 문의하세요.');
-        // }
-    });//end
 
 }
 
@@ -385,10 +364,6 @@ function bindEvent() {
  */
 function initDetailInfo(seq){
 
-    var loginUser = getLoginUser();
-    GLOBAL_LOGIN_USER_IDX = loginUser.urIdx;
-    GLOBAL_LOGIN_USER_ROLE = loginUser.userRole;
-
     var browse = navigator.userAgent.toLowerCase();
     if( (navigator.appName == 'Netscape' && browse.indexOf('trident') != -1) || (browse.indexOf("msie") != -1)) {
         $("input[name=rentStartDay]").remove();
@@ -489,8 +464,8 @@ function initDetailInfo(seq){
         let reserveStatusCode = nullCheck(data.reserveStatusCode);
         let reserveTypeCode = nullCheck(data.reserveTypeCode);
         let deliveryTypeCode = nullCheck(data.deliveryTypeCode);
-        let rentStartDay = dateFormatter(nullCheck(data.rentStartDay));
-        let rentEndDay = dateFormatter(nullCheck(data.rentEndDay));
+        let rentStartDay = new Date(nullCheck(data.rentStartDay)).toISOString().slice(0, -1);
+        let rentEndDay = new Date(nullCheck(data.rentEndDay)).toISOString().slice(0,-1);
         let periodDt = nullCheck(data.periodDt);
         let deliveryAddr = nullCheck(data.deliveryAddr);
         let returnAddr = nullCheck(data.returnAddr);
@@ -505,15 +480,15 @@ function initDetailInfo(seq){
         $("#sel_reserveTypeCode").val(reserveTypeCode);
         $("#sel_reserveStatusCode").val(reserveStatusCode);
 
-        if(deliveryTypeCode === 'OF'){
+        if(deliveryTypeCode === 'OF' || deliveryTypeCode === '지점방문'){
             deliveryTypeCode = '지점방문';
-        }else if (deliveryTypeCode === 'DL'){
+        }else if (deliveryTypeCode === 'DL' || deliveryTypeCode === '배달대여'){
             deliveryTypeCode = '배달대여';
         }
         $("#sel_deliveryTypeCode").val(deliveryTypeCode);
         $("#rentStartDay").val(rentStartDay);
-
         $("#rentEndDay").val(rentEndDay);
+
         $("#periodDt").val(periodDt);
         $("#deliveryAddr").val(deliveryAddr);
         $("#returnAddr").val(returnAddr);
@@ -601,7 +576,18 @@ function initDetailSelectBox(_data){
     // 회원사  select box
     target = 'selectCompanyList';
     method = 'select';
+
     req = {};
+
+    if(GLOBAL_LOGIN_USER_ROLE === 'MA'){
+        req = {
+            rtPIdx : GLOBAL_LOGIN_USER_RTIDX
+        }
+    }else if (GLOBAL_LOGIN_USER_ROLE === 'MU'){
+        req = {
+            rtIdx : GLOBAL_LOGIN_USER_RTIDX
+        }
+    }
 
     // 회사리스트
     fn_callApi(method, target, req, function(response) {
@@ -619,26 +605,16 @@ function initDetailSelectBox(_data){
 
             strOption += "<option value = '" + data[i].rtIdx + "'>" + companyName + "</option>";
         }
-        $('#companyName').empty();
-        $('#companyName').append(strOption);
+        $('select[name=companyName]').empty();
+        $('select[name=companyName]').append(strOption);
 
-        if(!isEmpty(_data)){
-            let rtIdx = nullCheck(_data.rtIdx) == ''?'':_data.rtIdx;
-            $("#companyName").val(rtIdx).prop("selected", true);
-        }else{
-            let _rtIdx = '';
-
-            if(GLOBAL_LOGIN_USER_ROLE != 'RA'){
-                _rtIdx = getLoginUser().rtIdx;
+        if (CRUD === 'insert'){
+            if (GLOBAL_LOGIN_USER_ROLE === 'MU'){
+                $("select[name=companyName]").val(GLOBAL_LOGIN_USER_RTIDX).prop("selected", true);
             }
-
-            if(!isEmpty(_rtIdx)){
-                $('#companyName').val(_rtIdx).prop("selected", true);
-                if(GLOBAL_LOGIN_USER_ROLE != 'RA'){
-                    $('#companyName').attr('disabled', true);
-                }
-            }else{
-                $("#companyName").val('').prop("selected", true);
+        }else {
+            if(!isEmpty(_data)){
+                $("select[name=companyName]").val(_data.rtIdx).prop("selected", true);
             }
         }
 
@@ -646,7 +622,8 @@ function initDetailSelectBox(_data){
         if(!isEmpty(_data)){
             _crIdx = nullCheck(_data.crIdx) == ''?'':_data.crIdx;
         }
-        selectCompany($("#companyName option:selected").val(), _crIdx);
+
+        selectCompany($("select[name=companyName] option:selected").val(), _crIdx);
         //
         // } else { // 200이 아닐때 empty처리 error처리 등을 기록한다.
         // 	errorAlert('API ERROR', '조회중 에러가 발생했습니다. \r\n 관리자에게 문의하세요.');
@@ -759,12 +736,15 @@ function initDetailSelectBox(_data){
                 strOption += "<option value = '" + data[i].code + "'>" + data[i].codeValue + "</option>";
             }
         }
-        // 검색 예약 상태
-        $('#gbnStatus').empty();
-        $('#gbnStatus').append(strOption);
+
         // 상세 페이지 예약 상태
         $('#sel_reserveStatusCode').empty();
         $('#sel_reserveStatusCode').append(strOption);
+
+        if(!isEmpty(_data)){
+            let reserveStatusCode = nullCheck(_data.reserveStatusCode) === ''?'':_data.reserveStatusCode;
+            $("#sel_reserveStatusCode").val(reserveStatusCode).prop("selected", true);
+        }
         // } else { // 200이 아닐때 empty처리 error처리 등을 기록한다.
         // 	errorAlert('조회중 에러가 발생했습니다. \r\n 관리자에게 문의하세요.');
         // }
@@ -796,8 +776,15 @@ function initDetailSelectBox(_data){
 
         $('#sel_deliveryTypeCode').empty();
         $('#sel_deliveryTypeCode').append(strOption);
+
+
         if(!isEmpty(_data)){
-            let deliveryTypeCode = nullCheck(_data.deliveryTypeCode) == ''?'0':_data.deliveryTypeCode;
+            let deliveryTypeCode = nullCheck(_data.deliveryTypeCode) === ''?'0':_data.deliveryTypeCode;
+            if(deliveryTypeCode === 'OF' || deliveryTypeCode === '지점방문'){
+                deliveryTypeCode = '지점방문';
+            }else if (deliveryTypeCode === 'DL' || deliveryTypeCode === '배달대여'){
+                deliveryTypeCode = '배달대여';
+            }
             $("#sel_deliveryTypeCode").val(deliveryTypeCode).prop("selected", true);
         }else{
             $("#sel_deliveryTypeCode").val('0').prop("selected", true);
@@ -1264,6 +1251,12 @@ function rentcal(){
  */
 function initDetailData(data){
 
+
+    var loginUser = getLoginUser();
+    GLOBAL_LOGIN_USER_IDX = loginUser.urIdx;
+    GLOBAL_LOGIN_USER_ROLE = loginUser.userRole;
+    GLOBAL_LOGIN_USER_RTIDX = loginUser.rtIdx;
+
     if(data == 'insert'){
         CRUD = data;
     }
@@ -1475,7 +1468,6 @@ function detailValidation(){
     let reserveStatusCode;
     let deliveryTypeCode;
 
-
     if (CRUD === 'insert'){
         reserveStatusCode = "예약";
         deliveryTypeCode = getPureText($('input:radio[name="deliveryTypeCode"]:checked').val());
@@ -1484,7 +1476,7 @@ function detailValidation(){
         deliveryTypeCode = getPureText($('#sel_deliveryTypeCode option:selected').val());
     }
 
-    if(deliveryTypeCode == 'OF' && isEmpty(returnAddr)){
+    if((deliveryTypeCode === 'OF' || deliveryTypeCode === '지점방문')&& isEmpty(returnAddr)){
         returnAddr = deliveryAddr;
     }
 
@@ -1582,6 +1574,7 @@ function detailValidation(){
         ,	'rentStartDay' : rentStartDay
         ,	'rentStartTime' : rentStartTime
         ,	'rentEndDay' : rentEndDay
+        ,   'periodDt' : periodDt
         ,	'rentEndTime' : rentEndTime
         ,	'deliveryTypeCode' : deliveryTypeCode
         ,	'deliveryAddr' : deliveryAddr
@@ -1659,20 +1652,20 @@ function detailSubmit(save_type, req){
         let res = response;
 
         // 200이라면 페이징을 구한다.
-        // if (res.code == 200) {
+        if (res.code == 200) {
 
-        RESERVE_STATUS = $("#sel_reserveStatusCode option:selected").val();
-        if (res.result == 1) {
-            swal("저장 성공", {icon : "success"});
-            closeDetail();
-            loadApi(drawTable, null, null);
-        }else{
-            let msg = res.reservemsg;
-            errorAlert('저장 실패', msg);
+            RESERVE_STATUS = $("#sel_reserveStatusCode option:selected").val();
+            if (res.result == 1) {
+                swal("저장 성공", {icon : "success"});
+                closeDetail();
+                loadApi(drawTable, null, null);
+            }else{
+                let msg = res.reservemsg;
+                errorAlert('저장 실패', msg);
+            }
+        } else { // 200이 아닐때 empty처리 error처리 등을 기록한다.
+            errorAlert('저장 실패', '관리자에게 문의하세요.');
         }
-        // } else { // 200이 아닐때 empty처리 error처리 등을 기록한다.
-        // 	errorAlert('저장 실패', '관리자에게 문의하세요.');
-        // }
     });// end fn_callApi
 
 }

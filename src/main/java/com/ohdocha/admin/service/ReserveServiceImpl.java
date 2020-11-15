@@ -1,7 +1,9 @@
 package com.ohdocha.admin.service;
 
 import com.ohdocha.admin.domain.reserve.reserveInfoMnt.*;
+import com.ohdocha.admin.domain.user.DochaAdminUserInfoRequest;
 import com.ohdocha.admin.mapper.DochaAdminReserveInfoMapper;
+import com.ohdocha.admin.util.DochaMap;
 import com.ohdocha.admin.util.KeyMaker;
 import com.ohdocha.admin.util.ServiceMessage;
 import lombok.AllArgsConstructor;
@@ -19,7 +21,18 @@ public class ReserveServiceImpl extends ServiceExtension implements ReserveServi
 
     @Override
     public void getReserveInfoList(ServiceMessage message) {
-        DochaAdminReserveInfoRequest reserveInfoRequest = message.getObject("reserveInfoRequest", DochaAdminReserveInfoRequest.class);
+        DochaAdminReserveInfoRequest reserveInfoRequest = new DochaAdminReserveInfoRequest();
+        DochaMap loginUser = message.getObject("loginUser", DochaMap.class);
+        String userRole = loginUser.getString("userRole");
+        String rtIdx = loginUser.getString("rtIdx");
+
+        if (userRole.equals("RA")){
+
+        }else if (userRole.equals("MA")){
+            reserveInfoRequest.setRtPIdx(rtIdx);
+        }else if (userRole.equals("MU")){
+            reserveInfoRequest.setRtIdx(rtIdx);
+        }
 
         List<DochaAdminReserveInfoResponse> reserveInfoResponseList = reserveInfoMapper.selectReserveInfoList(reserveInfoRequest);
 
@@ -32,9 +45,21 @@ public class ReserveServiceImpl extends ServiceExtension implements ReserveServi
         String rmIdx = KeyMaker.getInsetance().getKeyDeafult("RM");
         reserveInfoDetailRequest.setRmIdx(rmIdx);
 
-        int res = reserveInfoMapper.insertReserveInfo(reserveInfoDetailRequest);
+        int res;
 
-        message.addData("result", res);
+//        List<DochaAdminReserveInfoDetailResponse> resDto = reserveInfoMapper.reserveInfoCheck(reserveInfoDetailRequest);
+//        if (resDto == null && resDto.size() == 0){
+            res = reserveInfoMapper.insertReserveInfo(reserveInfoDetailRequest);
+//        }else res = 0;
+
+        if (res == 1){
+            message.addData("code", 200);
+            message.addData("result", res);
+        }else {
+            message.addData("code", 400);
+            message.addData("result", res);
+        }
+
     }
 
     @Override
@@ -43,7 +68,14 @@ public class ReserveServiceImpl extends ServiceExtension implements ReserveServi
 
         int res = reserveInfoMapper.updateReserveInfo(reserveInfoDetailRequest);
 
-        message.addData("result", res);
+        if (res == 1){
+            message.addData("code", 200);
+            message.addData("result", res);
+        }else {
+            message.addData("code", 400);
+            message.addData("result", res);
+        }
+
     }
 
     @Override

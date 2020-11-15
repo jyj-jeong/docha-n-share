@@ -632,6 +632,7 @@
 			, 	IFNULL(HOLIDAY_END_DT		, '') AS HOLIDAY_END_DT     /*공휴일종료일*/
 			, 	IFNULL(HOLIDAY_NAME		, '') AS HOLIDAY_NAME       /*휴일명*/
 			, 	IFNULL(DEL_YN          	, '') AS DEL_YN             /*삭제여부*/
+			, 	IFNULL(REG_ID          	, '') AS REG_ID             /*등록자*/
 			FROM DC_HOLIDAYS
 
 		  ]]>

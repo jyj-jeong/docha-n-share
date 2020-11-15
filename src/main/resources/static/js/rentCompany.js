@@ -1932,16 +1932,22 @@ function movieMenu(goMenu) {
 	$("#" + MODAL_NAME).iziModal('close');
 	switch (goMenu) {
 		case 'calculate':	// 정산관리
-			GLOBAL_LINK_RTIDX = "";
-			left_location('/static/viewContents/calculate/calculate.html', '정산', 'link');
+			opener.location.href = '/settlement';
+			window.close();
+			// GLOBAL_LINK_RTIDX = "";
+			// left_location('/static/viewContents/calculate/calculate.html', '정산', 'link');
 			break;
 		case 'regCar':		// 등록차량
-			GLOBAL_LINK_RTIDX = $('#rtIdx').val();
-			left_location('/static/viewContents/car/regCar.html', '등록차량', 'link');
+			opener.location.href = '/car';
+			window.close();
+			// GLOBAL_LINK_RTIDX = $('#rtIdx').val();
+			// left_location('/static/viewContents/car/regCar.html', '등록차량', 'link');
 			break;
 		case 'reserveMnt':		// 예약내역
-			GLOBAL_LINK_RTIDX = $('#rtIdx').val();
-			left_location('/static/viewContents/reservation/reservation_list.html', '예약관리', 'link');
+			opener.location.href = '/reserve';
+			window.close();
+			// GLOBAL_LINK_RTIDX = $('#rtIdx').val();
+			// left_location('/static/viewContents/reservation/reservation_list.html', '예약관리', 'link');
 			break;
 		case 'review':
 			swal("상세화면은 순차적으로 오픈할 예정입니다.", { icon: "warning", });

@@ -137,7 +137,8 @@
                         <div class="row mb-3">
                             <div class="col-lg-3 float-l flex-1" >
                                 <label>회사명</label>
-                                <input type="text" id="reserveCompanyName" class="form-control"   placeholder="" />
+                                <select id="reserveCompanyName" name="companyName" class="custom-select" onchange="selectCompany(this.value);">
+                                </select>
                             </div>
                             <div class="col-lg-3 float-l flex-1" >
                                 <label>사업자 등록번호</label>
@@ -214,9 +215,6 @@
                                 <label>대여위치</label>
                                 <div class="input-group">
                                     <input type="text"  class="form-control" placeholder="주소"  id="deliveryAddr">
-                                    <div id="searchLocation1" class="input-group-append">
-                                        <button class="btn btn-primary" onclick="openDaumAddrApi('companyAddress');" >주소찾기</button>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -225,9 +223,6 @@
                                 <label>반납위치</label>
                                 <div class="input-group">
                                     <input type="text"  class="form-control" placeholder="주소"  id="returnAddr">
-                                    <div id="searchLocation2" class="input-group-append">
-                                        <button class="btn btn-primary" onclick="openDaumAddrApi('companyAddress');" >주소찾기</button>
-                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -238,7 +233,7 @@
                         <div class="row mb-3">
                             <div class="col-lg-3 float-l flex-1" >
                                 <label>회사명(지점)</label>
-                                <select id="companyName" class="custom-select" onchange="selectCompany(this.value);">
+                                <select id="companyName" name="companyName" class="custom-select" onchange="selectCompany(this.value);">
                                 </select>
                             </div>
                             <div class="col-lg-3 float-l flex-1" >

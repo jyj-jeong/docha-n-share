@@ -48,8 +48,19 @@
                                     function addRegCar() {
                                         var url = "/car/add";
                                         var name = "차량 등록";
-                                        var specs = "width=1200, height=800, location=no, left=500, top=50";
-                                        window.open(url, name, specs);
+                                        var width;
+                                        if (parseInt(window.innerWidth) < 1000){
+                                            width = 1000;
+                                        }else {
+                                            width = (parseInt(window.innerWidth) * 0.8);
+                                        }
+                                        var height = (parseInt(window.innerHeight) * 0.9);
+                                        var left =  (window.screen.width / 2) - (width / 2);
+                                        var top = (window.screen.height / 2) - (height / 2);
+
+
+                                        var option = "width=" + width +", height=" + height + " ,location=no, left=" + left + ", top=" + top;
+                                        window.open(url, name, option);
                                     }
                                 </script>
                                 <thead>
@@ -90,8 +101,12 @@
                                     <td th:text="${#numbers.formatInteger(car.getDailyStandardPay(), 0, 'COMMA')}"></td>
                                     <td th:text="${#numbers.formatInteger(car.getMonthlyStandardPay(), 0, 'COMMA')}"></td>
                                     <td th:text="${car.getReserveStatus()}"></td>
-                                    <td th:text="${car.getReserveStatus()}"></td>
-                                    <td th:text="${car.getReserveStatus()}"></td>
+                                    <td><div style="width: 100%; height: 2rem; background: green;"></div></td>
+                                    <td>
+                                        <button class="btn btn-primary">일대여</button>
+                                        <button class="btn btn-primary">월대여</button>
+                                        <button class="btn btn-primary">휴차일</button>
+                                    </td>
                                 </tr>
                                 <script th:inline="javascript">
                                     // 상세보기 이동
@@ -101,7 +116,18 @@
 
                                         var url = "car/detail/" + crIdx;
                                         var name = "차량 수정";
-                                        var option = "width = 1000, height =800 ,location=no, left=500, top=50";
+                                        var width;
+                                        if (parseInt(window.innerWidth) < 1000){
+                                            width = 1000;
+                                        }else {
+                                            width = (parseInt(window.innerWidth) * 0.8);
+                                        }
+                                        var height = (parseInt(window.innerHeight) * 0.9);
+                                        var left =  (window.screen.width / 2) - (width / 2);
+                                        var top = (window.screen.height / 2) - (height / 2);
+
+
+                                        var option = "width=" + width +", height=" + height + " ,location=no, left=" + left + ", top=" + top;
 
                                         window.open(url, name, option);
                                     });

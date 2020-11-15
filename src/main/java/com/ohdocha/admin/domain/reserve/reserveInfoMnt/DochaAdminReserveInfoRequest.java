@@ -6,35 +6,36 @@ import org.apache.ibatis.type.Alias;
 import java.io.Serializable;
 
 @Data
-@Alias("reserveInfoRequest")						   	
+@Alias("reserveInfoRequest")
 public class DochaAdminReserveInfoRequest  implements Serializable {
-	
-	
-	DochaAdminReserveInfoRequest() {
-		
-	}
-	
-	private static final long serialVersionUID = 1L;
-	
-    private int page;				//시작페이지
-    private int displayPageNum;		//몇개를 보여줄 것인가
-    private int totalRowCount; 		//총 row 갯수
-    private String rmIdx;
-    private String userId;
-    private String rtIdx;
-    private String userRole;
-    private String crIdx;
-    private String searchKeyWord;
-    private String gbnStatus;
-    private String gbnDay;
-    private String gbnLocation;
-    private String gbnReserve;
-    private String gbnInput;
-    private String gbnCarType;
 
-    private String rentStartDay;
-    private String rentEndDay;
-    
+
+	public DochaAdminReserveInfoRequest() {
+
+	}
+
+	private static final long serialVersionUID = 1L;
+
+	private int page;				//시작페이지
+	private int displayPageNum;		//몇개를 보여줄 것인가
+	private int totalRowCount; 		//총 row 갯수
+	private String rmIdx;
+	private String userId;
+	private String rtIdx;
+	private String rtPIdx;
+	private String userRole;
+	private String crIdx;
+	private String searchKeyWord;
+	private String gbnStatus;
+	private String gbnDay;
+	private String gbnLocation;
+	private String gbnReserve;
+	private String gbnInput;
+	private String gbnCarType;
+
+	private String rentStartDay;
+	private String rentEndDay;
+
 	public String getSearchKeyWord() {
 		return searchKeyWord;
 	}
@@ -105,6 +106,12 @@ public class DochaAdminReserveInfoRequest  implements Serializable {
 	public void setRtIdx(String rtIdx) {
 		this.rtIdx = rtIdx;
 	}
+	public String getRtPIdx() {
+		return rtPIdx;
+	}
+	public void setRtPIdx(String rtPIdx) {
+		this.rtPIdx = rtPIdx;
+	}
 	public String getCrIdx() {
 		return crIdx;
 	}
@@ -141,9 +148,9 @@ public class DochaAdminReserveInfoRequest  implements Serializable {
 	public void setRentEndDay(String rentEndDay) {
 		this.rentEndDay = rentEndDay;
 	}
-    
 
-    
-    
-    
+
+
+
+
 }

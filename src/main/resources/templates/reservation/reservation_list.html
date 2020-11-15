@@ -146,8 +146,18 @@
 
         var url = "/reserve/detail/" + rmIdx;
         var name = "test";
-        var option = "width = 1000, height =800 ,location=no, left=500, top=50";
+        var width;
+        if (parseInt(window.innerWidth) < 1000){
+            width = 1000;
+        }else {
+            width = (parseInt(window.innerWidth) * 0.8);
+        }
+        var height = (parseInt(window.innerHeight) * 0.9);
+        var left =  (window.screen.width / 2) - (width / 2);
+        var top = (window.screen.height / 2) - (height / 2);
 
+
+        var option = "width=" + width +", height=" + height + " ,location=no, left=" + left + ", top=" + top;
         window.open(url, name, option);
     });
 
@@ -155,8 +165,18 @@
     function registerReservation() {
         var url = 'reserve/register';
         var name = "test";
-        var option = "width = 1000, height =800 ,location=no, left=500, top=50";
+        var width;
+        if (parseInt(window.innerWidth) < 1000){
+            width = 1000;
+        }else {
+            width = (parseInt(window.innerWidth) * 0.8);
+        }
+        var height = (parseInt(window.innerHeight) * 0.9);
+        var left =  (window.screen.width / 2) - (width / 2);
+        var top = (window.screen.height / 2) - (height / 2);
 
+
+        var option = "width=" + width +", height=" + height + " ,location=no, left=" + left + ", top=" + top;
         window.open(url, name, option);
     }
 

@@ -42,7 +42,7 @@
                                 </div>
                                 <div class=" col-lg-3 mb-3 float-l flex-1">
                                     <label>생년월일</label>
-                                    <a id="reserveUserBirthday" name="reserveUserBirthday"></a>
+                                    <a id="reserveUserBirthDay" name="reserveUserBirthDay"></a>
                                 </div>
                             </div>
                         </div>
@@ -164,12 +164,12 @@
                             <div class="col-lg-3 float-l" style="flex:1;">
                                 <label>대여일시</label>
                                 <input type="text" id="rentStartDay" class="form-control" name="rentStartDay2" data-mask="____-__-__ __:__">
-                                <input type="datetime-local" class="form-control" id="rentStartDay" name="rentStartDay" />
+                                <input type="datetime-local" class="form-control" id="rentStartDay" name="rentStartDay" onchange="calcPeriodDt()"/>
                             </div>
                             <div class="col-lg-3 float-l" style="flex:1;">
                                 <label>반납일시</label>
                                 <input type="text" class="form-control" id="rentEndDay" name="rentEndDay2"  data-mask="____-__-__ __:__">
-                                <input type="datetime-local" class="form-control" id="rentEndDay" name="rentEndDay" />
+                                <input type="datetime-local" class="form-control" id="rentEndDay" name="rentEndDay" onchange="calcPeriodDt()" />
                             </div>
                             <div class="col-lg-3 float-l" style="flex:1;">
                                 <label>사용기간</label>
@@ -208,7 +208,7 @@
                         <div class="row mb-3">
                             <div class="col-lg-3 float-l flex-1" >
                                 <label>회사명(지점)</label>
-                                <select id="companyName" class="custom-select" onchange="selectCompany(this.value);">
+                                <select id="companyName" name="companyName" class="custom-select" onchange="selectCompany(this.value);">
                                 </select>
                             </div>
                             <div class="col-lg-3 float-l flex-1" >
@@ -335,7 +335,7 @@
                         </div>
                     </div>
                     <div class="text-right">
-                        <button id="btnReverse" class="btn btn-primary" type="button" onclick="">역경매 이동</button>
+                        <button id="btnReverse" class="btn btn-primary" type="button" onclick="reverse()">역경매 이동</button>
                         <button id="btnSave" class="btn btn-primary" type="button" onclick="detailValidation()">저장</button>
                         <button id="btnClose" class="btn btn-primary" type="button" onclick="self.close()">창 닫기</button>
                         <button id="btnReturn" class="btn btn-primary" type="button" onclick="self.close()">반납</button>
@@ -388,12 +388,16 @@
     }
 
     rmIdx = /*[[${rmIdx}]]*/'';
-    CRUD_METHOD = 'update';
+    CRUD = 'update';
 
     initDetailInfo(rmIdx);
 
-    var reserveUserBirthday = new WinkelCalendar({
-        container: 'reserveUserBirthday',
+    function reverse() {
+        swal("상세화면은 순차적으로 오픈할 예정입니다.", { icon: "warning", });
+    }
+
+    var reserveUserBirthDay = new WinkelCalendar({
+        container: 'reserveUserBirthDay',
         bigBanner: true,
         defaultDate: new Date(),
         format: "YYYY년 MM월 DD일"
@@ -444,8 +448,8 @@
     function getDatePickerValue(id) {
         var date;
         switch (id) {
-            case 'reserveUserBirthday':
-                date = reserveUserBirthday.date;
+            case 'reserveUserBirthDay':
+                date = reserveUserBirthDay.date;
                 break;
             case 'firstDriverBirthDay':
                 date = firstDriverBirthDay.date;
@@ -472,8 +476,8 @@
 
     function initDatePicker(id, value) {
         switch (id) {
-            case 'reserveUserBirthday':
-                reserveUserBirthday.setDate(new Date(value));
+            case 'reserveUserBirthDay':
+                reserveUserBirthDay.setDate(new Date(value));
                 break;
             case 'firstDriverBirthDay':
                 firstDriverBirthDay.setDate(new Date(value));

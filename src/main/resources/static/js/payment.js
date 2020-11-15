@@ -44,20 +44,6 @@ function loadApi (fnc, page) {
     		'gbnInput' : GLOBAL_SEARCH_INPUT_GBN,
     		
     };  
-    
-	var target = 'paymentInfoList';
-	var method = 'select';
-    
-    fn_callApi(method, target, req, function (response) {
-    	 var res = response;
-    	 
-    	 //200이라면 페이징을 구한다.
-    	 if(res.code == 200) {
-    		 fnc(res.data, page, displayPageNum);
-    	 }else { //200이 아닐때 empty처리 error처리 등을 기록한다.
-    		 alert('조회중 에러가 발생했습니다. \r\n 관리자에게 문의하세요.');
-    	 }
-     });//end 
 
 }
 
