@@ -96,6 +96,7 @@
 		<trim prefix="SET" suffixOverrides=",">
 			<!-- 차량 기본정보 -->
 			<if test="imgIdx      != null"><![CDATA[   IMG_IDX          = #{imgIdx}  ,      ]]></if>    <!-- imgIDX -->
+			<if test="manufacturerCode      != null"><![CDATA[   MANUFACTURER_CODE          = #{manufacturerCode}  ,      ]]></if>    <!-- imgIDX -->
 			<if test="cartypeCode      != null"><![CDATA[   CARTYPE_CODE          = #{cartypeCode}        ]]></if>    <!-- CARTYPE_CODE -->
 		</trim>
 		<trim prefix="WHERE" prefixOverrides="AND|OR">

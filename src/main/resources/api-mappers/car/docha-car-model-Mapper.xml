@@ -80,6 +80,7 @@
 						  	   IFNULL(MD_IDX   , '') AS MD_IDX    /*모델 IDX*/
 							,  IFNULL(IMG_IDX   , '') AS IMG_IDX    /*이미지 IDX*/
 							,  IFNULL(CARTYPE_CODE   , '') AS CARTYPE_CODE    /*이미지 IDX*/
+							,  IFNULL(MANUFACTURER_CODE   , '') AS MANUFACTURER_CODE    /*이미지 IDX*/
 				  FROM DC_CAR_MODEL
                       ]]>
 		<trim prefix="WHERE" prefixOverrides="AND|OR">

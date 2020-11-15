@@ -80,6 +80,7 @@ public class CarServiceImpl extends ServiceExtension implements CarService {
 
         regCarDetailRequest.setImgIdx(carModelResponse.getImgIdx());
         regCarDetailRequest.setCartypeCode(carModelResponse.getCartypeCode());
+        regCarDetailRequest.setManufacturerCode(carModelResponse.getManufacturerCode());
 
         regCarMapper.updateRegCarImg(regCarDetailRequest);
 
