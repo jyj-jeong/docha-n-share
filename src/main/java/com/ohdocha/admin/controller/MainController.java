@@ -1,6 +1,7 @@
 package com.ohdocha.admin.controller;
 
 import com.ohdocha.admin.config.Properties;
+import com.ohdocha.admin.domain.common.DochaAdminAddressInfoRequest;
 import com.ohdocha.admin.domain.common.code.DochaAdminCommonCodeRequest;
 import com.ohdocha.admin.domain.user.DochaAdminDcUserInfoRequest;
 import com.ohdocha.admin.service.MainService;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,7 +30,14 @@ public class MainController extends ControllerExtension {
     private final MainService mainService;
 
     @GetMapping(value = "/")
-    public String home() {
+    public String home(ModelAndView mv, HttpServletRequest request) {
+        ServiceMessage serviceMessage = createServiceMessage(request);
+        DochaMap loginUser = (DochaMap) request.getSession().getAttribute("LOGIN_SESSION");
+        serviceMessage.addData("loginUser", loginUser);
+
+        mainService.summaryRentCompanyInfo(serviceMessage);
+
+        mv.addAllObjects(serviceMessage);
         return "index";
     }
 
@@ -40,6 +49,30 @@ public class MainController extends ControllerExtension {
         serviceMessage.addData("commonCodeRequest", commonCodeRequest);
 
         mainService.selectCommonCodeInfo(serviceMessage);
+
+        return serviceMessage.get("result");
+    }
+
+    /* 지역 (광역시/도) 리스트 */
+    @PostMapping(value = "/api/v1.0/addressDivision.json")
+    @ResponseBody
+    public Object addressDivision(@RequestBody DochaAdminAddressInfoRequest addressInfoRequest, HttpServletRequest request) {
+        ServiceMessage serviceMessage = createServiceMessage(request);
+        serviceMessage.addData("addressInfoRequest", addressInfoRequest);
+
+        mainService.selectAddressDivisionInfo(serviceMessage);
+
+        return serviceMessage.get("result");
+    }
+
+    /* 지역 (광역시/도) 리스트 */
+    @PostMapping(value = "/api/v1.0/addressDetailDivision.json")
+    @ResponseBody
+    public Object addressSetailDivision(@RequestBody DochaAdminAddressInfoRequest addressInfoRequest, HttpServletRequest request) {
+        ServiceMessage serviceMessage = createServiceMessage(request);
+        serviceMessage.addData("addressInfoRequest", addressInfoRequest);
+
+        mainService.selectAddressDetailDivisionInfo(serviceMessage);
 
         return serviceMessage.get("result");
     }

@@ -74,7 +74,7 @@
             <if test="userContact1 	!= null"><![CDATA[ , USER_CONTACT1	= #{userContact1}  	]]></if>
             <if test="userContact2 	!= null"><![CDATA[ , USER_CONTACT2	= #{userContact2}  	]]></if>
             <if test="userRole 		!= null"><![CDATA[ , USER_ROLE		= #{userRole}  		]]></if>
-            <if test="modDt 		!= null"><![CDATA[ , MOD_DT			= SYSDATE  			]]></if>
+            <if test="modDt 		!= null"><![CDATA[ , MOD_DT			= NOW()  			]]></if>
             <if test="modId 		!= null"><![CDATA[ , MOD_ID			=  #{modId}  		]]></if>
         </trim>
         <trim prefix="WHERE" prefixOverrides="AND|OR">
@@ -111,7 +111,7 @@
                 , #{userContact2}
                 , #{userRole}
                 , #{rtIdx}
-                , SYSDATE
+                , NOW()
                 , #{regId}
                 , #{delYn}
             )

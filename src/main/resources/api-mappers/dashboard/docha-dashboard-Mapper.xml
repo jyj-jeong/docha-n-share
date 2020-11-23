@@ -3,44 +3,32 @@
 
 <mapper namespace="com.ohdocha.admin.mapper.DochaAdminDashboardMapper">
 
-	<select id="selectCarssumDashboardList" parameterType="CarssumMap" resultType="CarssumMap">
+	<select id="selectDochaDashboardList" parameterType="DochaMap" resultType="DochaMap">
 
 		<!-- 시스템관리자 AD -->
 		<if test =" userRole != null and userRole != '' and userRole.equals('RA') ">
-			SELECT IFNULL(COUNT(UR_IDX) , '0') AS CNT                              /* 회원 SUM */
+			SELECT IFNULL(COUNT(UR_IDX) , '0') AS CNT                              /* 매출 SUM */
 			FROM   DC_USER_INFO
 			WHERE  USER_ROLE IN('RU')
 
 			UNION ALL
 			SELECT IFNULL(COUNT(RT_IDX) , '0')
-			FROM   DC_RENT_COMPANY                                          /* 회원사 SUM */
+			FROM   DC_RENT_COMPANY                                          /* 예약 SUM */
 
 			UNION ALL
 			SELECT IFNULL(COUNT(QU_IDX) , '0')
 			FROM   DC_QUOTE_USER
-			WHERE TO_CHAR(REG_DT , 'YYYYMMDD') = TO_CHAR(SYSDATE , 'YYYYMMDD')         /* 유저 요청 SUM TODAY */
+			WHERE DATE_FORMAT(REG_DT , '%Y%m%d') = DATE_FORMAT(NOW() , '%Y%m%d')         /* 누적월차 SUM */
 
 			UNION ALL
 			SELECT COUNT(RM_IDX)
 			FROM   DC_RESERVE_MASTER
-			WHERE TO_CHAR(REG_DT , 'YYYYMMDD') = TO_CHAR(SYSDATE , 'YYYYMMDD')        /* 계약 완료 SUM TODAY */
+			WHERE DATE_FORMAT(REG_DT , '%Y%m%d') = DATE_FORMAT(NOW() , '%Y%m%d')        /* 취소 건수 SUM */
 
 			UNION ALL
-			SELECT IFNULL(COUNT(UR_IDX)  , '0')
-			FROM   DC_USER_INFO
-			WHERE  USER_ROLE IN('RU')
-			AND    TO_CHAR(REG_DT , 'YYYYMMDD') = TO_CHAR(SYSDATE , 'YYYYMMDD')         /* 회원가입자 SUM TODAY */
+			SELECT IFNULL(COUNT(QU_IDX)  , '0') as QnA
+			FROM   DC_QUESTION                                                          /* QnA SUM */
 
-			UNION ALL
-			SELECT IFNULL(SUM(T1.PAYMENT_AMOUNT), '0')
-			FROM   DC_PAYMENT_DETAIL T1
-			LEFT OUTER JOIN DC_RESERVE_MASTER T2 ON T1.RM_IDX = T2.RM_IDX
-			WHERE TO_CHAR(T1.PAYMENT_DATE , 'YYYYMMDD') = TO_CHAR(SYSDATE , 'YYYYMMDD')   /* 결제완료 SUM TODAY */
-
-			UNION ALL
-			SELECT IFNULL( COUNT(QR_IDX), '0')
-			FROM   DC_QUOTE_RENT_COMPANY
-			WHERE  TO_CHAR(REG_DT , 'YYYYMMDD') = TO_CHAR(SYSDATE , 'YYYYMMDD')         /* 회원사 요청 SUM TODAY  */
 		</if>
 
 
@@ -61,7 +49,7 @@
 			SELECT COUNT(QR_IDX)
 			FROM   DC_QUOTE_RENT_COMPANY
 			WHERE  RT_IDX = #{rtIdx}
-			AND    TO_CHAR(REG_DT , 'YYYYMMDD') = TO_CHAR(SYSDATE , 'YYYYMMDD')    /* 회원사가 금일 보낸 총 견적건수 */
+			AND    DATE_FORMAT(REG_DT , '%Y%m%d') = DATE_FORMAT(NOW() , '%Y%m%d')    /* 회원사가 금일 보낸 총 견적건수 */
 
 			UNION ALL
 			SELECT COUNT(CR_IDX)
@@ -72,13 +60,35 @@
 			SELECT COUNT(RM_IDX) AS CNT
 			FROM   DC_RESERVE_MASTER
 			WHERE  RT_IDX = #{rtIdx}
-			AND    TO_CHAR(REG_DT , 'YYYYMMDD') = TO_CHAR(SYSDATE , 'YYYYMMDD')      /* 회원사 금일 계약건수 */
+			AND    DATE_FORMAT(REG_DT , '%Y%m%d') = DATE_FORMAT(NOW() , '%Y%m%d')      /* 회원사 금일 계약건수 */
 		</if>
 
 
 	</select>
 
+	<select id="selectQnACnt" parameterType="DochaMap" resultType="DochaMap">
 
+			SELECT IFNULL(COUNT(UR_IDX) , '0') AS CNT                              /* 매출 SUM */
+			FROM   DC_USER_INFO
+			WHERE  USER_ROLE IN('RU')
+
+			UNION ALL
+			SELECT IFNULL(COUNT(RT_IDX) , '0')
+			FROM   DC_RENT_COMPANY                                          /* 예약 SUM */
+
+			UNION ALL
+			SELECT IFNULL(COUNT(QU_IDX) , '0')
+			FROM   DC_QUOTE_USER
+			WHERE DATE_FORMAT(REG_DT , '%Y%m%d') = DATE_FORMAT(NOW() , '%Y%m%d')         /* 누적월차 SUM */
+
+			UNION ALL
+			SELECT COUNT(RM_IDX)
+			FROM   DC_RESERVE_MASTER
+			WHERE DATE_FORMAT(REG_DT , '%Y%m%d') = DATE_FORMAT(NOW() , '%Y%m%d')        /* 취소 건수 SUM */
+
+			UNION ALL
+			SELECT IFNULL(COUNT(QU_IDX)  , '0') as QnA
+			FROM   DC_QUESTION                                                          /* QnA SUM */
 
 </mapper>
 

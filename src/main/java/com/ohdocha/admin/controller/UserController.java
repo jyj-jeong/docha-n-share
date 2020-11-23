@@ -7,6 +7,7 @@ import com.ohdocha.admin.domain.user.DochaAdminUpdateUserInfoRequest;
 import com.ohdocha.admin.domain.user.DochaAdminUserInfoRequest;
 import com.ohdocha.admin.domain.user.DochaAdminUserInfoUserLicenseInfoRequest;
 import com.ohdocha.admin.service.UserService;
+import com.ohdocha.admin.util.DochaMap;
 import com.ohdocha.admin.util.ServiceMessage;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -196,6 +197,9 @@ public class UserController extends ControllerExtension {
     @GetMapping(value = "/mem/rentshop")
     public String rentShopList(HttpServletRequest request, ModelMap modelMap) {
         ServiceMessage serviceMessage = createServiceMessage(request);
+        DochaMap loginUser = (DochaMap) request.getSession().getAttribute("LOGIN_SESSION");
+
+        serviceMessage.addData("loginUser", loginUser);
         userService.getRentShopList(serviceMessage);
 
         modelMap.addAllAttributes(serviceMessage);
@@ -344,6 +348,32 @@ public class UserController extends ControllerExtension {
         userService.selectRentCompanyReserveMinList(serviceMessage);
 
         return serviceMessage;
+    }
+
+    /* 회원사 배달지역 추가 */
+    @PostMapping(value = "/api/v1.0/insertCdtRentCompanyAblearea.do")
+    @ResponseBody
+    public Object insertCdtRentCompanyAblearea(@RequestBody List<DochaAdminDcRentCompanyAbleareaRequest> rentCompanyAbleareaRequest, HttpServletRequest request) {
+        ServiceMessage serviceMessage = createServiceMessage(request);
+        serviceMessage.addData("rentCompanyAbleareaRequest", rentCompanyAbleareaRequest);
+
+        userService.insertCdtRentCompanyAblearea(serviceMessage);
+
+        return serviceMessage;
+
+    }
+
+    /* 회원사 배달지역 조회 */
+    @PostMapping(value = "/api/v1.0/selectCdtRentCompanyAblearea.json")
+    @ResponseBody
+    public Object selectCdtRentCompanyAblearea(@RequestBody List<DochaAdminDcRentCompanyAbleareaRequest> rentCompanyAbleareaRequest, HttpServletRequest request) {
+        ServiceMessage serviceMessage = createServiceMessage(request);
+        serviceMessage.addData("rentCompanyAbleareaRequest", rentCompanyAbleareaRequest);
+
+        userService.selectCdtRentCompanyAblearea(serviceMessage);
+
+        return serviceMessage;
+
     }
 
     /* 회원사 전체 휴일 등록*/

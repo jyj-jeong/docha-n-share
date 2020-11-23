@@ -49,12 +49,14 @@
                       FROM   DC_CAR_INFO CI GROUP BY CI.RT_IDX
                     ) T3 ON T1.RT_IDX = T3.RT_IDX
         ]]>
-		<!--				<trim prefix="WHERE" prefixOverrides="AND|OR">-->
-		<!--					1=1-->
-		<!--					<if test="userRole.equals('CA') and rtIdx != null and rtIdx != '' ">-->
-		<!--			         		AND <![CDATA[ A.RT_IDX = #{rtIdx}  ]]>-->
-		<!--		         	</if>-->
-		<!--		        </trim>-->
+						<trim prefix="WHERE" prefixOverrides="AND|OR">
+							<if test="rtIdx != null and rtIdx != '' ">
+					         		AND <![CDATA[ T1.RT_IDX = #{rtIdx}  ]]>
+				         	</if>
+							<if test="rtPIdx != null and rtPIdx != '' ">
+								AND <![CDATA[ T1.RT_P_IDX = #{rtPIdx}  ]]>
+							</if>
+				        </trim>
 		<if test="searchType != null and searchType != '' ">
 			<choose>
 				<when test =' searchType == "rtIdx" '>
@@ -87,7 +89,6 @@
 			</choose>
 		</if>
 		ORDER BY T1.REG_DT DESC
-		-- 		 )
 	</select>
 
 	<select id="selectRentCompanyDetailInfo" parameterType="rentCompanyDetailRequest"
@@ -740,34 +741,35 @@
 		</trim>
 	</update>
 
-	<update  id="insertDcRentCompanyAblearea" parameterType="DcRentCompanyAbleareaRequest">
-    <![CDATA[
-   	INSERT INTO DC_RENT_COMPANY_ABLEAREA
-   	(
-		RT_IDX
-	,	LAT
-	,	LNG
-	,	RA_GBN_CODE
-	,	DEL_YN
-	,	REG_ID
-	,	REG_DT
-	)
-	SELECT
-	#{rtIdx} as RT_IDX
-	,replace(SUBSTR(TXT, 0, INSTR(TXT,'|LNG:')-1), 'LAT:', '') as LAT
-	,replace(SUBSTR(TXT, INSTR(TXT,'|LNG:')+1), 'LNG:', '') as LAT
-	,#{raGbnCode} as RA_GBN_CODE
-	,'N' AS DEL_YN
-	,#{regId} as REG_ID
-	,NOW() as REG_DT
-	FROM (
-	    SELECT ROWNUM AS ID,
-	    trim(regexp_substr(#{latlng}, '[^,]+', 1, LEVEL)) TXT
-	    FROM dual
-	    CONNECT BY LEVEL <= length(#{latlng}) - length(REPLACE(#{latlng}, ',', ''))+1
-	) X
-	ORDER BY ID
-    ]]>
-    </update>
+	<insert id="insertDcRentCompanyAblearea" parameterType="java.util.List">
+		INSERT INTO DC_RENT_COMPANY_ABLEAREA
+		(
+			RT_IDX
+			,	ADDR_DEPTH1
+			,	ADDR_DEPTH2
+			,	ADDR_DEPTH3
+			,	ADDR_DEPTH4
+			,	RA_GBN_CODE
+			,	RA_GBN_LT
+			,	RA_GBN_ST
+			,	REG_ID
+			,	REG_DT
+		)
+		VALUES
+		<foreach collection="list" item="item" separator="," >
+		(
+			#{item.rtIdx}
+			,#{item.addrDepth1}
+			,#{item.addrDepth2}
+			,#{item.addrDepth3}
+			,#{item.addrDepth4}
+			,#{item.raGbnCode}
+			,#{item.raGbnLt}
+			,#{item.raGbnSt}
+			,#{item.regId}
+			,NOW()
+			)
+		</foreach>
+	</insert>
 
 </mapper>

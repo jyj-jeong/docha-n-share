@@ -528,7 +528,7 @@
          ,     #{suspendEndDt}
          ,   'N'
          ,     #{regId}
-         ,   SYSDATE
+         ,   NOW()
       )
    ]]>
     </insert>

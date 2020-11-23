@@ -59,7 +59,7 @@ public interface DochaAdminRentCompanyInfoMapper {
     // 회원사 - 장단기 배달지역
     public List<DochaAdminDcRentCompanyAbleareaResponse> selectDcRentCompanyAblearea(DochaAdminDcRentCompanyAbleareaRequest reqParam);
 
-    public int insertDcRentCompanyAblearea(DochaAdminDcRentCompanyAbleareaRequest reqParam);
+    public int insertDcRentCompanyAblearea(List reqParam);
 
     public int updateDcRentCompanyAblearea(DochaAdminDcRentCompanyAbleareaRequest reqParam);
 

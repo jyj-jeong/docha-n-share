@@ -13,10 +13,7 @@ import com.ohdocha.admin.mapper.DochaAdminAdminUserInfoMntMapper;
 import com.ohdocha.admin.mapper.DochaAdminAuthTemplateMapper;
 import com.ohdocha.admin.mapper.DochaAdminRentCompanyInfoMapper;
 import com.ohdocha.admin.mapper.DochaAdminUserInfoMntMapper;
-import com.ohdocha.admin.util.FileHelper;
-import com.ohdocha.admin.util.KeyMaker;
-import com.ohdocha.admin.util.ServiceMessage;
-import com.ohdocha.admin.util.TextUtils;
+import com.ohdocha.admin.util.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -339,7 +336,13 @@ public class UserServiceImpl extends ServiceExtension implements UserService {
 
     @Override
     public void getRentShopList(ServiceMessage message) {
+        DochaMap loginUser = message.getObject("loginUser", DochaMap.class);
         DochaAdminRentCompanyInfoRequest rentCompanyInfoRequest = new DochaAdminRentCompanyInfoRequest();
+        if (loginUser.get("userRole").equals("MA")){
+            rentCompanyInfoRequest.setRtPIdx(loginUser.getString("rtIdx"));
+        }else if (loginUser.get("userRole").equals("MU")){
+            rentCompanyInfoRequest.setRtPIdx(loginUser.getString("rtIdx"));
+        }
 
         List<DochaAdminRentCompanyInfoResponse> rentCompanyInfoList = rentCompanyInfoMapper.selectRentCompanyInfo(rentCompanyInfoRequest);
 
@@ -405,6 +408,31 @@ public class UserServiceImpl extends ServiceExtension implements UserService {
             message.addData("code", 200);
         }else message.addData("code", 400);
 
+    }
+
+    @Override
+    public void insertCdtRentCompanyAblearea(ServiceMessage message) {
+        List<DochaAdminDcRentCompanyAbleareaRequest> rentCompanyAbleareaRequest = message.getListObject("rentCompanyAbleareaRequest", DochaAdminDcRentCompanyAbleareaRequest.class);
+
+        int res = rentCompanyInfoMapper.insertDcRentCompanyAblearea(rentCompanyAbleareaRequest);
+
+        if (res > 0){
+            message.addData("code", 200);
+        }else message.addData("code", 400);
+    }
+
+    @Override
+    public void selectCdtRentCompanyAblearea(ServiceMessage message) {
+        DochaAdminDcRentCompanyAbleareaRequest rentCompanyAbleareaRequest = message.getObject("rentCompanyAbleareaRequest", DochaAdminDcRentCompanyAbleareaRequest.class);
+
+        List<DochaAdminDcRentCompanyAbleareaResponse> rentCompanyAbleareaResponseList = rentCompanyInfoMapper.selectDcRentCompanyAblearea(rentCompanyAbleareaRequest);
+
+        if (rentCompanyAbleareaResponseList.size() != 0){
+            message.addData("code", 200);
+            message.addData("result", rentCompanyAbleareaResponseList);
+        }else {
+            message.addData("code", 400);
+        }
     }
 
     @Override

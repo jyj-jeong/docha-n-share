@@ -46,6 +46,10 @@ public interface UserService {
 
     void updateRentCompanyTime(ServiceMessage message);             // 회원사 수수료 정보 등록
 
+    void insertCdtRentCompanyAblearea(ServiceMessage message);      // 회원사 배달위치 등록
+
+    void selectCdtRentCompanyAblearea(ServiceMessage message);      // 회원사 배달위치 조회
+
     void insertRentCompanyReserveMinList(ServiceMessage message);   // 회원사별 최소 예약시간 정보 조회
 
     void selectRentCompanyReserveMinList(ServiceMessage message);   // 회원사별 최소 예약시간 정보 조회

@@ -26,6 +26,7 @@ import com.ohdocha.admin.domain.reserve.reserveInfoMnt.DochaAdminReserveInfoRequ
 import com.ohdocha.admin.domain.reserve.reserveInfoMnt.DochaRentCompanyDto;
 import com.ohdocha.admin.exception.BadRequestException;
 import com.ohdocha.admin.mapper.*;
+import com.ohdocha.admin.util.DochaMap;
 import com.ohdocha.admin.util.FileHelper;
 import com.ohdocha.admin.util.ServiceMessage;
 import lombok.AllArgsConstructor;

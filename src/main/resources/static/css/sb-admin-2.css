@@ -5805,6 +5805,11 @@ a.close.disabled {
     max-width: 500px;
     margin: 1.75rem auto;
   }
+
+  .modal-dialog-select{
+    max-width: 800px; !important;
+  }
+
   .modal-dialog-scrollable {
     max-height: calc(100% - 3.5rem);
   }

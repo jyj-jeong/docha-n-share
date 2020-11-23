@@ -8,6 +8,7 @@ import com.ohdocha.admin.domain.car.plan.periodplansetting.DochaAdminPeriodPlanS
 import com.ohdocha.admin.domain.car.regcar.DochaAdminRegCarDetailRequest;
 import com.ohdocha.admin.domain.reserve.reserveInfoMnt.DochaAdminReserveInfoRequest;
 import com.ohdocha.admin.service.CarService;
+import com.ohdocha.admin.util.DochaMap;
 import com.ohdocha.admin.util.ServiceMessage;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +32,9 @@ public class CarController extends ControllerExtension {
     public String regCarList(HttpServletRequest request, ModelMap modelMap) {
         ServiceMessage serviceMessage = createServiceMessage(request)
                 .addData("rtIdx", getLoginUserRtIdx(request));
+        DochaMap loginUser = (DochaMap) request.getSession().getAttribute("LOGIN_SESSION");
+
+        serviceMessage.addData("loginUser", loginUser);
 
         carService.regCarList(serviceMessage);
 

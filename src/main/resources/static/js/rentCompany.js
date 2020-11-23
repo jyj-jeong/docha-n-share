@@ -454,6 +454,16 @@ function initDetailInfo(seq) {
 		// 200이라면 페이징을 구한다.
 		if (res.code === 200) {
 
+			if (getLoginUser().userRole !== 'RA'){
+				$('#companyName').attr('readonly', true);
+				$('#branchName').attr('readonly', true);
+				$('#companyRegistrationName').attr('readonly', true);
+				$('#companyRegistrationNumber').attr('readonly', true);
+				$('#companyAddress').attr('readonly', true);
+				$('#companyAddressDetail').attr('readonly', true);
+				$('#commissionPer').attr('readonly', true);
+			}
+
 //			CRUD = 'modify';
 			MCRUD = 'insert';
 			RMCRUD = 'insert';
@@ -663,6 +673,10 @@ function initDetailInfo(seq) {
 			errorAlert('조회중 에러가 발생했습니다. \r\n 관리자에게 문의하세요.');
 		}
 	});// end fn_callApi
+}
+
+function drawDeliveryTable() {
+
 }
 
 function staffListGrid(_rtIdx) {
@@ -1786,6 +1800,150 @@ $('#holidayList').on("click", "tbody tr ", function () {
 
 
 });
+
+/*
+* 대여위치, 반납위치 선택 */
+function selectLocation(type) {
+
+	var req = {};
+
+	var target = 'addressDivision';
+	var method = 'select';
+
+	fn_callApi(method, target, req, function (response) {
+
+		var data = response;
+
+		var strOption = "";
+		for ( var i=0; i<data.length; i++ ) {
+			let addDo = data[i].addDo;
+
+			strOption += "<option value = '" + addDo + "'>" + addDo + "</option>";
+		}
+		$('select[name=sel_addDo]').empty();
+		$('select[name=sel_addDo]').append(strOption);
+	});
+
+	$('#selectedLocationTable tbody tr').empty();
+	if(type === 'S'){
+		$('#selectLocationModal').modal('show');
+	}else if (type === 'L'){
+		$('#selectLocationModal2').modal('show');
+
+	}
+}
+
+
+function selectLocationDetail(type) {
+
+	var req = {};
+	var addLi;
+
+	if (type === 'selectDo'){
+
+		$('select[name=sel_addDong]').empty();
+		$('select[name=sel_addLi]').empty();
+
+		req = {
+			addDo: $('select[name=sel_addDo]').val()
+		}
+	}else if(type === 'selectSi'){
+
+		$('select[name=sel_addLi]').empty();
+
+		req = {
+			addSi: $('select[name=sel_addSi]').val()
+		}
+	}else if(type === 'selectDong'){
+		req = {
+			addDong: $('select[name=sel_addDong]').val()
+		}
+	}
+
+	var target = 'addressDetailDivision';
+	var method = 'select';
+
+	fn_callApi(method, target, req, function (response) {
+
+		var data = response;
+
+		var strOption = "";
+		for ( var i=0; i<data.length; i++ ) {
+			var addressDivision;
+
+			if(type === 'selectDo'){
+				addressDivision = data[i].addSi === '' ? '전체' : data[i].addSi;
+			}else if (type === 'selectSi'){
+				addressDivision = data[i].addDong === ''? '전체' : data[i].addDong;
+			}else if (type === 'selectDong'){
+				addressDivision = data[i].addLi === '' ? '전체' : data[i].addLi;
+			}
+
+			strOption += "<option value = '" + addressDivision + "'>" + addressDivision + "</option>";
+		}
+
+		if(type === 'selectDo'){
+			$('select[name=sel_addSi]').empty();
+			$('select[name=sel_addSi]').append(strOption);
+		}else if(type === 'selectSi'){
+			$('select[name=sel_addDong]').empty();
+			$('select[name=sel_addDong]').append(strOption);
+		}else if(type === 'selectDong'){
+			$('select[name=sel_addLi]').empty();
+			$('select[name=sel_addLi]').append(strOption);
+		}
+	});
+
+}
+
+function saveDeliveryLocation(type){
+	var req = [];
+	var size = $('#selectedLocationTable > tbody')[0].children.length;
+	var deliveryLocation = $('#selectedLocationTable tbody tr');
+
+	for (var i = 0 ; i < size; i++) {
+		var selectedText = deliveryLocation.eq(i).text();
+		selectedText = selectedText.substr(0, selectedText.length - 1);
+		var list = selectedText.split(' ');
+
+		var addDo = list[0];
+		var addSi = list[1];
+		var addDong = list[2];
+		var addLi = list[3];
+		var fullLocation = selectedText;
+
+		var data = {
+			rtIdx: getLoginUser().rtIdx,
+			addrDepth1: addDo,
+			addrDepth2: addSi,
+			addrDepth3: addDong,
+			addrDepth4: addLi,
+			ra_gbn_code: type,
+			regId: getLoginUser().urIdx,
+			regDt: today
+			// raGbnLt:,
+			// raGbnSt:,
+		};
+
+		req.push(data);
+	}
+
+	var target = 'insertCdtRentCompanyAblearea';
+	var method = 'insert';
+
+	fn_callApi(method, target, req, function (response) {
+
+		var data = response;
+		if (data.code === 200){
+			swal("저장 성공", {icon : "success"});
+		}else {
+			errorAlert('저장 실패', '관리자에게 문의하세요.');
+
+		}
+
+	});
+
+}
 
 // input box auto hypen
 $("input#staffContact1").click(function () {

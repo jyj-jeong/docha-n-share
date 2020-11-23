@@ -55,7 +55,8 @@
                         <input type="hidden" id="ulIdx1" />
                         <span class="top-right">
                                     <div class="position-relative form-check mb-3">
-                                        <label class="form-check-label">
+                                        <label th:if="${session.LOGIN_SESSION.userRole.equals('RA')}"
+                                               class="form-check-label">
                                             <input type="checkbox" class="form-check-input" id="DriverSettingchk" onchange="firstDriverSetting('DriverSettingchk');" />예약자와 동일
                                         </label>
                                     </div>
@@ -198,7 +199,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-12 float-l flex-1 text-right p-b-10">
+                        <div th:if="${session.LOGIN_SESSION.userRole.equals('RA')}" class="col-lg-12 float-l flex-1 text-right p-b-10">
                             <button class="btn btn-secondary ml-3" type="button">예약취소 및 환불</button>
                         </div>
                     </div>
@@ -241,7 +242,7 @@
                                 <input type="text" class="form-control" id="colorName" value="">
                             </div>
                             <div class="col-lg-3 float-l" style="flex:1;">
-                                <label>누적</label>
+                                <label>누적(km)</label>
                                 <input type="text" class="form-control" id="mileage" value="">
                             </div>
                         </div>
@@ -335,7 +336,7 @@
                         </div>
                     </div>
                     <div class="text-right">
-                        <button id="btnReverse" class="btn btn-primary" type="button" onclick="reverse()">역경매 이동</button>
+                        <button id="btnReverse" th:if="${session.LOGIN_SESSION.userRole.equals('RA')}" class="btn btn-primary" type="button" onclick="reverse()">역경매 이동</button>
                         <button id="btnSave" class="btn btn-primary" type="button" onclick="detailValidation()">저장</button>
                         <button id="btnClose" class="btn btn-primary" type="button" onclick="self.close()">창 닫기</button>
                         <button id="btnReturn" class="btn btn-primary" type="button" onclick="self.close()">반납</button>

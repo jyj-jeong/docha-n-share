@@ -10,7 +10,7 @@ import java.util.*;
 
 /**
  * <pre>
- * CarssumMap
+ * DochaMap
  * </pre>
  *
  * @author pws

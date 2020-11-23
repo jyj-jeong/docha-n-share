@@ -204,7 +204,7 @@
 
 	<update id="updateMatchingCompanyServiceInfo" parameterType="matchingCompanyRequest">
 		UPDATE DC_QUOTE_RENT_COMPANY
-		SET    MOD_DT = SYSDATE
+		SET    MOD_DT = NOW()
 		<if test =" modId != null and modId != '' ">
 			,      MOD_ID = #{modId}
 		</if>
@@ -251,7 +251,7 @@
       , #{deliveryStandardPay}
       , #{monthlyStandardPay}
       , #{regId}
-      , SYSDATE
+      , NOW()
       )
    ]]>
    </insert>

@@ -23,7 +23,7 @@
 		<typeAlias type="java.lang.Integer" alias="int" />
 		<typeAlias type="java.lang.Long" alias="long" />
 		<typeAlias type="java.lang.String" alias="string" />
-		<typeAlias type="com.ohdocha.admin.util.DochaMap" alias="CarssumMap" />
+		<typeAlias type="com.ohdocha.admin.util.DochaMap" alias="DochaMap" />
 
 		<!-- 통합회원 alias 등록 -->
 		<typeAlias type="com.ohdocha.admin.domain.user.DochaAdminUserInfoRequest" alias="userInfoRequest" />
@@ -122,6 +122,9 @@
 		<!--  공통코드  속성 -->
 		<typeAlias type="com.ohdocha.admin.domain.common.code.DochaAdminCommonCodeRequest"  alias="commonCodeRequest"/>
 		<typeAlias type="com.ohdocha.admin.domain.common.code.DochaAdminCommonCodeResponse" alias="commonCodeResponse"/>
+
+		<typeAlias type="com.ohdocha.admin.domain.common.DochaAdminAddressInfoRequest"  alias="addressInfoRequest"/>
+		<typeAlias type="com.ohdocha.admin.domain.common.DochaAdminAddressInfoResponse" alias="addressInfoResponse"/>
 
 		<typeAlias type="com.ohdocha.admin.domain.user.DochaAdminUserInfoUserLicenseInfoRequest" alias="userLicenseInfoRequest" />
 		<typeAlias type="com.ohdocha.admin.domain.user.DochaAdminUserInfoUserLicenseInfoResponse" alias="userLicenseInfoResponse" />

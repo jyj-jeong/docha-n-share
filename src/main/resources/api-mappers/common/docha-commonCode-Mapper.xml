@@ -38,8 +38,46 @@
 	     		<![CDATA[ AND DESCRIPT = #{descript} ]]>
 	        </if>
        	</trim>						  		
-	</select>    
-	
+	</select>
+
+	<!-- 지역 (광역시/도) 리스트  -->
+	<select id="selectAddressInfo"  parameterType="addressInfoRequest"
+			resultType="addressInfoResponse">
+		<![CDATA[
+					SELECT IFNULL(ADD_IDX     , '' ) AS ADD_IDX
+					, IFNULL(ADD_DO     , '' ) AS ADD_DO
+					FROM DC_ADDRESS_DIVISION
+         ]]>
+		<![CDATA[ GROUP BY ADD_DO ]]>
+	</select>
+
+	<!-- 지역 (선택 상세) 리스트  -->
+	<select id="selectAddressDetailInfo"  parameterType="addressInfoRequest"
+			resultType="addressInfoResponse">
+		<![CDATA[
+					SELECT IFNULL(ADD_IDX     , '' ) AS ADD_IDX
+					, IFNULL(ADD_DO     , '' ) AS ADD_DO
+					, IFNULL(ADD_SI     , '' ) AS ADD_SI
+					, IFNULL(ADD_DONG     , '' ) AS ADD_DONG
+					, IFNULL(ADD_LI     , '' ) AS ADD_LI
+					FROM DC_ADDRESS_DIVISION
+         ]]>
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="addDo != null and addDo != ''">
+				<![CDATA[ AND ADD_DO = #{addDo} GROUP BY ADD_SI]]>
+			</if>
+			<if test="addSi != null and addSi != ''">
+				<![CDATA[ AND ADD_SI = #{addSi} GROUP BY ADD_DONG]]>
+			</if>
+			<if test="AddDong != null and AddDong != ''">
+				<![CDATA[ AND ADD_DONG = #{AddDong} GROUP BY ADD_LI ]]>
+			</if>
+			<if test="addLi != null and addLi != ''">
+				<![CDATA[ AND ADD_LI = #{addLi} ]]>
+			</if>
+		</trim>
+	</select>
+
 	<update id="updateCommonCodeInfo" parameterType="commonCodeRequest" >
 		<![CDATA[  UPDATE DC_COMMON_CODE  ]]>
 			<trim prefix="SET" suffixOverrides=",">

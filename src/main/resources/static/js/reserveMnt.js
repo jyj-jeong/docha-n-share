@@ -401,6 +401,24 @@ function initDetailInfo(seq){
          * 차량별차종 select box
          */
         initDetailSelectBox(data);
+        if (getLoginUser().userRole !== 'RA'){
+            $('#reserveUserName').attr('readonly', true);
+            $('#reserveUserId').attr('readonly', true);
+            $('#reserveUserContact1').attr('readonly', true);
+            $('#reserveUserBirthDay').attr('option','readonly', true);
+
+            $('#firstDriverName').attr('readonly', true);
+            $('#firstDriverContact').attr('readonly', true);
+            $('#firstDriverBirthDay').unbind('click');
+            $('#sel_firstDriverLicenseCode').attr('disabled', 'disabled');
+            $('#firstDriverLicenseNumber').attr('readonly', true);
+            $('#firstDriverExpirationDate').attr('disabled', 'disabled');
+            $('#firstDriverLicenseIsDate').attr('disabled', 'disabled');
+
+            $('#staffName').attr('readonly', true);
+            $('#staffContact1').attr('readonly', true);
+
+        }
 
         let urIdx = nullCheck(data.urIdx);
         let reserveUserName = nullCheck(data.reserveUserName);
@@ -413,7 +431,7 @@ function initDetailInfo(seq){
         $("#reserveUserName").val(reserveUserName);
         $("#reserveUserId").val(reserveUserEmail);
         $("#reserveUserContact1").val(reserveUserContact1);
-        initDatePicker('reserveUserBirthday' , reserveUserBirthday);
+        initDatePicker('reserveUserBirthDay' , reserveUserBirthday);
 
         // 운전자 정보
 //			let userFlag = nullCheck(data.;
@@ -579,13 +597,13 @@ function initDetailSelectBox(_data){
 
     req = {};
 
-    if(GLOBAL_LOGIN_USER_ROLE === 'MA'){
+    if(getLoginUser().userRole === 'MA'){
         req = {
-            rtPIdx : GLOBAL_LOGIN_USER_RTIDX
+            rtPIdx : getLoginUser().rtIdx
         }
-    }else if (GLOBAL_LOGIN_USER_ROLE === 'MU'){
+    }else if (getLoginUser().userRole === 'MU'){
         req = {
-            rtIdx : GLOBAL_LOGIN_USER_RTIDX
+            rtIdx : getLoginUser().rtIdx
         }
     }
 
@@ -609,8 +627,8 @@ function initDetailSelectBox(_data){
         $('select[name=companyName]').append(strOption);
 
         if (CRUD === 'insert'){
-            if (GLOBAL_LOGIN_USER_ROLE === 'MU'){
-                $("select[name=companyName]").val(GLOBAL_LOGIN_USER_RTIDX).prop("selected", true);
+            if (getLoginUser().userRole === 'MU'){
+                $("select[name=companyName]").val(getLoginUser().rtIdx).prop("selected", true);
             }
         }else {
             if(!isEmpty(_data)){
@@ -1314,9 +1332,6 @@ function settingInputStatus(){
         $('#reserveUserContact1').attr('readonly', true);
         $('#reserveUserBirthday').attr('readonly', true);
 
-        if(GLOBAL_LOGIN_USER_ROLE != 'RA'){
-            $('#companyName').attr('disabled', true);
-        }
         $('#sel_fuel').attr('disabled', true);
         $("#sel_reserveTypeCode").attr('disabled', true);
 

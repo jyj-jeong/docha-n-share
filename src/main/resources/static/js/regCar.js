@@ -391,6 +391,15 @@ function initDetailInfo(seq){
 //		return;
 //	}
 
+	var currentYear = new Date().getFullYear();
+	var strOption = '';
+	for(var i = 7; i >= 0; i--){
+		strOption += "<option value = '" + (currentYear-i) + "'>" + (currentYear-i) + "</option>";
+	}
+	strOption += "<option value = '" + (currentYear+1) + "'>" + (currentYear+1) + "</option>";
+	$('select[name="year"]').append(strOption);
+	$('select[name="carRegDt"]').append(strOption);
+
 	// input box 초기화
 	initInput();
 
@@ -492,11 +501,11 @@ function initDetailInfo(seq){
 		$('#regCarTitle').text('차량등록 - ' + companyName + ' / ' + branchName);
 		$("#crIdx").val(crIdx);
 		$("#carNumber").val(carNumber);
-		$("#year").val(year);
+		$('select[name="year"]').val(year);
 		$("#colorName").val(colorName);
 		$("#mileage").val(mileage);
 		$("#carChassisNumber").val(carChassisNumber);
-		$("#carRegDt").val(carRegDt);
+		$('select[name="carRegDt"]').val(carRegDt);
 		$("#ageLimit").val(ageLimit);
 
 		$("#carNumber").attr('readonly', true);
@@ -1084,8 +1093,8 @@ function detailValidation(save_type){
 				let companyName 		= _rtIdx;
 				let carNumber 			= $("#carNumber").val();
 				let carChassisNumber 	= $("#carChassisNumber").val();
-				let year 				= $("#year").val();
-				let carRegDt 			= $("#carRegDt").val();
+				let year 				= $("#year option:selected").val();
+				let carRegDt 				= $("#carRegDt option:selected").val();
 				let modelName 			= $("#sel_modelName").val();
 				let modelDetailName 	= $("#sel_modelDetailName option:selected").text();
 				let mdIdx 				= $("#sel_modelDetailName").val();
@@ -1145,10 +1154,7 @@ function detailValidation(save_type){
 //				errorAlert('차량정보', '차량대번호는 필수 입력값 입니다.');
 //				return;
 //			}
-				if (getPureText(carRegDt).length !== 6) { // is not empty
-					errorAlert('차량정보', '출고연식은 YYYY-MM 형식으로 입력하여 주세요.');
-					return;
-				}
+
 				if (isEmpty(mileage)) { // is not empty
 					mileage = '0';
 				}
@@ -1546,6 +1552,17 @@ function initDetailData(data){
 	}else{
 		CRUD_METHOD = '';
 	}
+
+	var currentYear = new Date().getFullYear();
+	var str = '';
+	for(var i = 7; i >= 0; i--){
+		str += "<option value = '" + (currentYear-i) + "'>" + (currentYear-i) + "</option>";
+	}
+	str += "<option value = '" + (currentYear+1) + "'>" + (currentYear+1) + "</option>";
+	$('select[name="year"]').append(str);
+	$('select[name="carRegDt"]').append(str);
+
+
 
 	// 모델 상세 초기화
 	let strOption = "";

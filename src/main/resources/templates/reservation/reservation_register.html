@@ -214,7 +214,10 @@
                             <div class="col-lg-12 float-l flex-1" >
                                 <label>대여위치</label>
                                 <div class="input-group">
-                                    <input type="text"  class="form-control" placeholder="주소"  id="deliveryAddr">
+                                    <input type="text" class="form-control" id="deliveryAddr"  placeholder=""/>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" onclick="openDaumAddrApi('deliveryAddr');" >주소찾기</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -222,7 +225,10 @@
                             <div class="col-lg-12 float-l flex-1" >
                                 <label>반납위치</label>
                                 <div class="input-group">
-                                    <input type="text"  class="form-control" placeholder="주소"  id="returnAddr">
+                                    <input type="text" id="returnAddr" class="form-control" value=""  />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" onclick="openDaumAddrApi('returnAddr');">주소찾기</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>

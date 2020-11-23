@@ -60,7 +60,7 @@
                                             <label>주소</label>
                                             <div class="input-group">
                                                 <input type="text"  class="form-control" placeholder="주소"  id="companyAddress">
-                                                <div class="input-group-append">
+                                                <div th:if="${session.LOGIN_SESSION.userRole.equals('RA')}" class="input-group-append">
                                                     <button class="btn btn-primary" onclick="openDaumAddrApi('companyAddress');" >주소찾기</button>
                                                 </div>
                                             </div>
@@ -212,7 +212,7 @@
                                     </div> -->
                                     <div class="col-lg-12 mt-2 float-l text-right">
                                         <div class="p-t-30">
-                                            <button class="btn btn-primary" type="button" onclick="detailValidation('updateCommission');">수수료정보 저장</button>
+                                            <button class="btn btn-primary" th:if="${!session.LOGIN_SESSION.userRole.equals('MU')}" type="button" onclick="detailValidation('updateCommission');">수수료정보 저장</button>
                                             <!-- <button class="btn btn-danger" type="button" >취소</button> -->
                                         </div>
                                     </div>
@@ -396,20 +396,59 @@
                                 <div class="input-group">
                                     <input type="text" class="form-control"  id="raGbnSt">
                                     <div class="input-group-append">
-                                        <button class="btn btn-primary" type="button" onclick="setDeliveryLocation('ST')">일대여 설정하기</button>
+                                        <button class="btn btn-primary" type="button" onclick="selectLocation('S')">일대여 설정하기</button>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="stDataTable">
+                                    <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>도/시</th>
+                                        <th>시/군/구</th>
+                                        <th>읍/면/동</th>
+                                        <th>리</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <!--                                        <tr th:each="rentCompany, index : ${result}" style="cursor: pointer" th:data-value="${rentCompany.getRtIdx()}">-->
+                                    <!--                                            <td th:text="${index.count}"></td>-->
+                                    <!--                                            <td th:text="${rentCompany.getRtIdx()}"></td>-->
+                                    <!--                                            <td th:text="${rentCompany.getCompanyName()}"></td>-->
+                                    <!--                                        </tr>-->
+                                    </tbody>
+                                </table>
                             </div>
                             <div class="col-lg-6 mb-3 float-l flex-1">
                                 <label>월대여</label>
                                 <div class="input-group">
                                     <input type="text" class="form-control"  id="raGbnLt">
                                     <div class="input-group-append">
-                                        <button class="btn btn-primary" type="button" onclick="setDeliveryLocation('LT')">월대여 설정하기</button>
+                                        <button class="btn btn-primary" type="button" onclick="selectLocation('L')">월대여 설정하기</button>
                                     </div>
                                 </div>
                             </div>
-
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="ltDataTable">
+                                    <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>도/시</th>
+                                        <th>시/군/구</th>
+                                        <th>읍/면/동</th>
+                                        <th>리</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <!--                                        <tr th:each="rentCompany, index : ${result}" style="cursor: pointer" th:data-value="${rentCompany.getRtIdx()}">-->
+                                    <!--                                            <td th:text="${index.count}"></td>-->
+                                    <!--                                            <td th:text="${rentCompany.getRtIdx()}"></td>-->
+                                    <!--                                            <td th:text="${rentCompany.getCompanyName()}"></td>-->
+                                    <!--                                        </tr>-->
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div><!-- end 왕복 배달지역 설정-->
                     <div class="main-card mb-3 card">
@@ -462,10 +501,184 @@
         </div>
     </div>
 </div>
+
+
+<!-- Select Locaion Modal-->
+<div id="selectLocationModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="selectLocationModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-select modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="classModalLabel">
+                    배달 지역 선택
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    ×
+                </button>
+            </div>
+            <div class="modal-body">
+                <table id="classTable" class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>도/시</th>
+                        <th>시/군/구</th>
+                        <th>읍/면/동</th>
+                        <th>리</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <select class="LocationSelect" id="sel_addDo" name="sel_addDo" size="20" onchange="selectLocationDetail('selectDo')" ></select>
+                        </td>
+                        <td>
+                            <select class="LocationSelect" id="sel_addSi" name="sel_addSi" size="20" onchange="selectLocationDetail('selectSi')"></select>
+                        </td>
+                        <td>
+                            <select class="LocationSelect" id="sel_addDong" name="sel_addDong" size="20" onchange="selectLocationDetail('selectDong')"></select>
+                        </td>
+                        <td>
+                            <select class="LocationSelect" id="sel_addLi" name="sel_addLi" size="20" multiple></select>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div class="text-right">
+                    <button id="btnSelectedAddSave" type="button" class="btn btn-primary">배달 지역 추가하기</button>
+                </div>
+
+                <table id="selectedLocationTable"  class="table table-bordered mt-4">
+                    <thead>
+                    <tr>
+                        <th>선택 지역</th>
+                        <th class="text-center" width="40px">x</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="modal-footer">
+                <button onclick="saveDeliveryLocation('S')" type="button" class="btn btn-primary">저장</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">창닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Select Locaion Modal 2 -->
+<div id="selectLocationModal2" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="selectLocationModal2" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-select modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="classModalLabel">
+                    배달 지역 선택
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    ×
+                </button>
+            </div>
+            <div class="modal-body">
+                <table id="classTable" class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>도/시</th>
+                        <th>시/군/구</th>
+                        <th>읍/면/동</th>
+                        <th>리</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <select class="LocationSelect" id="sel_addDo" name="sel_addDo" size="20" onchange="selectLocationDetail('selectDo')" ></select>
+                        </td>
+                        <td>
+                            <select class="LocationSelect" id="sel_addSi" name="sel_addSi" size="20" onchange="selectLocationDetail('selectSi')"></select>
+                        </td>
+                        <td>
+                            <select class="LocationSelect" id="sel_addDong" name="sel_addDong" size="20" onchange="selectLocationDetail('selectDong')"></select>
+                        </td>
+                        <td>
+                            <select class="LocationSelect" id="sel_addLi" name="sel_addLi" size="20" multiple></select>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div class="text-right">
+                    <button id="btnSelectedAddSave" type="button" class="btn btn-primary">배달 지역 추가하기</button>
+                </div>
+
+                <table id="selectedLocationTable"  class="table table-bordered mt-4">
+                    <thead>
+                    <tr>
+                        <th>선택 지역</th>
+                        <th class="text-center" width="40px">x</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="modal-footer">
+                <button onclick="saveDeliveryLocation('L')" type="button" class="btn btn-primary">저장</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">창닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script th:inline="javascript">
 
     rtIdx = /*[[${rtIdx}]]*/'';
     CRUD = /*[[${CRUD}]]*/'';
+
+    var stTable = $('#stDataTable').DataTable( {
+        language: {
+            emptyTable: "데이터가 존재하지 않습니다.",
+            lengthMenu: "페이지당 _MENU_ 개씩 보기",
+            info: "현재 _START_ - _END_ / _TOTAL_건",
+            infoEmpty: "0 건",
+            infoFiltered: "( _MAX_건의 데이터에서 필터링됨 )",
+            search: "검색: ",
+            zeroRecords: "일치하는 데이터가 존재하지 않습니다.",
+            loadingRecords: "로딩중...",
+            processing:     "잠시만 기다려 주세요...",
+            paginate: {
+                next: "다음",
+                previous: "이전"
+            }
+        },
+        pageMenu: 10,
+        dom : 'ftp',
+        orderMulti: true
+    } );
+
+    var ltTable = $('#ltDataTable').DataTable( {
+        language: {
+            emptyTable: "데이터가 존재하지 않습니다.",
+            lengthMenu: "페이지당 _MENU_ 개씩 보기",
+            info: "현재 _START_ - _END_ / _TOTAL_건",
+            infoEmpty: "0 건",
+            infoFiltered: "( _MAX_건의 데이터에서 필터링됨 )",
+            search: "검색: ",
+            zeroRecords: "일치하는 데이터가 존재하지 않습니다.",
+            loadingRecords: "로딩중...",
+            processing:     "잠시만 기다려 주세요...",
+            paginate: {
+                next: "다음",
+                previous: "이전"
+            }
+        },
+        pageMenu: 10,
+        dom : 'ftp',
+        orderMulti: true
+    } );
 
     function getLoginUser() {
         return /*[[${session.LOGIN_SESSION}]]*/ '';
@@ -476,6 +689,38 @@
     }else if (CRUD === "modify"){
         initDetailInfo(rtIdx)
     }
+
+    $('.modal #btnSelectedAddSave').click(function () {
+        var addDo = $('#sel_addDo').val() === null ? '' : $('#sel_addDo').val();
+        var addSi = $('#sel_addSi').val() === null ? '' : $('#sel_addSi').val();
+        var addDong = $('#sel_addDong').val() === null ? '' : $('#sel_addDong').val();
+        var addLi = $('#sel_addLi').val() === null ? '' : $('#sel_addLi').val();
+
+        var selectedLocation;
+
+        var strOption = '';
+        if (addLi.length === 0){
+            selectedLocation = addDo + ' ' + addSi + ' ' + addDong + ' ' + addLi + ' ';
+
+            strOption += '<tr><td>' + selectedLocation + '</td>' +
+                '<td><button id="deleteSelectedLocation" class="btn">x</button></td></tr>';
+        }else {
+            for (var i=0; i < addLi.length; i++){
+                selectedLocation = addDo + ' ' + addSi + ' ' + addDong + ' ' + addLi[i] + ' ';
+
+                strOption += '<tr><td>' + selectedLocation + '</td><td><button id="deleteSelectedLocation" class="btn">x</button></td></tr>';
+            }
+        }
+
+        $('#selectedLocationTable tbody').append(strOption);
+    });
+
+
+    $(document).on('click' , '#deleteSelectedLocation', function () {
+        var deleteData = this.parentElement.parentElement;
+        deleteData.remove();
+    });
+
 
     var minimumStartDt = new WinkelCalendar({
         container: 'minimumStartDt',
