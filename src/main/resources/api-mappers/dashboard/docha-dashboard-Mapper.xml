@@ -65,31 +65,6 @@
 
 
 	</select>
-
-	<select id="selectQnACnt" parameterType="DochaMap" resultType="DochaMap">
-
-			SELECT IFNULL(COUNT(UR_IDX) , '0') AS CNT                              /* 매출 SUM */
-			FROM   DC_USER_INFO
-			WHERE  USER_ROLE IN('RU')
-
-			UNION ALL
-			SELECT IFNULL(COUNT(RT_IDX) , '0')
-			FROM   DC_RENT_COMPANY                                          /* 예약 SUM */
-
-			UNION ALL
-			SELECT IFNULL(COUNT(QU_IDX) , '0')
-			FROM   DC_QUOTE_USER
-			WHERE DATE_FORMAT(REG_DT , '%Y%m%d') = DATE_FORMAT(NOW() , '%Y%m%d')         /* 누적월차 SUM */
-
-			UNION ALL
-			SELECT COUNT(RM_IDX)
-			FROM   DC_RESERVE_MASTER
-			WHERE DATE_FORMAT(REG_DT , '%Y%m%d') = DATE_FORMAT(NOW() , '%Y%m%d')        /* 취소 건수 SUM */
-
-			UNION ALL
-			SELECT IFNULL(COUNT(QU_IDX)  , '0') as QnA
-			FROM   DC_QUESTION                                                          /* QnA SUM */
-
 </mapper>
 
 
