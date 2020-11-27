@@ -4,21 +4,19 @@ import com.ohdocha.admin.domain.common.DochaAdminAddressInfoRequest;
 import com.ohdocha.admin.domain.common.DochaAdminAddressInfoResponse;
 import com.ohdocha.admin.domain.common.code.DochaAdminCommonCodeRequest;
 import com.ohdocha.admin.domain.common.code.DochaAdminCommonCodeResponse;
-import com.ohdocha.admin.domain.user.DochaAdminDcUserInfoRequest;
-import com.ohdocha.admin.domain.user.DochaAdminDcUserInfoResponse;
-import com.ohdocha.admin.exception.BadRequestException;
 import com.ohdocha.admin.mapper.DochaAdminCommonCodeMapper;
 import com.ohdocha.admin.mapper.DochaAdminDashboardMapper;
-import com.ohdocha.admin.mapper.DochaAdminLoginMapper;
 import com.ohdocha.admin.util.DochaMap;
 import com.ohdocha.admin.util.ServiceMessage;
-import com.ohdocha.admin.util.TextUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpSession;
-import java.util.List;
+import java.text.DateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 @Slf4j
 @AllArgsConstructor
@@ -30,15 +28,58 @@ public class MainServiceImpl extends ServiceExtension implements MainService {
 
     @Override
     public void summaryRentCompanyInfo(ServiceMessage message) {
-        // todo admin 권한 별 count
-        DochaMap resData = new DochaMap();
-        DochaMap loginUser = message.getObject("loginUser", DochaMap.class);
 
-        if (loginUser.get("userRole").equals("RA")){
-            List<DochaMap> dashboardData = dashboardMapper.selectDochaDashboardList(loginUser);
+        /* 메인화면 카운트 */
+        Integer calcDailySales = dashboardMapper.calcDailySales();
+        int calcMonthlySales = dashboardMapper.calcMonthlySales();
 
-            message.addData("result", resData);
+        int cntDailyReserve = dashboardMapper.cntDailyReserve();
+        int cntMontlyyReserve = dashboardMapper.cntMontlyyReserve();
+
+        // todo 누적월차
+
+        int cntDailyCancel = dashboardMapper.cntDailyCancel();
+        int cntMonthlyCancel = dashboardMapper.cntMonthlyCancel();
+
+        int cntQnA = dashboardMapper.cntQnA();
+
+        message.addData("calcDailySales", calcDailySales);
+        message.addData("calcMonthlySales", calcMonthlySales);
+
+        message.addData("cntDailyReserve", cntDailyReserve);
+        message.addData("cntMontlyyReserve", cntMontlyyReserve);
+
+        message.addData("cntDailyCancel", cntDailyCancel);
+        message.addData("cntMonthlyCancel", cntMonthlyCancel);
+
+        message.addData("cntQnA", cntQnA);
+
+
+        /* 메인화면 그래프 */
+        DochaMap reqParam = new DochaMap();
+
+        LocalDateTime baseDateTime = LocalDateTime.now();
+        LocalDateTime beforeOneWeek = baseDateTime.minusWeeks(1);
+
+        String startTime = beforeOneWeek.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        String endTime = baseDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+        reqParam.put("startTime", startTime);
+        reqParam.put("endTime", endTime);
+
+        List<Map<String,Object>> salesGraphList = dashboardMapper.salesGraph(reqParam);
+        LinkedHashMap<Integer, Integer> salesGraphDatas = new LinkedHashMap<>();
+
+        for (Map<String, Object> data : salesGraphList) {
+            int amount = (int)((double)(data.get("amount")));
+            int salesCount = (int)((long)(data.get("salesCount")));
+
+            salesGraphDatas.put(amount, salesCount);
         }
+
+        message.addData("amountList", salesGraphDatas.keySet());
+        message.addData("salesCountList", salesGraphDatas.values().toArray());
+
     }
 
     @Override

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
 <head th:replace="header :: mainHead"></head>
 <head>
     <title th:if="${CRUD == 'insert'}">회원사 등록 :: DoCha Admin Web</title>
@@ -9,6 +10,7 @@
 
 </head>
 <body id="page-top">
+
 
 <!-- Page Wrapper -->
 <div id="wrapper">
@@ -401,25 +403,24 @@
                                 </div>
                             </div>
                             <div class="table-responsive">
+
                                 <table class="table table-bordered" id="stDataTable">
                                     <thead>
                                     <tr>
-                                        <th>No</th>
+                                        <th></th>
                                         <th>도/시</th>
                                         <th>시/군/구</th>
                                         <th>읍/면/동</th>
                                         <th>리</th>
+                                        <th></th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <!--                                        <tr th:each="rentCompany, index : ${result}" style="cursor: pointer" th:data-value="${rentCompany.getRtIdx()}">-->
-                                    <!--                                            <td th:text="${index.count}"></td>-->
-                                    <!--                                            <td th:text="${rentCompany.getRtIdx()}"></td>-->
-                                    <!--                                            <td th:text="${rentCompany.getCompanyName()}"></td>-->
-                                    <!--                                        </tr>-->
                                     </tbody>
                                 </table>
                             </div>
+
+
                             <div class="col-lg-6 mb-3 float-l flex-1">
                                 <label>월대여</label>
                                 <div class="input-group">
@@ -433,22 +434,19 @@
                                 <table class="table table-bordered" id="ltDataTable">
                                     <thead>
                                     <tr>
-                                        <th>No</th>
+                                        <th></th>
                                         <th>도/시</th>
                                         <th>시/군/구</th>
                                         <th>읍/면/동</th>
                                         <th>리</th>
+                                        <th></th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <!--                                        <tr th:each="rentCompany, index : ${result}" style="cursor: pointer" th:data-value="${rentCompany.getRtIdx()}">-->
-                                    <!--                                            <td th:text="${index.count}"></td>-->
-                                    <!--                                            <td th:text="${rentCompany.getRtIdx()}"></td>-->
-                                    <!--                                            <td th:text="${rentCompany.getCompanyName()}"></td>-->
-                                    <!--                                        </tr>-->
                                     </tbody>
                                 </table>
                             </div>
+
                         </div>
                     </div><!-- end 왕복 배달지역 설정-->
                     <div class="main-card mb-3 card">
@@ -593,23 +591,23 @@
                     <tbody>
                     <tr>
                         <td>
-                            <select class="LocationSelect" id="sel_addDo" name="sel_addDo" size="20" onchange="selectLocationDetail('selectDo')" ></select>
+                            <select class="LocationSelect" id="sel_addDo2" name="sel_addDo" size="20" onchange="selectLocationDetail('selectDo2')" ></select>
                         </td>
                         <td>
-                            <select class="LocationSelect" id="sel_addSi" name="sel_addSi" size="20" onchange="selectLocationDetail('selectSi')"></select>
+                            <select class="LocationSelect" id="sel_addSi2" name="sel_addSi" size="20" onchange="selectLocationDetail('selectSi2')"></select>
                         </td>
                         <td>
-                            <select class="LocationSelect" id="sel_addDong" name="sel_addDong" size="20" onchange="selectLocationDetail('selectDong')"></select>
+                            <select class="LocationSelect" id="sel_addDong2" name="sel_addDong" size="20" onchange="selectLocationDetail('selectDong2')"></select>
                         </td>
                         <td>
-                            <select class="LocationSelect" id="sel_addLi" name="sel_addLi" size="20" multiple></select>
+                            <select class="LocationSelect" id="sel_addLi2" name="sel_addLi" size="20" multiple></select>
                         </td>
                     </tr>
                     </tbody>
                 </table>
 
                 <div class="text-right">
-                    <button id="btnSelectedAddSave" type="button" class="btn btn-primary">배달 지역 추가하기</button>
+                    <button id="btnSelectedAddSave2" type="button" class="btn btn-primary">배달 지역 추가하기</button>
                 </div>
 
                 <table id="selectedLocationTable"  class="table table-bordered mt-4">
@@ -638,6 +636,11 @@
     rtIdx = /*[[${rtIdx}]]*/'';
     CRUD = /*[[${CRUD}]]*/'';
 
+    req = {
+        rtIdx : $('#rtIdx').val() === "" ? '등록' : $('#rtIdx').val(),
+        raGbnCode : 'S'
+    };
+
     var stTable = $('#stDataTable').DataTable( {
         language: {
             emptyTable: "데이터가 존재하지 않습니다.",
@@ -656,8 +659,50 @@
         },
         pageMenu: 10,
         dom : 'ftp',
-        orderMulti: true
+        orderMulti: true,
+        columns: [
+            { data : 'raIdx' },
+            { data : 'addrDepth1' },
+            { data : 'addrDepth2' },
+            { data : 'addrDepth3' },
+            { data : 'addrDepth4' }
+        ],
+        columnDefs: [{
+            targets : [0],
+            data: 'raIdx',
+            visible : false,
+            searchable: false
+        }, {
+            targets : [5],
+            data : null,
+            visible: true,
+            defaultContent : '<button class="btn btn-danger">삭제</button>'
+        }],
+        ajax : {
+            url: '/api/v1.0/selectDcRentCompanyAblearea.json',
+            type: 'POST',
+            contentType : 'application/json',
+            dataType : 'json',
+            data : function () {
+                return JSON.stringify(req);
+            },
+            dataSrc : function (json) {
+                var data = json.result;
+                if (data === null || data === undefined){
+                    data = [];
+                }
+                return data;
+            },
+            error : function (xhr, error, code) {
+                console.log(error);
+            }
+        }
     } );
+
+    var ltReq = {
+        rtIdx : $('#rtIdx').val() === "" ? '등록' : $('#rtIdx').val(),
+        raGbnCode : 'L'
+    };
 
     var ltTable = $('#ltDataTable').DataTable( {
         language: {
@@ -677,8 +722,75 @@
         },
         pageMenu: 10,
         dom : 'ftp',
-        orderMulti: true
+        orderMulti: true,
+        columns: [
+            { data : 'raIdx' },
+            { data : 'addrDepth1' },
+            { data : 'addrDepth2' },
+            { data : 'addrDepth3' },
+            { data : 'addrDepth4' }
+        ],
+        columnDefs: [{
+            targets : [0],
+            data: 'raIdx',
+            visible : false,
+            searchable: false
+        },{
+            targets : [5],
+            data : null,
+            visible : true,
+            defaultContent : '<button class="btn btn-danger">삭제</button>'
+        }],
+        ajax : {
+            url: '/api/v1.0/selectDcRentCompanyAblearea.json',
+            type: 'POST',
+            contentType : 'application/json',
+            dataType : 'json',
+            data : function () {
+                return JSON.stringify(ltReq);
+            },
+            dataSrc : function (json) {
+                var data = json.result;
+                if (data === null || data === undefined){
+                    data = [];
+                }
+                return data;
+            },
+            error : function (xhr, error, code) {
+                console.log(error);
+            }
+        }
     } );
+
+    $('#stDataTable tbody').on('click', 'button', function () {
+        var row = stTable.row( this.parentElement ).data() ;
+        deleteDeliveryLocation(row.raIdx);
+    });
+
+    $('#ltDataTable tbody').on('click', 'button', function () {
+        var row = ltTable.row( this.parentElement ).data();
+        deleteDeliveryLocation(row.raIdx);
+    });
+
+    function deleteDeliveryLocation(raIdx) {
+
+        var req = {
+            raIdx : raIdx
+        };
+        var target = 'deleteDcRentCompanyAblearea';
+        var method = 'delete';
+
+        fn_callApi(method, target, req, function (response) {
+
+            var data = response;
+            if (data.code === 200){
+                location.reload();
+            }else {
+                errorAlert('삭제 실패', '관리자에게 문의하세요.');
+            }
+
+        });
+    }
 
     function getLoginUser() {
         return /*[[${session.LOGIN_SESSION}]]*/ '';
@@ -715,6 +827,30 @@
         $('#selectedLocationTable tbody').append(strOption);
     });
 
+    $('.modal #btnSelectedAddSave2').click(function () {
+        var addDo = $('#sel_addDo2').val() === null ? '' : $('#sel_addDo2').val();
+        var addSi = $('#sel_addSi2').val() === null ? '' : $('#sel_addSi2').val();
+        var addDong = $('#sel_addDong2').val() === null ? '' : $('#sel_addDong2').val();
+        var addLi = $('#sel_addLi2').val() === null ? '' : $('#sel_addLi2').val();
+
+        var selectedLocation;
+
+        var strOption = '';
+        if (addLi.length === 0){
+            selectedLocation = addDo + ' ' + addSi + ' ' + addDong + ' ' + addLi + ' ';
+
+            strOption += '<tr><td>' + selectedLocation + '</td>' +
+                '<td><button id="deleteSelectedLocation" class="btn">x</button></td></tr>';
+        }else {
+            for (var i=0; i < addLi.length; i++){
+                selectedLocation = addDo + ' ' + addSi + ' ' + addDong + ' ' + addLi[i] + ' ';
+
+                strOption += '<tr><td>' + selectedLocation + '</td><td><button id="deleteSelectedLocation" class="btn">x</button></td></tr>';
+            }
+        }
+
+        $('#selectedLocationTable tbody').append(strOption);
+    });
 
     $(document).on('click' , '#deleteSelectedLocation', function () {
         var deleteData = this.parentElement.parentElement;

@@ -703,24 +703,30 @@
 		<![CDATA[ DELETE FROM DC_HOLIDAYS WHERE HOL_IDX = #{holIdx}]]>
 	</delete>
 
+	<!-- 회원사 배달위치 -->
 	<select id="selectDcRentCompanyAblearea" parameterType="DcRentCompanyAbleareaRequest"
 			resultType="DcRentCompanyAbleareaResponse">
 		<![CDATA[
 			SELECT	
-				IFNULL(LAT				, '') AS LAT            /*위도*/
-			, 	IFNULL(LNG          	, '') AS LNG             /*경도*/
+				IFNULL(RA_IDX				, '') AS RA_IDX
+			,	IFNULL(ADDR_DEPTH1				, '') AS ADDR_DEPTH1
+			, 	IFNULL(ADDR_DEPTH2          	, '') AS ADDR_DEPTH2
+			, 	IFNULL(ADDR_DEPTH3          	, '') AS ADDR_DEPTH3
+			, 	IFNULL(ADDR_DEPTH4          	, '') AS ADDR_DEPTH4
+			, 	IFNULL(RA_GBN_CODE          	, '') AS RA_GBN_CODE
+			, 	IFNULL(RA_GBN_ST          	, '') AS RA_GBN_ST
+			, 	IFNULL(RA_GBN_LT          	, '') AS RA_GBN_LT
 			FROM DC_RENT_COMPANY_ABLEAREA
 		  ]]>
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			<![CDATA[	IFNULL(DEL_YN, 'N') = 'N'  ]]>
 			<if test="rtIdx != null and rtIdx != ''">
 				AND <![CDATA[ RT_IDX = #{rtIdx} ]]>
 			</if>
 			<if test="raGbnCode != null and raGbnCode != ''">
 				AND <![CDATA[ RA_GBN_CODE = #{raGbnCode} ]]>
 			</if>
-			order by RA_IDX
 		</trim>
+			<![CDATA[ ORDER BY RA_IDX  ]]>
 	</select>
 
 	<update  id="updateDcRentCompanyAblearea" parameterType="DcRentCompanyAbleareaRequest">
@@ -771,5 +777,10 @@
 			)
 		</foreach>
 	</insert>
+
+	<!-- 회원사 배달위치 DELETE -->
+	<delete  id="deleteRentCompanyAblearea" parameterType="DcRentCompanyAbleareaRequest">
+		<![CDATA[ DELETE FROM DC_RENT_COMPANY_ABLEAREA WHERE RA_IDX = #{raIdx}]]>
+	</delete>
 
 </mapper>

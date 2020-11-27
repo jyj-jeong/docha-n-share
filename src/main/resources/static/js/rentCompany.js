@@ -54,7 +54,7 @@ function loadApi(fnc, page, displayPageNum, division) {
 	GLOBAL_LOGIN_USER_ROLE = 'RA';
 
 	if (GLOBAL_LOGIN_USER_ROLE != 'RA') {
-		_rtIdx = GLOBAL_LOGIN_RT_IDX;
+		_rtIdx = getLoginUser().rtIdx;
 		$("#btnCalculate").hide();
 	}
 
@@ -673,10 +673,6 @@ function initDetailInfo(seq) {
 			errorAlert('조회중 에러가 발생했습니다. \r\n 관리자에게 문의하세요.');
 		}
 	});// end fn_callApi
-}
-
-function drawDeliveryTable() {
-
 }
 
 function staffListGrid(_rtIdx) {
@@ -1825,6 +1821,10 @@ function selectLocation(type) {
 	});
 
 	$('#selectedLocationTable tbody tr').empty();
+
+	$('select[name=sel_addSi]').empty();
+	$('select[name=sel_addDong]').empty();
+
 	if(type === 'S'){
 		$('#selectLocationModal').modal('show');
 	}else if (type === 'L'){
@@ -1841,22 +1841,41 @@ function selectLocationDetail(type) {
 
 	if (type === 'selectDo'){
 
-		$('select[name=sel_addDong]').empty();
-		$('select[name=sel_addLi]').empty();
+		$('select[id=sel_addDong]').empty();
+		$('select[id=sel_addLi]').empty();
 
 		req = {
-			addDo: $('select[name=sel_addDo]').val()
+			addDo: $('select[id=sel_addDo]').val()
 		}
 	}else if(type === 'selectSi'){
 
-		$('select[name=sel_addLi]').empty();
+		$('select[id=sel_addLi]').empty();
 
 		req = {
-			addSi: $('select[name=sel_addSi]').val()
+			addSi: $('select[id=sel_addSi]').val()
 		}
 	}else if(type === 'selectDong'){
 		req = {
-			addDong: $('select[name=sel_addDong]').val()
+			addDong: $('select[id=sel_addDong]').val()
+		}
+	}else if (type === 'selectDo2'){
+
+		$('select[id=sel_addDong2]').empty();
+		$('select[id=sel_addLi2]').empty();
+
+		req = {
+			addDo: $('select[id=sel_addDo2]').val()
+		}
+	}else if(type === 'selectSi2'){
+
+		$('select[id=sel_addLi2]').empty();
+
+		req = {
+			addSi: $('select[id=sel_addSi2]').val()
+		}
+	}else if(type === 'selectDong2'){
+		req = {
+			addDong: $('select[id=sel_addDong2]').val()
 		}
 	}
 
@@ -1871,11 +1890,11 @@ function selectLocationDetail(type) {
 		for ( var i=0; i<data.length; i++ ) {
 			var addressDivision;
 
-			if(type === 'selectDo'){
+			if(type === 'selectDo' || type === 'selectDo2'){
 				addressDivision = data[i].addSi === '' ? '전체' : data[i].addSi;
-			}else if (type === 'selectSi'){
+			}else if (type === 'selectSi' || type === 'selectSi2'){
 				addressDivision = data[i].addDong === ''? '전체' : data[i].addDong;
-			}else if (type === 'selectDong'){
+			}else if (type === 'selectDong' || type === 'selectDong2'){
 				addressDivision = data[i].addLi === '' ? '전체' : data[i].addLi;
 			}
 
@@ -1883,14 +1902,23 @@ function selectLocationDetail(type) {
 		}
 
 		if(type === 'selectDo'){
-			$('select[name=sel_addSi]').empty();
-			$('select[name=sel_addSi]').append(strOption);
+			$('select[id=sel_addSi]').empty();
+			$('select[id=sel_addSi]').append(strOption);
 		}else if(type === 'selectSi'){
-			$('select[name=sel_addDong]').empty();
-			$('select[name=sel_addDong]').append(strOption);
+			$('select[id=sel_addDong]').empty();
+			$('select[id=sel_addDong]').append(strOption);
 		}else if(type === 'selectDong'){
-			$('select[name=sel_addLi]').empty();
-			$('select[name=sel_addLi]').append(strOption);
+			$('select[id=sel_addLi]').empty();
+			$('select[id=sel_addLi]').append(strOption);
+		}else if(type === 'selectDo2'){
+			$('select[id=sel_addSi2]').empty();
+			$('select[id=sel_addSi2]').append(strOption);
+		}else if(type === 'selectSi2'){
+			$('select[id=sel_addDong2]').empty();
+			$('select[id=sel_addDong2]').append(strOption);
+		}else if(type === 'selectDong2'){
+			$('select[id=sel_addLi2]').empty();
+			$('select[id=sel_addLi2]').append(strOption);
 		}
 	});
 
@@ -1912,13 +1940,14 @@ function saveDeliveryLocation(type){
 		var addLi = list[3];
 		var fullLocation = selectedText;
 
+
 		var data = {
-			rtIdx: getLoginUser().rtIdx,
+			rtIdx: $('#rtIdx').val().trim(),
 			addrDepth1: addDo,
 			addrDepth2: addSi,
 			addrDepth3: addDong,
 			addrDepth4: addLi,
-			ra_gbn_code: type,
+			raGbnCode: type,
 			regId: getLoginUser().urIdx,
 			regDt: today
 			// raGbnLt:,
@@ -1928,7 +1957,7 @@ function saveDeliveryLocation(type){
 		req.push(data);
 	}
 
-	var target = 'insertCdtRentCompanyAblearea';
+	var target = 'insertDcRentCompanyAblearea';
 	var method = 'insert';
 
 	fn_callApi(method, target, req, function (response) {
@@ -1936,6 +1965,15 @@ function saveDeliveryLocation(type){
 		var data = response;
 		if (data.code === 200){
 			swal("저장 성공", {icon : "success"});
+
+			if (type === 'S'){
+				$('#selectLocationModal').modal('hide');
+				location.reload();
+			}else if(type === 'L'){
+				$('#selectLocationModal2').modal('hide');
+				location.reload();
+			}
+
 		}else {
 			errorAlert('저장 실패', '관리자에게 문의하세요.');
 

@@ -411,7 +411,7 @@ public class UserServiceImpl extends ServiceExtension implements UserService {
     }
 
     @Override
-    public void insertCdtRentCompanyAblearea(ServiceMessage message) {
+    public void insertDcRentCompanyAblearea(ServiceMessage message) {
         List<DochaAdminDcRentCompanyAbleareaRequest> rentCompanyAbleareaRequest = message.getListObject("rentCompanyAbleareaRequest", DochaAdminDcRentCompanyAbleareaRequest.class);
 
         int res = rentCompanyInfoMapper.insertDcRentCompanyAblearea(rentCompanyAbleareaRequest);
@@ -422,7 +422,7 @@ public class UserServiceImpl extends ServiceExtension implements UserService {
     }
 
     @Override
-    public void selectCdtRentCompanyAblearea(ServiceMessage message) {
+    public void selectDcRentCompanyAblearea(ServiceMessage message) {
         DochaAdminDcRentCompanyAbleareaRequest rentCompanyAbleareaRequest = message.getObject("rentCompanyAbleareaRequest", DochaAdminDcRentCompanyAbleareaRequest.class);
 
         List<DochaAdminDcRentCompanyAbleareaResponse> rentCompanyAbleareaResponseList = rentCompanyInfoMapper.selectDcRentCompanyAblearea(rentCompanyAbleareaRequest);
@@ -433,6 +433,18 @@ public class UserServiceImpl extends ServiceExtension implements UserService {
         }else {
             message.addData("code", 400);
         }
+    }
+
+    @Override
+    public void deleteDcRentCompanyAblearea(ServiceMessage message) {
+        DochaAdminDcRentCompanyAbleareaRequest rentCompanyAbleareaRequest = message.getObject("rentCompanyAbleareaRequest", DochaAdminDcRentCompanyAbleareaRequest.class);
+
+        int res = rentCompanyInfoMapper.deleteRentCompanyAblearea(rentCompanyAbleareaRequest);
+
+        if (res == 1){
+            message.addData("code", 200);
+        }else message.addData("code", 400);
+
     }
 
     @Override

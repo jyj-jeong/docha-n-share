@@ -351,26 +351,39 @@ public class UserController extends ControllerExtension {
     }
 
     /* 회원사 배달지역 추가 */
-    @PostMapping(value = "/api/v1.0/insertCdtRentCompanyAblearea.do")
+    @PostMapping(value = "/api/v1.0/insertDcRentCompanyAblearea.do")
     @ResponseBody
-    public Object insertCdtRentCompanyAblearea(@RequestBody List<DochaAdminDcRentCompanyAbleareaRequest> rentCompanyAbleareaRequest, HttpServletRequest request) {
+    public Object insertDcRentCompanyAblearea(@RequestBody List<DochaAdminDcRentCompanyAbleareaRequest> rentCompanyAbleareaRequest, HttpServletRequest request) {
         ServiceMessage serviceMessage = createServiceMessage(request);
         serviceMessage.addData("rentCompanyAbleareaRequest", rentCompanyAbleareaRequest);
 
-        userService.insertCdtRentCompanyAblearea(serviceMessage);
+        userService.insertDcRentCompanyAblearea(serviceMessage);
 
         return serviceMessage;
 
     }
 
     /* 회원사 배달지역 조회 */
-    @PostMapping(value = "/api/v1.0/selectCdtRentCompanyAblearea.json")
+    @PostMapping(value = "/api/v1.0/selectDcRentCompanyAblearea.json")
     @ResponseBody
-    public Object selectCdtRentCompanyAblearea(@RequestBody List<DochaAdminDcRentCompanyAbleareaRequest> rentCompanyAbleareaRequest, HttpServletRequest request) {
+    public Object selectDcRentCompanyAblearea(@RequestBody DochaAdminDcRentCompanyAbleareaRequest rentCompanyAbleareaRequest, HttpServletRequest request) {
         ServiceMessage serviceMessage = createServiceMessage(request);
         serviceMessage.addData("rentCompanyAbleareaRequest", rentCompanyAbleareaRequest);
 
-        userService.selectCdtRentCompanyAblearea(serviceMessage);
+        userService.selectDcRentCompanyAblearea(serviceMessage);
+
+        return serviceMessage;
+
+    }
+
+    /* 회원사 배달지역 삭제 */
+    @PostMapping(value = "/api/v1.0/deleteDcRentCompanyAblearea.do")
+    @ResponseBody
+    public Object deleteDcRentCompanyAblearea(@RequestBody DochaAdminDcRentCompanyAbleareaRequest rentCompanyAbleareaRequest, HttpServletRequest request) {
+        ServiceMessage serviceMessage = createServiceMessage(request);
+        serviceMessage.addData("rentCompanyAbleareaRequest", rentCompanyAbleareaRequest);
+
+        userService.deleteDcRentCompanyAblearea(serviceMessage);
 
         return serviceMessage;
 

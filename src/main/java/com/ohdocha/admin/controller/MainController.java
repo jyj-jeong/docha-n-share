@@ -11,10 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,16 +26,24 @@ public class MainController extends ControllerExtension {
     private final Properties properties;
     private final MainService mainService;
 
-    @GetMapping(value = "/")
-    public String home(ModelAndView mv, HttpServletRequest request) {
+    @RequestMapping(value = "/")
+    public ModelAndView home(ModelAndView mv, HttpServletRequest request) {
         ServiceMessage serviceMessage = createServiceMessage(request);
+
         DochaMap loginUser = (DochaMap) request.getSession().getAttribute("LOGIN_SESSION");
-        serviceMessage.addData("loginUser", loginUser);
+
+        if (loginUser.get("userRole").equals("RA")){
+
+        }else {
+
+        }
 
         mainService.summaryRentCompanyInfo(serviceMessage);
 
         mv.addAllObjects(serviceMessage);
-        return "index";
+        mv.setViewName("index");
+
+        return mv;
     }
 
     /* 공통 코드 리스트 */

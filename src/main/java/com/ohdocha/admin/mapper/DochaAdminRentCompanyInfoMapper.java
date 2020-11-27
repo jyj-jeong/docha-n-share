@@ -63,6 +63,8 @@ public interface DochaAdminRentCompanyInfoMapper {
 
     public int updateDcRentCompanyAblearea(DochaAdminDcRentCompanyAbleareaRequest reqParam);
 
+    public int deleteRentCompanyAblearea(DochaAdminDcRentCompanyAbleareaRequest reqParam);
+
 
 }
 

@@ -43,8 +43,8 @@
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">매출</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">일 90,000원</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">월 90,000원</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${calcDailySales == null ? '일 0원' : '일 ' + #numbers.formatInteger(calcDailySales, 3 , 'COMMA') + '원'}">일 90,000원</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${calcMonthlySales == null ? '월 0원' : '월 ' + #numbers.formatInteger(calcMonthlySales, 3, 'COMMA') + '원'}">월 90,000원</div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-calendar fa-2x text-gray-300"></i>
@@ -61,8 +61,8 @@
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-success text-uppercase mb-1">예약</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">일 1,000건</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">월 1,000건</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${cntDailyReserve == null ? '일 0건' : '일 ' + cntDailyReserve + '건'}">일 1,000건</div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${cntMontlyyReserve == null ? '월 0건' : '월 ' + cntMontlyyReserve + '건'}">월 1,000건</div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -80,8 +80,8 @@
                     <div class="col mr-2">
                       <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">누적 월차</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">1,000원</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">1,000,000,000 원/월</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${cntDailyCancel == null ? '0건' : cntDailyCancel + '건'}">1,000원</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${cntDailyCancel == null ? '0 원/월' : cntDailyCancel + '원/월'}">1,000,000,000 원/월</div>
                       </div>
                     </div>
                     <div class="col-auto">
@@ -100,8 +100,8 @@
                     <div class="col mr-2">
                       <div class="col mr-2">
                         <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">취소 건수</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">일 1,000건</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800">월 1,000건</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${cntDailyCancel == null ? '일 0건' : '일 ' + cntDailyCancel + '건'}">일 1,000건</div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${cntMonthlyCancel == null ? '월 0건' : '월 ' + cntMonthlyCancel + '건'}">월 1,000건</div>
                       </div>
                     </div>
                     <div class="col-auto">
@@ -119,7 +119,7 @@
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
                       <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Q&A</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${resData == null ? '0 건' : resData + ' 건'}"></div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${cntQnA == null ? '0 건' : cntQnA + ' 건'}"></div>
                     </div>
                     <div class="col-auto">
                       <i class="fas fa-comments fa-2x text-gray-300"></i>
@@ -245,15 +245,17 @@
     dateLabel.push(formatDate(date))
   }
 
+  var amountList = /*[[${amountList}]]*/'';
+  var salesCountList = /*[[${salesCountList}]]*/'';
 
   var ctx = $('#chart-sales-day');
-  var dailySalesChart = new Chart(ctx, {
+  var dailySalesChart  = new Chart(ctx, {
     type: 'bar',
     data: {
       labels: dateLabel,
       datasets: [{
         label: '매출 건수',
-        data: [12, 19, 3, 5, 2, 3, 100, 200],
+        data: salesCountList,
         backgroundColor: [
           'rgba(255, 99, 132, 0.2)',
           'rgba(54, 162, 235, 0.2)',
@@ -278,7 +280,7 @@
       }, {
         type: 'line',
         label: '매출 금액',
-        data: [12, 19, 50, 5, 2, 3, 100, 200],
+        data: amountList,
         borderColor: [
           'rgba(255, 99, 132, 1)'
         ],

@@ -65,9 +65,74 @@
 
 
 	</select>
+
+	<!-- 메인 화면 카운트 -->
+	<select id="calcDailySales" resultType="int">
+		<![CDATA[
+			SELECT SUM(IFNULL(PAYMENT_AMOUNT, 0)) FROM DC_PAYMENT_LOG
+			WHERE APPROVAL_YN = 'Y'
+			AND DATE_FORMAT(PAYMENT_DATE, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d')
+		]]>
+	</select>
+
+	<select id="calcMonthlySales" resultType="_int">
+		<![CDATA[
+			SELECT SUM(PAYMENT_AMOUNT) FROM DC_PAYMENT_LOG
+			WHERE APPROVAL_YN = 'Y'
+			AND DATE_FORMAT(PAYMENT_DATE, '%m') = DATE_FORMAT(NOW(), '%m')
+		]]>
+	</select>
+
+	<select id="cntDailyReserve" resultType="_int">
+		<![CDATA[
+			SELECT COUNT(RM_IDX) FROM DC_RESERVE_MASTER
+			WHERE RESERVE_STATUS_CODE = '예약'
+			AND DATE_FORMAT(MOD_DT, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d')
+		]]>
+	</select>
+
+	<select id="cntMontlyyReserve" resultType="_int">
+		<![CDATA[
+			SELECT COUNT(RM_IDX) FROM DC_RESERVE_MASTER
+			WHERE RESERVE_STATUS_CODE = '예약'
+			AND DATE_FORMAT(MOD_DT, '%m') = DATE_FORMAT(NOW(), '%m')
+		]]>
+	</select>
+
+	<select id="cntDailyCancel" resultType="_int">
+		<![CDATA[
+			SELECT COUNT(RM_IDX) FROM DC_RESERVE_MASTER
+			WHERE RESERVE_STATUS_CODE = '취소'
+			AND DATE_FORMAT(MOD_DT, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d')
+		]]>
+	</select>
+
+	<select id="cntMonthlyCancel" resultType="_int">
+		<![CDATA[
+			SELECT COUNT(RM_IDX) FROM DC_RESERVE_MASTER
+			WHERE RESERVE_STATUS_CODE = '취소'
+			AND DATE_FORMAT(MOD_DT, '%m') = DATE_FORMAT(NOW(), '%m')
+		]]>
+	</select>
+
+	<select id="cntQnA" resultType="_int">
+		<![CDATA[
+			SELECT COUNT(QU_IDX) FROM DC_QUESTION
+		]]>
+	</select>
+
+	<!-- 메인 화면 그래프 -->
+	<select id="salesGraph" resultType="map" parameterType="DochaMap">
+		<![CDATA[
+			SELECT
+				DATE_FORMAT(PAYMENT_DATE, '%Y-%m-%d') AS date,
+				IFNULL(SUM(PAYMENT_AMOUNT), 0) as amount,
+			    IFNULL(COUNT(PL_IDX), 0) as salesCount
+				FROM DC_PAYMENT_LOG
+				WHERE DATE_FORMAT(PAYMENT_DATE, '%Y-%m-%d') BETWEEN #{startTime} AND #{endTime}
+				GROUP BY DATE_FORMAT(PAYMENT_DATE, '%Y-%m-%d')
+				ORDER BY DATE_FORMAT(PAYMENT_DATE, '%Y-%m-%d')
+		]]>
+	</select>
+
 </mapper>
-
-
-
-
-
