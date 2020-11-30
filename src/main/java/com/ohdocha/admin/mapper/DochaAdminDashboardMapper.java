@@ -15,20 +15,26 @@ public interface DochaAdminDashboardMapper {
 	/* 메인화면 count */
 	Integer calcDailySales();
 
-	int calcMonthlySales();
+	Integer calcMonthlySales();
 
-	int cntDailyReserve();
+	Integer cntDailyReserve();
 
-	int cntMontlyyReserve();
+	Integer cntMontlyyReserve();
 
     // todo 누적 월차
 
-	int cntDailyCancel();
+	Integer cntDailyCancel();
 
-	int cntMonthlyCancel();
+	Integer cntMonthlyCancel();
 
-	int cntQnA();
+	Integer cntQnA();
 
 	/* 메인화면 count */
-	List<Map<String,Object>> salesGraph(DochaMap dochaMap);
+	Map<String,Object> salesGraph(DochaMap dochaMap);
+
+	Map<String,Object> monthlySalesGraph(DochaMap dochaMap);
+
+	Map<String,Object> newUserGraph(DochaMap dochaMap);
+
+	Map<String,Object> cancelGraph(DochaMap dochaMap);
 }

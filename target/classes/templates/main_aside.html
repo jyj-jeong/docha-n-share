@@ -44,10 +44,10 @@
             <div id="collapseOne" class="collapse" aria-labelledby="collapseOne" data-parent="#accordionSidebar">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">회원관리</h6>
-                    <a class="collapse-item" href="" th:href="${#request.getContextPath() + '/mem'}">통합 회원</a>
+                    <a class="collapse-item" th:if="${#session.getAttribute('LOGIN_SESSION').userRole == 'RA'}" href="" th:href="${#request.getContextPath() + '/mem'}">통합 회원</a>
                     <a class="collapse-item" href="" th:href="${#request.getContextPath() + '/mem/rentshop'}">회원사</a>
-                    <a class="collapse-item collapsed" href="#" data-toggle="collapse" data-target="#collapseAdmin" aria-expanded="true" aria-controls="collapseAdmin">관리자</a>
-                    <div id="collapseAdmin" class="collapse" aria-labelledby="collapseAdmin" data-parent="#collapseAdmin">
+                    <a class="collapse-item collapsed" th:if="${#session.getAttribute('LOGIN_SESSION').userRole == 'RA'}" href="#" data-toggle="collapse" data-target="#collapseAdmin" aria-expanded="true" aria-controls="collapseAdmin">관리자</a>
+                    <div id="collapseAdmin"  class="collapse" aria-labelledby="collapseAdmin" data-parent="#collapseAdmin">
                         <div><a class="collapse-item" href="#" th:href="${#request.getContextPath() + '/mem/admin'}">관리자 관리</a></div>
                         <div><a class="collapse-item" href="#" th:href="${#request.getContextPath() + '/mem/template'}">권한 템플릿</a></div>
                     </div>
@@ -65,8 +65,8 @@
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">예약</h6>
                     <a class="collapse-item" href="#" th:href="${#request.getContextPath() + '/reserve'}">예약 관리</a>
-                    <a class="collapse-item" href="#" th:href="${#request.getContextPath() + '/reverse'}">역경매</a>
-                    <a class="collapse-item" href="#" th:href="${#request.getContextPath() + '/payment'}">정기 결제</a>
+                    <a class="collapse-item" href="#" th:if="${#session.getAttribute('LOGIN_SESSION').userRole == 'RA'}" th:href="${#request.getContextPath() + '/reverse'}">역경매</a>
+                    <a class="collapse-item" href="#" th:if="${#session.getAttribute('LOGIN_SESSION').userRole == 'RA'}" th:href="${#request.getContextPath() + '/payment'}">정기 결제</a>
                 </div>
             </div>
         </li>
@@ -84,8 +84,8 @@
                 <a class="collapse-item" href="" th:href="${#request.getContextPath() + '/car'}">등록 차량</a>
                 <a class="collapse-item" href="" th:href="${#request.getContextPath() + '/car/control'}">차량 관제</a>
                 <a class="collapse-item" href="" th:href="${#request.getContextPath() + '/car/maintain'}">차량 정비</a>
-                <a class="collapse-item" href="" th:href="${#request.getContextPath() + '/car/model'}">차량 모델</a>
-                <a class="collapse-item collapsed" href="#" data-toggle="collapse" data-target="#collapseAdmin" aria-expanded="true" aria-controls="collapseAdmin">차량 속성</a>
+                <a class="collapse-item" href="" th:if="${#session.getAttribute('LOGIN_SESSION').userRole == 'RA'}" th:href="${#request.getContextPath() + '/car/model'}">차량 모델</a>
+                <a class="collapse-item collapsed" th:if="${#session.getAttribute('LOGIN_SESSION').userRole == 'RA'}" href="#" data-toggle="collapse" data-target="#collapseAdmin" aria-expanded="true" aria-controls="collapseAdmin">차량 속성</a>
                 <div id="collapseAdmin" class="collapse" aria-labelledby="collapseAdmin" data-parent="#collapseAdmin">
                     <div><a class="collapse-item" href="#" th:href="${#request.getContextPath() + '/car/property/country'}">국가</a></div>
                     <div><a class="collapse-item" href="#" th:href="${#request.getContextPath() + '/car/property/manufacturer'}">제조사</a></div>
@@ -119,7 +119,7 @@
     </li>
 
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item">
+        <li th:if="${#session.getAttribute('LOGIN_SESSION').userRole == 'RA'}" class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseFive" aria-expanded="true"
                aria-controls="collapseFive">
                 <i class="fas fa-fw fa-globe"></i>
@@ -144,22 +144,22 @@
         </li>
 
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSix" aria-expanded="true"
-               aria-controls="collapseSix">
-                <i class="fas fa-fw fa-chart-pie"></i>
-                <span>통계</span>
-            </a>
-            <div id="collapseSix" class="collapse" aria-labelledby="collapseSix" data-parent="#accordionSidebar">
-                <div class="bg-white py-2 collapse-inner rounded">
-                    <h6 class="collapse-header">통계</h6>
-                    <a class="collapse-item" href="/stats">통계</a>
-                </div>
-            </div>
-        </li>
+<!--        <li th:if="${#session.getAttribute('LOGIN_SESSION').userRole == 'RA'}" class="nav-item">-->
+<!--            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSix" aria-expanded="true"-->
+<!--               aria-controls="collapseSix">-->
+<!--                <i class="fas fa-fw fa-chart-pie"></i>-->
+<!--                <span>통계</span>-->
+<!--            </a>-->
+<!--            <div id="collapseSix" class="collapse" aria-labelledby="collapseSix" data-parent="#accordionSidebar">-->
+<!--                <div class="bg-white py-2 collapse-inner rounded">-->
+<!--                    <h6 class="collapse-header">통계</h6>-->
+<!--                    <a class="collapse-item" href="/stats">통계</a>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </li>-->
 
         <!-- Nav Item - Pages Collapse Menu -->
-        <li class="nav-item">
+        <li th:if="${#session.getAttribute('LOGIN_SESSION').userRole == 'RA'}" class="nav-item">
             <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSeven" aria-expanded="true"
                aria-controls="collapseSeven">
                 <i class="fas fa-fw fa-clipboard"></i>

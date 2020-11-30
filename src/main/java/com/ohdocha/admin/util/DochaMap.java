@@ -15,7 +15,7 @@ import java.util.*;
  *
  * @author pws
  * @version 1.0
- * @ClassName : CarssumMap.java
+ * @ClassName : DochaMap.java
  * @Description : LinkedHashMap 재정의
  * @Modification Information
  * <pre>
@@ -30,12 +30,12 @@ public class DochaMap extends LinkedHashMap<String, Object> {
     private static final long serialVersionUID = -1505528434264002754L;
 
     /**
-     * CarssumMap Name
+     * DochaMap Name
      */
     private String name;
 
     /**
-     * CarssumMap의 Name 설정
+     * DochaMap의 Name 설정
      *
      * @param name
      */
@@ -44,7 +44,7 @@ public class DochaMap extends LinkedHashMap<String, Object> {
     }
 
     /**
-     * CarssumMap의 Name 반환
+     * DochaMap의 Name 반환
      *
      * @return String
      */
@@ -53,7 +53,7 @@ public class DochaMap extends LinkedHashMap<String, Object> {
     }
 
     /**
-     * CarssumMap의 Key에 해당하는 값 반환시 초기값 설정
+     * DochaMap의 Key에 해당하는 값 반환시 초기값 설정
      * <PRE>
      * <b>true</b>
      * - getString()  : ""
@@ -77,7 +77,7 @@ public class DochaMap extends LinkedHashMap<String, Object> {
     private boolean nullToInitialize;
 
     /**
-     * CarssumMap의 nullToInitialize 반환
+     * DochaMap의 nullToInitialize 반환
      *
      * @return String
      */
@@ -86,7 +86,7 @@ public class DochaMap extends LinkedHashMap<String, Object> {
     }
 
     /**
-     * CarssumMap의 nullToInitialize 설정
+     * DochaMap의 nullToInitialize 설정
      *
      * @param nullToInitialize
      */
@@ -101,7 +101,7 @@ public class DochaMap extends LinkedHashMap<String, Object> {
     /**
      * <PRE>
      * <b>프로그램설명</b>
-     * CarssumMap에 시간 설정정보 추가여부
+     * DochaMap에 시간 설정정보 추가여부
      * <p>
      * - SYS_DT : 일자정보 (형식 'yyyyMMdd')
      * - SYS_TM : 시간정보 (형식 'HHmmss')
@@ -126,7 +126,7 @@ public class DochaMap extends LinkedHashMap<String, Object> {
     /**
      * <PRE>
      * <b>프로그램설명</b>
-     * map정보 CarssumMap에 맵핑
+     * map정보 DochaMap에 맵핑
      * </PRE>
      *
      * @param map
@@ -138,7 +138,7 @@ public class DochaMap extends LinkedHashMap<String, Object> {
     /**
      * <PRE>
      * <b>프로그램설명</b>
-     * map정보 CarssumMap에 맵핑, 시간 설정정보 추가여부
+     * map정보 DochaMap에 맵핑, 시간 설정정보 추가여부
      * <p>
      * - SYS_DT : 일자정보 (형식 'yyyyMMdd')
      * - SYS_TM : 시간정보 (형식 'HHmmss')
@@ -165,7 +165,7 @@ public class DochaMap extends LinkedHashMap<String, Object> {
     /**
      * <PRE>
      * <b>프로그램설명</b>
-     * String Value를 CarssumMap에 Set
+     * String Value를 DochaMap에 Set
      * </PRE>
      *
      * @param key
@@ -178,7 +178,7 @@ public class DochaMap extends LinkedHashMap<String, Object> {
     /**
      * <PRE>
      * <b>프로그램설명</b>
-     * int Value를 CarssumMap에 Set
+     * int Value를 DochaMap에 Set
      * </PRE>
      *
      * @param key
@@ -191,7 +191,7 @@ public class DochaMap extends LinkedHashMap<String, Object> {
     /**
      * <PRE>
      * <b>프로그램설명</b>
-     * long Value를 CarssumMap에 Set
+     * long Value를 DochaMap에 Set
      * </PRE>
      *
      * @param key
@@ -204,7 +204,7 @@ public class DochaMap extends LinkedHashMap<String, Object> {
     /**
      * <PRE>
      * <b>프로그램설명</b>
-     * float Value를 CarssumMap에 Set
+     * float Value를 DochaMap에 Set
      * </PRE>
      *
      * @param key
@@ -217,7 +217,7 @@ public class DochaMap extends LinkedHashMap<String, Object> {
     /**
      * <PRE>
      * <b>프로그램설명</b>
-     * boolean Value를 CarssumMap에 Set
+     * boolean Value를 DochaMap에 Set
      * </PRE>
      *
      * @param key
@@ -230,7 +230,7 @@ public class DochaMap extends LinkedHashMap<String, Object> {
     /**
      * <PRE>
      * <b>프로그램설명</b>
-     * Object Value를 CarssumMap에 Set
+     * Object Value를 DochaMap에 Set
      * </PRE>
      *
      * @param key
@@ -243,7 +243,7 @@ public class DochaMap extends LinkedHashMap<String, Object> {
     /**
      * <PRE>
      * <b>프로그램설명</b>
-     * CarssumMap에서 String Type으로 Value 반환
+     * DochaMap에서 String Type으로 Value 반환
      * </PRE>
      *
      * @param key
@@ -251,7 +251,7 @@ public class DochaMap extends LinkedHashMap<String, Object> {
      */
     public String getString(String key) {
         if (key == null) {
-            throw new RuntimeException("CarssumMap : getString parameter is empty!!");
+            throw new RuntimeException("DochaMap : getString parameter is empty!!");
         }
 
         String value = null;
@@ -280,7 +280,7 @@ public class DochaMap extends LinkedHashMap<String, Object> {
     /**
      * <PRE>
      * <b>프로그램설명</b>
-     * CarssumMap에서 int Type으로 Value 반환
+     * DochaMap에서 int Type으로 Value 반환
      * </PRE>
      *
      * @param key
@@ -288,7 +288,7 @@ public class DochaMap extends LinkedHashMap<String, Object> {
      */
     public int getInt(String key) {
         if (key == null) {
-            throw new RuntimeException("CarssumMap : getString parameter is empty!!");
+            throw new RuntimeException("DochaMap : getString parameter is empty!!");
         }
 
         int retVal = 0;
@@ -300,7 +300,7 @@ public class DochaMap extends LinkedHashMap<String, Object> {
                 return 0;
             }
 
-            throw new RuntimeException("CarssumMap : value is not Integer object. value is NULL.");
+            throw new RuntimeException("DochaMap : value is not Integer object. value is NULL.");
         } else if (obj instanceof String) {
             retVal = Integer.parseInt((String) obj);
         } else if (obj instanceof Integer) {
@@ -309,7 +309,7 @@ public class DochaMap extends LinkedHashMap<String, Object> {
                 value = (Integer) get(key);
                 retVal = value.intValue();
             } catch (Exception e) {
-                throw new RuntimeException("CarssumMap : value is not Integer object [" + value + "]");
+                throw new RuntimeException("DochaMap : value is not Integer object [" + value + "]");
             }
         } else if (obj instanceof Number) {
             Number value = null;
@@ -317,7 +317,7 @@ public class DochaMap extends LinkedHashMap<String, Object> {
                 value = (Number) get(key);
                 retVal = value.intValue();
             } catch (Exception e) {
-                throw new RuntimeException("CarssumMap : value is not Number object [" + value + "]");
+                throw new RuntimeException("DochaMap : value is not Number object [" + value + "]");
             }
         }
 
@@ -327,7 +327,7 @@ public class DochaMap extends LinkedHashMap<String, Object> {
     /**
      * <PRE>
      * <b>프로그램설명</b>
-     * CarssumMap에서 long Type으로 Value 반환
+     * DochaMap에서 long Type으로 Value 반환
      * </PRE>
      *
      * @param key
@@ -335,7 +335,7 @@ public class DochaMap extends LinkedHashMap<String, Object> {
      */
     public long getLong(String key) {
         if (key == null) {
-            throw new RuntimeException("CarssumMap : getString parameter is empty!!");
+            throw new RuntimeException("DochaMap : getString parameter is empty!!");
         }
 
         long retVal = 0;
@@ -347,7 +347,7 @@ public class DochaMap extends LinkedHashMap<String, Object> {
                 return 0l;
             }
 
-            throw new RuntimeException("CarssumMap : value is not Long object. value is NULL.");
+            throw new RuntimeException("DochaMap : value is not Long object. value is NULL.");
         } else if (obj instanceof String) {
             retVal = Long.parseLong((String) obj);
         } else if (obj instanceof Long) {
@@ -356,7 +356,7 @@ public class DochaMap extends LinkedHashMap<String, Object> {
                 value = (Long) get(key);
                 retVal = value.longValue();
             } catch (Exception e) {
-                throw new RuntimeException("CarssumMap : value is not Long object [" + value + "]");
+                throw new RuntimeException("DochaMap : value is not Long object [" + value + "]");
             }
         } else if (obj instanceof Number) {
             Number value = null;
@@ -364,7 +364,7 @@ public class DochaMap extends LinkedHashMap<String, Object> {
                 value = (Number) get(key);
                 retVal = value.longValue();
             } catch (Exception e) {
-                throw new RuntimeException("CarssumMap : value is not Number object [" + value + "]");
+                throw new RuntimeException("DochaMap : value is not Number object [" + value + "]");
             }
         }
 
@@ -374,7 +374,7 @@ public class DochaMap extends LinkedHashMap<String, Object> {
     /**
      * <PRE>
      * <b>프로그램설명</b>
-     * CarssumMap에서 double Type으로 Value 반환
+     * DochaMap에서 double Type으로 Value 반환
      * </PRE>
      *
      * @param key
@@ -382,7 +382,7 @@ public class DochaMap extends LinkedHashMap<String, Object> {
      */
     public double getDouble(String key) {
         if (key == null) {
-            throw new RuntimeException("CarssumMap : getString parameter is empty!!");
+            throw new RuntimeException("DochaMap : getString parameter is empty!!");
         }
 
         double retVal = 0;
@@ -394,7 +394,7 @@ public class DochaMap extends LinkedHashMap<String, Object> {
                 return 0d;
             }
 
-            throw new RuntimeException("CarssumMap : value is not Long object. value is NULL.");
+            throw new RuntimeException("DochaMap : value is not Long object. value is NULL.");
         } else if (obj instanceof String) {
             retVal = Double.parseDouble((String) obj);
         } else if (obj instanceof Double) {
@@ -403,7 +403,7 @@ public class DochaMap extends LinkedHashMap<String, Object> {
                 value = (Double) get(key);
                 retVal = value.doubleValue();
             } catch (Exception e) {
-                throw new RuntimeException("CarssumMap : value is not Long object [" + value + "]");
+                throw new RuntimeException("DochaMap : value is not Long object [" + value + "]");
             }
         } else if (obj instanceof Number) {
             Number value = null;
@@ -411,7 +411,7 @@ public class DochaMap extends LinkedHashMap<String, Object> {
                 value = (Number) get(key);
                 retVal = value.doubleValue();
             } catch (Exception e) {
-                throw new RuntimeException("CarssumMap : value is not Number object [" + value + "]");
+                throw new RuntimeException("DochaMap : value is not Number object [" + value + "]");
             }
         }
 
@@ -421,7 +421,7 @@ public class DochaMap extends LinkedHashMap<String, Object> {
     /**
      * <PRE>
      * <b>프로그램설명</b>
-     * CarssumMap에서 float Type으로 Value 반환
+     * DochaMap에서 float Type으로 Value 반환
      * </PRE>
      *
      * @param key
@@ -429,7 +429,7 @@ public class DochaMap extends LinkedHashMap<String, Object> {
      */
     public float getFloat(String key) {
         if (key == null) {
-            throw new RuntimeException("CarssumMap : getString parameter is empty!!");
+            throw new RuntimeException("DochaMap : getString parameter is empty!!");
         }
 
         float retVal = 0;
@@ -441,7 +441,7 @@ public class DochaMap extends LinkedHashMap<String, Object> {
                 return 0f;
             }
 
-            throw new RuntimeException("CarssumMap : value is not Float object. value is NULL.");
+            throw new RuntimeException("DochaMap : value is not Float object. value is NULL.");
         } else if (obj instanceof String) {
             retVal = Integer.parseInt((String) obj);
         } else if (obj instanceof Float) {
@@ -450,7 +450,7 @@ public class DochaMap extends LinkedHashMap<String, Object> {
                 value = (Float) get(key);
                 retVal = value.floatValue();
             } catch (Exception e) {
-                throw new RuntimeException("CarssumMap : value is not Float object [" + value + "]");
+                throw new RuntimeException("DochaMap : value is not Float object [" + value + "]");
             }
         } else if (obj instanceof Number) {
             Number value = null;
@@ -458,7 +458,7 @@ public class DochaMap extends LinkedHashMap<String, Object> {
                 value = (Number) get(key);
                 retVal = value.floatValue();
             } catch (Exception e) {
-                throw new RuntimeException("CarssumMap : value is not Number object [" + value + "]");
+                throw new RuntimeException("DochaMap : value is not Number object [" + value + "]");
             }
         }
 
@@ -468,7 +468,7 @@ public class DochaMap extends LinkedHashMap<String, Object> {
     /**
      * <PRE>
      * <b>프로그램설명</b>
-     * CarssumMap에서 boolean Type으로 Value 반환
+     * DochaMap에서 boolean Type으로 Value 반환
      * </PRE>
      *
      * @param key
@@ -476,7 +476,7 @@ public class DochaMap extends LinkedHashMap<String, Object> {
      */
     public boolean getBoolean(String key) {
         if (key == null) {
-            throw new RuntimeException("CarssumMap : getString parameter is empty!!");
+            throw new RuntimeException("DochaMap : getString parameter is empty!!");
         }
 
         Object obj = get(key);
@@ -485,7 +485,7 @@ public class DochaMap extends LinkedHashMap<String, Object> {
                 return false;
             }
 
-            throw new RuntimeException("CarssumMap : value is not Boolean object. value is NULL.");
+            throw new RuntimeException("DochaMap : value is not Boolean object. value is NULL.");
         } else {
             if (obj instanceof Boolean) {
                 return ((Boolean) obj).booleanValue();
@@ -493,7 +493,7 @@ public class DochaMap extends LinkedHashMap<String, Object> {
                 try {
                     return Boolean.valueOf(obj.toString()).booleanValue();
                 } catch (Exception e) {
-                    throw new RuntimeException("CarssumMap : value is not Boolean object [" + obj + "]");
+                    throw new RuntimeException("DochaMap : value is not Boolean object [" + obj + "]");
                 }
             }
         }
@@ -504,7 +504,7 @@ public class DochaMap extends LinkedHashMap<String, Object> {
     /**
      * <PRE>
      * <b>프로그램설명</b>
-     * CarssumMap에서 Object Type으로 Value 반환
+     * DochaMap에서 Object Type으로 Value 반환
      * </PRE>
      *
      * @param key
@@ -512,7 +512,7 @@ public class DochaMap extends LinkedHashMap<String, Object> {
      */
     public Object getObject(String key) {
         if (key == null) {
-            throw new RuntimeException("CarssumMap : getString parameter is empty!!");
+            throw new RuntimeException("DochaMap : getString parameter is empty!!");
         }
 
         return get(key);
@@ -529,7 +529,7 @@ public class DochaMap extends LinkedHashMap<String, Object> {
         return true;
     }
 
-    public static DochaMap jsonToCarssumMap(JSONObject json) throws JSONException {
+    public static DochaMap jsonToDochaMap(JSONObject json) throws JSONException {
         DochaMap retMap = new DochaMap();
 
         if (json != null) {
@@ -581,7 +581,7 @@ public class DochaMap extends LinkedHashMap<String, Object> {
         if (this.name != null) nameStr = " - " + this.name;
 
         sb.append("\n");
-        sb.append(allocateCenter(makeRepeatString("-", 70), "[CarssumMap" + nameStr + "]")).append("\n");
+        sb.append(allocateCenter(makeRepeatString("-", 70), "[DochaMap" + nameStr + "]")).append("\n");
         sb.append(allocateCenter(makeRepeatString(" ", 25), "KEY") + "|" + allocateCenter(makeRepeatString(" ", 44), "VALUE")).append("\n");
         sb.append(makeRepeatString("-", 70)).append("\n");
 

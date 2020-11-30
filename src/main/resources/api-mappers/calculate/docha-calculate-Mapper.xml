@@ -17,7 +17,7 @@
                           --,      IFNULL(T1.RM_IDX  , ''  ) AS RM_IDX
                           ,      COUNT(DISTINCT T1.RT_IDX) AS COMPANY_COUNT                                                                           /* 회원사CNT */
                             ,      COUNT(DISTINCT T1.RM_IDX) AS RM_COUNT                                                                              /* 예약건CNT */
-                          ,      SUM(IFNULL((T1.PAYMENT_AMOUNT*DECODE(T4.COMMISSION_PER, 0,NULL, T4.COMMISSION_PER)/100), 0)) AS CARSSUM_DIS_FEE                           /* 카썸수수료 */
+                          ,      SUM(IFNULL((T1.PAYMENT_AMOUNT*DECODE(T4.COMMISSION_PER, 0,NULL, T4.COMMISSION_PER)/100), 0)) AS DOCHA_DIS_FEE                           /* 두차수수료 */
                           ,      SUM(IFNULL((T1.PAYMENT_AMOUNT ), 0) - IFNULL((T1.PAYMENT_AMOUNT*DECODE(T4.COMMISSION_PER, 0,NULL, T4.COMMISSION_PER)/100), 0)) AS ACCOUNT_EXP_AMT    /* 정산예정금 */
                           ,      SUM(IFNULL(T5.AC_PAY,0)) AS SUCCESS_AMOUNT                                                                              /* 정산완료금 */
                           ,      SUM(IFNULL(T1.PAYMENT_AMOUNT,0)-IFNULL(T1.DISCOUNT_FEE,0)) AS TOTAL_AMOUNT                                                         /* 총금액 */
@@ -98,7 +98,7 @@
                           ,      IFNULL(T1.RT_IDX  , ''  ) AS RT_IDX
                           ,      COUNT(DISTINCT T1.RT_IDX) AS COMPANY_COUNT                                                                           /* 회원사CNT */
                             ,      COUNT(DISTINCT T1.RM_IDX) AS RM_COUNT                                                                              /* 예약건CNT */
-                          ,      SUM(IFNULL((T1.PAYMENT_AMOUNT*DECODE(T4.COMMISSION_PER, 0,NULL, T4.COMMISSION_PER)/100), 0)) AS CARSSUM_DIS_FEE                           /* 카썸수수료 */
+                          ,      SUM(IFNULL((T1.PAYMENT_AMOUNT*DECODE(T4.COMMISSION_PER, 0,NULL, T4.COMMISSION_PER)/100), 0)) AS DOCHA_DIS_FEE                           /* 두차수수료 */
                           ,      SUM(IFNULL((T1.PAYMENT_AMOUNT ), 0) - IFNULL((T1.PAYMENT_AMOUNT*DECODE(T4.COMMISSION_PER, 0,NULL, T4.COMMISSION_PER)/100), 0)) AS ACCOUNT_EXP_AMT    /* 정산예정금 */
                           ,      SUM(IFNULL(T5.AC_PAY,0)) AS SUCCESS_AMOUNT                                                                              /* 정산완료금 */
                           ,      SUM(IFNULL(T1.PAYMENT_AMOUNT,0)-IFNULL(T1.DISCOUNT_FEE,0)) AS TOTAL_AMOUNT                                                         /* 총금액 */
@@ -161,100 +161,97 @@
 
 	</select>
 
+<!--	<select id="selectCalculateDateReserveList" parameterType="calculateRequest" resultType="calculateResponse">-->
+<!--		<![CDATA[-->
+<!--		SELECT-->
+<!--		    Z.*-->
+<!--		     , B.RENT_START_DAY-->
+<!--		     , B.RENT_END_DAY-->
+<!--		     , B.RENT_START_TIME-->
+<!--		     , B.RENT_END_TIME-->
+<!--		     , C.COMPANY_NAME-->
+<!--		     , C.BRANCH_NAME-->
+<!--		     , D.MODEL_NAME-->
+<!--		     , D.MODEL_DETAIL_NAME-->
+<!--		     , D.FUEL_CODE-->
+<!--		     , D.YEAR-->
+<!--		     , D.CAR_NUMBER-->
+<!--		     , E.CODE_VALUE AS FUEL_NAME-->
+<!--		FROM-->
+<!--		    (-->
+<!--		        SELECT-->
+<!--		                    DATE_FORMAT(T1.MOD_DT, '%Y-%m-%d') AS ACCOUNT_EXP_DT                                                            /* 정산일 */-->
+<!--		             ,      SUM(T1.PAYMENT_AMOUNT) AS TOTAL_FEE                                                                                 /* 총결제금액 */-->
+<!--		             ,      IFNULL(T1.RM_IDX  , ''  ) AS RM_IDX-->
+<!--		             ,      COUNT(DISTINCT T1.RT_IDX) AS COMPANY_COUNT                                                                           /* 회원사CNT */-->
+<!--		             ,      COUNT(DISTINCT T1.RM_IDX) AS RM_COUNT                                                                              /* 예약건CNT */-->
+<!--&#45;&#45; 		             ,      SUM(IFNULL((T1.PAYMENT_AMOUNT*DECODE(T4.COMMISSION_PER, 0,NULL, T4.COMMISSION_PER)/100), 0)) AS DOCHA_DIS_FEE                           /* 두차수수료 */-->
+<!--		             ,      SUM(IFNULL(T1.BALANCE, 0)) AS ACCOUNT_EXP_AMT    /* 정산예정금 */-->
+<!--		             ,      SUM(IFNULL(T1.PAYMENT_AMOUNT,0)-IFNULL(T1.DISCOUNT_FEE,0)) AS TOTAL_AMOUNT                                                         /* 총금액 */-->
+<!--		             ,      SUM(IFNULL(T1.DISCOUNT_FEE,0)) AS DISCOUNT_FEE                                                                               /* 할인금액 */-->
+<!-- 		             ,      SUM(IFNULL(T1.BALANCE, 0)) AS ONMISS_FEE /* 미정산금액 */-->
+<!--		        FROM   (-->
+<!--		                   SELECT-->
+<!--		                       PD.PAYMENT_AMOUNT-->
+<!--		                        , PD.PD_IDX-->
+<!--		                        , RM.RT_IDX-->
+<!--		                        , RM.RM_IDX-->
+<!--		                        , RM.DISCOUNT_FEE-->
+<!--		                        , CASE-->
+<!--		                              WHEN DATE_FORMAT(STR_TO_DATE(PD.PAYMENT_DATE, '%Y-%m-%d'), '%Y-%m-%d') > DATE_FORMAT(RM.RENT_START_DAY, '%Y-%m-%d') THEN DATE_FORMAT(STR_TO_DATE(PD.PAYMENT_DATE, '%Y-%m-%d'), '%Y-%m-%d')-->
+<!--		                              ELSE DATE_FORMAT(RM.RENT_START_DAY, '%Y-%m-%d')-->
+<!--		                       END AS ACCOUNT_EXP_BASE_DT-->
+<!--		                   FROM DC_PAYMENT_DETAIL PD-->
+<!--		                            INNER JOIN DC_RESERVE_MASTER RM-->
+<!--		                                       ON PD.RM_IDX = RM.RM_IDX-->
+<!--		               ) T1-->
+<!--		            LEFT OUTER JOIN DC_RESERVE_MASTER T2 ON T1.RM_IDX = T2.RM_IDX-->
+<!--		            LEFT OUTER JOIN DC_RENT_COMPANY T3 ON T1.RT_IDX = T3.RT_IDX-->
+<!--		            LEFT OUTER JOIN DC_RENT_COMPANY_COMMISSION T4 ON T3.RT_IDX = T4.RT_IDX-->
+<!--		        WHERE #{accountExpDt} = NEXT_DAY(DATE_FORMAT(T1.ACCOUNT_EXP_BASE_DT), 6)-->
+<!--		        GROUP BY NEXT_DAY(DATE_FORMAT(T1.ACCOUNT_EXP_BASE_DT), 6), T1.RM_IDX-->
+<!--		        ORDER BY NEXT_DAY(DATE_FORMAT(T1.ACCOUNT_EXP_BASE_DT), 6) DESC-->
+<!--		    ) Z-->
+<!--		        INNER JOIN DC_RESERVE_MASTER B-->
+<!--		                   ON Z.RM_IDX = B.RM_IDX-->
+<!--		        LEFT OUTER JOIN DC_RENT_COMPANY C-->
+<!--		                        ON B.RT_IDX = C.RT_IDX-->
+<!--		        LEFT OUTER JOIN DC_CAR_INFO D-->
+<!--		                        ON B.CR_IDX = D.CR_IDX-->
+<!--		        LEFT OUTER JOIN DC_COMMON_CODE E-->
+<!--		                        ON D.FUEL_CODE = E.CODE-->
+<!--		                            AND RT_CODE = 'CR'-->
+<!--      ]]>-->
+<!--		<trim prefix="WHERE" prefixOverrides="AND|OR">-->
+<!--			<if test="searchType != null and searchType != '' ">-->
+<!--				<choose>-->
+<!--					<when test =' searchType == "RM" '>-->
+<!--						<if test="searchKeyWord != null and searchKeyWord != '' ">-->
+<!--							AND <![CDATA[ A.RM_IDX  LIKE '%' ||  #{searchKeyWord} || '%'  ]]>-->
+<!--						</if>-->
+<!--					</when>-->
+<!--					<when test =' searchType == "MD" '>-->
+<!--						<if test="searchKeyWord != null and searchKeyWord != '' ">-->
+<!--							AND <![CDATA[ A.MODEL_NAME  LIKE '%' ||  #{searchKeyWord} || '%'  ]]>-->
+<!--						</if>-->
+<!--					</when>-->
+<!--				</choose>-->
+<!--			</if>-->
+<!--		</trim>-->
+<!--	</select>-->
+
 	<select id="selectCalculateDateReserveList" parameterType="calculateRequest" resultType="calculateResponse">
 		<![CDATA[
-         SELECT *
-         FROM  (
-                SELECT ROWNUM AS ROW_NUMBER, COUNT(*) OVER() TOTAL_ROW_COUNT
-                           , A.*
-                FROM
-                (
-                   SELECT
-                      Z.*
-                      , B.RENT_START_DAY
-                      , B.RENT_END_DAY
-                      , B.RENT_START_TIME
-                      , B.RENT_END_TIME
-                           , C.COMPANY_NAME
-                           , C.BRANCH_NAME
-                           , D.MODEL_NAME
-                           , D.MODEL_DETAIL_NAME
-                           , D.FUEL_CODE
-                           , D.YEAR
-                           , D.CAR_NUMBER
-                           , E.CODE_VALUE AS FUEL_NAME
-                  FROM
-                  (
-                          SELECT NEXT_DAY(TO_DATE(T1.ACCOUNT_EXP_BASE_DT), 6) AS ACCOUNT_EXP_DT                                                            /* 정산일 */
-                          ,      SUM(T1.PAYMENT_AMOUNT) AS TOTAL_FEE                                                                                 /* 총결제금액 */
-                          ,      IFNULL(T1.RM_IDX  , ''  ) AS RM_IDX
-                          ,      COUNT(DISTINCT T1.RT_IDX) AS COMPANY_COUNT                                                                           /* 회원사CNT */
-                            ,      COUNT(DISTINCT T1.RM_IDX) AS RM_COUNT                                                                              /* 예약건CNT */
-                          ,      SUM(IFNULL((T1.PAYMENT_AMOUNT*DECODE(T4.COMMISSION_PER, 0,NULL, T4.COMMISSION_PER)/100), 0)) AS CARSSUM_DIS_FEE                           /* 카썸수수료 */
-                          ,      SUM(IFNULL((T1.PAYMENT_AMOUNT ), 0) - IFNULL((T1.PAYMENT_AMOUNT*DECODE(T4.COMMISSION_PER, 0,NULL, T4.COMMISSION_PER)/100), 0)) AS ACCOUNT_EXP_AMT    /* 정산예정금 */
-                          ,      SUM(IFNULL(T5.AC_PAY,0)) AS SUCCESS_AMOUNT                                                                              /* 정산완료금 */
-                          ,      SUM(IFNULL(T1.PAYMENT_AMOUNT,0)-IFNULL(T1.DISCOUNT_FEE,0)) AS TOTAL_AMOUNT                                                         /* 총금액 */
-                          ,      SUM(IFNULL(T1.DISCOUNT_FEE,0)) AS DISCOUNT_FEE                                                                               /* 할인금액 */
-                            ,      SUM(IFNULL(((T1.PAYMENT_AMOUNT ) - IFNULL((T1.PAYMENT_AMOUNT*DECODE(T4.COMMISSION_PER, 0,NULL, T4.COMMISSION_PER)/100), 0)) - (IFNULL(T5.AC_PAY,0)),0)) AS ONMISS_FEE /* 미정산금액 */
-                       FROM   (
-                                  SELECT
-                                    PD.PAYMENT_AMOUNT
-                                    , PD.PD_IDX
-                                    , RM.RT_IDX
-                                    , RM.RM_IDX
-                                    , RM.DISCOUNT_FEE
-                                    , CASE
-                                        WHEN TO_DATE(TO_CHAR(PD.PAYMENT_DATE, 'YYYY-MM-DD'), 'YYYY-MM-DD') > TO_DATE(RM.RENT_START_DAY, 'YYYY-MM-DD') THEN TO_DATE(TO_CHAR(PD.PAYMENT_DATE, 'YYYY-MM-DD'), 'YYYY-MM-DD')
-                                        ELSE TO_DATE(RM.RENT_START_DAY, 'YYYY-MM-DD')
-                                      END AS ACCOUNT_EXP_BASE_DT
-                                  FROM DC_PAYMENT_DETAIL PD
-                                  INNER JOIN DC_RESERVE_MASTER RM
-                                  ON PD.RM_IDX = RM.RM_IDX
-                            ) T1
-                       --LEFT OUTER JOIN DC_RESERVE_MASTER T2 ON T1.RM_IDX = T2.RM_IDX
-                       LEFT OUTER JOIN DC_RENT_COMPANY T3 ON T1.RT_IDX = T3.RT_IDX
-                       LEFT OUTER JOIN DC_RENT_COMPANY_COMMISSION T4 ON T3.RT_IDX = T4.RT_IDX
-                          LEFT OUTER JOIN DC_RENT_ACCOUNTS T5 ON T1.PD_IDX = T5.PD_IDX
-                          WHERE #{accountExpDt} = NEXT_DAY(TO_DATE(T1.ACCOUNT_EXP_BASE_DT), 6)
-                          GROUP BY NEXT_DAY(TO_DATE(T1.ACCOUNT_EXP_BASE_DT), 6), T1.RM_IDX
-                          ORDER BY NEXT_DAY(TO_DATE(T1.ACCOUNT_EXP_BASE_DT), 6) DESC
-                  ) Z
-                  INNER JOIN DC_RESERVE_MASTER B
-                        ON Z.RM_IDX = B.RM_IDX
-                     LEFT OUTER JOIN DC_RENT_COMPANY C
-                        ON B.RT_IDX = C.RT_IDX
-                     LEFT OUTER JOIN DC_CAR_INFO D
-                        ON B.CR_IDX = D.CR_IDX
-                  LEFT OUTER JOIN DC_COMMON_CODE E
-                        ON D.FUEL_CODE = E.CODE
-                        AND RT_CODE = 'CR'
-
-                  ) A
+			SELECT
+			       DATE_FORMAT(MOD_DT, '%Y-%m-%d') AS ACCOUNT_EXP_DT                        /*정산일*/
+			      ,SUM(RENT_FEE + PAYMENT_TOTAL_AMOUNT + DELIVERY_FEE) AS TOTAL_FEE         /*총금액*/
+			      ,SUM(PAYMENT_TOTAL_AMOUNT) AS PAYMENT_AMOUNT                              /*결제금액*/
+			      ,SUM(RENT_FEE - DISCOUNT_FEE) AS DISCOUNT_FEE                             /*할인액*/
+			      ,SUM(BALANCE) AS ONMISS_FEE                                               /*미정산금액*/
+			      ,SUM(SUM_PAYMENT_AMOUNT) AS SUCCESS_FEE                                   /*정산완료금액*/
+			FROM DC_RESERVE_MASTER
+			GROUP BY DATE_FORMAT(MOD_DT, '%Y-%m-%d')
       ]]>
-		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			<if test="searchType != null and searchType != '' ">
-				<choose>
-					<when test =' searchType == "RM" '>
-						<if test="searchKeyWord != null and searchKeyWord != '' ">
-							AND <![CDATA[ A.RM_IDX  LIKE '%' ||  #{searchKeyWord} || '%'  ]]>
-						</if>
-					</when>
-					<when test =' searchType == "MD" '>
-						<if test="searchKeyWord != null and searchKeyWord != '' ">
-							AND <![CDATA[ A.MODEL_NAME  LIKE '%' ||  #{searchKeyWord} || '%'  ]]>
-						</if>
-					</when>
-				</choose>
-			</if>
-		</trim>
-		<![CDATA[
-          ) TTB
-         WHERE  1=1
-         AND
-         ROWNUM <= #{displayPageNum} AND ROW_NUMBER > (#{page}-1) * #{displayPageNum}
-      ]]>
-
-
 	</select>
 
 	<select id="selectCalculateAccountsExpectedInfo" parameterType="calculateRequest" resultType="calculateResponse">
@@ -336,7 +333,7 @@
                       ,      IFNULL(A.ACCOUNT_NUMBER, '') AS ACCOUNT_NUMBER
                       ,      IFNULL(SUM(A.TOTAL_FEE) , 0 ) AS TOTAL_FEE
                       ,      IFNULL(SUM(A.DISCOUNT_FEE) , 0 ) AS DISCOUNT_FEE
-                      ,      IFNULL(SUM(IFNULL((A.TOTAL_FEE*DECODE(A.COMMISSION_PER, 0,NULL, A.COMMISSION_PER)/100), 0)) , 0 ) AS CARSSUM_DIS_FEE
+                      ,      IFNULL(SUM(IFNULL((A.TOTAL_FEE*DECODE(A.COMMISSION_PER, 0,NULL, A.COMMISSION_PER)/100), 0)) , 0 ) AS DOCHA_DIS_FEE
                       ,      IFNULL(SUM((A.TOTAL_FEE ) - IFNULL((A.TOTAL_FEE*DECODE(A.COMMISSION_PER, 0,NULL, A.COMMISSION_PER)/100), 0)) , 0 )AS ACCOUNT_EXP_AMT
                       ,      IFNULL(SUM(A.PAYMENT_AMOUNT), 0 ) AS PAYMENT_AMOUNT
                       FROM
@@ -404,7 +401,7 @@
                             ,      IFNULL(A.CAR_NUMBER, '')          AS CAR_NUMBER
                             ,      IFNULL(A.YEAR , '')             AS YEAR
                             ,      IFNULL((A.TOTAL_FEE ) - IFNULL((A.TOTAL_FEE*DECODE(A.COMMISSION_PER, 0,NULL, A.COMMISSION_PER)/100), 0) , 0 )AS ACCOUNT_EXP_AMT
-                         ,      IFNULL(IFNULL((A.TOTAL_FEE*DECODE(A.COMMISSION_PER, 0,NULL, A.COMMISSION_PER)/100), 0) , 0 ) AS CARSSUM_DIS_FEE
+                         ,      IFNULL(IFNULL((A.TOTAL_FEE*DECODE(A.COMMISSION_PER, 0,NULL, A.COMMISSION_PER)/100), 0) , 0 ) AS DOCHA_DIS_FEE
                          FROM
                          (
                              SELECT

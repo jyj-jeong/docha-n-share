@@ -10,10 +10,8 @@ import com.ohdocha.admin.util.DochaMap;
 import com.ohdocha.admin.util.ServiceMessage;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 
-import java.text.DateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -31,17 +29,17 @@ public class MainServiceImpl extends ServiceExtension implements MainService {
 
         /* 메인화면 카운트 */
         Integer calcDailySales = dashboardMapper.calcDailySales();
-        int calcMonthlySales = dashboardMapper.calcMonthlySales();
+        Integer calcMonthlySales = dashboardMapper.calcMonthlySales();
 
-        int cntDailyReserve = dashboardMapper.cntDailyReserve();
-        int cntMontlyyReserve = dashboardMapper.cntMontlyyReserve();
+        Integer cntDailyReserve = dashboardMapper.cntDailyReserve();
+        Integer cntMontlyyReserve = dashboardMapper.cntMontlyyReserve();
 
         // todo 누적월차
 
-        int cntDailyCancel = dashboardMapper.cntDailyCancel();
-        int cntMonthlyCancel = dashboardMapper.cntMonthlyCancel();
+        Integer cntDailyCancel = dashboardMapper.cntDailyCancel();
+        Integer cntMonthlyCancel = dashboardMapper.cntMonthlyCancel();
 
-        int cntQnA = dashboardMapper.cntQnA();
+        Integer cntQnA = dashboardMapper.cntQnA();
 
         message.addData("calcDailySales", calcDailySales);
         message.addData("calcMonthlySales", calcMonthlySales);
@@ -56,29 +54,147 @@ public class MainServiceImpl extends ServiceExtension implements MainService {
 
 
         /* 메인화면 그래프 */
+
+        // 일매출 그래프프
         DochaMap reqParam = new DochaMap();
 
         LocalDateTime baseDateTime = LocalDateTime.now();
-        LocalDateTime beforeOneWeek = baseDateTime.minusWeeks(1);
 
-        String startTime = beforeOneWeek.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        String endTime = baseDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+        List<Map<String,Object>> salesGraphList = new ArrayList<>();
 
-        reqParam.put("startTime", startTime);
-        reqParam.put("endTime", endTime);
+        for (int i=7; i>=0; i--){
+            LocalDateTime localDateTime = baseDateTime.minusDays(i);
 
-        List<Map<String,Object>> salesGraphList = dashboardMapper.salesGraph(reqParam);
-        LinkedHashMap<Integer, Integer> salesGraphDatas = new LinkedHashMap<>();
+            String startTime = localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
 
+            reqParam.put("startTime", startTime);
+
+            Map<String,Object> salesDatas = dashboardMapper.salesGraph(reqParam);
+            if (salesDatas == null){
+                Map<String,Object> nullData = new HashMap<>();
+                nullData.put("amount", 0.0);
+                nullData.put("salesCount", 0L);
+
+                salesGraphList.add(nullData);
+            }else {
+                salesGraphList.add(salesDatas);
+            }
+
+        }
+
+        List<Integer> dailyAmountList = new ArrayList<>();
+        List<Integer> dailySalesCountList = new ArrayList<>();
         for (Map<String, Object> data : salesGraphList) {
             int amount = (int)((double)(data.get("amount")));
             int salesCount = (int)((long)(data.get("salesCount")));
 
-            salesGraphDatas.put(amount, salesCount);
+            dailyAmountList.add(amount);
+            dailySalesCountList.add(salesCount);
+
         }
 
-        message.addData("amountList", salesGraphDatas.keySet());
-        message.addData("salesCountList", salesGraphDatas.values().toArray());
+        message.addData("dailyAmountList", dailyAmountList);
+        message.addData("dailySalesCountList", dailySalesCountList);
+
+        // 월매출 그래프프
+        List<Map<String,Object>> monthlySalesGraphList = new ArrayList<>();
+        List<String> monthlyDate = new ArrayList<>();
+
+        for (int i=7; i>=0; i--){
+            LocalDateTime localDateTime = baseDateTime.minusMonths(i);
+
+            String startTime = localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM"));
+            monthlyDate.add(startTime);
+
+            reqParam.put("startTime", startTime);
+
+            Map<String,Object> monthlySalesDatas = dashboardMapper.monthlySalesGraph(reqParam);
+            if (monthlySalesDatas == null){
+                Map<String, Object> nullData = new HashMap<>();
+                nullData.put("amount", 0.0);
+                nullData.put("salesCount", 0L);
+
+                monthlySalesGraphList.add(nullData);
+            }else {
+                monthlySalesGraphList.add(monthlySalesDatas);
+            }
+        }
+
+        List<Integer> monthlyAmountList = new ArrayList<>();
+        List<Integer> monthlySalesCountList = new ArrayList<>();
+
+        for (Map<String, Object> data : monthlySalesGraphList) {
+            int amount = (int)((double)(data.get("amount")));
+            int salesCount = (int)((long)(data.get("salesCount")));
+
+            monthlyAmountList.add(amount);
+            monthlySalesCountList.add(salesCount);
+        }
+
+        message.addData("monthlyDate", monthlyDate);
+        message.addData("monthlyAmountList",monthlyAmountList);
+        message.addData("monthlySalesCountList", monthlySalesCountList);
+
+        // 신규회원 그래프
+        List<Map<String,Object>> newUserGraphList = new ArrayList<>();
+
+        for (int i=7; i>=0; i--){
+            LocalDateTime localDateTime = baseDateTime.minusDays(i);
+
+            String startTime = localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+            reqParam.put("startTime", startTime);
+
+            Map<String,Object> newUserDatas = dashboardMapper.newUserGraph(reqParam);
+            if (newUserDatas == null){
+                Map<String, Object> nullData = new HashMap<>();
+                nullData.put("newUser", 0);
+
+                newUserGraphList.add(nullData);
+            }else {
+                newUserGraphList.add(newUserDatas);
+            }
+        }
+
+        List<Integer> newUserList = new ArrayList<>();
+
+        for (Map<String, Object> data : newUserGraphList) {
+            int userCount = (int)((long)(data.get("newUser")));
+
+            newUserList.add(userCount);
+        }
+        message.addData("newUserList", newUserList);
+
+        // 취소 그래프
+        List<Map<String,Object>> cancelGraphList = new ArrayList<>();
+
+        for (int i=7; i>=0; i--){
+            LocalDateTime localDateTime = baseDateTime.minusDays(i);
+
+            String startTime = localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+
+            reqParam.put("startTime", startTime);
+
+            Map<String,Object> cancelDatas = dashboardMapper.cancelGraph(reqParam);
+            if (cancelDatas == null){
+                Map<String, Object> nullData = new HashMap<>();
+                nullData.put("cancelCount", 0);
+
+                cancelGraphList.add(nullData);
+            }else {
+                cancelGraphList.add(cancelDatas);
+            }
+        }
+
+        List<Integer> cancelList = new ArrayList<>();
+
+        for (Map<String, Object> data : cancelGraphList) {
+            int cancelCount = (int)((long)(data.get("cancelCount")));
+
+            cancelList.add(cancelCount);
+        }
+        message.addData("cancelList", cancelList);
+
 
     }
 

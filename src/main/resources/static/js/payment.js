@@ -41,9 +41,9 @@ function loadApi (fnc, page) {
     		'page': CURRENT_PAGE,
     		'displayPageNum': displayPageNum,
     		'searchKeyWord' : GLOBAL_SEARCH_KEYWORD.toUpperCase(),
-    		'gbnInput' : GLOBAL_SEARCH_INPUT_GBN,
+    		'gbnInput' : GLOBAL_SEARCH_INPUT_GBN
     		
-    };  
+    };
 
 }
 

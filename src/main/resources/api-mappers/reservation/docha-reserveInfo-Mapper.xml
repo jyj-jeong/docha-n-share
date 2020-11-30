@@ -45,7 +45,7 @@ SELECT * FROM (
                               WHEN IFNULL(A.RESERVE_STATUS_CODE, 'RS') = 'RS' AND NOW() BETWEEN STR_TO_DATE(A.RENT_START_DAY || A.RENT_START_TIME, '%Y%m%d%H:%i:%s') AND STR_TO_DATE(A.RENT_END_DAY || A.RENT_END_TIME, '%Y-%m-%d %H:%i:%s') THEN 'RO'
                                 ELSE IFNULL(A.RESERVE_STATUS_CODE, 'RS') END
                           AS RESERVE_STATUS_CODE /* 상태 */
-                        , IFNULL(A.RESERVE_CHANNEL, 'CS') AS RESERVE_CHANNEL /* 예약 경로 [CA:카썸관리자, CS:웹,어플] */
+                        , IFNULL(A.RESERVE_CHANNEL, 'CS') AS RESERVE_CHANNEL /* 예약 경로 [CA:두차관리자, CS:웹,어플] */
                         , ROUND((STR_TO_DATE(A.RENT_END_DAY || A.RENT_END_TIME, '%Y%m%d%H:%i:%s') - STR_TO_DATE(A.RENT_START_DAY || A.RENT_START_TIME, '%Y%m%d%H:%i:%s'))*24*60) AS RENT_MI /* 총 예약 시간(분) */
                         , DATE_FORMAT(A.RESERVE_DATE, '%Y-%m-%d %H:%i:%s') AS RESERVE_DATE /* 예약일 */
                         , IFNULL(A.RESERVE_USER_NAME, '') AS USER_NAME /* 예약자명 */
@@ -199,21 +199,25 @@ SELECT * FROM (
 
       <![CDATA[
 
-                 SELECT T1.PD_IDX
-                 ,      IFNULL(T1.RM_IDX              , '' ) AS RM_IDX
-                 ,      IFNULL(T1.PG_CODE             , '' ) AS PG_CODE
-                 ,      IFNULL(T1.PAYMENT_TYPE_CODE   , '' ) AS PAYMENT_TYPE_CODE
---                  ,      GET_COMMON_CODE_VALUE('PAY', IFNULL(T1.PAYMENT_TYPE_CODE   , '' )) as PAYMENT_TYPE_NAME
-                 ,      IFNULL(T1.PAYMENT_KIND_CODE   , '' ) AS PAYMENT_KIND_CODE
---                  ,      GET_COMMON_CODE_VALUE('PAY', IFNULL(T1.PAYMENT_KIND_CODE   , '' )) as PAYMENT_KIND_NAME
-                 ,      IFNULL(T1.PAYMENT_AMOUNT      , '' ) AS PAYMENT_AMOUNT
-                 ,      IFNULL(T1.APPROVAL_NUMBER     , '' ) AS APPROVAL_NUMBER
-                 ,      IFNULL(T1.PAYMENT_DATE        , '' ) AS PAYMENT_DATE
-                 ,      IFNULL(T1.ETC                 , '' ) AS ETC
-                 ,      IFNULL(T1.UR_IDX              , '' ) AS UR_IDX
-                 FROM   DC_PAYMENT_DETAIL T1
-                 WHERE  T1.RM_IDX = #{rmIdx}
-                 AND IFNULL(T1.PAYMENT_AMOUNT, '0' ) > 0
+                 SELECT
+                        PD.PD_IDX
+                 ,      IFNULL(PD.RM_IDX              , '' ) AS RM_IDX
+                 ,      IFNULL(PD.PG_CODE             , '' ) AS PG_CODE
+                 ,      IFNULL(PD.PAYMENT_TYPE_CODE   , '' ) AS PAYMENT_TYPE_CODE
+                 ,      IFNULL(PD.PAYMENT_TYPE_CODE   , '' ) as PAYMENT_TYPE_NAME
+                 ,      IFNULL(PD.PAYMENT_KIND_CODE   , '' ) AS PAYMENT_KIND_CODE
+                 ,      IFNULL(PD.PAYMENT_KIND_CODE   , '' ) as PAYMENT_KIND_NAME
+                 ,      IFNULL(PD.PAYMENT_AMOUNT      , '' ) AS PAYMENT_AMOUNT
+                 ,      IFNULL(PD.APPROVAL_NUMBER     , '' ) AS APPROVAL_NUMBER
+                 ,      IFNULL(PD.PAYMENT_DATE        , '' ) AS PAYMENT_DATE
+                 ,      IFNULL(PD.ETC                 , '' ) AS ETC
+                 ,      IFNULL(PD.UR_IDX              , '' ) AS UR_IDX
+                 ,      RM.MOD_DT
+                 ,      RM.SUM_PAYMENT_AMOUNT
+                 FROM   DC_PAYMENT_DETAIL PD
+                 INNER JOIN DC_RESERVE_MASTER RM ON PD.RM_IDX = RM.RM_IDX
+                 WHERE  PD.RM_IDX = #{rmIdx}
+                 AND IFNULL(PD.PAYMENT_AMOUNT, '0' ) > 0
 
         ]]>
 

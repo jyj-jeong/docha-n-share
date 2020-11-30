@@ -457,6 +457,7 @@ function initDetailInfo(seq) {
 			if (getLoginUser().userRole !== 'RA'){
 				$('#companyName').attr('readonly', true);
 				$('#branchName').attr('readonly', true);
+				$('#companyContact1').attr('readonly', true);
 				$('#companyRegistrationName').attr('readonly', true);
 				$('#companyRegistrationNumber').attr('readonly', true);
 				$('#companyAddress').attr('readonly', true);
@@ -560,6 +561,8 @@ function initDetailInfo(seq) {
 			$('#branchName').val(branchName);
 			// 법인명
 			$('#companyRegistrationName').val(companyRegistrationName);
+			// 회사 대표번호
+			$('#companyContact1').val(companyContact1);
 
 			// 사업자등록번호
 			if (!isEmpty(companyRegistrationNumber)) {
@@ -686,28 +689,34 @@ function staffListGrid(_rtIdx) {
 
 	fn_callApi(method, target, req, function (response) {
 		let res = response;
+		let rows = [];
 
 		if (res.code == 200) {
-			let data = res.result[0];
-			var ownerYn = data.ownerYn === 1 ? 'Y' : 'N';
+			for (var i = 0; i< res.result.length; i++){
+				var data = res.result[i];
 
-			$('#staffurIdx').val(data.urIdx);
-			$('#rsIdx').val(data.rsIdx);
-			$('#staffEmail').val(data.staffEmail);
-			$('#staffName').val(data.staffName);
-			$('#staffTitle').val(data.staffTitle);
-			$("#sel_ownerYn").val(ownerYn).prop("selected", "selected");
-			$('#staffContact1').val(data.staffContact1);
+				var ownerYn = data.ownerYn === 1 ? 'Y' : 'N';
 
-			let rows = [{
-				"rsIdx": data.rsIdx,
-				"staffName" :data.staffName,
-				"staffContact1" :data.staffContact1,
-				"staffEmail" : data.staffEmail,
-				"staffTitle" : data.staffTitle,
-				"ownerYn" : data.ownerYn,
-				"urIdx" : data.urIdx
-			}];
+				$('#staffurIdx').val(data.urIdx);
+				$('#rsIdx').val(data.rsIdx);
+				$('#staffEmail').val(data.staffEmail);
+				$('#staffName').val(data.staffName);
+				$('#staffTitle').val(data.staffTitle);
+				$("#sel_ownerYn").val(ownerYn).prop("selected", "selected");
+				$('#staffContact1').val(data.staffContact1);
+
+				var staff = {
+					"rsIdx": data.rsIdx,
+					"staffName" :data.staffName,
+					"staffContact1" :data.staffContact1,
+					"staffEmail" : data.staffEmail,
+					"staffTitle" : data.staffTitle,
+					"ownerYn" : data.ownerYn,
+					"urIdx" : data.urIdx
+				};
+
+				rows.push(staff);
+			}
 
 			let columns;
 			columns = [
@@ -929,6 +938,12 @@ function detailValidation(save_type) {
 					return;
 				}
 
+				if (isEmpty(companyContact1)) { // is not empty
+					errorAlert('대표번호', '대표번호 필드를 확인하세요.');
+					$('#companyContact1').focus();
+					return;
+				}
+
 				if (!isEmpty(companyRegistrationNumber)) {
 					companyRegistrationNumber = removeHypen(companyRegistrationNumber);
 				}
@@ -1041,87 +1056,58 @@ function detailValidation(save_type) {
 
 				}
 
-				if (rsIdx === ""){
-					MCRUD = 'insert';
-				}else MCRUD = 'modify';
+				// 중복검사
+				target = 'rentCompanyStaffList';
+				method = 'select';
 
-				if (MCRUD === 'modify') {
-					if (!isEmpty(_rtIdx)) { //If This is not empty,
-						MCRUD = 'modify';
-						staffContact1 = removeHypen(staffContact1);
+				req = {};
+				req = {
+					rtIdx: _rtIdx,
+					urIdx: staffurIdx,
+					rsIdx: rsIdx,
+					staffName: staffName,
+					staffEmail: staffEmail,
+					staffTitle: staffTitle,
+					staffContact1: staffContact1,
+					regId: GLOBAL_LOGIN_USER_IDX,
+					regDt: today,
+					modId: GLOBAL_LOGIN_USER_IDX,
+					modDt: today,
+					ownerYn: ownerYn
 
+				};
+
+				fn_callApi(method, target, req, function (response) {
+					let res = response;
+					let data = res.result;
+					//TODO 중복검사
+
+					// 	if (data.length == 0) {
+					if (MCRUD == 'insert') {
 						req = {};
 						req = {
 							rtIdx: _rtIdx,
 							urIdx: staffurIdx,
-							staffName : staffName,
+							staffName: staffName,
 							staffEmail: staffEmail,
-							staffTitle : staffTitle,
-							staffContact1 : staffContact1,
-							ownYn: ownerYn,
-							modId : GLOBAL_LOGIN_USER_IDX,
-							modDt : today
-//								ownerYn : ownerYn
+							staffTitle: staffTitle,
+							staffContact1: staffContact1,
+							regId: GLOBAL_LOGIN_USER_IDX,
+							regDt: today,
+							ownerYn: ownerYn
 						};
-
-						title = '스텝정보 저장';
-						text = '저장하시겠습니까?';
-						icon = 'info';
-						cancel_text = '취소하셨습니다.';
-
-						call_before_save(title, text, icon, cancel_text, save_type, req);
 					}
-				} else if (MCRUD == 'insert') {
-					// 중복검사
-					target = 'rentCompanyStaffList';
-					method = 'select';
 
-					req = {};
-					req = {
-						rtIdx: _rtIdx,
-						urIdx: staffurIdx,
-						rsIdx: rsIdx,
-						staffName: staffName,
-						staffEmail: staffEmail,
-						staffTitle: staffTitle,
-						staffContact1: staffContact1,
-						regId: GLOBAL_LOGIN_USER_IDX,
-						regDt: today,
-						ownerYn: ownerYn
+					title = '스텝정보 저장';
+					text = '저장하시겠습니까?'
+					icon = 'info';
+					cancel_text = '취소하셨습니다.';
 
-					};
-
-					fn_callApi(method, target, req, function (response) {
-						let res = response;
-						let data = res.result;
-						//TODO 중복검사
-
-						// 	if (data.length == 0) {
-						if (MCRUD == 'insert') {
-							req = {};
-							req = {
-								rtIdx: _rtIdx,
-								urIdx: staffurIdx,
-								staffName: staffName,
-								staffEmail: staffEmail,
-								staffTitle: staffTitle,
-								staffContact1: staffContact1,
-								regId: GLOBAL_LOGIN_USER_IDX,
-								regDt: today,
-								ownerYn: ownerYn
-							};
-						}
-
-						title = '스텝정보 저장';
-						text = '저장하시겠습니까?'
-						icon = 'info';
-						cancel_text = '취소하셨습니다.';
-
-						call_before_save(title, text, icon, cancel_text, save_type, req);
+					call_before_save(title, text, icon, cancel_text, save_type, req);
 //
 
-					});// end fn_callApi
-				}
+				});// end fn_callApi
+
 				break;
 			case 'updateCommission': // 수수료 정보 업데이트
 				let commissionPer = $('#commissionPer').val(); // 부가세 포함 수수료
@@ -1968,10 +1954,8 @@ function saveDeliveryLocation(type){
 
 			if (type === 'S'){
 				$('#selectLocationModal').modal('hide');
-				location.reload();
 			}else if(type === 'L'){
 				$('#selectLocationModal2').modal('hide');
-				location.reload();
 			}
 
 		}else {

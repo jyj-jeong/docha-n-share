@@ -146,6 +146,22 @@
       "sourceType": "com.ohdocha.admin.config.Properties"
     },
     {
+      "name": "com.ohdocha.admin.support-image-extension",
+      "type": "java.util.List<java.lang.String>",
+      "sourceType": "com.ohdocha.admin.config.Properties"
+    },
+    {
+      "name": "com.ohdocha.admin.temp-folder-path",
+      "type": "java.lang.String",
+      "sourceType": "com.ohdocha.admin.config.Properties"
+    },
+    {
+      "name": "com.ohdocha.admin.upload-image-size",
+      "type": "java.lang.Long",
+      "sourceType": "com.ohdocha.admin.config.Properties",
+      "defaultValue": 0
+    },
+    {
       "name": "spring.datasource.continue-on-error",
       "type": "java.lang.Boolean",
       "sourceType": "com.ohdocha.admin.config.CustomDataSourceProperties"

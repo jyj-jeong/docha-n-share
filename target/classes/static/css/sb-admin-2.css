@@ -11,6 +11,7 @@
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
  */
 :root {
+  --teal: #008080;
   --blue: #4e73df;
   --indigo: #6610f2;
   --purple: #6f42c1;
@@ -19,7 +20,6 @@
   --orange: #fd7e14;
   --yellow: #f6c23e;
   --green: #1cc88a;
-  --teal: #20c9a6;
   --cyan: #36b9cc;
   --white: #fff;
   --gray: #858796;
@@ -5805,6 +5805,11 @@ a.close.disabled {
     max-width: 500px;
     margin: 1.75rem auto;
   }
+
+  .modal-dialog-select{
+    max-width: 800px; !important;
+  }
+
   .modal-dialog-scrollable {
     max-height: calc(100% - 3.5rem);
   }
@@ -11221,3 +11226,10 @@ footer.sticky-footer .copyright {
 body.sidebar-toggled footer.sticky-footer {
   width: 100%;
 }
+
+
+.car-radio { position: absolute;left: -9999px; }
+.car-radio + span { display: inline-block; vertical-align: middle; padding:0 15px; height: 38px; line-height:35px; border-radius:38px; text-align: center; background: #fff; font-size:1.4rem; font-weight: 500; color: #323d63; border:1px solid #e1e1e1;transition:all 0.3s ease;}
+.car-radio:checked + span { background: #323d63; border-color:#323d63; color: #fff; }
+.car-radio:disabled + span { background:#f8f8f8; color:#c2c2c2; border-color:#efefef; }
+.car-radio.small + span { height:28px; line-height:25px; padding:0 10px; font-size:1.2rem; }

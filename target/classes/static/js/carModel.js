@@ -91,7 +91,7 @@ var drawTable = function drawTable(res, page, displayPageNum){
 		{ "name": "rowNumber", "title": "No", "breakpoints": "all", "visible": false},  
 		{ "name": "mdIdx", "title": "모델번호" ,
 			"formatter" : function(value, options, rowData){
-				return '<a href="javascript:initDetailInfo(' + "'" +value + "'" +');"  >'+value+'</a>';               
+				return '<a href="javascript:initDetailInfo(' + "'" +value + "'" +');"  >'+value+'</a>';
 			}
 		},
 		{ "name": "countryName", "title": "국가" ,
@@ -299,6 +299,7 @@ function initDetailInfo(seq){
     		let maximumPassenger 	= data.maximumPassenger ; //승차인원
     		let displacement 		= data.displacement     ; //배기량
     		let delYn 				= data.delYn     		; //삭제여부
+    		let imgIdx 				= data.imgIdx     		; //차량 이미지
 
     		initDetailSelectBox(data);
 
@@ -310,6 +311,12 @@ function initDetailInfo(seq){
     		$("#maximumPassenger").val(maximumPassenger);
     		$("#displacement").val(displacement);
 			$("#sel_countryCode").val(country).prop("sel_countryCode", true);
+
+			// devleop
+			// $('#car_img').attr('src','C:/ohdocha/data/temp/' + imgIdx);
+
+			//product
+			$('#car_img').attr('src','https://admin-ohdocha.sharenshare.kr/img/car/' + imgIdx);
 
     		if(!isEmpty(delYn)){
         		$("#delYn").val(delYn).prop("delYn", true);
@@ -787,6 +794,8 @@ function detailSubmit(save_type, req){
 				swal("저장 성공", {icon : "success"});
 				if(CRUD === 'insert'){
 					loadApi(drawTable, null, null);
+					let mdIdx = data.mdIdx;
+					$("#mdIdx").val(mdIdx);
 				}else {
 					loadApi(drawTable, CURRENT_PAGE, null);
 				}

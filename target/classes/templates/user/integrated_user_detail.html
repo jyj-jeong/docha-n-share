@@ -6,6 +6,9 @@
     <title th:if="${CRUD == 'modify'}">회원 상세 :: DoCha Admin Web</title>
 
     <script src="/js/integratedMember.js" th:src="@{/js/integratedMember.js}"></script>
+
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 </head>
 <body id="page-top">
 
@@ -20,7 +23,8 @@
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary" style="cursor: pointer" onclick="changeCardView('userInfoCard')">회원 등록</h6>
+                        <h6 th:if="${CRUD == 'insert'}" class="m-0 font-weight-bold text-primary" style="cursor: pointer" onclick="changeCardView('userInfoCard')">회원 등록</h6>
+                        <h6 th:if="${CRUD == 'modify'}" class="m-0 font-weight-bold text-primary" style="cursor: pointer" onclick="changeCardView('userInfoCard')">회원 상세</h6>
                     </div>
 
                     <!--region 회원정보 카드  -->
@@ -44,7 +48,7 @@
 
                             <div class="col-4 mb-3">
                                 <label class="form-label" for="userBirthday">생년월일</label>
-                                <input type="date" class="form-control" name="userBirthday" id="userBirthday"/>
+                                <a id="userBirthday" name="userBirthday" class=""></a>
                             </div>
                             <div class="col-4 mb-3">
                                 <label class="form-label" for="userContact1">연락처</label>
@@ -52,7 +56,7 @@
                             </div>
                             <div class="col-4 mb-3">
                                 <label class="form-label" for="userRegDt">가입일시</label>
-                                <input type="date" class="form-control" name="userRegDt" id="userRegDt" readonly/>
+                                <a id="userRegDt" name="userRegDt" class=""></a>
                             </div>
 
                             <div class="col-4 mb-3">
@@ -73,6 +77,12 @@
                                 <input type="text" class="form-control" name="userRating" id="userRating" value="0" readonly/>
                             </div>
 
+                            <div class="col-12 mt-2">
+                                <div class="col-3 mb-3">
+                                    <label class="form-label mr-2" for="useYn">접속허용</label>
+                                    <input type="checkbox" id="useYn" checked data-toggle="toggle">
+                                </div>
+                            </div>
                             <div class="col-lg-12 float-l flex-1 text-right p-b-10">
                                 <p><br></p>
                                 <button class="btn btn-primary" type="button" onclick="detailValidation('saveUser');" >회원정보 저장</button>
@@ -83,27 +93,22 @@
                         <!-- 면허 정보 -->
                         <div class="row mt-2">
                             <h6 class="col-12 mb-3 font-weight-bold">면허정보</h6>
+                            <input type="hidden" id="ulIdx" />
                             <div class="col-3 mb-3">
                                 <label class="form-label" for="sel_LicenseCode">면허종류</label>
                                 <select type="text" class="form-control custom-select" name="sel_LicenseCode" id="sel_LicenseCode" ></select>
                             </div>
                             <div class="col-3 mb-3">
                                 <label class="form-label" for="licenseNumber">면허번호</label>
-                                <input type="text" class="form-control" onblur="licenseNumAutoHyphen()" name="licenseNumber" id="licenseNumber"/>
+                                <input type="text" class="form-control" onblur="licenseNumAutoHyphen('licenseNumber')" name="licenseNumber" id="licenseNumber"/>
                             </div>
                             <div class="col-3 mb-3">
                                 <label class="form-label" for="licenseExpiration">적성검사 만료일</label>
-                                <input type="date" class="form-control" name="licenseExpiration" id="licenseExpiration" />
+                                <a id="licenseExpiration" name="licenseExpiration" class=""></a>
                             </div>
                             <div class="col-3 mb-3">
                                 <label class="form-label" for="licenseIssueDt">발급일</label>
-                                <input type="date" class="form-control" name="licenseIssueDt" id="licenseIssueDt" />
-                            </div>
-                            <div class="col-3 mb-3">
-                                <div class="custom-control custom-switch">
-                                    <label class="custom-control-label" for="customSwitch1">접속허용</label>
-                                    <input type="checkbox" class="custom-control-input" id="customSwitch1">
-                                </div>
+                                <a id="licenseIssueDt" name="licenseIssueDt" class=""></a>
                             </div>
 
                             <div class="col-lg-12 float-l flex-1 text-right p-b-10">
@@ -147,22 +152,86 @@
                                 <label class="form-label font-weight-bolder" for="licenseIssueDt">면허사진</label>
                                 <div class="input-group">
                                     <div class="custom-file">
-                                        <input type="file" class="custom-file-input" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04">
-                                        <label class="custom-file-label" for="inputGroupFile04">Choose file</label>
-                                    </div>
-                                    <div class="input-group-append">
-                                        <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04">등록</button>
+                                        <input type="file" class="custom-file-input" accept="image/*" id="selectLicenseImg" aria-describedby="licenseImg">
+                                        <label class="custom-file-label" for="licenseImg">파일을 선택하세요</label>
                                     </div>
                                 </div>
+                                <p> 이미지의 크기는 500x300을 권장합니다. ( 지원형식 : jpg, jpeg, png, 20MB 이내 )</p>
                             </div>
                         </div>
-                        <img class="d-block mx-auto bg-gray-200 mb-4" src="" width="500" height="300" alt="IMG">
-                        <!-- 면허정보 OCR 2차
+                        <div class="select_img">
+                            <img class="d-block mx-auto bg-gray-200 mb-4" src="" width="600" height="400" alt="IMG" id="licenseImg">
+                        </div>
+                        <div class="col-lg-12 float-l flex-1 text-right p-b-10">
+                            <p><br></p>
+                            <button class="btn btn-primary" type="button" id="licenseImgSave">면허사진 저장</button>
+                            <button class="btn btn-danger" type="button" onclick="cancelData('saveLicenseInfo')">취소</button>
+                        </div>
+
+                        <script th:inline="javascript">
+                            var inputFile = document.querySelector("#selectLicenseImg");
+
+                            $("#selectLicenseImg").change(function (file) {
+                                if(this.files && this.files[0]) {
+                                    let reader = new FileReader;
+                                    reader.onload = function (date) {
+                                        $(".select_img img").attr("src", date.target.result).width(500);
+                                    };
+                                    reader.readAsDataURL(this.files[0]);
+                                }
+                            });
+
+                            $("#licenseImgSave").click(function() {
+                                let ulIdx = $("#ulIdx").val();
+
+                                if(isEmpty(ulIdx)) {
+                                    errorAlert('면허 정보', '면허정보를 먼저 등록해주세요');
+                                    return;
+                                }
+
+                                var formData = new FormData();
+
+                                formData.append("image", inputFile.files[0]);
+                                formData.append("ulIdx", ulIdx);
+
+                                for (var pair of formData.entries()) {
+                                    console.log(pair[0]+ ', ' + pair[1]);
+                                }
+
+                                var oReq = new XMLHttpRequest();
+                                oReq.addEventListener("load", function() {
+
+                                    if(oReq.status === 200){
+                                        location.href = "";
+                                        alert(err.responseJSON.message);
+                                    }else if (oReq.status === 400){
+                                        errorAlert('저장 실패', '관리자에게 문의하세요.');
+                                    }else if (oReq.status === 500){
+                                        swal("저장 성공", {icon : "success"});
+                                        console.log(oReq.response);
+                                    }
+
+                                });
+                                oReq.open("POST", "/api/v1.0/uploadLicenseImage.do",true);
+                                oReq.send(formData);
+
+
+
+                                var editor;
+                                var path;
+                                editor = $("#selectLicenseImg").val();
+                                path = ($("#depth_container").text()).replace("/" + "");
+                                var type = "html";
+
+                            });
+                        </script>
+
+
                         <div class="row">
                             <h6 class="col-12 mb-3 font-weight-bold">면허정보</h6>
                             <div class="col-4 mb-3">
-                                <label class="form-label" for="licenseLocation">지역</label>
-                                <select class="custom-select" id="licenseLocation" name="licenseLocation">
+                                <label class="form-label" for="sel_LicenseLocation">지역</label>
+                                <select class="custom-select" id="sel_LicenseLocation" name="sel_LicenseLocation">
                                     <option value="서울" selected>서울(11)</option>
                                     <option value="부산">부산(12)</option>
                                     <option value="경기">경기(13)</option>
@@ -170,27 +239,38 @@
                                     <option value="강원">강원(14)</option>
                                     <option value="충북">충북(15)</option>
                                     <option value="충남">충남(16)</option>
+                                    <option value="전북">전북(17)</option>
+                                    <option value="전남">전남(18)</option>
+                                    <option value="경북">경북(19)</option>
+                                    <option value="경남">경남(20)</option>
+                                    <option value="제주">제주(21)</option>
+                                    <option value="대구">대구(22)</option>
+                                    <option value="인천">인천(23)</option>
+                                    <option value="광주">광주(24)</option>
+                                    <option value="대전">대전(25)</option>
+                                    <option value="울산">울산(26)</option>
+                                    <option value="경기북부">경기북부(28)</option>
                                 </select>
                             </div>
                             <div class="col-6 mb-3">
-                                <label class="form-label" for="licenseNumber">번호</label>
-                                <input type="text" class="form-control" onblur="licenseNumAutoHyphen()"  name="licenseNumber" />
+                                <label class="form-label" for="licenseNumber2">번호</label>
+                                <input type="text" class="form-control" onblur="licenseNumAutoHyphen('licenseNumber2')" id="licenseNumber2" name="licenseNumber2" />
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-4 mb-3">
-                                <label class="form-label" for="licenseExpiration">생년월일</label>
-                                <input type="date" class="form-control" name="userBirthday" />
+                                <label class="form-label" for="licenseUserBirthday">생년월일</label>
+                                <a id="licenseUserBirthday" name="licenseUserBirthday" class=""></a>
                             </div>
                             <div class="col-4 mb-3">
-                                <label class="form-label" for="licenseExpiration">성명</label>
-                                <input type="text" class="form-control" name="licenseOwnerName" id="licenseOwnerName" />
+                                <label class="form-label" for="licenseUserName">성명</label>
+                                <input type="text" class="form-control" name="licenseUserName" id="licenseUserName" />
                             </div>
                         </div>
-                        -->
+
                         <div class="col-lg-12 float-l flex-1 text-right p-b-10">
                             <p><br></p>
-                            <button class="btn btn-primary" type="button" onclick="detailValidation('saveUserLicenseInfo');">면허사진 저장</button>
+                            <button class="btn btn-primary" type="button" onclick="detailValidation('saveAdditionalLicenseInfo');">면허정보 저장</button>
                             <button class="btn btn-danger" type="button" onclick="cancelData('saveLicenseInfo')">취소</button>
                         </div>
                     </div>
@@ -207,7 +287,7 @@
                         <div class="text-right">
                             <div class="row">
                                 <div class="mr-2 font-weight-bold" style="cursor: pointer" onclick="changeCardView('userReviewCard')">후기</div>
-                                <div class="mr-2 font-weight-bold" style="cursor: pointer" onclick="changeCardView('userReservationHisCard')">예약내역</div>
+                                <div class="mr-2 font-weight-bold" style="cursor: pointer" onclick="reserveList()">예약내역</div>
                                 <div class="mr-2 font-weight-bold" style="cursor: pointer" onclick="changeCardView('userCouponCard')">쿠폰발급내역</div>
                                 <div class="mr-2 font-weight-bold" style="cursor: pointer" onclick="changeCardView('userPointHisCard')">포인트적립내역</div>
                                 <div class="mr-2 font-weight-bold" style="cursor: pointer" onclick="changeCardView('userLicenseCard')">면허사진</div>
@@ -215,7 +295,7 @@
                             </div>
                         </div>
                         <div class="text-right">
-                            <button id="btnWithdrawal" class="btn btn-danger" type="button" onclick="deleteUserInfo()">회원탈퇴</button>
+                            <button th:if="${CRUD == 'modify'}" id="btnWithdrawal" class="btn btn-danger" type="button" onclick="deleteUserInfo()">회원탈퇴</button>
                             <button id="btnClose" class="btn btn-primary" type="button" onclick="self.close()">창 닫기</button>
                         </div>
                     </div>
@@ -281,16 +361,99 @@
 </div>
 <script th:inline="javascript">
 
-    // todo 각 card 클릭 시에만 swal 동작
-
     CRUD = /*[[${CRUD}]]*/'';
     urIdx = /*[[${urIdx}]]*/'';
+
+    function getLoginUser() {
+        return /*[[${session.LOGIN_SESSION}]]*/ '';
+    }
 
     if(CRUD === "insert"){
         openCreateMember();
     }else if (CRUD === "modify"){
         initDetailInfo(urIdx)
     }
+
+    var userBirthday = new WinkelCalendar({
+        container: 'userBirthday',
+        bigBanner: true,
+        defaultDate: new Date(),
+        format: "YYYY년 MM월 DD일"
+    });
+
+    var userRegDt = new WinkelCalendar({
+        container: 'userRegDt',
+        bigBanner: true,
+        defaultDate: new Date(),
+        format: "YYYY년 MM월 DD일"
+    });
+
+    var licenseExpiration = new WinkelCalendar({
+        container: 'licenseExpiration',
+        bigBanner: true,
+        defaultDate: new Date(),
+        format: "YYYY년 MM월 DD일"
+    });
+
+    var licenseIssueDt = new WinkelCalendar({
+        container: 'licenseIssueDt',
+        bigBanner: true,
+        defaultDate: new Date(),
+        format: "YYYY년 MM월 DD일"
+    });
+
+    var licenseUserBirthday = new WinkelCalendar({
+        container: 'licenseUserBirthday',
+        bigBanner: true,
+        defaultDate: new Date(),
+        format: "YYYY년 MM월 DD일"
+    });
+
+    function getUserBirthday() {
+        return userBirthday.date;
+    }
+
+    function getUserRegDt() {
+        return userRegDt.date;
+    }
+
+    function getLicenseExpiration() {
+        return licenseExpiration.date;
+    }
+
+    function getLicenseIssueDt() {
+        return licenseIssueDt.date;
+    }
+
+    function getLicenseUserBirthday() {
+        return licenseUserBirthday.date;
+    }
+
+    function initDatePicker(id, value) {
+        switch (id) {
+            case 'userBirthday':
+                userBirthday.setDate(new Date(value));
+                break;
+            case 'userRegDt':
+                userRegDt.setDate(new Date(value));
+                break;
+            case 'licenseExpiration':
+                licenseExpiration.setDate(new Date(value));
+                break;
+            case 'licenseIssueDt':
+                licenseIssueDt.setDate(new Date(value));
+                break;
+            case 'licenseUserBirthday':
+                licenseUserBirthday.setDate(new Date(value));
+                break;
+        }
+    }
+
+    function reserveList() {
+        opener.location.href = '/reserve';
+        window.close();
+    }
+
 </script>
 </body>
 </html>

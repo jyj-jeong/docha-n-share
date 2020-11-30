@@ -49,12 +49,14 @@
                       FROM   DC_CAR_INFO CI GROUP BY CI.RT_IDX
                     ) T3 ON T1.RT_IDX = T3.RT_IDX
         ]]>
-		<!--				<trim prefix="WHERE" prefixOverrides="AND|OR">-->
-		<!--					1=1-->
-		<!--					<if test="userRole.equals('CA') and rtIdx != null and rtIdx != '' ">-->
-		<!--			         		AND <![CDATA[ A.RT_IDX = #{rtIdx}  ]]>-->
-		<!--		         	</if>-->
-		<!--		        </trim>-->
+						<trim prefix="WHERE" prefixOverrides="AND|OR">
+							<if test="rtIdx != null and rtIdx != '' ">
+					         		AND <![CDATA[ T1.RT_IDX = #{rtIdx}  ]]>
+				         	</if>
+							<if test="rtPIdx != null and rtPIdx != '' ">
+								AND <![CDATA[ T1.RT_P_IDX = #{rtPIdx}  ]]>
+							</if>
+				        </trim>
 		<if test="searchType != null and searchType != '' ">
 			<choose>
 				<when test =' searchType == "rtIdx" '>
@@ -87,7 +89,6 @@
 			</choose>
 		</if>
 		ORDER BY T1.REG_DT DESC
-		-- 		 )
 	</select>
 
 	<select id="selectRentCompanyDetailInfo" parameterType="rentCompanyDetailRequest"
@@ -228,7 +229,8 @@
 			   	(
 			   		RT_IDX
 			   	,	COMPANY_NAME					
-				,	COMPANY_ZIPCODE				
+			   	,	COMPANY_CONTACT1
+				,	COMPANY_ZIPCODE
 				,   COMPANY_ADDRESS				
 				,	COMPANY_ADDRESS_DETAIL		
 				,	COMPANY_REGISTRATION_NUMBER	
@@ -248,7 +250,8 @@
 				VALUES(		
 					#{rtIdx}
 				,	#{companyName}				
-				,	#{companyZipcode}				
+				,	#{companyContact1}
+				,	#{companyZipcode}
 				,	#{companyAddress}				
 				,	#{companyAddressDetail}		
 				,	#{companyRegistrationNumber}	
@@ -397,6 +400,7 @@
 				,	NOW()
 				,	#{delYn}
 				)
+
     ]]>
     </insert>
 
@@ -631,30 +635,25 @@
 			, 	IFNULL(HOLIDAY_END_DT		, '') AS HOLIDAY_END_DT     /*공휴일종료일*/
 			, 	IFNULL(HOLIDAY_NAME		, '') AS HOLIDAY_NAME       /*휴일명*/
 			, 	IFNULL(DEL_YN          	, '') AS DEL_YN             /*삭제여부*/
+			, 	IFNULL(REG_ID          	, '') AS REG_ID             /*등록자*/
 			FROM DC_HOLIDAYS
-		
+
 		  ]]>
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			<![CDATA[	IFNULL(DEL_YN, 'N') = 'N'  ]]>
 			<if test="rtIdx != null and rtIdx != ''">
 				AND <![CDATA[ RT_IDX = #{rtIdx} ]]>
 			</if>
 			<if test="holIdx != null and holIdx != ''">
 				AND <![CDATA[ HOL_IDX = #{holIdx} ]]>
 			</if>
-			<if test="tholIdx != null and tholIdx != ''">
-				AND <![CDATA[ HOL_IDX != #{tholIdx} ]]>
+			<if test="holIdx != null and holIdx != ''">
+				AND <![CDATA[ HOL_IDX != #{holIdx} ]]>
 			</if>
 			<if test="holidayStartDt != null and holidayStartDt != ''">
-				AND <![CDATA[
-	    		( HOLIDAY_START_DT between #{holidayStartDt} and #{holidayEndDt} 
-	    		OR HOLIDAY_END_DT between #{holidayStartDt} and #{holidayEndDt} 
-	    		OR #{holidayStartDt} BETWEEN HOLIDAY_START_DT AND HOLIDAY_END_DT
-	    		OR #{holidayEndDt} BETWEEN HOLIDAY_START_DT AND HOLIDAY_END_DT
-	    		) 
-	    		]]>
+				AND <![CDATA[ HOLIDAY_START_DT >= #{holidayStartDt} ]]>
 			</if>
 		</trim>
+		<![CDATA[ ORDER BY HOLIDAY_START_DT ]]>
 	</select>
 
 	<update  id="updateRentCompanyHoliday" parameterType="RentCompanyHolidayRequest">
@@ -701,24 +700,35 @@
     ]]>
     </insert>
 
+	<!-- 회원사 휴무일 DELETE -->
+	<delete  id="deleteRentCompanyHoliday" parameterType="RentCompanyHolidayRequest">
+		<![CDATA[ DELETE FROM DC_HOLIDAYS WHERE HOL_IDX = #{holIdx}]]>
+	</delete>
+
+	<!-- 회원사 배달위치 -->
 	<select id="selectDcRentCompanyAblearea" parameterType="DcRentCompanyAbleareaRequest"
 			resultType="DcRentCompanyAbleareaResponse">
 		<![CDATA[
 			SELECT	
-				IFNULL(LAT				, '') AS LAT            /*위도*/
-			, 	IFNULL(LNG          	, '') AS LNG             /*경도*/
+				IFNULL(RA_IDX				, '') AS RA_IDX
+			,	IFNULL(ADDR_DEPTH1				, '') AS ADDR_DEPTH1
+			, 	IFNULL(ADDR_DEPTH2          	, '') AS ADDR_DEPTH2
+			, 	IFNULL(ADDR_DEPTH3          	, '') AS ADDR_DEPTH3
+			, 	IFNULL(ADDR_DEPTH4          	, '') AS ADDR_DEPTH4
+			, 	IFNULL(RA_GBN_CODE          	, '') AS RA_GBN_CODE
+			, 	IFNULL(RA_GBN_ST          	, '') AS RA_GBN_ST
+			, 	IFNULL(RA_GBN_LT          	, '') AS RA_GBN_LT
 			FROM DC_RENT_COMPANY_ABLEAREA
 		  ]]>
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			<![CDATA[	IFNULL(DEL_YN, 'N') = 'N'  ]]>
 			<if test="rtIdx != null and rtIdx != ''">
 				AND <![CDATA[ RT_IDX = #{rtIdx} ]]>
 			</if>
 			<if test="raGbnCode != null and raGbnCode != ''">
 				AND <![CDATA[ RA_GBN_CODE = #{raGbnCode} ]]>
 			</if>
-			order by RA_IDX
 		</trim>
+			<![CDATA[ ORDER BY RA_IDX  ]]>
 	</select>
 
 	<update  id="updateDcRentCompanyAblearea" parameterType="DcRentCompanyAbleareaRequest">
@@ -739,34 +749,40 @@
 		</trim>
 	</update>
 
-	<update  id="insertDcRentCompanyAblearea" parameterType="DcRentCompanyAbleareaRequest">
-    <![CDATA[
-   	INSERT INTO DC_RENT_COMPANY_ABLEAREA
-   	(
-		RT_IDX
-	,	LAT
-	,	LNG
-	,	RA_GBN_CODE
-	,	DEL_YN
-	,	REG_ID
-	,	REG_DT
-	)
-	SELECT
-	#{rtIdx} as RT_IDX
-	,replace(SUBSTR(TXT, 0, INSTR(TXT,'|LNG:')-1), 'LAT:', '') as LAT
-	,replace(SUBSTR(TXT, INSTR(TXT,'|LNG:')+1), 'LNG:', '') as LAT
-	,#{raGbnCode} as RA_GBN_CODE
-	,'N' AS DEL_YN
-	,#{regId} as REG_ID
-	,NOW() as REG_DT
-	FROM (
-	    SELECT ROWNUM AS ID,
-	    trim(regexp_substr(#{latlng}, '[^,]+', 1, LEVEL)) TXT
-	    FROM dual
-	    CONNECT BY LEVEL <= length(#{latlng}) - length(REPLACE(#{latlng}, ',', ''))+1
-	) X
-	ORDER BY ID
-    ]]>
-    </update>
+	<insert id="insertDcRentCompanyAblearea" parameterType="java.util.List">
+		INSERT INTO DC_RENT_COMPANY_ABLEAREA
+		(
+			RT_IDX
+			,	ADDR_DEPTH1
+			,	ADDR_DEPTH2
+			,	ADDR_DEPTH3
+			,	ADDR_DEPTH4
+			,	RA_GBN_CODE
+			,	RA_GBN_LT
+			,	RA_GBN_ST
+			,	REG_ID
+			,	REG_DT
+		)
+		VALUES
+		<foreach collection="list" item="item" separator="," >
+		(
+			#{item.rtIdx}
+			,#{item.addrDepth1}
+			,#{item.addrDepth2}
+			,#{item.addrDepth3}
+			,#{item.addrDepth4}
+			,#{item.raGbnCode}
+			,#{item.raGbnLt}
+			,#{item.raGbnSt}
+			,#{item.regId}
+			,NOW()
+			)
+		</foreach>
+	</insert>
+
+	<!-- 회원사 배달위치 DELETE -->
+	<delete  id="deleteRentCompanyAblearea" parameterType="DcRentCompanyAbleareaRequest">
+		<![CDATA[ DELETE FROM DC_RENT_COMPANY_ABLEAREA WHERE RA_IDX = #{raIdx}]]>
+	</delete>
 
 </mapper>

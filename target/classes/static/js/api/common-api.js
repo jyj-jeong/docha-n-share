@@ -43,7 +43,7 @@ var fn_callApi = function fn_callApi(method, target, reqParam, finish_callback) 
 		    url: url,
 		    type: 'POST',
 		    dataType: 'json',
-		    contentType: 'application/json',
+		    contentType: 'application/json;charset=UTF-8',
 		    cache: false,
 		    async: true,
 		    timeout: Timeout
@@ -68,7 +68,7 @@ var fn_callApi = function fn_callApi(method, target, reqParam, finish_callback) 
 		    type: 'POST',
 		    data: postData,
 		    dataType: 'json',
-		    contentType: 'application/json',
+		    contentType: 'application/json;charset=UTF-8',
 		    cache: false,
 		    async: true,
 		    timeout: Timeout

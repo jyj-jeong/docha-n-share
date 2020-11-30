@@ -17,7 +17,7 @@ public class DochaAdminCalculateResponse extends CommonResponseDto {
 	private String accountExpDt;
 	private String totalFee;
 	private String totalAmount;
-	private String carssumDisFee;
+	private String dochaDisFee;
 	private String accountExpAmt;
 	private String successAmount;
 	private String onMissFee;
@@ -96,7 +96,7 @@ public class DochaAdminCalculateResponse extends CommonResponseDto {
 		this.totalRowCount = totalRowCount;
 	}
 
-	
+
 	public String getPdIdx() {
 		return pdIdx;
 	}
@@ -140,11 +140,11 @@ public class DochaAdminCalculateResponse extends CommonResponseDto {
 	public void setDisCountFee(String disCountFee) {
 		this.disCountFee = disCountFee;
 	}
-	public String getCarssumDisFee() {
-		return carssumDisFee;
+	public String getDochaDisFee() {
+		return dochaDisFee;
 	}
-	public void setCarssumDisFee(String carssumDisFee) {
-		this.carssumDisFee = carssumDisFee;
+	public void setDochaDisFee(String dochaDisFee) {
+		this.dochaDisFee = dochaDisFee;
 	}
 	public String getOnMissFee() {
 		return onMissFee;

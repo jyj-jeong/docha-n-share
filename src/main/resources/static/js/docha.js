@@ -588,7 +588,7 @@ function setDateTimeDiff(_stDateTime , _endDateTime){
 
     is_same_day = endDate == startDate ? true : false;
 
-    // 마지막날은 30일 이하여야함 ( 28~30 ) 카썸정책
+    // 마지막날은 30일 이하여야함 ( 28~30 ) 두차정책
     var dayOfLast = Number(( new Date( endYear, endMonth+1, 0) ).getDate()) != 31 ? 30 : Number(( new Date( endYear, endMonth+1, 0) ).getDate());
     var startDate_dayOfLast = Number(( new Date( startYear, startMonth+1, 0) ).getDate());
     var endDate_dayOfLast = Number(( new Date( endYear, endMonth+1, 0) ).getDate());

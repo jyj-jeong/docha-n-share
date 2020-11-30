@@ -1675,7 +1675,7 @@ function rentcal(){
 		let calRentFee = '0';
 		let calInsuranceFee = '0';
 		let calRentTotAmount = '0';
-		let calCarssumRate = '0';
+		let calDochaRate = '0';
 		let calPaymentAmount = '0';
 
 		if(mmRentAmt === 0){
@@ -1702,14 +1702,14 @@ function rentcal(){
 		}
 
 		calRentTotAmount = Number(calRentFee) + Number(calInsuranceFee);
-		calCarssumRate = calRentTotAmount*(Number(commissionPer)/100);
-		calPaymentAmount = calRentTotAmount - calCarssumRate;
+		calDochaRate = calRentTotAmount*(Number(commissionPer)/100);
+		calPaymentAmount = calRentTotAmount - calDochaRate;
 
 		$("#calRentFee").val(objectConvertToPriceFormat(calRentFee));
 		$("#calInsuranceFee").val(objectConvertToPriceFormat(calInsuranceFee));
 
 		$("#calRentTotAmount").val(objectConvertToPriceFormat(calRentTotAmount));
-		$("#calCarssumRate").val(objectConvertToPriceFormat(calCarssumRate));
+		$("#calDochaRate").val(objectConvertToPriceFormat(calDochaRate));
 		$("#calPaymentAmount").val(objectConvertToPriceFormat(calPaymentAmount));
 
 		$("#calRentTotAmountEtc").empty();
@@ -1737,7 +1737,7 @@ function initcal(){
 	$("#calRentFee").val('');
 	$("#calInsuranceFee").val('');
 	$("#calRentTotAmount").val('');
-	$("#calCarssumRate").val('');
+	$("#calDochaRate").val('');
 	$("#calPaymentAmount").val('');
 
 	// 보험료 select box 생성
@@ -1966,7 +1966,7 @@ function calcPeriodDt() {
 
 	is_same_day = endDate == startDate ? true : false;
 
-	// 마지막날은 30일 이하여야함 ( 28~30 ) 카썸정책
+	// 마지막날은 30일 이하여야함 ( 28~30 ) 두차정책
 	var dayOfLast = Number((new Date(endYear, endMonth + 1, 0)).getDate()) != 31 ? 30 : Number((new Date(endYear, endMonth + 1, 0)).getDate());
 	var startDate_dayOfLast = Number((new Date(startYear, startMonth + 1, 0)).getDate());
 	var endDate_dayOfLast = Number((new Date(endYear, endMonth + 1, 0)).getDate());

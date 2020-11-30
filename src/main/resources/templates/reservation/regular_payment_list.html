@@ -51,7 +51,6 @@
                                     <th>결제금액</th>
                                     <th>회차</th>
                                     <th>결제예정일</th>
-                                    <th></th>
                                 </tr>
                                 </thead>
                                 <tfoot>
@@ -68,23 +67,22 @@
                                     <th>결제금액</th>
                                     <th>회차</th>
                                     <th>결제예정일</th>
-                                    <th></th>
                                 </tr>
                                 </tfoot>
                                 <tbody>
-                                <tr th:each="payment, index : ${result}" style="cursor: pointer" >
+                                <tr th:each="payment, index : ${paymentInfoList}" style="cursor: pointer" >
+                                    <td th:text="${payment.getRmIdx()}"></td>
+                                    <td th:text="${payment.getRegDt()}"></td>
+                                    <td th:text="${payment.getUserName() + ' (' + payment.getUserContact1() + ')'}"></td>
+                                    <td th:text="${payment.getRentStartDay()}"></td>
+                                    <td th:text="${payment.getRentEndDay()}"></td>
+                                    <td th:text="${payment.getCompanyName() + ' (' + payment.getBranchName() + ')'}"></td>
+                                    <td th:text="${payment.getCarNumber() + ' (' + payment.getModelName() + ')'}"></td>
                                     <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td th:text="${#numbers.formatInteger(payment.getPaymentTotalAmount(), 3 , 'COMMA')}"></td>
+                                    <td th:text="${#numbers.formatInteger(payment.getSumPaymentAmount(), 3, 'COMMA')}"></td>
+                                    <td th:text="${payment.getPayCount() + ' / ' + payment.getTotalPayCount()}"></td>
+                                    <td th:text="${payment.getNextPaymentDay()}"></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -136,6 +134,8 @@
     initializingPageData();
     initDataTables();
 
+    var paymentInfoList = /*[[${paymentInfoList}]]*/'';
+    console.log(paymentInfoList);
 </script>
 </body>
 </html>

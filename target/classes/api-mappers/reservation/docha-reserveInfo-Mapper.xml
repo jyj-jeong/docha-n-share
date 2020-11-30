@@ -9,6 +9,7 @@
 SELECT * FROM (
             SELECT   RM_IDX                                                       /* 회원순번 */
                   , RT_IDX                                                    /* 회원사 순번 */
+                  , RT_P_IDX                                                    /* 부모 회원사 */
                   , RESERVE_TYPE_CODE
                   , CASE    WHEN RENT_MI >= 365*24*60 THEN 'Y'
                         WHEN RENT_MI >= 30*24*60 THEN 'M'
@@ -28,7 +29,7 @@ SELECT * FROM (
                   , IFNULL(FUEL_CODE, 'CR') AS FUEL_NAME                   /* 연료명 */
                   , RENT_START_DAY                                              /* 대여일시 */
                   , RENT_END_DAY                                                 /* 반납일시 */
---                   , PERIOD_DT                                                   /* 사용기간 */
+                  , PERIOD_DT                                                   /* 사용기간 */
                   , COMPANY_NAME                                                 /* 회원사명 */
                   , BRANCH_NAME                                                 /* 지점명 */
                   , DELIVERY_TYPE_NAME                                           /* 대여방법 */
@@ -38,12 +39,13 @@ SELECT * FROM (
                      SELECT
                         A.RM_IDX /* 예약 순번 */
                         , C.RT_IDX /* 회원사 순번 */
+                        , D.RT_P_IDX /* 부모 회원사 */
                         , RESERVE_TYPE_CODE AS RESERVE_TYPE_CODE /* 예약종류code */
                         , CASE WHEN IFNULL(A.RESERVE_STATUS_CODE, 'RS') = 'RS' AND NOW() > STR_TO_DATE(A.RENT_END_DAY || A.RENT_END_TIME, '%Y%m%d%H:%i:%s') THEN 'RW'
                               WHEN IFNULL(A.RESERVE_STATUS_CODE, 'RS') = 'RS' AND NOW() BETWEEN STR_TO_DATE(A.RENT_START_DAY || A.RENT_START_TIME, '%Y%m%d%H:%i:%s') AND STR_TO_DATE(A.RENT_END_DAY || A.RENT_END_TIME, '%Y-%m-%d %H:%i:%s') THEN 'RO'
                                 ELSE IFNULL(A.RESERVE_STATUS_CODE, 'RS') END
                           AS RESERVE_STATUS_CODE /* 상태 */
-                        , IFNULL(A.RESERVE_CHANNEL, 'CS') AS RESERVE_CHANNEL /* 예약 경로 [CA:카썸관리자, CS:웹,어플] */
+                        , IFNULL(A.RESERVE_CHANNEL, 'CS') AS RESERVE_CHANNEL /* 예약 경로 [CA:두차관리자, CS:웹,어플] */
                         , ROUND((STR_TO_DATE(A.RENT_END_DAY || A.RENT_END_TIME, '%Y%m%d%H:%i:%s') - STR_TO_DATE(A.RENT_START_DAY || A.RENT_START_TIME, '%Y%m%d%H:%i:%s'))*24*60) AS RENT_MI /* 총 예약 시간(분) */
                         , DATE_FORMAT(A.RESERVE_DATE, '%Y-%m-%d %H:%i:%s') AS RESERVE_DATE /* 예약일 */
                         , IFNULL(A.RESERVE_USER_NAME, '') AS USER_NAME /* 예약자명 */
@@ -52,8 +54,9 @@ SELECT * FROM (
                         , IFNULL(C.MODEL_DETAIL_NAME, '') AS MODEL_DETAIL_NAME /* 차종상세명 */
                         , IFNULL(C.CAR_NUMBER, '') AS CAR_NUMBER /* 차량번호 */
                         , IFNULL(C.FUEL_CODE, '') AS FUEL_CODE /* 연료코드 */
-                        , DATE_FORMAT(STR_TO_DATE(CONCAT(RENT_START_DAY,' ', RENT_START_TIME), '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d %H:%i:%s') AS RENT_START_DAY /* 대여 시작 일시 */
-                        , DATE_FORMAT(STR_TO_DATE(CONCAT(RENT_END_DAY,' ', RENT_END_TIME), '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d %H:%i:%s') AS RENT_END_DAY /* 대여 종료 일시 */
+                        , DATE_FORMAT(STR_TO_DATE(CONCAT(RENT_START_DAY,' ', RENT_START_TIME), '%Y%m%d %H%i%s'), '%Y%m%d %H%i%s') AS RENT_START_DAY /* 대여 시작 일시 */
+                        , DATE_FORMAT(STR_TO_DATE(CONCAT(RENT_END_DAY,' ', RENT_END_TIME), '%Y%m%d %H%i%s'), '%Y%m%d %H%i%s') AS RENT_END_DAY /* 대여 종료 일시 */
+                        , IFNULL(A.PERIOD_DT, '') AS  PERIOD_DT /* 대여기간 */
                         , IFNULL(D.COMPANY_NAME , '') AS COMPANY_NAME /* 회원사명 */
                         , IFNULL(D.BRANCH_NAME, '') AS BRANCH_NAME /* 지점명 */
                         , IFNULL(A.DELIVERY_TYPE_CODE, '') AS DELIVERY_TYPE_CODE /* 대여방법 코드 */
@@ -106,6 +109,9 @@ SELECT * FROM (
             <if test="rtIdx != null and rtIdx != '' ">
                 AND RT_IDX = #{rtIdx}
             </if>
+            <if test="rtPIdx != null and rtPIdx != '' ">
+                AND RT_P_IDX = #{rtPIdx}
+            </if>
         </trim>
     </select>
 
@@ -140,21 +146,21 @@ SELECT * FROM (
               , IFNULL(A.SECOND_DRIVER_EXPIRATION_DATE, '') AS SECOND_DRIVER_EXPIRATION_DATE /* 제2운전자 만료일 */
               , IFNULL(A.SECOND_DRIVER_LICENSE_IS_DATE, '') AS SECOND_DRIVER_LICENSE_IS_DATE /* 제2운전자 발급일 */
 
-              , CASE WHEN ROUND((STR_TO_DATE(A.RENT_END_DAY || A.RENT_END_TIME, '%Y-%m-%d %H:%i:%s') - STR_TO_DATE(A.RENT_START_DAY || A.RENT_START_TIME, '%Y-%m-%d %H:%i:%s'))*24*60) >= 365*24*60 THEN 'Y'
-                     WHEN ROUND((STR_TO_DATE(A.RENT_END_DAY || A.RENT_END_TIME, '%Y-%m-%d %H:%i:%s') - STR_TO_DATE(A.RENT_START_DAY || A.RENT_START_TIME, '%Y-%m-%d %H:%i:%s'))*24*60) >= 30*24*60 THEN 'M'
-                     WHEN ROUND((STR_TO_DATE(A.RENT_END_DAY || A.RENT_END_TIME, '%Y-%m-%d %H:%i:%s') - STR_TO_DATE(A.RENT_START_DAY || A.RENT_START_TIME, '%Y-%m-%d %H:%i:%s'))*24*60) >= 24*60 THEN 'D'
+              , CASE WHEN ROUND((STR_TO_DATE(CONCAT(A.RENT_END_DAY ,' ', A.RENT_END_TIME), '%Y-%m-%d %H:%i:%s') - STR_TO_DATE(CONCAT(A.RENT_START_DAY ,' ', A.RENT_START_TIME), '%Y-%m-%d %H:%i:%s'))*24*60) >= 365*24*60 THEN 'Y'
+                     WHEN ROUND((STR_TO_DATE(CONCAT(A.RENT_END_DAY ,' ', A.RENT_END_TIME), '%Y-%m-%d %H:%i:%s') - STR_TO_DATE(CONCAT(A.RENT_START_DAY ,' ', A.RENT_START_TIME), '%Y-%m-%d %H:%i:%s'))*24*60) >= 30*24*60 THEN 'M'
+                     WHEN ROUND((STR_TO_DATE(CONCAT(A.RENT_END_DAY ,' ', A.RENT_END_TIME), '%Y-%m-%d %H:%i:%s') - STR_TO_DATE(CONCAT(A.RENT_START_DAY ,' ', A.RENT_START_TIME), '%Y-%m-%d %H:%i:%s'))*24*60) >= 24*60 THEN 'D'
                 ELSE 'T' END AS RESERVE_YMDT /* 시간구분 */
               , IFNULL(A.RESERVE_CHANNEL, 'CS') AS RESERVE_CHANNEL /* 저장 채널 구분 */
               , CASE WHEN INSTR(D.COMPANY_ADDRESS||D.COMPANY_ADDRESS_DETAIL, '제주') > 0 THEN 'JJ' ELSE 'IL' END AS LAND_CODE /* 내륙/제주 구분 [JJ:제주,IL:내륙,IS:제주 제외한 섬] */
               , DATE_FORMAT(A.RESERVE_DATE, '%Y-%m-%d %H:%i:%s:SS') AS RESERVE_DATE /* 예약일시 */
-              , CASE WHEN IFNULL(A.RESERVE_STATUS_CODE, 'RS') = 'RS' AND NOW() > STR_TO_DATE(A.RENT_END_DAY || A.RENT_END_TIME, '%Y-%m-%d %H:%i:%s') THEN 'RW'
-                     WHEN IFNULL(A.RESERVE_STATUS_CODE, 'RS') = 'RS' AND NOW() BETWEEN STR_TO_DATE(A.RENT_START_DAY || A.RENT_START_TIME, '%Y-%m-%d %H:%i:%s') AND STR_TO_DATE(A.RENT_END_DAY || A.RENT_END_TIME, '%Y-%m-%d %H:%i:%s') THEN 'RO'
+              , CASE WHEN IFNULL(A.RESERVE_STATUS_CODE, 'RS') = 'RS' AND NOW() > STR_TO_DATE(CONCAT(A.RENT_END_DAY ,' ', A.RENT_END_TIME), '%Y-%m-%d %H:%i:%s') THEN 'RW'
+                     WHEN IFNULL(A.RESERVE_STATUS_CODE, 'RS') = 'RS' AND NOW() BETWEEN STR_TO_DATE(CONCAT(A.RENT_START_DAY ,' ', A.RENT_START_TIME), '%Y-%m-%d %H:%i:%s') AND STR_TO_DATE(CONCAT(A.RENT_END_DAY ,' ', A.RENT_END_TIME), '%Y-%m-%d %H:%i:%s') THEN 'RO'
                 ELSE IFNULL(A.RESERVE_STATUS_CODE, 'RS') END AS RESERVE_STATUS_CODE /* 예약상태 */
               , IFNULL(A.RESERVE_TYPE_CODE, '') AS RESERVE_TYPE_CODE /*예약종류code*/
               , IFNULL(A.DELIVERY_TYPE_CODE, '') AS DELIVERY_TYPE_CODE /* 배달방법 */
-              , DATE_FORMAT(STR_TO_DATE(CONCAT(RENT_START_DAY,' ', RENT_START_TIME), '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d %H:%i:%s') AS RENT_START_DAY /* 대여 시작 일시 */
-              , DATE_FORMAT(STR_TO_DATE(CONCAT(RENT_END_DAY,' ', RENT_END_TIME), '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d %H:%i:%s') AS RENT_END_DAY /* 대여 종료 일시 */
---               , CALC_PERIOD_DT(A.RENT_START_DAY || A.RENT_START_TIME, A.RENT_END_DAY || A.RENT_END_TIME) AS PERIOD_DT /* 사용기간 */
+              , STR_TO_DATE(CONCAT(RENT_START_DAY,' ', RENT_START_TIME), '%Y%m%d %H%i')  AS RENT_START_DAY /* 대여 시작 일시 */
+              , STR_TO_DATE(CONCAT(RENT_END_DAY,' ', RENT_END_TIME), '%Y%m%d %H%i')  AS RENT_END_DAY /* 대여 종료 일시 */
+              , IFNULL(A.PERIOD_DT, '') AS PERIOD_DT /* 사용기간 */
               , IFNULL(A.DELIVERY_ADDR, '') AS DELIVERY_ADDR /* 대여위치 */
               , IFNULL(A.RETURN_ADDR, '') AS RETURN_ADDR /* 반납위치 */
 
@@ -193,21 +199,25 @@ SELECT * FROM (
 
       <![CDATA[
 
-                 SELECT T1.PD_IDX
-                 ,      IFNULL(T1.RM_IDX              , '' ) AS RM_IDX
-                 ,      IFNULL(T1.PG_CODE             , '' ) AS PG_CODE
-                 ,      IFNULL(T1.PAYMENT_TYPE_CODE   , '' ) AS PAYMENT_TYPE_CODE
---                  ,      GET_COMMON_CODE_VALUE('PAY', IFNULL(T1.PAYMENT_TYPE_CODE   , '' )) as PAYMENT_TYPE_NAME
-                 ,      IFNULL(T1.PAYMENT_KIND_CODE   , '' ) AS PAYMENT_KIND_CODE
---                  ,      GET_COMMON_CODE_VALUE('PAY', IFNULL(T1.PAYMENT_KIND_CODE   , '' )) as PAYMENT_KIND_NAME
-                 ,      IFNULL(T1.PAYMENT_AMOUNT      , '' ) AS PAYMENT_AMOUNT
-                 ,      IFNULL(T1.APPROVAL_NUMBER     , '' ) AS APPROVAL_NUMBER
-                 ,      IFNULL(T1.PAYMENT_DATE        , '' ) AS PAYMENT_DATE
-                 ,      IFNULL(T1.ETC                 , '' ) AS ETC
-                 ,      IFNULL(T1.UR_IDX              , '' ) AS UR_IDX
-                 FROM   DC_PAYMENT_DETAIL T1
-                 WHERE  T1.RM_IDX = #{rmIdx}
-                 AND IFNULL(T1.PAYMENT_AMOUNT, '0' ) > 0
+                 SELECT
+                        PD.PD_IDX
+                 ,      IFNULL(PD.RM_IDX              , '' ) AS RM_IDX
+                 ,      IFNULL(PD.PG_CODE             , '' ) AS PG_CODE
+                 ,      IFNULL(PD.PAYMENT_TYPE_CODE   , '' ) AS PAYMENT_TYPE_CODE
+                 ,      IFNULL(PD.PAYMENT_TYPE_CODE   , '' ) as PAYMENT_TYPE_NAME
+                 ,      IFNULL(PD.PAYMENT_KIND_CODE   , '' ) AS PAYMENT_KIND_CODE
+                 ,      IFNULL(PD.PAYMENT_KIND_CODE   , '' ) as PAYMENT_KIND_NAME
+                 ,      IFNULL(PD.PAYMENT_AMOUNT      , '' ) AS PAYMENT_AMOUNT
+                 ,      IFNULL(PD.APPROVAL_NUMBER     , '' ) AS APPROVAL_NUMBER
+                 ,      IFNULL(PD.PAYMENT_DATE        , '' ) AS PAYMENT_DATE
+                 ,      IFNULL(PD.ETC                 , '' ) AS ETC
+                 ,      IFNULL(PD.UR_IDX              , '' ) AS UR_IDX
+                 ,      RM.MOD_DT
+                 ,      RM.SUM_PAYMENT_AMOUNT
+                 FROM   DC_PAYMENT_DETAIL PD
+                 INNER JOIN DC_RESERVE_MASTER RM ON PD.RM_IDX = RM.RM_IDX
+                 WHERE  PD.RM_IDX = #{rmIdx}
+                 AND IFNULL(PD.PAYMENT_AMOUNT, '0' ) > 0
 
         ]]>
 
@@ -237,6 +247,9 @@ SELECT * FROM (
         </if>
         <if test=" rentEndTime != null and rentEndTime != '' ">
             , RENT_END_TIME = #{rentEndTime}
+        </if>
+        <if test=" periodDt != null and periodDt != '' ">
+            , PERIOD_DT = #{periodDt}
         </if>
         <if test=" deliveryAddr != null and deliveryAddr != '' ">
             , DELIVERY_Addr = #{deliveryAddr}
@@ -360,6 +373,7 @@ SELECT * FROM (
               , RENT_START_TIME
               , RENT_END_DAY
               , RENT_END_TIME
+              , PERIOD_DT
               , DELIVERY_TYPE_CODE
               , DELIVERY_ADDR
               , RETURN_ADDR
@@ -419,6 +433,7 @@ SELECT * FROM (
               , #{rentStartTime}
               , #{rentEndDay}
               , #{rentEndTime}
+              , #{periodDt}
               , #{deliveryTypeCode}
               , #{deliveryAddr}
               , #{returnAddr}
@@ -474,191 +489,246 @@ SELECT * FROM (
       <![CDATA[
 
                  WITH T_RESVER AS (
-                 SELECT
-                 #{reserveUserBirthday} AS BIRTH
-                 ,#{crIdx} AS T_CR_IDX
-                 ,#{rentStartDt} AS T_START_RENT_DAY
-                 ,#{rentEndt} AS T_END_RENT_DAY
-                 ,ROUND(MONTHS_BETWEEN(STR_TO_DATE(#{rentEndt},'%Y-%m-%d %H:%i:%s'), STR_TO_DATE(#{rentStartDt},'%Y-%m-%d %H:%i:%s') ), 0) AS DM_CNT
-                 ,#{rtIdx} AS T_RT_IDX
-                 ,#{rentStartDay} AS T_START_RENT_DT
-                 ,#{rentStartTime} AS T_START_RENT_TIME
-                 , CASE WHEN DATE_FORMAT(STR_TO_DATE(#{rentStartDay},'%Y%m%d'), 'DY' ) = '금' AND '1000' < '1200'  THEN '주중'
-                        WHEN DATE_FORMAT(STR_TO_DATE(#{rentStartDay},'%Y%m%d'), 'DY' ) = '일' AND '1000' > '1200' THEN '주중'
-                   ELSE '주말' END as T_SDY
-                 ,#{rentEn%day} AS T_END_RENT_DT
-                 ,#{rentEndTime} AS T_END_RENT_TIME
-                 , CASE WHEN DATE_FORMAT(STR_TO_DATE(#{rentEnday},'%Y%m%d'), 'DY' ) = '금' AND '1000' < '1200'  THEN '주중'
-                        WHEN DATE_FORMAT(STR_TO_DATE(#{rentEnday},'%Y%m%d'), 'DY' ) = '일' AND '1000' > '1200' THEN '주중'
-                   ELSE '주말' END as T_EDY
-                 , 'OF' AS DELIVERY_FLAG
-                 FROM DUAL
-                 )
-                    SELECT '예약' AS FLAG,
-                    CASE WHEN COUNT(RM_IDX) > 0 THEN '선택하신 대여시간에 해당 회원님의 예약건이 존재합니다.' ELSE 'Y' END AS MSG
-                    FROM DC_RESERVE_MASTER A, T_RESVER B
-                    WHERE A.RESERVE_STATUS_CODE = 'RS'
-                    AND (
-                    DATE_FORMAT(STR_TO_DATE(A.RENT_START_DAY||A.RENT_START_TIME, '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d %H:%i:%s') BETWEEN DATE_FORMAT(STR_TO_DATE(T_START_RENT_DAY, '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d %H:%i:%s') AND DATE_FORMAT(STR_TO_DATE(T_END_RENT_DAY, '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d %H:%i:%s')
-                    OR
-                    DATE_FORMAT(STR_TO_DATE(A.RENT_END_DAY||A.RENT_END_TIME, '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d %H:%i:%s') BETWEEN DATE_FORMAT(STR_TO_DATE(T_START_RENT_DAY, '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d %H:%i:%s') AND DATE_FORMAT(STR_TO_DATE(T_END_RENT_DAY, '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d %H:%i:%s')
-                    OR
-                    DATE_FORMAT(STR_TO_DATE(T_START_RENT_DAY, '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d %H:%i:%s') BETWEEN DATE_FORMAT(STR_TO_DATE(A.RENT_START_DAY||A.RENT_START_TIME, '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d %H:%i:%s') AND DATE_FORMAT(STR_TO_DATE(A.RENT_END_DAY||A.RENT_END_TIME, '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d %H:%i:%s')
-                    OR
-                    DATE_FORMAT(STR_TO_DATE(T_END_RENT_DAY, '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d %H:%i:%s') BETWEEN DATE_FORMAT(STR_TO_DATE(A.RENT_START_DAY||A.RENT_START_TIME, '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d %H:%i:%s') AND DATE_FORMAT(STR_TO_DATE(A.RENT_END_DAY||A.RENT_END_TIME, '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d %H:%i:%s')
-                    )
-                    AND A.UR_IDX = #{urIdx}
-                    AND A.RM_IDX != #{rmIdx}
-                    UNION ALL
-                    SELECT '예약' AS FLAG,
-                    CASE WHEN COUNT(RM_IDX) > 0 THEN '선택하신 대여시간에 해당 차량의 예약건이 존재합니다.' ELSE 'Y' END AS MSG
-                    FROM DC_RESERVE_MASTER A, T_RESVER B
-                    WHERE A.CR_IDX = B.T_CR_IDX
-                    AND A.RESERVE_STATUS_CODE = 'RS'
-                    AND (
-                    DATE_FORMAT(STR_TO_DATE(A.RENT_START_DAY||A.RENT_START_TIME, '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d %H:%i:%s') BETWEEN DATE_FORMAT(STR_TO_DATE(T_START_RENT_DAY, '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d %H:%i:%s') AND DATE_FORMAT(STR_TO_DATE(T_END_RENT_DAY, '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d %H:%i:%s')
-                    OR
-                    DATE_FORMAT(STR_TO_DATE(A.RENT_END_DAY||A.RENT_END_TIME, '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d %H:%i:%s') BETWEEN DATE_FORMAT(STR_TO_DATE(T_START_RENT_DAY, '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d %H:%i:%s') AND DATE_FORMAT(STR_TO_DATE(T_END_RENT_DAY, '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d %H:%i:%s')
-                    OR
-                    DATE_FORMAT(STR_TO_DATE(T_START_RENT_DAY, '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d %H:%i:%s') BETWEEN DATE_FORMAT(STR_TO_DATE(A.RENT_START_DAY||A.RENT_START_TIME, '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d %H:%i:%s') AND DATE_FORMAT(STR_TO_DATE(A.RENT_END_DAY||A.RENT_END_TIME, '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d %H:%i:%s')
-                    OR
-                    DATE_FORMAT(STR_TO_DATE(T_END_RENT_DAY, '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d %H:%i:%s') BETWEEN DATE_FORMAT(STR_TO_DATE(A.RENT_START_DAY||A.RENT_START_TIME, '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d %H:%i:%s') AND DATE_FORMAT(STR_TO_DATE(A.RENT_END_DAY||A.RENT_END_TIME, '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d %H:%i:%s')
-                    )
-                    AND A.RM_IDX != #{rmIdx}
-                    UNION ALL
-                    SELECT '휴차일' AS FLAG,
-                           CASE WHEN SUM(S_SUSPEND) > 0 THEN '대여일이 휴차일이어서 예약이 불가합니다.'
-                                WHEN SUM(E_SUSPEND) > 0 THEN '반납일이 휴차일이어서 예약이 불가합니다.'
-                           ELSE 'Y'
-                    END AS MSG
-                    FROM (
-                    SELECT
-                    CASE WHEN DATE_FORMAT(STR_TO_DATE(T_RESVER.T_START_RENT_DT, '%Y%m%d'), '%Y-%m-%d') BETWEEN SUSPEND_START_DT AND SUSPEND_END_DT THEN 1 ELSE 0 END AS S_SUSPEND
-                    ,CASE WHEN DATE_FORMAT(STR_TO_DATE(T_RESVER.T_END_RENT_DT, '%Y%m%d'), '%Y-%m-%d') BETWEEN SUSPEND_START_DT AND SUSPEND_END_DT THEN 1 ELSE 0 END AS E_SUSPEND
-                    FROM DC_CAR_INFO_SUSPEND, T_RESVER
-                    WHERE DC_CAR_INFO_SUSPEND.CR_IDX = T_RESVER.T_CR_IDX
-                    )
-                    UNION ALL
-                    SELECT '차량' AS FLAG,
-                           CASE WHEN SUM(AGENT_LIMIT) > 0 THEN '대여차량의 연령 제한을 만족하지 않아 예약불가합니다.'
-                                WHEN SUM(DAILY_MONTHLY_YN) > 0 AND SUM(DM_CNT) = 0 THEN '일대여를 운영하고 있지않아 예약 불가합니다.'
-                                WHEN SUM(DAILY_MONTHLY_YN) > 0 AND SUM(DM_CNT) >= 1 THEN '월대여를 운영하고 있지않아 예약 불가합니다.'
-                           ELSE 'Y'
-                           END AS MSG
-                    FROM (
-                    SELECT
-                    CASE WHEN DATE_FORMAT(ROUND(MONTHS_BETWEEN(ROUND(NOW()), STR_TO_DATE(T_RESVER.BIRTH,'%Y%m%d')) / 12)) >= IFNULL(DC_CAR_INFO.AGE_LIMIT, '21') THEN 0 ELSE 1 END AS AGENT_LIMIT
-                    ,CASE WHEN DM_CNT = 0 AND IFNULL(DAILY_YN,'Y') = 'Y' THEN 0
-                          WHEN DM_CNT >= 1 AND IFNULL(MONTHLY_YN,'Y') = 'Y' THEN 0
-                     ELSE 1 END AS DAILY_MONTHLY_YN
-                    ,DM_CNT
-                    FROM DC_CAR_INFO, T_RESVER
-                    WHERE DC_CAR_INFO.CR_IDX = T_RESVER.T_CR_IDX
-                    ) X
-                    UNION ALL
-                    SELECT '휴무일' AS FLAG,
-                           CASE WHEN SUM(S_HOLIDAYS) > 0 THEN '대여일이 회원사 휴무일이어서 예약이 불가합니다.'
-                                WHEN SUM(E_HOLIDAYS) > 0 THEN '반납일이 회원사 휴무일이어서 예약이 불가합니다.'
-                           ELSE 'Y'
-                    END AS MSG
-                    FROM (
-                    SELECT
-                    CASE WHEN DATE_FORMAT(STR_TO_DATE(T_RESVER.T_START_RENT_DT, '%Y%m%d'), '%Y-%m-%d') BETWEEN HOLIDAY_START_DT AND HOLIDAY_END_DT THEN 1 ELSE 0 END AS S_HOLIDAYS
-                    ,CASE WHEN DATE_FORMAT(STR_TO_DATE(T_RESVER.T_END_RENT_DT, '%Y%m%d'), '%Y-%m-%d') BETWEEN HOLIDAY_START_DT AND HOLIDAY_END_DT THEN 1 ELSE 0 END AS E_HOLIDAYS
-                    FROM DC_HOLIDAYS, T_RESVER
-                    WHERE RT_IDX = T_RESVER.T_RT_IDX
-                    )
-                    UNION ALL
-                    SELECT '회원사' AS FLAG,
-                           CASE WHEN SUM(COMPYS) > 0 THEN '대여시간이 회원사 영업시간이 아니어서 예약이 불가합니다'
-                                WHEN SUM(COMPYE) > 0 THEN '반납시간이 회원사 영업시간이 아니어서 예약이 불가합니다.'
-                                WHEN SUM(DELIVERYS) > 0 THEN '대여시간이 회원사 배달시간이 아니어서 예약이 불가합니다.'
-                                WHEN SUM(DELIVERYE) > 0 THEN '반납시간이 회원사 배달시간이 아니어서 예약이 불가합니다.'
-                                WHEN SUM(DELIVERYABLE) > 0 THEN '대여시간이 회원사 배달시작시간이 아니어서 예약이 불가합니다.'
-                           ELSE 'Y'
-                    END AS MSG
-                    FROM (
-                      SELECT
-                      CASE WHEN T_SDY = '주중' THEN
-                                                  -- 주중 영업시작일 체크
-                                                  CASE WHEN T_START_RENT_DAY
-                                                            BETWEEN T_START_RENT_DT || IFNULL(WEEKDAY_OPEN_START, '0000')
-                                                            AND T_START_RENT_DT || IFNULL(WEEKDAY_OPEN_END, '2350')
-                                                       THEN 0
-                                                  ELSE 1 END
-                          WHEN T_SDY = '주말' THEN
-                                                  -- 주말 영업시각일 체크
-                                                  CASE WHEN T_START_RENT_DAY
-                                                            BETWEEN T_START_RENT_DT || IFNULL(WEEKEND_OPEN_START, '0000')
-                                                            AND T_START_RENT_DT || IFNULL(WEEKEND_OPEN_END, '2350')
-                                                       THEN 0
-                                                  ELSE 1 END
-                      END
-                      AS COMPYS,
-                      CASE WHEN T_EDY = '주중' THEN
-                                                  -- 주중 영업종료일 체크
-                                                  CASE WHEN T_END_RENT_DAY
-                                                            BETWEEN T_END_RENT_DT || IFNULL(WEEKDAY_OPEN_START, '0000')
-                                                            AND T_END_RENT_DT || IFNULL(WEEKDAY_OPEN_END, '2350')
-                                                       THEN 0
-                                                  ELSE 1 END
-                          WHEN T_EDY = '주말' THEN
-                                                  -- 주말 영업종료일 체크
-                                                  CASE WHEN T_END_RENT_DAY
-                                                            BETWEEN T_END_RENT_DT || IFNULL(WEEKEND_OPEN_START, '0000')
-                                                            AND T_END_RENT_DT || IFNULL(WEEKEND_OPEN_END, '2350')
-                                                       THEN 0
-                                                  ELSE 1 END
-                       END
-                      AS COMPYE,
-                      CASE WHEN T_SDY = '주중' THEN
-                                                  -- 주중 영업시작일 체크
-                                                  CASE WHEN T_START_RENT_DAY
-                                                            BETWEEN T_START_RENT_DT || IFNULL(WEEKDAY_DELIVERY_START, '0000')
-                                                            AND T_START_RENT_DT || IFNULL(WEEKDAY_DELIVERY_END, '2350')
-                                                       THEN 0
-                                                  ELSE 1 END
-                          WHEN T_SDY = '주말' THEN
-                                                  -- 주말 영업시각일 체크
-                                                  CASE WHEN T_START_RENT_DAY
-                                                            BETWEEN T_START_RENT_DT || IFNULL(WEEKDAY_DELIVERY_START, '0000')
-                                                            AND T_START_RENT_DT || IFNULL(WEEKDAY_DELIVERY_END, '2350')
-                                                       THEN 0
-                                                  ELSE 1 END
-                      END
-                      AS DELIVERYS,
-                      CASE WHEN T_EDY = '주중' THEN
-                                                  -- 주중 영업종료일 체크
-                                                  CASE WHEN T_END_RENT_DAY
-                                                            BETWEEN T_END_RENT_DT || IFNULL(WEEKEND_DELIVERY_START, '0000')
-                                                            AND T_END_RENT_DT || IFNULL(WEEKEND_DELIVERY_END, '2350')
-                                                       THEN 0
-                                                  ELSE 1 END
-                          WHEN T_EDY = '주말' THEN
-                                                  -- 주말 영업종료일 체크
-                                                  CASE WHEN T_END_RENT_DAY
-                                                            BETWEEN T_END_RENT_DT || IFNULL(WEEKEND_DELIVERY_START, '0000')
-                                                            AND T_END_RENT_DT || IFNULL(WEEKEND_DELIVERY_END, '2350')
-                                                       THEN 0
-                                                  ELSE 1 END
-                       END
-                      AS DELIVERYE,
-                      CASE WHEN T_SDY = '주중' AND DELIVERY_FLAG = 'DL' THEN
-                                                  -- 주중 영업시작일 체크
-                                                  CASE WHEN ROUND((STR_TO_DATE(T_START_RENT_DAY, '%Y-%m-%d %H:%i:%s') - NOW()) * 24) >= WEEKDAY_ABLE_DELIVERY_TIME
-                                                       THEN 0
-                                                  ELSE 1 END
-                           WHEN T_SDY = '주말' AND DELIVERY_FLAG = 'DL' THEN
-                                                  -- 주말 영업시각일 체크
-                                                  CASE WHEN ROUND((STR_TO_DATE(T_START_RENT_DAY, '%Y-%m-%d %H:%i:%s') - NOW()) * 24) >= WEEKEND_ABLE_DELIVERY_TIME
-                                                       THEN 0
-                                                  ELSE 1 END
-                      ELSE 0
-                      END
-                      AS DELIVERYABLE
-                       FROM DC_RENT_COMPANY_TIME, T_RESVER
-                       WHERE RT_IDX = T_RESVER.T_RT_IDX
-                    )
+    SELECT #{reserveUserBirthday}                                                  AS BIRTH
+         , #{crIdx}                                                               AS T_CR_IDX
+         , #{rentStartDay}                                                            AS T_START_RENT_DAY
+         , #{rentStartTime}                                                                    AS T_START_RENT_TIME
+         , #{rentEndDay}                                                            AS T_END_RENT_DAY
+         , #{rentEndTime}                                                                    AS T_END_RENT_TIME
+         , ROUND(TIMESTAMPDIFF(MONTH , STR_TO_DATE(CONCAT(T_END_RENT_DAY, ' ', T_END_RENT_TIME), '%Y-%m-%d %H:%i:%s'),
+                               STR_TO_DATE(CONCAT(T_START_RENT_DAY, ' ', T_START_RENT_TIME), '%Y-%m-%d %H:%i:%s'))) AS DM_CNT
+         , #{rtIdx}                                                                AS T_RT_IDX
+         , CASE
+               WHEN DATE_FORMAT(STR_TO_DATE(T_START_RENT_DAY, '%Y%m%d'), 'DY') = '금' AND '1000' < '1200' THEN '주중'
+               WHEN DATE_FORMAT(STR_TO_DATE(T_START_RENT_DAY, '%Y%m%d'), 'DY') = '일' AND '1000' > '1200' THEN '주중'
+               ELSE '주말' END                                                         as T_SDY
+         , CASE
+               WHEN DATE_FORMAT(STR_TO_DATE(T_END_RENT_DAY, '%Y-%m-%d'), 'DY') = '금' AND '1000' < '1200' THEN '주중'
+               WHEN DATE_FORMAT(STR_TO_DATE(T_END_RENT_DAY, '%Y-%m-%d'), 'DY') = '일' AND '1000' > '1200' THEN '주중'
+               ELSE '주말' END                                                         as T_EDY
+         , 'OF'                                                                      AS DELIVERY_FLAG
+)
+SELECT '예약'                                                                           AS FLAG,
+       CASE WHEN COUNT(RM_IDX) > 0 THEN '선택하신 대여시간에 해당 회원님의 예약건이 존재합니다.' ELSE 'Y' END AS MSG
+FROM DC_RESERVE_MASTER A,
+     T_RESVER B
+WHERE A.RESERVE_STATUS_CODE = 'RS'
+  AND (
+        DATE_FORMAT(STR_TO_DATE(CONCAT(T_START_RENT_DAY, ' ', T_START_RENT_TIME), '%Y-%m-%d %H:%i:%s'),
+                    '%Y-%m-%d %H:%i:%s') BETWEEN DATE_FORMAT(STR_TO_DATE(T_START_RENT_DAY, '%Y-%m-%d %H:%i:%s'),
+                                                             '%Y-%m-%d %H:%i:%s') AND DATE_FORMAT(
+                STR_TO_DATE(T_END_RENT_DAY, '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d %H:%i:%s')
+        OR
+        DATE_FORMAT(STR_TO_DATE(CONCAT(T_END_RENT_DAY, ' ', T_END_RENT_TIME), '%Y-%m-%d %H:%i:%s'),
+                    '%Y-%m-%d %H:%i:%s') BETWEEN DATE_FORMAT(STR_TO_DATE(T_START_RENT_DAY, '%Y-%m-%d %H:%i:%s'),
+                                                             '%Y-%m-%d %H:%i:%s') AND DATE_FORMAT(
+                STR_TO_DATE(T_END_RENT_DAY, '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d %H:%i:%s')
+        OR
+        DATE_FORMAT(STR_TO_DATE(T_START_RENT_DAY, '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d %H:%i:%s') BETWEEN DATE_FORMAT(
+                STR_TO_DATE(CONCAT(T_START_RENT_DAY, ' ', T_START_RENT_TIME), '%Y-%m-%d %H:%i:%s'),
+                '%Y-%m-%d %H:%i:%s') AND DATE_FORMAT(
+                STR_TO_DATE(CONCAT(T_END_RENT_DAY, ' ', T_END_RENT_TIME), '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d %H:%i:%s')
+        OR
+        DATE_FORMAT(STR_TO_DATE(T_END_RENT_DAY, '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d %H:%i:%s') BETWEEN DATE_FORMAT(
+                STR_TO_DATE(CONCAT(T_START_RENT_DAY, ' ', T_START_RENT_TIME), '%Y-%m-%d %H:%i:%s'),
+                '%Y-%m-%d %H:%i:%s') AND DATE_FORMAT(
+                STR_TO_DATE(CONCAT(T_END_RENT_DAY, ' ', T_END_RENT_TIME), '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d %H:%i:%s')
+    )
+  AND A.UR_IDX = #{urIdx}
+  AND A.RM_IDX != #{rmIdx}
+UNION ALL
+SELECT '예약'                                                                          AS FLAG,
+       CASE WHEN COUNT(RM_IDX) > 0 THEN '선택하신 대여시간에 해당 차량의 예약건이 존재합니다.' ELSE 'Y' END AS MSG
+FROM DC_RESERVE_MASTER A,
+     T_RESVER B
+WHERE A.CR_IDX = B.T_CR_IDX
+  AND A.RESERVE_STATUS_CODE = 'RS'
+  AND (
+        DATE_FORMAT(STR_TO_DATE(CONCAT(T_START_RENT_DAY, ' ', T_START_RENT_TIME), '%Y-%m-%d %H:%i:%s'),
+                    '%Y-%m-%d %H:%i:%s') BETWEEN DATE_FORMAT(STR_TO_DATE(T_START_RENT_DAY, '%Y-%m-%d %H:%i:%s'),
+                                                             '%Y-%m-%d %H:%i:%s') AND DATE_FORMAT(
+                STR_TO_DATE(T_END_RENT_DAY, '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d %H:%i:%s')
+        OR
+        DATE_FORMAT(STR_TO_DATE(CONCAT(T_END_RENT_DAY, ' ', T_END_RENT_TIME), '%Y-%m-%d %H:%i:%s'),
+                    '%Y-%m-%d %H:%i:%s') BETWEEN DATE_FORMAT(STR_TO_DATE(T_START_RENT_DAY, '%Y-%m-%d %H:%i:%s'),
+                                                             '%Y-%m-%d %H:%i:%s') AND DATE_FORMAT(
+                STR_TO_DATE(T_END_RENT_DAY, '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d %H:%i:%s')
+        OR
+        DATE_FORMAT(STR_TO_DATE(T_START_RENT_DAY, '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d %H:%i:%s') BETWEEN DATE_FORMAT(
+                STR_TO_DATE(CONCAT(T_START_RENT_DAY, ' ', T_START_RENT_TIME), '%Y-%m-%d %H:%i:%s'),
+                '%Y-%m-%d %H:%i:%s') AND DATE_FORMAT(
+                STR_TO_DATE(CONCAT(T_END_RENT_DAY, ' ', T_END_RENT_TIME), '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d %H:%i:%s')
+        OR
+        DATE_FORMAT(STR_TO_DATE(T_END_RENT_DAY, '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d %H:%i:%s') BETWEEN DATE_FORMAT(
+                STR_TO_DATE(CONCAT(T_START_RENT_DAY, ' ', T_START_RENT_TIME), '%Y-%m-%d %H:%i:%s'),
+                '%Y-%m-%d %H:%i:%s') AND DATE_FORMAT(
+                STR_TO_DATE(CONCAT(T_END_RENT_DAY, ' ', T_END_RENT_TIME), '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d %H:%i:%s')
+    )
+  AND A.RM_IDX != #{rmIdx}
+#                     UNION ALL
+#                     SELECT '휴차일' AS FLAG,
+#                            CASE WHEN SUM(S_SUSPEND) > 0 THEN '대여일이 휴차일이어서 예약이 불가합니다.'
+#                                 WHEN SUM(E_SUSPEND) > 0 THEN '반납일이 휴차일이어서 예약이 불가합니다.'
+#                            ELSE 'Y'
+#                     END AS MSG
+#                     FROM (
+#                     SELECT
+#                     CASE WHEN DATE_FORMAT(STR_TO_DATE(T_RESVER.T_START_RENT_DT, '%Y-%m-%d'), '%Y-%m-%d') BETWEEN SUSPEND_START_DT AND SUSPEND_END_DT THEN 1 ELSE 0 END AS S_SUSPEND
+#                     ,CASE WHEN DATE_FORMAT(STR_TO_DATE(T_RESVER.T_END_RENT_DT, '%Y-%m-%d'), '%Y-%m-%d') BETWEEN SUSPEND_START_DT AND SUSPEND_END_DT THEN 1 ELSE 0 END AS E_SUSPEND
+#                     FROM DC_CAR_INFO_SUSPEND, T_RESVER
+#                     WHERE DC_CAR_INFO_SUSPEND.CR_IDX = T_RESVER.T_CR_IDX
+#                     )
+UNION ALL
+SELECT '차량'    AS FLAG,
+       CASE
+           WHEN SUM(AGENT_LIMIT) > 0 THEN '대여차량의 연령 제한을 만족하지 않아 예약불가합니다.'
+           WHEN SUM(DAILY_MONTHLY_YN) > 0 AND SUM(DM_CNT) = 0 THEN '일대여를 운영하고 있지않아 예약 불가합니다.'
+           WHEN SUM(DAILY_MONTHLY_YN) > 0 AND SUM(DM_CNT) >= 1 THEN '월대여를 운영하고 있지않아 예약 불가합니다.'
+           ELSE 'Y'
+           END AS MSG
+FROM (
+         SELECT CASE
+                    WHEN ABS(ROUND(TIMESTAMPDIFF(YEAR ,ROUND(NOW()), STR_TO_DATE(T_RESVER.BIRTH, '%Y-%m-%d')))) >=
+                         IFNULL(DC_CAR_INFO.AGE_LIMIT, '21') THEN 0
+                    ELSE 1 END AS AGENT_LIMIT
+              , CASE
+                    WHEN DM_CNT = 0 AND IFNULL(DAILY_YN, 'Y') = 'Y' THEN 0
+                    WHEN DM_CNT >= 1 AND IFNULL(MONTHLY_YN, 'Y') = 'Y' THEN 0
+                    ELSE 1 END AS DAILY_MONTHLY_YN
+              , DM_CNT
+         FROM DC_CAR_INFO,
+              T_RESVER
+         WHERE DC_CAR_INFO.CR_IDX = T_RESVER.T_CR_IDX
+     ) X
+UNION ALL
+SELECT '휴무일'   AS FLAG,
+       CASE
+           WHEN SUM(S_HOLIDAYS) > 0 THEN '대여일이 회원사 휴무일이어서 예약이 불가합니다.'
+           WHEN SUM(E_HOLIDAYS) > 0 THEN '반납일이 회원사 휴무일이어서 예약이 불가합니다.'
+           ELSE 'Y'
+           END AS MSG
+FROM (
+         SELECT CASE
+                    WHEN DATE_FORMAT(STR_TO_DATE(T_RESVER.T_START_RENT_DT, '%Y-%m-%d'),
+                                     '%Y-%m-%d') BETWEEN HOLIDAY_START_DT AND HOLIDAY_END_DT THEN 1
+                    ELSE 0 END AS S_HOLIDAYS
+              , CASE
+                    WHEN DATE_FORMAT(STR_TO_DATE(T_RESVER.T_END_RENT_DT, '%Y-%m-%d'),
+                                     '%Y-%m-%d') BETWEEN HOLIDAY_START_DT AND HOLIDAY_END_DT THEN 1
+                    ELSE 0 END AS E_HOLIDAYS
+         FROM DC_HOLIDAYS,
+              T_RESVER
+         WHERE RT_IDX = T_RESVER.T_RT_IDX
+     )
+UNION ALL
+SELECT '회원사'   AS FLAG,
+       CASE
+           WHEN SUM(COMPYS) > 0 THEN '대여시간이 회원사 영업시간이 아니어서 예약이 불가합니다'
+           WHEN SUM(COMPYE) > 0 THEN '반납시간이 회원사 영업시간이 아니어서 예약이 불가합니다.'
+           WHEN SUM(DELIVERYS) > 0 THEN '대여시간이 회원사 배달시간이 아니어서 예약이 불가합니다.'
+           WHEN SUM(DELIVERYE) > 0 THEN '반납시간이 회원사 배달시간이 아니어서 예약이 불가합니다.'
+           WHEN SUM(DELIVERYABLE) > 0 THEN '대여시간이 회원사 배달시작시간이 아니어서 예약이 불가합니다.'
+           ELSE 'Y'
+           END AS MSG
+FROM (
+         SELECT CASE
+                    WHEN T_SDY = '주중' THEN
+                        -- 주중 영업시작일 체크
+                        CASE
+                            WHEN T_START_RENT_DAY
+                                     BETWEEN (CONCAT(T_START_RENT_DT ,' ', IFNULL(WEEKDAY_OPEN_START, '0000')))
+                                     AND CONCAT(T_START_RENT_DT ,' ', IFNULL(WEEKDAY_OPEN_END, '2350'))
+                                THEN 0
+                            ELSE 1 END
+                    WHEN T_SDY = '주말' THEN
+                        -- 주말 영업시각일 체크
+                        CASE
+                            WHEN T_START_RENT_DAY
+                                     BETWEEN (CONCAT(T_START_RENT_DT ,' ', IFNULL(WEEKEND_OPEN_START, '0000')))
+                                     AND CONCAT(T_START_RENT_DT , ' ' ,IFNULL(WEEKEND_OPEN_END, '2350'))
+                                THEN 0
+                            ELSE 1 END
+                    END
+                    AS COMPYS,
+                CASE
+                    WHEN T_EDY = '주중' THEN
+                        -- 주중 영업종료일 체크
+                        CASE
+                            WHEN T_END_RENT_DAY
+                                     BETWEEN (CONCAT(T_END_RENT_DT ,' ', IFNULL(WEEKDAY_OPEN_START, '0000')))
+                                     AND CONCAT(T_END_RENT_DT ,' ', IFNULL(WEEKDAY_OPEN_END, '2350')
+                                THEN 0
+                            ELSE 1 END
+                    WHEN T_EDY = '주말' THEN
+                        -- 주말 영업종료일 체크
+                        CASE
+                            WHEN T_END_RENT_DAY
+                                     BETWEEN (CONCAT(T_END_RENT_DT ,' ', IFNULL(WEEKEND_OPEN_START, '0000')))
+                                     AND CONCAT(T_END_RENT_DT ,' ', IFNULL(WEEKEND_OPEN_END, '2350'))
+                                THEN 0
+                            ELSE 1 END
+                    END
+                    AS COMPYE,
+                CASE
+                    WHEN T_SDY = '주중' THEN
+                        -- 주중 영업시작일 체크
+                        CASE
+                            WHEN T_START_RENT_DAY
+                                     BETWEEN (CONCAT(T_START_RENT_DT , ' ', IFNULL(WEEKDAY_DELIVERY_START, '0000')))
+                                     AND CONCAT(T_START_RENT_DT ,' ', IFNULL(WEEKDAY_DELIVERY_END, '2350'))
+                                THEN 0
+                            ELSE 1 END
+                    WHEN T_SDY = '주말' THEN
+                        -- 주말 영업시각일 체크
+                        CASE
+                            WHEN T_START_RENT_DAY
+                                     BETWEEN (CONCAT(T_START_RENT_DT ,' ', IFNULL(WEEKDAY_DELIVERY_START, '0000')))
+                                     AND COCAT(T_START_RENT_DT ,' ' , IFNULL(WEEKDAY_DELIVERY_END, '2350'))
+                                THEN 0
+                            ELSE 1 END
+                    END
+                    AS DELIVERYS,
+                CASE
+                    WHEN T_EDY = '주중' THEN
+                        -- 주중 영업종료일 체크
+                        CASE
+                            WHEN T_END_RENT_DAY
+                                     BETWEEN (CONCAT(T_END_RENT_DT ,' ' , IFNULL(WEEKEND_DELIVERY_START, '0000')))
+                                     AND CONCAT(T_END_RENT_DT ,' ', IFNULL(WEEKEND_DELIVERY_END, '2350'))
+                                THEN 0
+                            ELSE 1 END
+                    WHEN T_EDY = '주말' THEN
+                        -- 주말 영업종료일 체크
+                        CASE
+                            WHEN T_END_RENT_DAY
+                                     BETWEEN (CONCAT(T_END_RENT_DT ,' ', IFNULL(WEEKEND_DELIVERY_START, '0000')))
+                                     AND CONCAT(T_END_RENT_DT ,' ', IFNULL(WEEKEND_DELIVERY_END, '2350'))
+                                THEN 0
+                            ELSE 1 END
+                    END
+                    AS DELIVERYE,
+                CASE
+                    WHEN T_SDY = '주중' AND DELIVERY_FLAG = 'DL' THEN
+                        -- 주중 영업시작일 체크
+                        CASE
+                            WHEN ROUND((STR_TO_DATE(T_START_RENT_DAY, '%Y-%m-%d %H:%i:%s') - NOW()) * 24) >=
+                                 WEEKDAY_ABLE_DELIVERY_TIME
+                                THEN 0
+                            ELSE 1 END
+                    WHEN T_SDY = '주말' AND DELIVERY_FLAG = 'DL' THEN
+                        -- 주말 영업시각일 체크
+                        CASE
+                            WHEN ROUND((STR_TO_DATE(T_START_RENT_DAY, '%Y-%m-%d %H:%i:%s') - NOW()) * 24) >=
+                                 WEEKEND_ABLE_DELIVERY_TIME
+                                THEN 0
+                            ELSE 1 END
+                    ELSE 0
+                    END
+                    AS DELIVERYABLE
+         FROM DC_RENT_COMPANY_TIME,
+              T_RESVER
+         WHERE RT_IDX = T_RESVER.T_RT_IDX
+     )
 
         ]]>
 
@@ -679,42 +749,50 @@ SELECT * FROM (
 
     <select id="selectCompanyList" parameterType="reserveInfoRequest" resultType="DocahRentCompanyDto">
 
-      SELECT RT_IDX
-      ,      IFNULL(RT_P_IDX                     , '' ) AS RT_P_IDX
-      ,      IFNULL(COMPANY_NAME                 , '' ) AS COMPANY_NAME
-      ,      IFNULL(COMPANY_ZIPCODE              , '' ) AS COMPANY_ZIPCODE
-      ,      IFNULL(COMPANY_ADDRESS              , '' ) AS COMPANY_ADDRESS
-      ,      IFNULL(COMPANY_ADDRESS_DETAIL       , '' ) AS COMPANY_ADDRESS_DETAIL
-      ,      IFNULL(LAT                          , '' ) AS LAT
-      ,      IFNULL(LNG                          , '' ) AS LNG
-      ,      IFNULL(ESTABLISHED_DATE             , '' ) AS ESTABLISHED_DATE
-      ,      IFNULL(COMPANY_REGISTRATION_NUMBER   , '' ) AS COMPANY_REGISTRATION_NUMBER
-      ,      IFNULL(COMPANY_REGISTRATION_IMG     , '' ) AS COMPANY_REGISTRATION_IMG
-      ,      IFNULL(ACCOUNT_BANK                 , '' ) AS ACCOUNT_BANK
-      ,      IFNULL(ACCOUNT_NUMBER               , '' ) AS ACCOUNT_NUMBER
-      ,      IFNULL(ACCOUNT_HOLDER               , '' ) AS ACCOUNT_HOLDER
-      ,      IFNULL(ACCOUNT_IMG_IDX              , '' ) AS ACCOUNT_IMG_IDX
-      ,      IFNULL(LONGTERM_RENT_YN             , '' ) AS LONGTERM_RENT_YN
-      ,      IFNULL(SHORTTERM_RENT_YN            , '' ) AS SHORTTERM_RENT_YN
-      ,      IFNULL(ALLIANCE_STATUS              , '' ) AS ALLIANCE_STATUS
-      ,      IFNULL(BRANCH_ABLE_YN               , '' ) AS BRANCH_ABLE_YN
-      ,      IFNULL(CAR_COUNT                    , '' ) AS CAR_COUNT
-      ,      IFNULL(ETC                          , '' ) AS ETC
-      ,      IFNULL(REG_ID                       , '' ) AS REG_ID
-      ,      IFNULL(REG_DT                       , '' ) AS REG_DT
-      ,      IFNULL(MOD_ID                       , '' ) AS MOD_ID
-      ,      IFNULL(MOD_DT                       , '' ) AS MOD_DT
-      ,      IFNULL(DEL_YN                       , '' ) AS DEL_YN
-      ,      IFNULL(COMPANY_CONTACT1             , '' ) AS COMPANY_CONTACT1
-      ,      IFNULL(COMPANY_CONTACT2             , '' ) AS COMPANY_CONTACT2
-      ,      IFNULL(ALARM_YN                     , '' ) AS ALARM_YN
-      ,      IFNULL(COMPANY_REGISTRATION_NAME    , '' ) AS COMPANY_REGISTRATION_NAME
-      ,      IFNULL(BRANCH_NAME                  , '' ) AS BRANCH_NAME
-      ,      IFNULL(ACCESS_YN                    , '' ) AS ACCESS_YN
-      FROM   DC_RENT_COMPANY
-      ORDER BY COMPANY_NAME
+        SELECT RT_IDX
+        ,      IFNULL(RT_P_IDX                     , '' ) AS RT_P_IDX
+        ,      IFNULL(COMPANY_NAME                 , '' ) AS COMPANY_NAME
+        ,      IFNULL(COMPANY_ZIPCODE              , '' ) AS COMPANY_ZIPCODE
+        ,      IFNULL(COMPANY_ADDRESS              , '' ) AS COMPANY_ADDRESS
+        ,      IFNULL(COMPANY_ADDRESS_DETAIL       , '' ) AS COMPANY_ADDRESS_DETAIL
+        ,      IFNULL(LAT                          , '' ) AS LAT
+        ,      IFNULL(LNG                          , '' ) AS LNG
+        ,      IFNULL(ESTABLISHED_DATE             , '' ) AS ESTABLISHED_DATE
+        ,      IFNULL(COMPANY_REGISTRATION_NUMBER   , '' ) AS COMPANY_REGISTRATION_NUMBER
+        ,      IFNULL(COMPANY_REGISTRATION_IMG     , '' ) AS COMPANY_REGISTRATION_IMG
+        ,      IFNULL(ACCOUNT_BANK                 , '' ) AS ACCOUNT_BANK
+        ,      IFNULL(ACCOUNT_NUMBER               , '' ) AS ACCOUNT_NUMBER
+        ,      IFNULL(ACCOUNT_HOLDER               , '' ) AS ACCOUNT_HOLDER
+        ,      IFNULL(ACCOUNT_IMG_IDX              , '' ) AS ACCOUNT_IMG_IDX
+        ,      IFNULL(LONGTERM_RENT_YN             , '' ) AS LONGTERM_RENT_YN
+        ,      IFNULL(SHORTTERM_RENT_YN            , '' ) AS SHORTTERM_RENT_YN
+        ,      IFNULL(ALLIANCE_STATUS              , '' ) AS ALLIANCE_STATUS
+        ,      IFNULL(BRANCH_ABLE_YN               , '' ) AS BRANCH_ABLE_YN
+        ,      IFNULL(CAR_COUNT                    , '' ) AS CAR_COUNT
+        ,      IFNULL(ETC                          , '' ) AS ETC
+        ,      IFNULL(REG_ID                       , '' ) AS REG_ID
+        ,      IFNULL(REG_DT                       , '' ) AS REG_DT
+        ,      IFNULL(MOD_ID                       , '' ) AS MOD_ID
+        ,      IFNULL(MOD_DT                       , '' ) AS MOD_DT
+        ,      IFNULL(DEL_YN                       , '' ) AS DEL_YN
+        ,      IFNULL(COMPANY_CONTACT1             , '' ) AS COMPANY_CONTACT1
+        ,      IFNULL(COMPANY_CONTACT2             , '' ) AS COMPANY_CONTACT2
+        ,      IFNULL(ALARM_YN                     , '' ) AS ALARM_YN
+        ,      IFNULL(COMPANY_REGISTRATION_NAME    , '' ) AS COMPANY_REGISTRATION_NAME
+        ,      IFNULL(BRANCH_NAME                  , '' ) AS BRANCH_NAME
+        ,      IFNULL(ACCESS_YN                    , '' ) AS ACCESS_YN
+        FROM   DC_RENT_COMPANY
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <if test="rtIdx != null and rtIdx != ''">
+                <![CDATA[ AND RT_IDX = #{rtIdx} ]]>
+            </if>
+            <if test="rtPIdx != null and rtPIdx != ''">
+                <![CDATA[ AND RT_P_IDX = #{rtPIdx} ]]>
+            </if>
+        </trim>
 
-   </select>
+        ORDER BY COMPANY_NAME
+    </select>
 
     <select id="selectCompanyInfo" parameterType="reserveInfoRequest" resultType="DocahRentCompanyDto">
 
@@ -825,7 +903,7 @@ SELECT * FROM (
                                    X.CR_IDX, GROUP_CONCAT(Y.CODE_VALUE ORDER BY Y.CODE_VALUE DESC SEPARATOR ',') AS CAROPTION_LIST_VALUE
                               FROM DC_CAR_INFO_OPTION X
                               INNER JOIN DC_COMMON_CODE Y
-                                  ON ( '|' || X.OPTION_DETAIL_CODE || '|' LIKE '%' || Y.CODE || '%' )
+                                  ON (X.OPTION_DETAIL_CODE LIKE Y.CODE )
                                   AND Y.RT_CODE = 'CR'
                               GROUP BY X.CR_IDX
                            ) CA ON T1.CR_IDX = CA.CR_IDX

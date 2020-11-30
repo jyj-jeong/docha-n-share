@@ -1,7 +1,6 @@
 package com.ohdocha.admin.service;
 
 import com.ohdocha.admin.domain.reserve.reserveInfoMnt.*;
-import com.ohdocha.admin.domain.user.DochaAdminUserInfoRequest;
 import com.ohdocha.admin.mapper.DochaAdminReserveInfoMapper;
 import com.ohdocha.admin.util.DochaMap;
 import com.ohdocha.admin.util.KeyMaker;
@@ -49,7 +48,7 @@ public class ReserveServiceImpl extends ServiceExtension implements ReserveServi
 
 //        List<DochaAdminReserveInfoDetailResponse> resDto = reserveInfoMapper.reserveInfoCheck(reserveInfoDetailRequest);
 //        if (resDto == null && resDto.size() == 0){
-            res = reserveInfoMapper.insertReserveInfo(reserveInfoDetailRequest);
+        res = reserveInfoMapper.insertReserveInfo(reserveInfoDetailRequest);
 //        }else res = 0;
 
         if (res == 1){

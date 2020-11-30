@@ -32,9 +32,10 @@
 
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">통합 회원</h6>
+                    <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                        <h6 class="m-0 font-weight-bold text-primary">통합회원</h6>
                     </div>
+
                     <div class="card-body">
                         <div class="mb-4 text-right">
                             <button class="btn btn-primary" onclick="registerUser()">등록</button>
@@ -75,7 +76,7 @@
                                     <td th:text="${user.getUserName()}"></td>
                                     <td th:text="${user.getUserContact1()}"></td>
                                     <td>0</td>
-                                    <td></td>
+                                    <td>0</td>
                                     <td th:text="${user.getRegDt()}"></td>
                                 </tr>
                                 </tbody>
@@ -135,7 +136,18 @@
 
         var url = "/mem/detail/" + urIdx;
         var name = "test";
-        var option = "width = 1000, height =800 ,location=no, left=500, top=50";
+        var width;
+        if (parseInt(window.innerWidth) < 1000){
+            width = 1000;
+        }else {
+            width = (parseInt(window.innerWidth) * 0.8);
+        }
+        var height = (parseInt(window.innerHeight) * 0.9);
+        var left =  (window.screen.width / 2) - (width / 2);
+        var top = (window.screen.height / 2) - (height / 2);
+
+
+        var option = "width=" + width +", height=" + height + " ,location=no, left=" + left + ", top=" + top;
 
         window.open(url, name, option);
     });
@@ -144,7 +156,12 @@
     function registerUser() {
         var url = 'mem/register';
         var name = "_blank";
-        var width = (parseInt(window.innerWidth) * 0.8);
+        var width;
+        if (parseInt(window.innerWidth) < 1000){
+            width = 1000;
+        }else {
+            width = (parseInt(window.innerWidth) * 0.8);
+        }
         var height = (parseInt(window.innerHeight) * 0.9);
         var left =  (window.screen.width / 2) - (width / 2);
         var top = (window.screen.height / 2) - (height / 2);
@@ -155,6 +172,21 @@
 
         window.open(url, name, option);
     }
+
+    function autoHyphenPhone(num) {
+
+        num = getOnlyNumber(num);
+        var tmp = '';
+
+        tmp += num.substr(0, 3);
+        tmp += '-';
+        tmp += num.substr(3, 4);
+        tmp += '-';
+        tmp += num.substr(7);
+
+        return tmp;
+    }
+
 
 </script>
 </body>

@@ -75,7 +75,7 @@
 		]]>
 	</select>
 
-	<select id="calcMonthlySales" resultType="_int">
+	<select id="calcMonthlySales" resultType="int">
 		<![CDATA[
 			SELECT SUM(PAYMENT_AMOUNT) FROM DC_PAYMENT_LOG
 			WHERE APPROVAL_YN = 'Y'
@@ -83,7 +83,7 @@
 		]]>
 	</select>
 
-	<select id="cntDailyReserve" resultType="_int">
+	<select id="cntDailyReserve" resultType="int">
 		<![CDATA[
 			SELECT COUNT(RM_IDX) FROM DC_RESERVE_MASTER
 			WHERE RESERVE_STATUS_CODE = '예약'
@@ -91,7 +91,7 @@
 		]]>
 	</select>
 
-	<select id="cntMontlyyReserve" resultType="_int">
+	<select id="cntMontlyyReserve" resultType="int">
 		<![CDATA[
 			SELECT COUNT(RM_IDX) FROM DC_RESERVE_MASTER
 			WHERE RESERVE_STATUS_CODE = '예약'
@@ -99,7 +99,7 @@
 		]]>
 	</select>
 
-	<select id="cntDailyCancel" resultType="_int">
+	<select id="cntDailyCancel" resultType="int">
 		<![CDATA[
 			SELECT COUNT(RM_IDX) FROM DC_RESERVE_MASTER
 			WHERE RESERVE_STATUS_CODE = '취소'
@@ -107,7 +107,7 @@
 		]]>
 	</select>
 
-	<select id="cntMonthlyCancel" resultType="_int">
+	<select id="cntMonthlyCancel" resultType="int">
 		<![CDATA[
 			SELECT COUNT(RM_IDX) FROM DC_RESERVE_MASTER
 			WHERE RESERVE_STATUS_CODE = '취소'
@@ -115,23 +115,56 @@
 		]]>
 	</select>
 
-	<select id="cntQnA" resultType="_int">
+	<select id="cntQnA" resultType="int">
 		<![CDATA[
 			SELECT COUNT(QU_IDX) FROM DC_QUESTION
 		]]>
 	</select>
 
-	<!-- 메인 화면 그래프 -->
+	<!-- 메인 화면 그래프 (일매출)-->
 	<select id="salesGraph" resultType="map" parameterType="DochaMap">
 		<![CDATA[
 			SELECT
-				DATE_FORMAT(PAYMENT_DATE, '%Y-%m-%d') AS date,
 				IFNULL(SUM(PAYMENT_AMOUNT), 0) as amount,
 			    IFNULL(COUNT(PL_IDX), 0) as salesCount
 				FROM DC_PAYMENT_LOG
-				WHERE DATE_FORMAT(PAYMENT_DATE, '%Y-%m-%d') BETWEEN #{startTime} AND #{endTime}
+				WHERE DATE_FORMAT(PAYMENT_DATE, '%Y-%m-%d') = #{startTime}
 				GROUP BY DATE_FORMAT(PAYMENT_DATE, '%Y-%m-%d')
 				ORDER BY DATE_FORMAT(PAYMENT_DATE, '%Y-%m-%d')
+		]]>
+	</select>
+
+	<!-- 메인 화면 그래프 (월매출) -->
+	<select id="monthlySalesGraph" resultType="map" parameterType="DochaMap">
+		<![CDATA[
+			SELECT
+				DATE_FORMAT(PAYMENT_DATE, '%Y-%m') AS date,
+				IFNULL(SUM(PAYMENT_AMOUNT), 0) as amount,
+			    IFNULL(COUNT(PL_IDX), 0) as salesCount
+				FROM DC_PAYMENT_LOG
+				WHERE DATE_FORMAT(PAYMENT_DATE, '%Y-%m') = #{startTime}
+				GROUP BY DATE_FORMAT(PAYMENT_DATE, '%Y-%m')
+				ORDER BY DATE_FORMAT(PAYMENT_DATE, '%Y-%m')
+		]]>
+	</select>
+
+	<!-- 메인 화면 그래프 (신규유저) -->
+	<select id="newUserGraph" resultType="map" parameterType="DochaMap">
+		<![CDATA[
+			SELECT IFNULL(COUNT(UR_IDX)  , 0) as newUser
+			FROM   DC_USER_INFO
+			WHERE  USER_ROLE = 'RU'
+			AND    DATE_FORMAT(REG_DT , '%Y-%m-%d') = #{startTime}
+		]]>
+	</select>
+
+	<!-- 메인 화면 그래프 (취소) -->
+	<select id="cancelGraph" resultType="map" parameterType="DochaMap">
+		<![CDATA[
+			SELECT IFNULL(COUNT(RM_IDX)  , 0) as cancelCount
+			FROM   DC_RESERVE_MASTER
+			WHERE  RESERVE_STATUS_CODE = '취소'
+			AND    DATE_FORMAT(REG_DT , '%Y-%m-%d') = #{startTime}
 		]]>
 	</select>
 

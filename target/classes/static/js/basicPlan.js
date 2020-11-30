@@ -89,9 +89,9 @@ var drawTable = function drawTable(res, page, displayPageNum){
 	
 	columns = [
 		{ "name": "rowNumber", "id" : "rowNum" ,"title": "No" , "visible": false },          
-		{ "name": "pyIdx", "title": "요금제번호" ,
+		{ "name": "pyTIdx", "title": "요금제번호" ,
 			"formatter" : function(value, options, rowData){
-				let seq = rowData.pyIdx;
+				let seq = rowData.pyTIdx;
 				return '<a href="javascript:initDetailInfo(' + "'" +seq + "'" +');"  >'+value+'</a>';               
 			}
 		},
@@ -164,7 +164,7 @@ function initSelectBox(){
 	var countOption = '';
 	
 	searchOption += '<option value="" >선택</option>';
-	searchOption += '<option value="pyIdx" >요금제번호</option>';
+	searchOption += '<option value="pyTIdx" >요금제번호</option>';
 	searchOption += '<option value="companyName" >회원사</option>';
 	searchOption += '<option value="branchName" >지점</option>';
 	searchOption += '<option value="pyEtc" >제목</option>';
@@ -263,15 +263,15 @@ function initDetailInfo(seq){
 	// input box 초기화	
 	initInput();
 	
-	let pyIdx = '';
+	let pyTIdx = '';
 
 	let target = 'basicPlanDetail';
 	let method = 'select';
 
-	pyIdx = seq;
+	pyTIdx = seq;
 
 	let req = {
-			pyIdx : pyIdx
+			pyTIdx : pyTIdx
 	};
 		
 	fn_callApi(method, target, req, function(response) {
@@ -282,7 +282,7 @@ function initDetailInfo(seq){
 
 			let data = response[0];
 			
-			let pyIdx                = nullCheck(data.pyIdx);
+			let pyTIdx                = nullCheck(data.pyTIdx);
 			let mdIdx                = nullCheck(data.mdIdx);
 			let dailyStandardPay     = objectConvertToPriceFormat(nullCheck(data.dailyStandardPay));
 			let monthlyStandardPay   = objectConvertToPriceFormat(nullCheck(data.monthlyStandardPay));
@@ -302,7 +302,7 @@ function initDetailInfo(seq){
 			let settingCarCnt        = nullCheck(data.settingCarCnt);
 			
 			$('#pyEtc').val(pyEtc);
-			$('#pyIdx').val(pyIdx);
+			$('#pyTIdx').val(pyTIdx);
 			
 			$('#dailyStandardPay').val(dailyStandardPay + '원');
 			$('#dailyMaxRate').val(dailyMaxRate + '%');
@@ -395,7 +395,7 @@ function detailValidation(){
 	let title, text, icon, cancel_text;
 
 	let companyName = getPureText($('#companyName').val());
-	let pyIdx = getPureText($('#pyIdx').val());
+	let pyTIdx = getPureText($('#pyTIdx').val());
 	let pyEtc = getPureText($('#pyEtc').val());
 	let dailyStandardPay = getPureText($('#dailyStandardPay').val()).replace("원","").replace(" ","");
 	let dailyMaxRate = getPureText($('#dailyMaxRate').val()).replace("%","").replace(" ","");
@@ -468,7 +468,7 @@ function detailValidation(){
 
 	let req = {
 		    'rtIdx'	: rtIdx
-		,	'pyIdx' : pyIdx
+		,	'pyTIdx' : pyTIdx
 		,	'pyEtc' : pyEtc
 		,	'dailyStandardPay' : dailyStandardPay
 		,	'dailyMaxRate' : dailyMaxRate  

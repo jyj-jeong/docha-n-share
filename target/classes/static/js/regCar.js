@@ -17,10 +17,6 @@
  * 
  * */
 
-/* 강제 */
-var GLOBAL_LOGIN_USER_ROLE = 'RA';
-var GLOBAL_LINK_RTIDX = '0N31TsXt';
-
 var MODAL_NAME = 'regCarDetail';
 var MODAL_TITLE = '등록차량 상세';
 var MODAL_WIDTH = 1200;
@@ -395,6 +391,15 @@ function initDetailInfo(seq){
 //		return;
 //	}
 
+	var currentYear = new Date().getFullYear();
+	var strOption = '';
+	for(var i = 7; i >= 0; i--){
+		strOption += "<option value = '" + (currentYear-i) + "'>" + (currentYear-i) + "</option>";
+	}
+	strOption += "<option value = '" + (currentYear+1) + "'>" + (currentYear+1) + "</option>";
+	$('select[name="year"]').append(strOption);
+	$('select[name="carRegDt"]').append(strOption);
+
 	// input box 초기화
 	initInput();
 
@@ -435,7 +440,7 @@ function initDetailInfo(seq){
 		let delYn 					= data.delYn              ; //차량삭제여부
 		let ageLimit 				= data.ageLimit           ; //대여연령제한(장기,단기)
 
-		/*
+
                     // 차량 추가 정보
                     let transmissionCode 		= data.transmissionCode   ; //변속기구분code
                     let driveTypeCode 			= data.driveTypeCode      ; //구동방식구분code
@@ -449,7 +454,7 @@ function initDetailInfo(seq){
         //			let garageAddr 				= data.garageAddr         ; //차고지주소
         //			let carEtc 					= data.carEtc             ; //비고
                     // 보험정보
-                    let ciIdx 					= data.ciIdx              ; //보험정보idx
+                    let ciTIdx 					= data.ciTIdx              ; //보험정보idx
                     let personalCover 			= data.personalCover      ; //대인보상금액
                     let propertyDamageCover 	= data.propertyDamageCover; //대물보상금액
                     let onselfDamageCover 		= data.onselfDamageCover  ; //자손보상금액
@@ -466,7 +471,7 @@ function initDetailInfo(seq){
                     let carDamage3Yn 			= data.carDamage3Yn       ; //자차3사용유무
                     let carDamage4Yn 			= data.carDamage4Yn       ; //자차4사용유무
                     // 기본요금
-                    let pyIdx 					= data.pyIdx              ; //요금idx
+                    // let pyIdx 					= data.pyIdx              ; //요금idx
                     let dailyStandardPay 		= data.dailyStandardPay   ; //일기본요금
                     let dailyMaxRate 			= data.dailyMaxRate       ; //일대여최대할인율
                     let monthlyStandardPay 		= data.monthlyStandardPay ; //월기본요금
@@ -478,7 +483,7 @@ function initDetailInfo(seq){
                     let deliveryStandardPay 	= data.deliveryStandardPay; //배달기본요금
                     let deliveryAddPay 			= data.deliveryAddPay     ; //배달10KM단위추가요금
                     let deliveryMaxRate 		= data.deliveryMaxRate    ; //배달최대할인율
-        */
+
 		let dailyYn 				= data.dailyYn            ; //일대여사용유무
 		let monthlyYn 				= data.monthlyYn          ; //월대여사용유무
 		let closedvehicleYn 		= data.closedvehicleYn    ; //휴차일사용유무
@@ -493,17 +498,51 @@ function initDetailInfo(seq){
 		$('#companyName').append(companyNameItem);
 		$('#companyName').attr('disabled', true);
 
+		$('#regCarTitle').text('차량등록 - ' + companyName + ' / ' + branchName);
 		$("#crIdx").val(crIdx);
 		$("#carNumber").val(carNumber);
-		$("#year").val(year);
+		$('select[name="year"]').val(year);
 		$("#colorName").val(colorName);
 		$("#mileage").val(mileage);
 		$("#carChassisNumber").val(carChassisNumber);
-		$("#carRegDt").val(carRegDt);
+		$('select[name="carRegDt"]').val(carRegDt);
 		$("#ageLimit").val(ageLimit);
 
 		$("#carNumber").attr('readonly', true);
 		$("#carChassisNumber").attr('readonly', true);
+
+
+		let insuranceItem = "<option selected value='" + rtIdx + "'>"+companyName+"</option>";
+		$('#companyName').empty();
+		$('#companyName').append(companyNameItem);
+		$("#personalCover").val(personalCover);
+		$("#propertyDamageCover").val(propertyDamageCover);
+		$("#onselfDamageCover").val(onselfDamageCover);
+		$("#insuranceCopayment").val(insuranceCopayment);
+		$("#carDamageCover").val(carDamageCover);
+		$("#insuranceCopayment2").val(insuranceCopayment2);
+		$("#carDamageCover2").val(carDamageCover2);
+		$("#insuranceCopayment3").val(insuranceCopayment3);
+		$("#carDamageCover3").val(carDamageCover3);
+		$("#insuranceCopayment4").val(insuranceCopayment4);
+		$("#carDamageCover4").val(carDamageCover4);
+		$("input:checkbox[name='carDamage1Yn']:checkbox[value='Y']").prop('checked', true);
+		$("input:checkbox[name='carDamage2Yn']:checkbox[value='Y']").prop('checked', true);
+		$("input:checkbox[name='carDamage3Yn']:checkbox[value='Y']").prop('checked', true);
+		$("input:checkbox[name='carDamage4Yn']:checkbox[value='Y']").prop('checked', true);
+
+
+		$("#dailyStandardPay").val(dailyStandardPay);
+		$("#dailyMaxRate").val(dailyMaxRate);
+		$("#monthlyStandardPay").val(monthlyStandardPay);
+		$("#monthlyMaxRate").val(monthlyMaxRate);
+		$("#month3Deposit").val(month3Deposit);
+		$("#month6Deposit").val(month6Deposit);
+		$("#month9Deposit").val(month9Deposit);
+		$("#month12Deposit").val(month12Deposit);
+		$("#deliveryStandardPay").val(deliveryStandardPay);
+		$("#deliveryAddPay").val(deliveryAddPay);
+		$("#deliveryMaxRate").val(deliveryMaxRate);
 
 //			$("#sel_fuel").val(fuelCode).prop("selected", true);
 //			$("#transmissionCode").val(transmissionCode);
@@ -686,12 +725,12 @@ function initDetailSelectBox(_data){
 
 		for ( var i in data) {
 
-			if (data[i].ciIdx) {
-				strOption += "<option value = '" + data[i].ciIdx + "'>" + nullCheck(data[i].ciEtc) + "</option>";
+			if (data[i].ciTIdx) {
+				strOption += "<option value = '" + data[i].ciTIdx + "'>" + nullCheck(data[i].ciEtc) + "</option>";
 			}
 		}
-		$('#sel_ciIdx').empty();
-		$('#sel_ciIdx').append(strOption);
+		$('#sel_ciTIdx').empty();
+		$('#sel_ciTIdx').append(strOption);
 
 		if(!isEmpty(_data)){
 			let ciIdx = _data.ciIdx; //템플릿
@@ -731,12 +770,12 @@ function initDetailSelectBox(_data){
 
 		for ( var i in data) {
 
-			if (data[i].pyIdx) {
-				strOption += "<option value = '" + data[i].pyIdx + "'>" + nullCheck(data[i].pyEtc) + "</option>";
+			if (data[i].pyTIdx) {
+				strOption += "<option value = '" + data[i].pyTIdx + "'>" + nullCheck(data[i].pyEtc) + "</option>";
 			}
 		}
-		$('#sel_pyIdx').empty();
-		$('#sel_pyIdx').append(strOption);
+		$('#sel_pyTIdx').empty();
+		$('#sel_pyTIdx').append(strOption);
 
 		if(!isEmpty(_data)){
 			let pyIdx = _data.pyIdx; //템플릿
@@ -749,7 +788,6 @@ function initDetailSelectBox(_data){
 
 		// } else { // 200이 아닐때 empty처리 error처리 등을 기록한다.
 		// 	errorAlert('API ERROR', '조회중 에러가 발생했습니다. \r\n 관리자에게 문의하세요.');
-
 		// }
 	});// end fn_callApi
 
@@ -840,23 +878,23 @@ function modelDetailNamechange() {
 	setData('saveCarinfo', data);
 }
 //보험료 select box 변경시
-function ciIdxchange() {
-	let ciIdxIndex = $("#sel_ciIdx option:selected").index() - 1;
-	if(ciIdxIndex < 0){
+function ciTIdxchange() {
+	let ciTIdxIndex = $("#sel_ciTIdx option:selected").index() - 1;
+	if(ciTIdxIndex < 0){
 		cancelData('saveInsurance');
 		return;
 	}else{
-		setData('saveInsurance', insuranceData[ciIdxIndex]);
+		setData('saveInsurance', insuranceData[ciTIdxIndex]);
 	}
 }
 // 기본요금 select box 변경시
-function pyIdxchange(){
-	let pyIdxIndex = $("#sel_pyIdx option:selected").index() - 1;
-	if(pyIdxIndex < 0){
+function pyTIdxchange(){
+	let pyTIdxIndex = $("#sel_pyTIdx option:selected").index() - 1;
+	if(pyTIdxIndex < 0){
 		cancelData('savePaymentinfo');
 		return;
 	}else{
-		setData('savePaymentinfo', planData[pyIdxIndex]);
+		setData('savePaymentinfo', planData[pyTIdxIndex]);
 	}
 }
 // 회원사 select box 변경시
@@ -895,7 +933,7 @@ function cancelData(cancel_type) {
 			$("input:radio[name='carDamage2Yn']:radio[value='Y']").prop('checked', true);
 			$("input:radio[name='carDamage3Yn']:radio[value='Y']").prop('checked', true);
 			$("input:radio[name='carDamage4Yn']:radio[value='Y']").prop('checked', true);
-			$("#sel_ciIdx").val('0').prop("selected", true);
+			$("#sel_ciTIdx").val('0').prop("selected", true);
 
 			break;
 		case 'savePaymentinfo':	// 기본요금
@@ -911,7 +949,7 @@ function cancelData(cancel_type) {
 			$('#deliveryStandardPay').val('');
 			$('#deliveryAddPay').val('');
 			$('#deliveryMaxRate').val('');
-			$("#sel_pyIdx").val('0').prop("selected", true);
+			$("#sel_pyTIdx").val('0').prop("selected", true);
 
 			break;
 	}
@@ -948,7 +986,7 @@ function setData(set_type, _data){
 			$("#sel_fuel").val(fuelCode).prop("selected", true);
 			break;
 		case 'saveInsurance':	// 보험정보
-			let ciIdx                		= nullCheck(_data.ciIdx);
+			let ciTIdx                		= nullCheck(_data.ciTIdx);
 			let onselfDamageCover           = nullCheck(_data.onselfDamageCover) == '' ? '' : objectConvertToPriceFormat(nullCheck(_data.onselfDamageCover));;
 			let personalCover               = nullCheck(_data.personalCover) == '' ? '' : objectConvertToPriceFormat(nullCheck(_data.personalCover));;
 			let propertyDamageCover     	= nullCheck(_data.propertyDamageCover) == '' ? '' : objectConvertToPriceFormat(nullCheck(_data.propertyDamageCover));;
@@ -1003,10 +1041,10 @@ function setData(set_type, _data){
 				$("input:radio[name='carDamage4Yn']:radio[value='N']").prop('checked', true); // 선택하기
 			}
 
-			$("#sel_ciIdx").val(ciIdx).prop("selected", true);
+			$("#sel_ciTIdx").val(ciTIdx).prop("selected", true);
 			break;
 		case 'savePaymentinfo':	// 기본요금
-			let pyIdx                = nullCheck(_data.pyIdx);
+			let pyTIdx                = nullCheck(_data.pyTIdx);
 			let dailyStandardPay     = objectConvertToPriceFormat(nullCheck(_data.dailyStandardPay));
 			let monthlyStandardPay   = objectConvertToPriceFormat(nullCheck(_data.monthlyStandardPay));
 			let dailyMaxRate         = objectConvertToPriceFormat(nullCheck(_data.dailyMaxRate));
@@ -1032,7 +1070,7 @@ function setData(set_type, _data){
 			$('#deliveryAddPay').val(deliveryAddPay);
 			$('#deliveryMaxRate').val(deliveryMaxRate);
 
-			$("#sel_pyIdx").val(pyIdx).prop("selected", true);
+			$("#sel_pyTIdx").val(pyTIdx).prop("selected", true);
 			break;
 	}
 
@@ -1055,8 +1093,8 @@ function detailValidation(save_type){
 				let companyName 		= _rtIdx;
 				let carNumber 			= $("#carNumber").val();
 				let carChassisNumber 	= $("#carChassisNumber").val();
-				let year 				= $("#year").val();
-				let carRegDt 			= $("#carRegDt").val();
+				let year 				= $("#year option:selected").val();
+				let carRegDt 				= $("#carRegDt option:selected").val();
 				let modelName 			= $("#sel_modelName").val();
 				let modelDetailName 	= $("#sel_modelDetailName option:selected").text();
 				let mdIdx 				= $("#sel_modelDetailName").val();
@@ -1116,10 +1154,7 @@ function detailValidation(save_type){
 //				errorAlert('차량정보', '차량대번호는 필수 입력값 입니다.');
 //				return;
 //			}
-				if (getPureText(carRegDt).length !== 6) { // is not empty
-					errorAlert('차량정보', '출고연식은 YYYY-MM 형식으로 입력하여 주세요.');
-					return;
-				}
+
 				if (isEmpty(mileage)) { // is not empty
 					mileage = '0';
 				}
@@ -1129,7 +1164,7 @@ function detailValidation(save_type){
 
 				if (CRUD_METHOD === 'modify') {
 					if(isEmpty(crIdx)) {
-						errorAlert('API ERROR', 'seq가 Null일 수 없습니다.');
+						errorAlert('저장실패', '관리자에게 문의해주세요.');
 						return;
 					}
 				}
@@ -1168,7 +1203,7 @@ function detailValidation(save_type){
 				call_before_save(title, text, icon, cancel_text, save_type, req);
 				break;
 			case 'saveInsurance':	// 보험정보
-				let ciIdx 				= $("#sel_ciIdx option:selected").val();
+				let ciTIdx 				= $("#sel_ciTIdx option:selected").val();
 				let personalCover 		= getPureText($('#personalCover').val());		//대인보상금액
 				let onselfDamageCover 	= getPureText($('#onselfDamageCover').val());	//자손보상금액
 				let propertyDamageCover = getPureText($('#propertyDamageCover').val());	//대물보상금액
@@ -1233,47 +1268,47 @@ function detailValidation(save_type){
 					return;
 				}
 
-				if(isEmpty(ciIdx) || ciIdx === '0'){
-					ciIdx = '';
+				if(isEmpty(ciTIdx) || ciTIdx === '0'){
+					ciTIdx = '';
 				}else{
-					// 템플릿 참조 비교하여 값이 변경 되었을시 ciIdx 참조 하지 않은것으로 판단
-					let ciIdxIndex 				= $("#sel_ciIdx option:selected").index()-1;
+					// 템플릿 참조 비교하여 값이 변경 되었을시 ciTIdx 참조 하지 않은것으로 판단
+					let ciTIdxIndex 				= $("#sel_ciTIdx option:selected").index()-1;
 					let ciYn = 'Y';
-					if (nullCheck(insuranceData[ciIdxIndex].onselfDamageCover) != onselfDamageCover){
+					if (nullCheck(insuranceData[ciTIdxIndex].onselfDamageCover) != onselfDamageCover){
 						ciYn = 'N';
-					}else if (nullCheck(insuranceData[ciIdxIndex].personalCover) != personalCover){
+					}else if (nullCheck(insuranceData[ciTIdxIndex].personalCover) != personalCover){
 						ciYn = 'N';
-					}else if (nullCheck(insuranceData[ciIdxIndex].propertyDamageCover) != propertyDamageCover){
+					}else if (nullCheck(insuranceData[ciTIdxIndex].propertyDamageCover) != propertyDamageCover){
 						ciYn = 'N';
-					}else if (nullCheck(insuranceData[ciIdxIndex].carDamageCover) != carDamageCover){
+					}else if (nullCheck(insuranceData[ciTIdxIndex].carDamageCover) != carDamageCover){
 						ciYn = 'N';
-					}else if (nullCheck(insuranceData[ciIdxIndex].insuranceCopayment) != insuranceCopayment){
+					}else if (nullCheck(insuranceData[ciTIdxIndex].insuranceCopayment) != insuranceCopayment){
 						ciYn = 'N';
-					}else if (nullCheck(insuranceData[ciIdxIndex].carDamageCover2) != carDamageCover2){
+					}else if (nullCheck(insuranceData[ciTIdxIndex].carDamageCover2) != carDamageCover2){
 						ciYn = 'N';
-					}else if (nullCheck(insuranceData[ciIdxIndex].insuranceCopayment2) != insuranceCopayment2){
+					}else if (nullCheck(insuranceData[ciTIdxIndex].insuranceCopayment2) != insuranceCopayment2){
 						ciYn = 'N';
-					}else if (nullCheck(insuranceData[ciIdxIndex].carDamageCover3) != carDamageCover3){
+					}else if (nullCheck(insuranceData[ciTIdxIndex].carDamageCover3) != carDamageCover3){
 						ciYn = 'N';
-					}else if (nullCheck(insuranceData[ciIdxIndex].insuranceCopayment3) != insuranceCopayment3){
+					}else if (nullCheck(insuranceData[ciTIdxIndex].insuranceCopayment3) != insuranceCopayment3){
 						ciYn = 'N';
-					}else if (nullCheck(insuranceData[ciIdxIndex].carDamageCover4) != carDamageCover4){
+					}else if (nullCheck(insuranceData[ciTIdxIndex].carDamageCover4) != carDamageCover4){
 						ciYn = 'N';
-					}else if (nullCheck(insuranceData[ciIdxIndex].insuranceCopayment4) != insuranceCopayment4){
+					}else if (nullCheck(insuranceData[ciTIdxIndex].insuranceCopayment4) != insuranceCopayment4){
 						ciYn = 'N';
 					}
 
 					if (ciYn === 'N'){
-						ciIdx = '';
+						ciTIdx = '';
 					}
 
 
-					//insuranceData[ciIdxIndex]
+					//insuranceData[ciTIdxIndex]
 				}
 
 				req = {
 					'rtIdx' : _rtIdx
-					,	'ciIdx' : ciIdx
+					,	'ciTIdx' : ciTIdx
 					,	'crIdx' : crIdx
 					,	'personalCover' : personalCover
 					,	'onselfDamageCover' : onselfDamageCover
@@ -1303,7 +1338,7 @@ function detailValidation(save_type){
 
 				break;
 			case 'savePaymentinfo':	// 기본요금정보
-				let pyIdx 				= $("#sel_pyIdx option:selected").val();
+				let pyTIdx 				= $("#sel_pyTIdx option:selected").val();
 				let dailyStandardPay 	= getPureText($('#dailyStandardPay').val());
 				let dailyMaxRate 		= getPureText($('#dailyMaxRate').val());
 				let monthlyStandardPay 	= getPureText($('#monthlyStandardPay').val());
@@ -1366,45 +1401,45 @@ function detailValidation(save_type){
 					errorAlert('요금정보', '배달최대할인율은 숫자만 입력 가능합니다.');
 					return;
 				}
-				if(isEmpty(pyIdx) || pyIdx == '0'){
-					pyIdx = '';
+				if(isEmpty(pyTIdx) || pyTIdx == '0'){
+					pyTIdx = '';
 				}else{
-					let pyIdxIndex 				= $("#sel_pyIdx option:selected").index()-1;
+					let pyTIdxIndex 				= $("#sel_pyTIdx option:selected").index()-1;
 					let pyYn = 'Y';
-					if(dailyStandardPay != nullCheck(planData[pyIdxIndex].dailyStandardPay)){
+					if(dailyStandardPay != nullCheck(planData[pyTIdxIndex].dailyStandardPay)){
 						pyYn = 'N';
-					}else if(monthlyStandardPay != nullCheck(planData[pyIdxIndex].monthlyStandardPay)){
+					}else if(monthlyStandardPay != nullCheck(planData[pyTIdxIndex].monthlyStandardPay)){
 						pyYn = 'N';
-					}else if(dailyMaxRate != nullCheck(planData[pyIdxIndex].dailyMaxRate)){
+					}else if(dailyMaxRate != nullCheck(planData[pyTIdxIndex].dailyMaxRate)){
 						pyYn = 'N';
-					}else if(monthlyMaxRate != nullCheck(planData[pyIdxIndex].monthlyMaxRate)){
+					}else if(monthlyMaxRate != nullCheck(planData[pyTIdxIndex].monthlyMaxRate)){
 						pyYn = 'N';
-					}else if(month3Deposit != nullCheck(planData[pyIdxIndex].month3Deposit)){
+					}else if(month3Deposit != nullCheck(planData[pyTIdxIndex].month3Deposit)){
 						pyYn = 'N';
-					}else if(month6Deposit != nullCheck(planData[pyIdxIndex].month6Deposit)){
+					}else if(month6Deposit != nullCheck(planData[pyTIdxIndex].month6Deposit)){
 						pyYn = 'N';
-					}else if(month9Deposit != nullCheck(planData[pyIdxIndex].month9Deposit)){
+					}else if(month9Deposit != nullCheck(planData[pyTIdxIndex].month9Deposit)){
 						pyYn = 'N';
-					}else if(month12Deposit != nullCheck(planData[pyIdxIndex].month12Deposit)){
+					}else if(month12Deposit != nullCheck(planData[pyTIdxIndex].month12Deposit)){
 						pyYn = 'N';
-					}else if(deliveryStandardPay != nullCheck(planData[pyIdxIndex].deliveryStandardPay)){
+					}else if(deliveryStandardPay != nullCheck(planData[pyTIdxIndex].deliveryStandardPay)){
 						pyYn = 'N';
-					}else if(deliveryAddPay != nullCheck(planData[pyIdxIndex].deliveryAddPay)){
+					}else if(deliveryAddPay != nullCheck(planData[pyTIdxIndex].deliveryAddPay)){
 						pyYn = 'N';
-					}else if(deliveryMaxRate != nullCheck(planData[pyIdxIndex].deliveryMaxRate)){
+					}else if(deliveryMaxRate != nullCheck(planData[pyTIdxIndex].deliveryMaxRate)){
 						pyYn = 'N';
 					}
 
 
 
 					if(pyYn == 'N'){
-						pyIdx = '';
+						pyTIdx = '';
 					}
 				}
 //
 				req = {
 					'rtIdx' : _rtIdx
-					,	'pyIdx' : pyIdx
+					,	'pyTIdx' : pyTIdx
 					,	'crIdx' : crIdx
 					,	'dailyStandardPay' : dailyStandardPay
 					,	'dailyMaxRate' : dailyMaxRate
@@ -1459,22 +1494,17 @@ function detailSubmit(save_type, req){
 			}
 			break;
 		case 'saveInsurance':	// 보험정보
-			if (CRUD_METHOD === 'insert') {
-				target = 'insertDcCarInsuranceInfo';
-				method = 'insert';
-			} else if (CRUD_METHOD === 'update') {
-				target = 'updateDcCarInfo';
-				method = 'update';
-			}
+			target = 'updateDcInsurance';
+			method = 'update';
 			break;
 		case 'savePaymentinfo':	// 기본요금
-			if (CRUD_METHOD === 'insert') {
-				target = 'insertDcCarPaymentInfo';
-				method = 'insert';
-			} else if (CRUD_METHOD === 'update') {
-				target = 'updateDcCarInfo';
+			// if (CRUD_METHOD === 'insert') {
+			// 	target = 'insertDcCarPaymentInfo';
+			// 	method = 'insert';
+			// } else if (CRUD_METHOD === 'update') {
+				target = 'updateDcPayment';
 				method = 'update';
-			}
+			// }
 			break;
 
 	}// end switch
@@ -1523,6 +1553,17 @@ function initDetailData(data){
 		CRUD_METHOD = '';
 	}
 
+	var currentYear = new Date().getFullYear();
+	var str = '';
+	for(var i = 7; i >= 0; i--){
+		str += "<option value = '" + (currentYear-i) + "'>" + (currentYear-i) + "</option>";
+	}
+	str += "<option value = '" + (currentYear+1) + "'>" + (currentYear+1) + "</option>";
+	$('select[name="year"]').append(str);
+	$('select[name="carRegDt"]').append(str);
+
+
+
 	// 모델 상세 초기화
 	let strOption = "";
 	strOption += "<option value = '0'>선택하세요</option>";
@@ -1539,10 +1580,6 @@ function initDetailData(data){
 	$("#companyName").val('').prop("selected", true);
 	// select box 가져오기
 	initDetailSelectBox(null);
-
-	// 모달 오픈
-	// TODO openIziModal 지우기
-	// openIziModal(MODAL_NAME);
 
 }
 
@@ -1638,7 +1675,7 @@ function rentcal(){
 		let calRentFee = '0';
 		let calInsuranceFee = '0';
 		let calRentTotAmount = '0';
-		let calCarssumRate = '0';
+		let calDochaRate = '0';
 		let calPaymentAmount = '0';
 
 		if(mmRentAmt === 0){
@@ -1665,14 +1702,14 @@ function rentcal(){
 		}
 
 		calRentTotAmount = Number(calRentFee) + Number(calInsuranceFee);
-		calCarssumRate = calRentTotAmount*(Number(commissionPer)/100);
-		calPaymentAmount = calRentTotAmount - calCarssumRate;
+		calDochaRate = calRentTotAmount*(Number(commissionPer)/100);
+		calPaymentAmount = calRentTotAmount - calDochaRate;
 
 		$("#calRentFee").val(objectConvertToPriceFormat(calRentFee));
 		$("#calInsuranceFee").val(objectConvertToPriceFormat(calInsuranceFee));
 
 		$("#calRentTotAmount").val(objectConvertToPriceFormat(calRentTotAmount));
-		$("#calCarssumRate").val(objectConvertToPriceFormat(calCarssumRate));
+		$("#calDochaRate").val(objectConvertToPriceFormat(calDochaRate));
 		$("#calPaymentAmount").val(objectConvertToPriceFormat(calPaymentAmount));
 
 		$("#calRentTotAmountEtc").empty();
@@ -1700,7 +1737,7 @@ function initcal(){
 	$("#calRentFee").val('');
 	$("#calInsuranceFee").val('');
 	$("#calRentTotAmount").val('');
-	$("#calCarssumRate").val('');
+	$("#calDochaRate").val('');
 	$("#calPaymentAmount").val('');
 
 	// 보험료 select box 생성
@@ -1898,6 +1935,146 @@ function applyDataMask(field) {
 
 	field.addEventListener('click', changed)
 	field.addEventListener('keyup', changed)
+}
+
+// 대여기간 계산
+function calcPeriodDt() {
+
+	var rtValue = [];
+
+	var stDateTime =  new Date($('#calRentStartDt').val());
+	var endDateTime = new Date($('#calRentEndDt').val());
+
+	// 날짜 유효성 검사
+	if(endDateTime <= stDateTime){
+		errorAlert('반납일시','반납일시는 대여일시보다 미래여야 합니다.');
+		return;
+	}
+
+
+	var startYear = stDateTime.getFullYear();
+	var startMonth = stDateTime.getMonth();
+	var startDate = stDateTime.getDate();
+	var startHours = stDateTime.getHours();
+	var startMinute = stDateTime.getMinutes();
+
+	var endYear = endDateTime.getFullYear();
+	var endMonth = endDateTime.getMonth();
+	var endDate = endDateTime.getDate();
+	var endHours = endDateTime.getHours();
+	var endMinute = endDateTime.getMinutes();
+
+	is_same_day = endDate == startDate ? true : false;
+
+	// 마지막날은 30일 이하여야함 ( 28~30 ) 두차정책
+	var dayOfLast = Number((new Date(endYear, endMonth + 1, 0)).getDate()) != 31 ? 30 : Number((new Date(endYear, endMonth + 1, 0)).getDate());
+	var startDate_dayOfLast = Number((new Date(startYear, startMonth + 1, 0)).getDate());
+	var endDate_dayOfLast = Number((new Date(endYear, endMonth + 1, 0)).getDate());
+
+	// 시간 차이 계산 => 밀리세컨드
+	var diffMs = (endDateTime.getTime() - stDateTime.getTime());
+	// 밀리세컨드를 date 객체로
+	var timeGap = new Date(0, 0, 0, 0, 0, 0, diffMs);
+
+	var setMonth = Math.floor((diffMs / (86400000 * 30))); // 개월
+	var setDay = Math.floor((diffMs % (86400000 * 30)) / (1000 * 60 * 60 * 24)); // 일수
+	var setTime = Math.floor(diffMs / (1000 * 60 * 60)) % 24;
+	var setMinute = Math.floor(diffMs / (1000 * 60)) % 60;
+
+	//console.log("월 : " + setMonth +"\n일 : " + setDay + "\n 시간 : " + setTime + "\n 분 : " + setMinute + "\n 마지막일 : " + startDate_dayOfLast );
+
+	rtValue.push(setMonth);
+	rtValue.push(setDay);
+	rtValue.push(setTime);
+	rtValue.push(setMinute);
+
+	renderingSumTime(rtValue[0], rtValue[1], rtValue[2], rtValue[3]);
+
+}
+
+function renderingSumTime(strMm, strDd, strHh, strMin) {
+
+	var setMm = isNaN(strMm) ? '0개월 ' : strMm + '개월 ';
+	var setDd = isNaN(strDd) ? '0일 ' : strDd + '일 ';
+	var setHh = isNaN(strHh) ? '0시 ' : strHh + '시 ';
+	var setMin = isNaN(strMin) ? '0분 ' : strMin + '분';
+
+	var periodDtText = setMm + setDd + setHh + setMin;
+
+	$('#calRentPeriod').val(periodDtText);
+}
+
+function cf_DisplayDay(strDate) {
+
+	var strDate = strDate;
+	var regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-+<>@\#$%&\\\=\(\'\"]/gi;
+
+	strDate = strDate.replace(regExp, '');
+
+	var str_yyyy = strDate.substring(0, 4) + '/';
+	var str_mm = strDate.substring(4, 6) + '/';
+	var str_dd = strDate.substring(6, 8);
+	var setDate = String(str_yyyy + str_mm + str_dd + ' 00:00:00');
+
+	var week = ['일', '월', '화', '수', '목', '금', '토'];
+	var getday = new Date(setDate).getDay();
+	var day = week[getday];
+
+	return day;
+}
+
+function cf_Display_AmPm_By_Times(time) {
+
+
+	var date = new Date();
+	var hours = time.substr(0, 2);
+	var minutes = time.substr(0, 4);
+
+
+	if (hours == '') {
+		hours = date.getHours();
+	} else if (minutes == '') {
+		minutes = date.getMinutes() > 9 ? date.getMinutes() : '0' + date.getMinutes();
+	}
+
+	var ampm = hours >= 12 ? 'PM' : 'AM';
+	hours = hours % 12;
+	hours = hours ? hours : 12; // the hour '0' should be '12'
+	minutes = minutes < 10 ? '0' + minutes : minutes;
+	var strTime = ampm;
+
+	return strTime;
+}
+
+// 24hhmm 를 12hhmm
+function convertTimeFormat12MIS(_time) {
+	var regExp = /[\{\}\[\]\/?.,;:|\)*~`!^\-+<>@\#$%&\\\=\(\'\"]/gi;
+
+	var setTime = regExp.test(_time) ? _time.replace(regExp, '') : _time;
+	var hh;
+	var mm;
+	if (setTime.length < 4) {
+		hh = setTime.substring(0, 1);
+		mm = setTime.substring(1, 3);
+	} else {
+		hh = setTime.substring(0, 2);
+		mm = setTime.substring(2, 4);
+	}
+
+	if (Number(hh) == 12) {
+
+	} else {
+		hh = Number(hh % 12);
+	}
+
+	if (mm == 60) {
+		mm = 0;
+	}
+
+	hh = String(hh).length == 1 ? '0' + hh : String(hh);
+	mm = String(mm).length == 1 ? '0' + mm : String(mm);
+
+	return hh + ':' + mm;
 }
 //$("#calRentStartDt").keyup(function(e) {
 //	let num = $("#calRentStartDt").val();

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
 <head th:replace="header :: mainHead"></head>
 <head>
     <title th:if="${CRUD == 'insert'}">회원사 등록 :: DoCha Admin Web</title>
@@ -9,6 +10,7 @@
 
 </head>
 <body id="page-top">
+
 
 <!-- Page Wrapper -->
 <div id="wrapper">
@@ -21,7 +23,8 @@
 
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary" style="cursor: pointer" onclick="changeCardView('rentShopInfoCard')">회원사 - 00렌트카 / 00지점</h6>
+                        <h6 th:if="${CRUD == 'insert'}" class="m-0 font-weight-bold text-primary" style="cursor: pointer">회원사 - 신규등록</h6>
+                        <h6 th:if="${CRUD == 'modify'}" id="rentShopTitle" class="m-0 font-weight-bold text-primary" style="cursor: pointer"></h6>
                     </div>
 
                     <div class="row">
@@ -44,6 +47,10 @@
                                             <input type="text" class="form-control" placeholder="법인명"  value="" id="companyRegistrationName" >
                                         </div>
                                         <div class="col-lg-6 mb-3 float-l " >
+                                            <label>회원사 대표 연락처</label>
+                                            <input type="text" class="form-control" placeholder="회원사 대표 연락처"  value="" id="companyContact1" onkeypress="inNumber();"/>
+                                        </div>
+                                        <div class="col-lg-6 mb-3 float-l " >
                                             <label>사업자등록번호</label>
                                             <input type="text" class="form-control" placeholder="사업자등록번호"  value="" id="companyRegistrationNumber" onblur="companyRegistrationAutoHyphen()" onkeypress="inNumber();"/>
                                         </div>
@@ -59,7 +66,7 @@
                                             <label>주소</label>
                                             <div class="input-group">
                                                 <input type="text"  class="form-control" placeholder="주소"  id="companyAddress">
-                                                <div class="input-group-append">
+                                                <div th:if="${session.LOGIN_SESSION.userRole.equals('RA')}" class="input-group-append">
                                                     <button class="btn btn-primary" onclick="openDaumAddrApi('companyAddress');" >주소찾기</button>
                                                 </div>
                                             </div>
@@ -149,14 +156,7 @@
                                         </div>
                                         <div class="col-lg-6 mb-3 float-l">
                                             <label>연락처</label>
-                                            <input type="text" class="form-control"  placeholder="연락처" value="" id="staffContact1" onkeypress="inNumber();"/>
-                                        </div>
-                                        <div class="col-lg-6 mb-3 float-l flex-1" >
-                                            <label>사용유무</label>
-                                            <select id="sel_staffdelYn" name="sel_staffdelYn" class="custom-select" >
-                                                <option value="N">예</option>
-                                                <option value="Y">아니요</option>
-                                            </select>
+                                            <input type="text" class="form-control"  placeholder="연락처" value="" id="staffContact1" onkeypress="inNumber();" readonly/>
                                         </div>
                                         <!-- <div class="col-lg-3 mb-3 float-l">
                                              <label>비밀번호</label>
@@ -184,15 +184,41 @@
                                 <div class="card-body"><h5 class="card-title">수수료 (%)</h5>
                                     <div class="col-lg-12 mb-3 float-l flex-1">
                                         <label>부가세 포함 수수료</label>
-                                        <input type="text" class="form-control" placeholder="부가세 포함 수수료" value="" id="commissionPer" />
+                                        <input type="text" class="form-control" id="commissionPer" th:value="15.0" />
+                                        <div id="commissionPerText" class="invalid-feedback"></div>
                                     </div>
+                                    <script>
+                                        var commissionPer = $('#commissionPer');
+
+                                        commissionPer.keyup(function () {
+                                            var prev = "";
+                                            var regexp = /^\d*[.]\d{2}$/;
+
+                                            if (commissionPer.val() !== '' && !$.isNumeric(commissionPer.val())){
+                                                $('#commissionPerText').text('수수료는 숫자만 입력 가능합니다.');
+                                                commissionPer.addClass('is-invalid');
+                                            }else {
+                                                commissionPer.removeClass('is-invalid');
+
+                                                if(commissionPer.val().indexOf('.') !== -1){
+                                                    var str = commissionPer.val().substring(commissionPer.val().lastIndexOf(".")+1);
+                                                    if (str.length > 1){
+                                                        $('#commissionPerText').text('소숫점 첫째자리까지만 입력이 가능합니다.');
+                                                        commissionPer.addClass('is-invalid');
+                                                    }
+                                                }
+                                            }
+
+                                        });
+
+                                    </script>
                                     <!-- <div class="col-lg-3 mb-3 float-l flex-1">
                                          <label>세금계산서 발행주체</label>
                                          <input type="text" class="form-control"  placeholder="세금계산서발행주체" value="" id="taxInvoiceCode"/>
                                     </div> -->
                                     <div class="col-lg-12 mt-2 float-l text-right">
                                         <div class="p-t-30">
-                                            <button class="btn btn-primary" type="button" onclick="detailValidation('updateCommission');">수수료정보 저장</button>
+                                            <button class="btn btn-primary" th:if="${!session.LOGIN_SESSION.userRole.equals('MU')}" type="button" onclick="detailValidation('updateCommission');">수수료정보 저장</button>
                                             <!-- <button class="btn btn-danger" type="button" >취소</button> -->
                                         </div>
                                     </div>
@@ -215,7 +241,7 @@
                                 </div>
                                 <div class="col-lg-6 mb-3 float-l flex-1" ><h5 class="card-title" style="color:blue">설명</h5>
                                     평일 영업시간<br>
-                                    00시~23시 이면 24시간영업, 00시~00시 이면 영업하지 않음
+                                    00:00 ~ 00:00 이면 영업 하지 않음 , 00:00 ~ 24:00 24시간 영업
                                 </div>
                                 <div class="col-lg-3 mb-3 float-l">
                                     <label>주말/공휴일 영업시간 시작</label>
@@ -229,7 +255,7 @@
                                 </div>
                                 <div class="col-lg-6 mb-3 float-l flex-1" ><h5 class="card-title" style="color:blue">설명</h5>
                                     주말/공휴일 영업시간<br>
-                                    00시~23시 이면 24시간영업, 00시~00시 이면 영업하지 않음
+                                    00:00 ~ 00:00 이면 영업 하지 않음 , 00:00 ~ 24:00 24시간 영업
                                 </div>
                                 <div class="col-lg-3 mb-3 float-l flex-1">
                                     <label>평일 왕복배달가능 시간 시작</label>
@@ -243,7 +269,7 @@
                                 </div>
                                 <div class="col-lg-6 mb-3 float-l flex-1" ><h5 class="card-title" style="color:blue">설명</h5>
                                     평일 왕복배달가능 시간<br>
-                                    00시~23시 이면 24시간 배달, 00시~00시 이면 배달하지 않음
+                                    00:00 ~ 00:00 이면 영업 하지 않음 , 00:00 ~ 24:00 24시간 영업
                                 </div>
                                 <div class="col-lg-3 mb-3 float-l">
                                     <label>주말/공휴일 왕복배달가능 시작</label>
@@ -257,23 +283,23 @@
                                 </div>
                                 <div class="col-lg-6 mb-3 float-l flex-1" ><h5 class="card-title" style="color:blue">설명</h5>
                                     주말/공휴일 왕복배달가능 시간<br>
-                                    00시~23시 이면 24시간 배달, 00시~00시 이면 배달하지 않음
+                                    00:00 ~ 00:00 이면 영업 하지 않음 , 00:00 ~ 24:00 24시간 영업
                                 </div>
                                 <div class="col-lg-3 mb-3 float-l " >
                                     <br><p>
-                                    <label>평일 왕복배달가능 시간대 설정</label>
+                                    <label>평일 배달 정비시간</label>
                                     <select id="sel_weekdayAbleDeliveryTime" name="sel_weekdayAbleDeliveryTime" class="custom-select" >
                                     </select>
                                 </div>
                                 <div class="col-lg-3 mb-3 float-l " >
                                     <br><p>
-                                    <label>주말  왕복배달가능 시간대 설정</label>
+                                    <label>주말 배달 정비시간</label>
                                     <select id="sel_weekendAbleDeliveryTime" name="sel_weekendAbleDeliveryTime" class="custom-select" >
                                     </select>
                                 </div>
                                 <div class="col-lg-3 mb-3 float-l flex-1" >
                                     <br><p>
-                                    <label>반납정비 시간 시간대 설정</label>
+                                    <label>지점 방문 정비시간</label>
                                     <select id="sel_returnInspectionTime" name="sel_returnInspectionTime" class="custom-select" >
                                     </select>
                                 </div>
@@ -302,22 +328,15 @@
                                 <input type="hidden" id="minIdx" name="minIdx" />
                                 <div class="col-lg-3 mb-3 float-l flex-1">
                                     <label>시작일</label>
-                                    <input type="date" id="minimumStartDt" class="form-control" />
+                                    <a id="minimumStartDt" name="minimumStartDt" ></a>
                                 </div>
                                 <div class="col-lg-3 mb-3 float-l flex-1" >
                                     <label>종료일</label>
-                                    <input type="date" id="minimumEndDt" placeholder="종료일" value="" class="form-control" />
+                                    <a id="minimumEndDt" name="minimumEndDt"></a>
                                 </div>
                                 <div class="col-lg-3 mb-3 float-l flex-1" >
                                     <label>최소시간</label>
                                     <select id="sel_minimumTime" name="sel_minimumTime" class="custom-select" >
-                                    </select>
-                                </div>
-                                <div class="col-lg-3 mb-3 float-l flex-1" >
-                                    <label>사용유무</label>
-                                    <select id="sel_mindelYn" name="sel_mindelYn" class="custom-select" >
-                                        <option value="N">예</option>
-                                        <option value="Y">아니요</option>
                                     </select>
                                 </div>
                             </div>
@@ -346,22 +365,15 @@
                                 <input type="hidden" id="holIdx" name="minIdx" />
                                 <div class="col-lg-3 mb-3 float-l flex-1">
                                     <label>시작일</label>
-                                    <input type="date" id="holidayStartDt" placeholder="시작일" value="" class="form-control" />
+                                    <a id="holidayStartDt" name="holidayStartDt"></a>
                                 </div>
                                 <div class="col-lg-3 mb-3 float-l flex-1" >
                                     <label>종료일</label>
-                                    <input type="date" id="holidayEndDt" placeholder="종료일" value="" class="form-control" />
+                                    <a id="holidayEndDt" name="holidayEndDt"></a>
                                 </div>
                                 <div class="col-lg-3 mb-3 float-l flex-1" >
                                     <label>휴일명</label>
                                     <input type="text" id="holidayName" placeholder="휴일명" value="" class="form-control" />
-                                </div>
-                                <div class="col-lg-2 float-l flex-1" >
-                                    <label>사용유무</label>
-                                    <select id="sel_holidaydelYn" name="sel_holidaydelYn" class="custom-select" >
-                                        <option value="N">예</option>
-                                        <option value="Y">아니요</option>
-                                    </select>
                                 </div>
                             </div>
                             <br/>
@@ -390,18 +402,53 @@
                                 <div class="input-group">
                                     <input type="text" class="form-control"  id="raGbnSt">
                                     <div class="input-group-append">
-                                        <button class="btn btn-primary" type="button" onclick="openDaumPolygon('ST');">일대여 설정하기</button>
+                                        <button class="btn btn-primary" type="button" onclick="selectLocation('S')">일대여 설정하기</button>
                                     </div>
                                 </div>
                             </div>
+                            <div class="table-responsive">
+
+                                <table class="table table-bordered" id="stDataTable">
+                                    <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>도/시</th>
+                                        <th>시/군/구</th>
+                                        <th>읍/면/동</th>
+                                        <th>리</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+
+
                             <div class="col-lg-6 mb-3 float-l flex-1">
                                 <label>월대여</label>
                                 <div class="input-group">
                                     <input type="text" class="form-control"  id="raGbnLt">
                                     <div class="input-group-append">
-                                        <button class="btn btn-primary" type="button" onclick="openDaumPolygon('LT');">월대여 설정하기</button>
+                                        <button class="btn btn-primary" type="button" onclick="selectLocation('L')">월대여 설정하기</button>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="ltDataTable">
+                                    <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>도/시</th>
+                                        <th>시/군/구</th>
+                                        <th>읍/면/동</th>
+                                        <th>리</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
                             </div>
 
                         </div>
@@ -411,7 +458,7 @@
                             <button class="btn btn-primary" type="button" onclick="movieMenu('calculate');" id="btnCalculate">정산관리</button>
                             <button class="btn btn-primary" type="button" onclick="movieMenu('regCar');">등록차량</button>
                             <button class="btn btn-primary" type="button" onclick="movieMenu('reserveMnt');">예약내역</button>
-                            <button class="btn btn-primary" type="button" onclick="movieMenu('');">후기</button>
+                            <button class="btn btn-primary" type="button" onclick="movieMenu('review');">후기</button>
                             <button class="btn btn-danger" type="button" onclick="self.close()">닫기</button>
                         </div>
                     </div>
@@ -456,10 +503,302 @@
         </div>
     </div>
 </div>
+
+
+<!-- Select Locaion Modal-->
+<div id="selectLocationModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="selectLocationModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-select modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="classModalLabel">
+                    배달 지역 선택
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    ×
+                </button>
+            </div>
+            <div class="modal-body">
+                <table id="classTable" class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>도/시</th>
+                        <th>시/군/구</th>
+                        <th>읍/면/동</th>
+                        <th>리</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <select class="LocationSelect" id="sel_addDo" name="sel_addDo" size="20" onchange="selectLocationDetail('selectDo')" ></select>
+                        </td>
+                        <td>
+                            <select class="LocationSelect" id="sel_addSi" name="sel_addSi" size="20" onchange="selectLocationDetail('selectSi')"></select>
+                        </td>
+                        <td>
+                            <select class="LocationSelect" id="sel_addDong" name="sel_addDong" size="20" onchange="selectLocationDetail('selectDong')"></select>
+                        </td>
+                        <td>
+                            <select class="LocationSelect" id="sel_addLi" name="sel_addLi" size="20" multiple></select>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div class="text-right">
+                    <button id="btnSelectedAddSave" type="button" class="btn btn-primary">배달 지역 추가하기</button>
+                </div>
+
+                <table id="selectedLocationTable"  class="table table-bordered mt-4">
+                    <thead>
+                    <tr>
+                        <th>선택 지역</th>
+                        <th class="text-center" width="40px">x</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="modal-footer">
+                <button onclick="saveDeliveryLocation('S')" type="button" class="btn btn-primary">저장</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">창닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Select Locaion Modal 2 -->
+<div id="selectLocationModal2" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="selectLocationModal2" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-select modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="classModalLabel">
+                    배달 지역 선택
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    ×
+                </button>
+            </div>
+            <div class="modal-body">
+                <table id="classTable" class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>도/시</th>
+                        <th>시/군/구</th>
+                        <th>읍/면/동</th>
+                        <th>리</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <select class="LocationSelect" id="sel_addDo2" name="sel_addDo" size="20" onchange="selectLocationDetail('selectDo2')" ></select>
+                        </td>
+                        <td>
+                            <select class="LocationSelect" id="sel_addSi2" name="sel_addSi" size="20" onchange="selectLocationDetail('selectSi2')"></select>
+                        </td>
+                        <td>
+                            <select class="LocationSelect" id="sel_addDong2" name="sel_addDong" size="20" onchange="selectLocationDetail('selectDong2')"></select>
+                        </td>
+                        <td>
+                            <select class="LocationSelect" id="sel_addLi2" name="sel_addLi" size="20" multiple></select>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div class="text-right">
+                    <button id="btnSelectedAddSave2" type="button" class="btn btn-primary">배달 지역 추가하기</button>
+                </div>
+
+                <table id="selectedLocationTable"  class="table table-bordered mt-4">
+                    <thead>
+                    <tr>
+                        <th>선택 지역</th>
+                        <th class="text-center" width="40px">x</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="modal-footer">
+                <button onclick="saveDeliveryLocation('L')" type="button" class="btn btn-primary">저장</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">창닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script th:inline="javascript">
 
     rtIdx = /*[[${rtIdx}]]*/'';
     CRUD = /*[[${CRUD}]]*/'';
+
+    req = {
+        rtIdx : rtIdx === null ? '등록' : $('#rtIdx').val(),
+        raGbnCode : 'S'
+    };
+
+    var stTable = $('#stDataTable').DataTable( {
+        language: {
+            emptyTable: "데이터가 존재하지 않습니다.",
+            lengthMenu: "페이지당 _MENU_ 개씩 보기",
+            info: "현재 _START_ - _END_ / _TOTAL_건",
+            infoEmpty: "0 건",
+            infoFiltered: "( _MAX_건의 데이터에서 필터링됨 )",
+            search: "검색: ",
+            zeroRecords: "일치하는 데이터가 존재하지 않습니다.",
+            loadingRecords: "로딩중...",
+            processing:     "잠시만 기다려 주세요...",
+            paginate: {
+                next: "다음",
+                previous: "이전"
+            }
+        },
+        pageMenu: 10,
+        dom : 'ftp',
+        orderMulti: true,
+        columns: [
+            { data : 'raIdx' },
+            { data : 'addrDepth1' },
+            { data : 'addrDepth2' },
+            { data : 'addrDepth3' },
+            { data : 'addrDepth4' }
+        ],
+        columnDefs: [{
+            targets : [0],
+            data: 'raIdx',
+            visible : false,
+            searchable: false
+        }, {
+            targets : [5],
+            data : null,
+            visible: true,
+            defaultContent : '<button class="btn btn-danger">삭제</button>'
+        }],
+        ajax : {
+            url: '/api/v1.0/selectDcRentCompanyAblearea.json',
+            type: 'POST',
+            contentType : 'application/json',
+            dataType : 'json',
+            data : function () {
+                return JSON.stringify(req);
+            },
+            dataSrc : function (json) {
+                var data = json.result;
+                if (data === null || data === undefined){
+                    data = [];
+                }
+                return data;
+            },
+            error : function (xhr, error, code) {
+                console.log(error);
+            }
+        }
+    } );
+
+    var ltReq = {
+        rtIdx : rtIdx === null ? '등록' : $('#rtIdx').val(),
+        raGbnCode : 'L'
+    };
+
+    var ltTable = $('#ltDataTable').DataTable( {
+        language: {
+            emptyTable: "데이터가 존재하지 않습니다.",
+            lengthMenu: "페이지당 _MENU_ 개씩 보기",
+            info: "현재 _START_ - _END_ / _TOTAL_건",
+            infoEmpty: "0 건",
+            infoFiltered: "( _MAX_건의 데이터에서 필터링됨 )",
+            search: "검색: ",
+            zeroRecords: "일치하는 데이터가 존재하지 않습니다.",
+            loadingRecords: "로딩중...",
+            processing:     "잠시만 기다려 주세요...",
+            paginate: {
+                next: "다음",
+                previous: "이전"
+            }
+        },
+        pageMenu: 10,
+        dom : 'ftp',
+        orderMulti: true,
+        columns: [
+            { data : 'raIdx' },
+            { data : 'addrDepth1' },
+            { data : 'addrDepth2' },
+            { data : 'addrDepth3' },
+            { data : 'addrDepth4' }
+        ],
+        columnDefs: [{
+            targets : [0],
+            data: 'raIdx',
+            visible : false,
+            searchable: false
+        },{
+            targets : [5],
+            data : null,
+            visible : true,
+            defaultContent : '<button class="btn btn-danger">삭제</button>'
+        }],
+        ajax : {
+            url: '/api/v1.0/selectDcRentCompanyAblearea.json',
+            type: 'POST',
+            contentType : 'application/json',
+            dataType : 'json',
+            data : function () {
+                return JSON.stringify(ltReq);
+            },
+            dataSrc : function (json) {
+                var data = json.result;
+                if (data === null || data === undefined){
+                    data = [];
+                }
+                return data;
+            },
+            error : function (xhr, error, code) {
+                console.log(error);
+            }
+        }
+    } );
+
+    $('#stDataTable tbody').on('click', 'button', function () {
+        var row = stTable.row( this.parentElement ).data() ;
+        deleteDeliveryLocation(row.raIdx);
+    });
+
+    $('#ltDataTable tbody').on('click', 'button', function () {
+        var row = ltTable.row( this.parentElement ).data();
+        deleteDeliveryLocation(row.raIdx);
+    });
+
+    function deleteDeliveryLocation(raIdx) {
+
+        var req = {
+            raIdx : raIdx
+        };
+        var target = 'deleteDcRentCompanyAblearea';
+        var method = 'delete';
+
+        fn_callApi(method, target, req, function (response) {
+
+            var data = response;
+            if (data.code === 200){
+                location.reload();
+            }else {
+                errorAlert('삭제 실패', '관리자에게 문의하세요.');
+            }
+
+        });
+    }
+
+    function getLoginUser() {
+        return /*[[${session.LOGIN_SESSION}]]*/ '';
+    }
 
     if(CRUD === "insert"){
         openCreateRentCompany();
@@ -467,13 +806,123 @@
         initDetailInfo(rtIdx)
     }
 
-    var cal = new WinkelCalendar({
-        container: 'cuppaDatePickerContainer',
+    $('.modal #btnSelectedAddSave').click(function () {
+        var addDo = $('#sel_addDo').val() === null ? '' : $('#sel_addDo').val();
+        var addSi = $('#sel_addSi').val() === null ? '' : $('#sel_addSi').val();
+        var addDong = $('#sel_addDong').val() === null ? '' : $('#sel_addDong').val();
+        var addLi = $('#sel_addLi').val() === null ? '' : $('#sel_addLi').val();
+
+        var selectedLocation;
+
+        var strOption = '';
+        if (addLi.length === 0){
+            selectedLocation = addDo + ' ' + addSi + ' ' + addDong + ' ' + addLi + ' ';
+
+            strOption += '<tr><td>' + selectedLocation + '</td>' +
+                '<td><button id="deleteSelectedLocation" class="btn">x</button></td></tr>';
+        }else {
+            for (var i=0; i < addLi.length; i++){
+                selectedLocation = addDo + ' ' + addSi + ' ' + addDong + ' ' + addLi[i] + ' ';
+
+                strOption += '<tr><td>' + selectedLocation + '</td><td><button id="deleteSelectedLocation" class="btn">x</button></td></tr>';
+            }
+        }
+
+        $('#selectedLocationTable tbody').append(strOption);
+    });
+
+    $('.modal #btnSelectedAddSave2').click(function () {
+        var addDo = $('#sel_addDo2').val() === null ? '' : $('#sel_addDo2').val();
+        var addSi = $('#sel_addSi2').val() === null ? '' : $('#sel_addSi2').val();
+        var addDong = $('#sel_addDong2').val() === null ? '' : $('#sel_addDong2').val();
+        var addLi = $('#sel_addLi2').val() === null ? '' : $('#sel_addLi2').val();
+
+        var selectedLocation;
+
+        var strOption = '';
+        if (addLi.length === 0){
+            selectedLocation = addDo + ' ' + addSi + ' ' + addDong + ' ' + addLi + ' ';
+
+            strOption += '<tr><td>' + selectedLocation + '</td>' +
+                '<td><button id="deleteSelectedLocation" class="btn">x</button></td></tr>';
+        }else {
+            for (var i=0; i < addLi.length; i++){
+                selectedLocation = addDo + ' ' + addSi + ' ' + addDong + ' ' + addLi[i] + ' ';
+
+                strOption += '<tr><td>' + selectedLocation + '</td><td><button id="deleteSelectedLocation" class="btn">x</button></td></tr>';
+            }
+        }
+
+        $('#selectedLocationTable tbody').append(strOption);
+    });
+
+    $(document).on('click' , '#deleteSelectedLocation', function () {
+        var deleteData = this.parentElement.parentElement;
+        deleteData.remove();
+    });
+
+
+    var minimumStartDt = new WinkelCalendar({
+        container: 'minimumStartDt',
         bigBanner: true,
         defaultDate: new Date(),
-        format : "YYYY-MM-DD",
-        onSelect : null
+        format: "YYYY년 MM월 DD일"
     });
+
+    var minimumEndDt = new WinkelCalendar({
+        container: 'minimumEndDt',
+        bigBanner: true,
+        defaultDate: new Date(),
+        format: "YYYY년 MM월 DD일"
+    });
+
+    var holidayStartDt = new WinkelCalendar({
+        container: 'holidayStartDt',
+        bigBanner: true,
+        defaultDate: new Date(),
+        format: "YYYY년 MM월 DD일"
+    });
+
+    var holidayEndDt = new WinkelCalendar({
+        container: 'holidayEndDt',
+        bigBanner: true,
+        defaultDate: new Date(),
+        format: "YYYY년 MM월 DD일"
+    });
+
+    function getMinimumStartDt() {
+        return minimumStartDt.date;
+    }
+
+    function getMinimumEndDt() {
+        return minimumEndDt.date;
+    }
+
+    function getHolidayStartDt() {
+        return holidayStartDt.date;
+    }
+
+    function getHolidayEndDt() {
+        return holidayEndDt.date;
+    }
+
+    function initDatePicker(id, value) {
+        switch (id) {
+            case 'minimumStartDt':
+                minimumStartDt.setDate(new Date(value));
+                break;
+            case 'minimumEndDt':
+                minimumEndDt.setDate(new Date(value));
+                break;
+            case 'holidayStartDt':
+                holidayStartDt.setDate(new Date(value));
+                break;
+            case 'holidayEndDt':
+                holidayEndDt.setDate(new Date(value));
+                break;
+
+        }
+    }
 
 </script>
 </body>

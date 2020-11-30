@@ -2,435 +2,466 @@
 <html lang="ko" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="header :: mainHead"></head>
 <head>
-  <title>메인 :: DoCha Admin Web</title>
+    <title>메인 :: DoCha Admin Web</title>
 
-  <link href="/css/Chart.css" th:href="@{/css/Chart.css}" rel="stylesheet">
-  <script src="/vendor/chart.js/Chart.js" th:src="@{/vendor/chart.js/Chart.js}"></script>
+    <link href="/css/Chart.css" th:href="@{/css/Chart.css}" rel="stylesheet">
+    <script src="/vendor/chart.js/Chart.js" th:src="@{/vendor/chart.js/Chart.js}"></script>
 </head>
 <body id="page-top">
 
 <!-- Page Wrapper -->
 <div id="wrapper">
 
-  <!-- Side Bar -->
-  <div th:replace="main_aside :: mainAside"></div>
+    <!-- Side Bar -->
+    <div th:replace="main_aside :: mainAside"></div>
 
-  <!-- Content Wrapper -->
-  <div id="content-wrapper" class="d-flex flex-column">
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
 
-    <!-- Main Content -->
-    <div id="content">
+        <!-- Main Content -->
+        <div id="content">
 
-      <!-- Topbar -->
-      <div th:replace="main_top_menu :: topMenu"></div>
+            <!-- Topbar -->
+            <div th:replace="main_top_menu :: topMenu"></div>
 
-      <!-- Begin Page Content -->
-      <div class="container-fluid">
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
 
-        <!-- Page Heading -->
-        <div class="d-sm-flex align-items-center justify-content-between mb-4">
-          <h1 class="h3 mb-0 text-gray-800">Today</h1>
+                <!-- Page Heading -->
+                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                    <h1 class="h3 mb-0 text-gray-800">Today</h1>
+                </div>
+
+                <!-- Content Row -->
+                <div class="container-fluid">
+                    <div class="row">
+
+                        <!-- 매출 카드 -->
+                        <div class="col-md-4 col-sm-6 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">매출</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${calcDailySales == null ? '일 0원' : '일 ' + #numbers.formatInteger(calcDailySales, 3 , 'COMMA') + '원'}">일 90,000원</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${calcMonthlySales == null ? '월 0원' : '월 ' + #numbers.formatInteger(calcMonthlySales, 3, 'COMMA') + '원'}">월 90,000원</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 예약 카드 -->
+                        <div class="col-md-4 col-sm-6 mb-4">
+                            <div class="card border-left-success shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">예약</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${cntDailyReserve == null ? '일 0건' : '일 ' + cntDailyReserve + '건'}">일 1,000건</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${cntMontlyyReserve == null ? '월 0건' : '월 ' + cntMontlyyReserve + '건'}">월 1,000건</div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 누적 월차 카드 -->
+                        <div class="col-md-4 col-sm-6 mb-4">
+                            <div class="card border-left-info shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">누적 월차</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${cntDailyCancel == null ? '0건' : cntDailyCancel + '건'}">1,000원</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${cntDailyCancel == null ? '0 원/월' : cntDailyCancel + '원/월'}">1,000,000,000 원/월</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 취소 건수 카드 -->
+                        <div class="col-md-4 col-sm-6 mb-4">
+                            <div class="card border-left-info shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="col mr-2">
+                                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">취소 건수</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${cntDailyCancel == null ? '일 0건' : '일 ' + cntDailyCancel + '건'}">일 1,000건</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${cntMonthlyCancel == null ? '월 0건' : '월 ' + cntMonthlyCancel + '건'}">월 1,000건</div>
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Q&A 카드 -->
+                        <div class="col-md-4 col-sm-6 mb-4">
+                            <div class="card border-left-warning shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2">
+                                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Q&A</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${cntQnA == null ? '0 건' : cntQnA + ' 건'}"></div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <i class="fas fa-comments fa-2x text-gray-300"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Content Row -->
+
+                <h1 class="h3 mb-4 text-gray-800">Week</h1>
+
+                <div class="row">
+
+                    <!-- 매출(일) Chart -->
+                    <div class="col-xl-6 col-lg-6">
+                        <div class="card shadow mb-4">
+                            <!-- Card Header - Dropdown -->
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">매출(일)</h6>
+                            </div>
+                            <!-- Card Body -->
+                            <div class="card-body">
+                                <canvas id="chart-sales-day"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 매출(월) Chart -->
+                    <div class="col-xl-6 col-lg-6">
+                        <div class="card shadow mb-4">
+                            <!-- Card Header - Dropdown -->
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">매출(월)</h6>
+                            </div>
+                            <!-- Card Body -->
+                            <div class="card-body">
+                                <canvas id="chart-sales-month"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+
+                    <!-- 신규회원 Chart -->
+                    <div class="col-xl-6 col-lg-6">
+                        <div class="card shadow mb-4">
+                            <!-- Card Header - Dropdown -->
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">신규회원</h6>
+                            </div>
+                            <!-- Card Body -->
+                            <div class="card-body">
+                                <canvas id="chart-new-user"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 취소 Chart -->
+                    <div class="col-xl-6 col-lg-6">
+                        <div class="card shadow mb-4">
+                            <!-- Card Header - Dropdown -->
+                            <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                <h6 class="m-0 font-weight-bold text-primary">취소</h6>
+                            </div>
+                            <!-- Card Body -->
+                            <div class="card-body">
+                                <canvas id="chart-cancel-reservation"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
         </div>
-
-        <!-- Content Row -->
-        <div class="container-fluid">
-          <div class="row">
-
-            <!-- 매출 카드 -->
-            <div class="col-md-4 col-sm-6 mb-4">
-              <div class="card border-left-primary shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">매출</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${calcDailySales == null ? '일 0원' : '일 ' + #numbers.formatInteger(calcDailySales, 3 , 'COMMA') + '원'}">일 90,000원</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${calcMonthlySales == null ? '월 0원' : '월 ' + #numbers.formatInteger(calcMonthlySales, 3, 'COMMA') + '원'}">월 90,000원</div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fas fa-calendar fa-2x text-gray-300"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- 예약 카드 -->
-            <div class="col-md-4 col-sm-6 mb-4">
-              <div class="card border-left-success shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-success text-uppercase mb-1">예약</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${cntDailyReserve == null ? '일 0건' : '일 ' + cntDailyReserve + '건'}">일 1,000건</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${cntMontlyyReserve == null ? '월 0건' : '월 ' + cntMontlyyReserve + '건'}">월 1,000건</div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- 누적 월차 카드 -->
-            <div class="col-md-4 col-sm-6 mb-4">
-              <div class="card border-left-info shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">누적 월차</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${cntDailyCancel == null ? '0건' : cntDailyCancel + '건'}">1,000원</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${cntDailyCancel == null ? '0 원/월' : cntDailyCancel + '원/월'}">1,000,000,000 원/월</div>
-                      </div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- 취소 건수 카드 -->
-            <div class="col-md-4 col-sm-6 mb-4">
-              <div class="card border-left-info shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">취소 건수</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${cntDailyCancel == null ? '일 0건' : '일 ' + cntDailyCancel + '건'}">일 1,000건</div>
-                        <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${cntMonthlyCancel == null ? '월 0건' : '월 ' + cntMonthlyCancel + '건'}">월 1,000건</div>
-                      </div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Q&A 카드 -->
-            <div class="col-md-4 col-sm-6 mb-4">
-              <div class="card border-left-warning shadow h-100 py-2">
-                <div class="card-body">
-                  <div class="row no-gutters align-items-center">
-                    <div class="col mr-2">
-                      <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Q&A</div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${cntQnA == null ? '0 건' : cntQnA + ' 건'}"></div>
-                    </div>
-                    <div class="col-auto">
-                      <i class="fas fa-comments fa-2x text-gray-300"></i>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Content Row -->
-
-        <h1 class="h3 mb-4 text-gray-800">Week</h1>
-
-        <div class="row">
-
-          <!-- 매출(일) Chart -->
-          <div class="col-xl-6 col-lg-6">
-            <div class="card shadow mb-4">
-              <!-- Card Header - Dropdown -->
-              <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">매출(일)</h6>
-              </div>
-              <!-- Card Body -->
-              <div class="card-body">
-                <canvas id="chart-sales-day"></canvas>
-              </div>
-            </div>
-          </div>
-
-          <!-- 매출(월) Chart -->
-          <div class="col-xl-6 col-lg-6">
-            <div class="card shadow mb-4">
-              <!-- Card Header - Dropdown -->
-              <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">매출(월)</h6>
-              </div>
-              <!-- Card Body -->
-              <div class="card-body">
-                <canvas id="chart-sales-month"></canvas>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="row">
-
-          <!-- 신규회원 Chart -->
-          <div class="col-xl-6 col-lg-6">
-            <div class="card shadow mb-4">
-              <!-- Card Header - Dropdown -->
-              <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">신규회원</h6>
-              </div>
-              <!-- Card Body -->
-              <div class="card-body">
-                <canvas id="chart-new-user"></canvas>
-              </div>
-            </div>
-          </div>
-
-          <!-- 취소 Chart -->
-          <div class="col-xl-6 col-lg-6">
-            <div class="card shadow mb-4">
-              <!-- Card Header - Dropdown -->
-              <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                <h6 class="m-0 font-weight-bold text-primary">취소</h6>
-              </div>
-              <!-- Card Body -->
-              <div class="card-body">
-                <canvas id="chart-cancel-reservation"></canvas>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
+        <!-- Footer -->
+        <div th:replace="main_footer :: mainFooter"></div>
 
     </div>
-    <!-- Footer -->
-    <div th:replace="main_footer :: mainFooter"></div>
-
-  </div>
-  <!-- End of Content Wrapper -->
+    <!-- End of Content Wrapper -->
 
 </div>
 <!-- End of Page Wrapper -->
 
 <!-- Scroll to Top Button-->
 <a class="scroll-to-top rounded" href="#page-top">
-  <i class="fas fa-angle-up"></i>
+    <i class="fas fa-angle-up"></i>
 </a>
 
 <!-- Logout Modal-->
 <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">알림</h5>
-        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">×</span>
-        </button>
-      </div>
-      <div class="modal-body">로그아웃을 하시겠습니까?</div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-        <a class="btn btn-primary" href="/api/v1.0/docha.logout">Logout</a>
-      </div>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">알림</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">로그아웃을 하시겠습니까?</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-primary" href="/api/v1.0/docha.logout">Logout</a>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
 <script>
 
 </script>
 <script th:inline="javascript">
 
-  var dateLabel = [];
+    var dateLabel = [];
 
-  for (var i = 7; i >= 0; i--){
-    var date = new Date();
-    date.setTime(date.getTime() - (i * 24 * 60 * 60 * 1000));
-    dateLabel.push(formatDate(date))
-  }
-
-  var amountList = /*[[${amountList}]]*/'';
-  var salesCountList = /*[[${salesCountList}]]*/'';
-
-  var ctx = $('#chart-sales-day');
-  var dailySalesChart  = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: dateLabel,
-      datasets: [{
-        label: '매출 건수',
-        data: salesCountList,
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(255, 159, 64, 0.2)',
-          'rgba(255, 159, 64, 0.2)',
-          'rgba(155, 149, 158, 0.2)'
-        ],
-        borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-          'rgba(153, 102, 255, 1)',
-          'rgba(255, 159, 64, 1)',
-          'rgba(255, 159, 64, 1)',
-          'rgba(107, 103, 109, 1)'
-        ],
-        borderWidth: 1
-      }, {
-        type: 'line',
-        label: '매출 금액',
-        data: amountList,
-        borderColor: [
-          'rgba(255, 99, 132, 1)'
-        ],
-        fill : false
-      }]
-    },
-    options: {
-      scales: {
-        yAxes: [{
-          ticks: {
-            beginAtZero: true
-          }
-        }]
-      }
+    for (var i = 7; i >= 0; i--){
+        var date = new Date();
+        date.setTime(date.getTime() - (i * 24 * 60 * 60 * 1000));
+        dateLabel.push(formatDate(date))
     }
-  });
 
-  var ctx = $('#chart-sales-month');
-  var monthlySalesChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: dateLabel,
-      datasets: [{
-        label: '매출 건수',
-        data: [12, 19, 3, 5, 2, 3, 100, 200],
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(255, 159, 64, 0.2)',
-          'rgba(255, 159, 64, 0.2)',
-          'rgba(155, 149, 158, 0.2)'
-        ],
-        borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-          'rgba(153, 102, 255, 1)',
-          'rgba(255, 159, 64, 1)',
-          'rgba(255, 159, 64, 1)',
-          'rgba(107, 103, 109, 1)'
-        ],
-        borderWidth: 1
-      }, {
-        type: 'line',
-        label: '매출 금액',
-        data: [12, 19, 50, 5, 2, 3, 100, 200],
-        borderColor: [
-          'rgba(255, 99, 132, 1)'
-        ],
-        fill : false
-      }]
-    },
-    options: {
-      scales: {
-        yAxes: [{
-          ticks: {
-            beginAtZero: true
-          }
-        }]
-      }
-    }
-  });
+    var dailyAmountList = /*[[${dailyAmountList}]]*/'';
+    var dailySalesCountList = /*[[${dailySalesCountList}]]*/'';
 
-  var ctx = $('#chart-new-user');
-  var newUserChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: dateLabel,
-      datasets: [{
-        label: '신규 회원수',
-        data: [12, 19, 3, 5, 2, 3, 100, 200],
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(255, 159, 64, 0.2)',
-          'rgba(255, 159, 64, 0.2)',
-          'rgba(155, 149, 158, 0.2)'
-        ],
-        borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-          'rgba(153, 102, 255, 1)',
-          'rgba(255, 159, 64, 1)',
-          'rgba(255, 159, 64, 1)',
-          'rgba(107, 103, 109, 1)'
-        ],
-        borderWidth: 1
-      }]
-    },
-    options: {
-      scales: {
-        yAxes: [{
-          ticks: {
-            beginAtZero: true
-          }
-        }]
-      }
-    }
-  });
+    var ctx = $('#chart-sales-day');
+    var dailySalesChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: dateLabel,
+            datasets: [{
+                label: '매출 금액',
+                data: dailyAmountList,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(155, 149, 158, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(107, 103, 109, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            tooltips: {
+                callbacks: {
+                    title: function(tooltipItem, data) {
+                        return data['labels'][tooltipItem[0]['index']];
+                    },
+                    label: function(tooltipItem, data) {
+                        return '매출금액 : ' + data['datasets'][0]['data'][tooltipItem['index']];
+                    },
+                    afterLabel: function(tooltipItem, data) {
+                        return '매출건수 : ' + dailySalesCountList[tooltipItem['index']];
+                    }
+                },
+                backgroundColor: '#FFF',
+                titleFontSize: 16,
+                titleFontColor: '#0066ff',
+                bodyFontColor: '#000',
+                bodyFontSize: 14,
+                displayColors: false
+            }
+            ,scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
 
-  var ctx = $('#chart-cancel-reservation');
-  var CancelReservationChart = new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: dateLabel,
-      datasets: [{
-        label: '취소 건수',
-        data: [12, 19, 3, 5, 2, 3, 100, 200],
-        backgroundColor: [
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(54, 162, 235, 0.2)',
-          'rgba(255, 206, 86, 0.2)',
-          'rgba(75, 192, 192, 0.2)',
-          'rgba(153, 102, 255, 0.2)',
-          'rgba(255, 159, 64, 0.2)',
-          'rgba(255, 159, 64, 0.2)',
-          'rgba(155, 149, 158, 0.2)'
-        ],
-        borderColor: [
-          'rgba(255, 99, 132, 1)',
-          'rgba(54, 162, 235, 1)',
-          'rgba(255, 206, 86, 1)',
-          'rgba(75, 192, 192, 1)',
-          'rgba(153, 102, 255, 1)',
-          'rgba(255, 159, 64, 1)',
-          'rgba(255, 159, 64, 1)',
-          'rgba(107, 103, 109, 1)'
-        ],
-        borderWidth: 1
-      }]
-    },
-    options: {
-      scales: {
-        yAxes: [{
-          ticks: {
-            beginAtZero: true
-          }
-        }]
-      }
-    }
-  });
+    var monthlyDate = /*[[${monthlyDate}]]*/'';
+    var monthlyAmountList = /*[[${monthlyAmountList}]]*/'';
+    var monthlySalesCountList = /*[[${monthlySalesCountList}]]*/'';
+
+    var ctx = $('#chart-sales-month');
+    var monthlySalesChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: monthlyDate,
+            datasets: [{
+                label: '매출 건수',
+                data: monthlyAmountList,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(155, 149, 158, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(107, 103, 109, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            tooltips: {
+                callbacks: {
+                    title: function(tooltipItem, data) {
+                        return data['labels'][tooltipItem[0]['index']];
+                    },
+                    label: function(tooltipItem, data) {
+                        return '매출금액 : ' + data['datasets'][0]['data'][tooltipItem['index']];
+                    },
+                    afterLabel: function(tooltipItem, data) {
+                        return '매출건수 : ' + monthlySalesCountList[tooltipItem['index']];
+                    }
+                },
+                backgroundColor: '#FFF',
+                titleFontSize: 16,
+                titleFontColor: '#0066ff',
+                bodyFontColor: '#000',
+                bodyFontSize: 14,
+                displayColors: false
+            }
+            ,
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+
+    var newUserList = /*[[${newUserList}]]*/'';
+
+    var ctx = $('#chart-new-user');
+    var newUserChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: dateLabel,
+            datasets: [{
+                label: '신규 회원수',
+                data: newUserList,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(155, 149, 158, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(107, 103, 109, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
+
+    var cancelList = /*[[${cancelList}]]*/'';
+
+    var ctx = $('#chart-cancel-reservation');
+    var CancelReservationChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: dateLabel,
+            datasets: [{
+                label: '취소 건수',
+                data: cancelList,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(155, 149, 158, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(107, 103, 109, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            }
+        }
+    });
 </script>
 </body>
 </html>

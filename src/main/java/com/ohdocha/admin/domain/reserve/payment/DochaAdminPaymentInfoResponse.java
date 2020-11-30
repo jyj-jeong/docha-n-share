@@ -30,6 +30,7 @@ public class DochaAdminPaymentInfoResponse extends CommonResponseDto {
 	private String returnTypeCode       ;
 	private String returnAddr           ;
 	private String companyName          ;
+	private String branchName           ;
 	private String urIdx                ;
 	private String regId                ;
 	private String regDt                ;
@@ -176,6 +177,7 @@ public class DochaAdminPaymentInfoResponse extends CommonResponseDto {
 	private String payAvg;
 	
 	private String payCount;
+	private String totalPayCount;
 	private String sumPaymentAmount;
 	private String nextPaymentDay;
 	

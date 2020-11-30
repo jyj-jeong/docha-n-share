@@ -41,7 +41,7 @@
                    ,      IFNULL(T1.UL_IDX2              , '' ) AS UL_IDX2                /* 운전자2 IDX      */
                    ,      IFNULL(T1.UR_IDX               , '' ) AS UR_IDX                  /* 유저 IDX         */
                    ,      IFNULL(T1.REG_ID               , '' ) AS REG_ID                  /* 등록자아이디      */
-                   ,      IFNULL(TO_CHAR(T6.REG_DT , 'YYYYMMDDHH24MISS')     , ' ' ) AS REG_DT    /* 등록일시             */
+                   ,      IFNULL(TO_CHAR(T6.REG_DT , '%Y-%m-%d %H:%i:%s')     , ' ' ) AS REG_DT    /* 등록일시             */
                    ,      IFNULL(T1.MOD_ID               , '' ) AS MOD_ID                  /* 수정자아이디      */
                    ,      IFNULL(T1.MOD_DT               , '' ) AS MOD_DT                  /* 수정일         */
                    ,      IFNULL(T1.DEL_YN               , '' ) AS DEL_YN                  /* 삭제여부          */
@@ -170,87 +170,86 @@
 
 	<select id="selectPaymentInfoList" parameterType="paymentInfoRequest" resultType="paymentInfoResponse">
 		<![CDATA[
-             SELECT *  FROM (
-                 SELECT
-                      IFNULL(M.RM_IDX                 , '' ) AS RM_IDX                   /* 예약 MASTER KEY */
-               ,      IFNULL(M.RT_IDX     			 , '' ) 	AS RT_IDX      			 /*  제휴사 IDX        */
-               ,      IFNULL(M.RESERVE_USER_NAME      , '' ) AS RESERVE_USER_NAME       /* 예약자명         */
-               ,      IFNULL(IFNULL(UI.USER_NAME, M.RESERVE_USER_NAME) , '' ) AS USER_NAME /* 예약한 USER명      */
-               ,      IFNULL(UI.USER_CONTACT1         , '' ) AS USER_CONTACT1         /* 예약 USER 연락처   */
-               ,      IFNULL(M.RENT_START_DAY         , '' ) AS RENT_START_DAY          /* 대여시작일      */
-               ,      IFNULL(M.RENT_END_DAY            , '' ) AS RENT_END_DAY            /* 대여종료일      */
-               ,      IFNULL(M.RENT_START_TIME         , '' ) AS RENT_START_TIME         /* 대여시작시간      */
-               ,      IFNULL(M.RENT_END_TIME           , '' ) AS RENT_END_TIME           /* 대여종료시간      */
-               ,      IFNULL(CD1.CODE_VALUE         , '' ) AS FUEL_NAME               /* 연료타입값      */
-               ,      IFNULL(RC.COMPANY_NAME          , '' ) AS COMPANY_NAME           /* 회원사명         */
-               ,      IFNULL(CI.MODEL_NAME            , '' ) AS MODEL_NAME              /* 차량모델명      */
-               ,      IFNULL(CI.CAR_NUMBER              , '' ) AS CAR_NUMBER              /* 차량번호          */
-               ,      IFNULL(M.RENT_FEE                 , '' ) AS RENT_FEE                /* 차량RENT금액      */
-               ,      IFNULL(M.PAYMENT_TOTAL_AMOUNT   , '' ) AS PAYMENT_TOTAL_AMOUNT    /* 차량예약총금액      */
-               ,      IFNULL(M.SUM_PAYMENT_AMOUNT       , '' ) AS SUM_PAYMENT_AMOUNT      /* 총결제금액      */
-               ,      IFNULL(M.MONTHLY_FEE          , '' ) AS MONTHLY_FEE             /* 월대여가격      */
-               ,      IFNULL(M.PAY_COUNT             , '' ) AS PAY_COUNT               /* 납부횟수         */
-               ,      IFNULL(DATE_FORMAT(M.REG_DT , 'YYYYMMDDHH24MISS')     , ' ' ) AS REG_DT /* 등록일시(예약일)   */
-               ,      IFNULL(DATE_FORMAT(M.LAST_PAY_DATE , 'YYYYMMDD')     , ' ' ) AS LAST_PAY_DATE /* 마지막 결제일    */
-               ,      IFNULL(M.BALANCE             , '' ) AS BALANCE                 /* 잔여금액      */
---                ,      IFNULL(M.NEXT_PAYMENT_DAY        , '' ) AS NEXT_PAYMENT_DAY         /* 마지막 결제일         */
-                FROM (
-                    SELECT
-                        RM.RM_IDX
-                        , RM.REG_DT
-                        , RM.UR_IDX
-                        , RM.RT_IDX
-                        , RM.CR_IDX
-                        , RM.RESERVE_USER_NAME
-                        , RM.RENT_START_DAY
-                        , RM.RENT_START_TIME
-                        , RM.RENT_END_DAY
-                        , RM.RENT_END_TIME
-                        , RM.RENT_FEE
-                        , RM.PAYMENT_TOTAL_AMOUNT
-                        , T2.SUM_PAYMENT_AMOUNT
-                        , T2.MONTHLY_FEE
-                        , T2.PAY_COUNT
-                        , T2.LAST_PAY_DATE
-                        , RM.PAYMENT_TOTAL_AMOUNT - T2.SUM_PAYMENT_AMOUNT AS BALANCE
---                         , DATE_FORMAT(DATE_ADD(TO_DATE(RM.RENT_START_DAY, 'YYYY-MM-DD') , T2.PAY_COUNT),'YYYY-MM-DD') AS NEXT_PAYMENT_DAY
-                    FROM (
-                         SELECT
-                            *
-                         FROM DC_RESERVE_MASTER
-                         WHERE LONGTERM_YN = 'LT'
-                    ) RM
-                    INNER JOIN (
-                        SELECT
-                            PD.*
-                        FROM(
+             SELECT
+                       IFNULL(M.RM_IDX                 , '' ) AS RM_IDX                   /* 예약 MASTER KEY */
+                        ,      IFNULL(M.RT_IDX     			 , '' ) 	AS RT_IDX      			 /*  제휴사 IDX        */
+                        ,      IFNULL(M.RESERVE_USER_NAME      , '' ) AS RESERVE_USER_NAME       /* 예약자명         */
+                        ,      IFNULL(IFNULL(UI.USER_NAME, M.RESERVE_USER_NAME) , '' ) AS USER_NAME /* 예약한 USER명      */
+                        ,      IFNULL(UI.USER_CONTACT1         , '' ) AS USER_CONTACT1         /* 예약 USER 연락처   */
+                        ,      IFNULL(M.RENT_START_DAY         , '' ) AS RENT_START_DAY          /* 대여시작일      */
+                        ,      IFNULL(M.RENT_END_DAY            , '' ) AS RENT_END_DAY            /* 대여종료일      */
+                        ,      IFNULL(M.RENT_START_TIME         , '' ) AS RENT_START_TIME         /* 대여시작시간      */
+                        ,      IFNULL(M.RENT_END_TIME           , '' ) AS RENT_END_TIME           /* 대여종료시간      */
+                        ,      IFNULL(CD1.CODE_VALUE         , '' ) AS FUEL_NAME               /* 연료타입값      */
+                        ,      IFNULL(RC.COMPANY_NAME          , '' ) AS COMPANY_NAME           /* 회원사명         */
+                        ,      IFNULL(RC.BRANCH_NAME          , '' ) AS BRANCH_NAME           /*  지점명         */
+                        ,      IFNULL(CI.MODEL_NAME            , '' ) AS MODEL_NAME              /* 차량모델명      */
+                        ,      IFNULL(CI.CAR_NUMBER              , '' ) AS CAR_NUMBER              /* 차량번호          */
+                        ,      IFNULL(M.RENT_FEE                 , '' ) AS RENT_FEE                /* 차량RENT금액      */
+                        ,      IFNULL(M.PAYMENT_TOTAL_AMOUNT   , '' ) AS PAYMENT_TOTAL_AMOUNT    /* 차량예약총금액      */
+                        ,      IFNULL(M.SUM_PAYMENT_AMOUNT       , '' ) AS SUM_PAYMENT_AMOUNT      /* 총결제금액      */
+                        ,      IFNULL(M.MONTHLY_FEE          , '' ) AS MONTHLY_FEE             /* 월대여가격      */
+                        ,      IFNULL(M.PAY_COUNT             , '' ) AS PAY_COUNT               /* 납부횟수         */
+                        ,      IFNULL(M.TOTAL_PAY_COUNT             , '' ) AS TOTAL_PAY_COUNT            /* 전체 납부 횟수         */
+                        ,      IFNULL(DATE_FORMAT(M.REG_DT , '%Y-%m-%d %H:%i:%s')     , ' ' ) AS REG_DT /* 등록일시(예약일)   */
+                         ,      IFNULL(DATE_FORMAT(M.LAST_PAY_DATE , '%Y%m%d')     , ' ' ) AS LAST_PAY_DATE /* 마지막 결제일    */
+                         ,      IFNULL(M.BALANCE             , '' ) AS BALANCE                 /* 잔여금액      */
+                         ,      IFNULL(M.NEXT_PAYMENT_DAY        , '' ) AS NEXT_PAYMENT_DAY         /* 마지막 결제일         */
+                   FROM (
                             SELECT
-                                RM_IDX
-                                , PAYMENT_AMOUNT AS MONTHLY_FEE
-                                , COUNT(RM_IDX) OVER (PARTITION BY RM_IDX) AS PAY_COUNT
-                                , SUM(PAYMENT_AMOUNT) OVER (PARTITION BY RM_IDX) AS SUM_PAYMENT_AMOUNT
---                                 , ROW_NUMBER() OVER (PARTITION BY RM_IDX ORDER BY PAYMENT_DATE) PAYMENT_ORDER
-                                , MAX(PAYMENT_DATE) OVER (PARTITION BY RM_IDX) AS LAST_PAY_DATE
-                            FROM DC_PAYMENT_DETAIL A
-                            WHERE A.PAYMENT_KIND_CODE = 'RT'
-                        ) PD
---                         WHERE PD.PAYMENT_ORDER = 1
-                    ) T2
-                    ON RM.RM_IDX = T2.RM_IDX
-                ) M
-                LEFT OUTER JOIN DC_USER_INFO UI
-                    ON M.UR_IDX = UI.UR_IDX
-                LEFT OUTER JOIN DC_RENT_COMPANY RC
-                    ON M.RT_IDX = RC.RT_IDX
-                LEFT OUTER JOIN DC_CAR_INFO CI
-                    ON M.CR_IDX = CI.CR_IDX
-                LEFT OUTER JOIN DC_COMMON_CODE CD1
-                    ON CI.FUEL_CODE = CD1.CODE
-               ) T1
-               WHERE T1.BALANCE > 0
+                                RM.RM_IDX
+                                 , RM.REG_DT
+                                 , RM.UR_IDX
+                                 , RM.RT_IDX
+                                 , RM.CR_IDX
+                                 , RM.RESERVE_USER_NAME
+                                 , RM.RENT_START_DAY
+                                 , RM.RENT_START_TIME
+                                 , RM.RENT_END_DAY
+                                 , RM.RENT_END_TIME
+                                 , RM.RENT_FEE
+                                 , RM.PAYMENT_TOTAL_AMOUNT
+                                  , T2.SUM_PAYMENT_AMOUNT
+                                  , T2.MONTHLY_FEE
+                                  , T2.PAY_COUNT
+                                  , RM.TOTAL_PAY_COUNT
+                                  , T2.LAST_PAY_DATE
+                                  , RM.PAYMENT_TOTAL_AMOUNT - T2.SUM_PAYMENT_AMOUNT AS BALANCE
+                                  , DATE_FORMAT(RM.NEXT_PAYMENT_DAY,'%Y-%m-%d') AS NEXT_PAYMENT_DAY
+                            FROM (
+                                     SELECT
+                                         *
+                                     FROM DC_RESERVE_MASTER
+                                     WHERE LONGTERM_YN = 'LT'
+                                 ) RM
+                                     INNER JOIN (
+                                SELECT
+                                    PD.*
+                                FROM(
+                                        SELECT
+                                            RM_IDX
+                                             , PAYMENT_AMOUNT AS MONTHLY_FEE
+                                             , COUNT(RM_IDX) OVER (PARTITION BY RM_IDX) AS PAY_COUNT
+                                             , SUM(PAYMENT_AMOUNT) OVER (PARTITION BY RM_IDX) AS SUM_PAYMENT_AMOUNT
+                                             , ROW_NUMBER() OVER (PARTITION BY RM_IDX ORDER BY PAYMENT_DATE) PAYMENT_ORDER
+                                             , MAX(PAYMENT_DATE) OVER (PARTITION BY RM_IDX) AS LAST_PAY_DATE
+                                        FROM DC_PAYMENT_DETAIL A
+--                                          WHERE A.PAYMENT_KIND_CODE = 'RT'
+                                    ) PD
+                                WHERE PD.PAYMENT_ORDER = 1
+                            ) T2 ON RM.RM_IDX = T2.RM_IDX
+                        ) M
+                            LEFT OUTER JOIN DC_USER_INFO UI
+                                            ON M.UR_IDX = UI.UR_IDX
+                            LEFT OUTER JOIN DC_RENT_COMPANY RC
+                                            ON M.RT_IDX = RC.RT_IDX
+                            LEFT OUTER JOIN DC_CAR_INFO CI
+                                            ON M.CR_IDX = CI.CR_IDX
+                            LEFT OUTER JOIN DC_COMMON_CODE CD1
+                                            ON CI.FUEL_CODE = CD1.CODE
        ]]>
 
-		<if test=" 'CA'.equals(userRole) and rtIdx != null and rtIdx != '' ">
+		<if test="rtIdx != null and rtIdx != '' ">
 			AND T1.RT_IDX = #{rtIdx}
 		</if>
 <!--		<if test="gbnInput != null and gbnInput != ''">-->
@@ -288,7 +287,7 @@
             ,      IFNULL(T2.SUM_PAYMENT_AMOUNT      , '' ) AS SUM_PAYMENT_AMOUNT      /* 총결제금액      */
             ,      IFNULL(T2.MONTHLY_FEE          , '' ) AS MONTHLY_FEE             /* 월대여가격      */
             ,      IFNULL(T2.PAY_COUNT             , '' ) AS PAY_COUNT               /* 납부횟수         */
-            ,      IFNULL(TO_CHAR(RM.REG_DT , 'YYYYMMDDHH24MISS')     , ' ' ) AS REG_DT /* 등록일시(예약일)   */
+            ,      IFNULL(TO_CHAR(RM.REG_DT , '%Y-%m-%d %H:%i:%s')     , ' ' ) AS REG_DT /* 등록일시(예약일)   */
             ,      IFNULL(RM.PAYMENT_TOTAL_AMOUNT - T2.SUM_PAYMENT_AMOUNT, 0) AS BALANCE                 /* 잔여금액      */
 --             ,       TO_CHAR(ADD_MONTHS(TO_DATE(RM.RENT_START_DAY, 'YYYY-MM-DD') , T2.PAY_COUNT),'YYYYMMDD') AS NEXT_PAYMENT_DAY        /* 마지막 결제일         */
          FROM (

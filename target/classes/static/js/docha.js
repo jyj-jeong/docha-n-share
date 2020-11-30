@@ -10,7 +10,7 @@ var GLOBAL_LINK_RTIDX = ''; // 회원사 링크 버튼 클릭시 이동전 저�
 /**
 
  * 데이터테이블 초기화
-h
+ h
  */
 function initDataTables() {
     var table = $('#dataTable').DataTable( {
@@ -18,7 +18,7 @@ function initDataTables() {
             emptyTable: "데이터가 존재하지 않습니다.",
             lengthMenu: "페이지당 _MENU_ 개씩 보기",
             info: "현재 _START_ - _END_ / _TOTAL_건",
-            infoEmpty: "데이터 없음",
+            infoEmpty: "0 건",
             infoFiltered: "( _MAX_건의 데이터에서 필터링됨 )",
             search: "검색: ",
             zeroRecords: "일치하는 데이터가 존재하지 않습니다.",
@@ -588,7 +588,7 @@ function setDateTimeDiff(_stDateTime , _endDateTime){
 
     is_same_day = endDate == startDate ? true : false;
 
-    // 마지막날은 30일 이하여야함 ( 28~30 ) 카썸정책
+    // 마지막날은 30일 이하여야함 ( 28~30 ) 두차정책
     var dayOfLast = Number(( new Date( endYear, endMonth+1, 0) ).getDate()) != 31 ? 30 : Number(( new Date( endYear, endMonth+1, 0) ).getDate());
     var startDate_dayOfLast = Number(( new Date( startYear, startMonth+1, 0) ).getDate());
     var endDate_dayOfLast = Number(( new Date( endYear, endMonth+1, 0) ).getDate());
@@ -1256,3 +1256,17 @@ Array.prototype.contains = function(element) {
     return false;
 }
 
+
+function formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2)
+        month = '0' + month;
+    if (day.length < 2)
+        day = '0' + day;
+
+    return [year, month, day].join('-');
+}

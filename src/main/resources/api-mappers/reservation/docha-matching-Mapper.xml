@@ -38,8 +38,8 @@
                      ,      IFNULL(T1.UL_IDX2              , '' ) AS UL_IDX2                /* 운전자2 IDX      */
                      ,      IFNULL(T1.UR_IDX               , '' ) AS UR_IDX                  /* 유저 IDX         */
                      ,      IFNULL(T1.REG_ID               , '' ) AS REG_ID                  /* 등록자아이디      */
-                     ,      IFNULL(TO_CHAR(T1.REG_DT , 'YYYYMMDDHH24MISS')     , ' ' ) AS REG_DT    /* 등록일시             */
-                     ,      IFNULL(TO_CHAR(T9.REG_DT , 'YYYYMMDDHH24MISS')     , ' ' ) AS COMPANY_REG_DT    /* 등록일시             */
+                     ,      IFNULL(TO_CHAR(T1.REG_DT , '%Y-%m-%d %H:%i:%s')     , ' ' ) AS REG_DT    /* 등록일시             */
+                     ,      IFNULL(TO_CHAR(T9.REG_DT , '%Y-%m-%d %H:%i:%s')     , ' ' ) AS COMPANY_REG_DT    /* 등록일시             */
                      ,      IFNULL(T1.MOD_ID               , '' ) AS MOD_ID                  /* 수정자아이디      */
                      ,      IFNULL(T1.MOD_DT               , '' ) AS MOD_DT                  /* 수정일         */
                      ,      IFNULL(T1.DEL_YN               , '' ) AS DEL_YN                  /* 삭제여부          */
@@ -125,10 +125,10 @@
       , B.USER_GENDER AS QUOTE_USER_GENDER /* 성별 */
       , IFNULL(B.USER_CONTACT1, '') AS QUOTE_USER_CONTACT /* 전화번호 */
       , IFNULL(B.USER_BIRTHDAY, '') AS QUOTE_USER_BIRTHDAY /* 생년월일 */
-      , TO_CHAR(A.REG_DT, 'YYYY-MM-DD HH24:MI') AS QUOTE_START_DATE /* 신청일시 */
-      , TO_CHAR(TO_DATE(A.RENT_START_DAY||A.RENT_START_TIME, 'YYYYMMDDHH24MI'), 'YYYY-MM-DD HH24:MI') AS QUOTE_END_DATE /* 마감일시 */
-      , TO_CHAR(TO_DATE(A.RENT_START_DAY||A.RENT_START_TIME, 'YYYYMMDDHH24MI'), 'YYYY-MM-DD HH24:MI') AS RENT_START_DATE /* 대여일시 */
-      , TO_CHAR(TO_DATE(A.RENT_END_DAY||A.RENT_END_TIME, 'YYYYMMDDHH24MI'), 'YYYY-MM-DD HH24:MI') AS RENT_END_DATE /* 반납일시 */
+      , TO_CHAR(A.REG_DT, '%Y-%m-%d %H:%i:%s') AS QUOTE_START_DATE /* 신청일시 */
+      , TO_CHAR(TO_DATE(A.RENT_START_DAY||A.RENT_START_TIME, '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d %H:%i:%s') AS QUOTE_END_DATE /* 마감일시 */
+      , TO_CHAR(TO_DATE(A.RENT_START_DAY||A.RENT_START_TIME, '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d %H:%i:%s') AS RENT_START_DATE /* 대여일시 */
+      , TO_CHAR(TO_DATE(A.RENT_END_DAY||A.RENT_END_TIME, '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d %H:%i:%s') AS RENT_END_DATE /* 반납일시 */
       , CALC_PERIOD_DT(A.RENT_START_DAY || A.RENT_START_TIME, A.RENT_END_DAY || A.RENT_END_TIME) AS PERIOD_DT /* 사용기간 */
       , A.QU_IDX /* 매칭 순번 */
       , IFNULL(A.DELIVERY_ADDR, '') AS DELIVERY_ADDR /* 대여위치 */

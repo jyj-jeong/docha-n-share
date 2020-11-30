@@ -20,8 +20,8 @@
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4 mt-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary" style="cursor: pointer"
-                            onclick="changeCardView('regCarDetail')">차량등록 - 관리자 (00렌트카 / 00지점)</h6>
+                        <h6 th:if="${CRUD == 'insert'}" class="m-0 font-weight-bold text-primary" style="cursor: pointer" onclick="changeCardView('regCarDetail')">차량등록 - 신규등록</h6>
+                        <h6 th:if="${CRUD == 'modify'}" id="regCarTitle" class="m-0 font-weight-bold text-primary" style="cursor: pointer" onclick="changeCardView('regCarDetail')"></h6>
                     </div>
 
                     <!--region 차량정보 카드  -->
@@ -29,7 +29,7 @@
 
                         <!-- 차량 정보 -->
                         <div class="row">
-                            <input type="text" class="form-control " name="crIdx" id="crIdx"/>
+                            <input type="text" class="form-control d-none" name="crIdx" id="crIdx"/>
                             <div class="col-3 mb-3">
                                 <label class="form-label" for="companyName">회사명(지점)</label>
                                 <select class="custom-select" name="companyName" id="companyName"
@@ -37,7 +37,10 @@
                             </div>
                             <div class="col-3 mb-3">
                                 <label class="form-label" for="year">차량연식</label>
-                                <input type="text" class="form-control" name="year" id="year" placeholder="년도" maxlength="4"/>
+                                <select class="form-control" name="year" id="year" >
+
+                                </select>
+<!--                                <input type="text" class="form-control" name="year" id="year" placeholder="년도" maxlength="4"/>-->
                             </div>
                             <div class="col-3 mb-3">
                                 <label class="form-label" for="sel_modelName">차종</label>
@@ -56,8 +59,9 @@
                             </div>
                             <div class="col-3 mb-3">
                                 <label class="form-label" for="carRegDt">출고연식</label>
-                                <input type="text" class="form-control" name="carRegDt" id="carRegDt"
-                                       placeholder="년-월 (YYYY-MM)" maxlength="7"/>
+                                <select class="form-control" name="carRegDt" id="carRegDt" >
+
+                                </select>
                             </div>
 
                             <div class="col-3 mb-3">
@@ -108,9 +112,9 @@
                         <div class="row mt-2">
                             <h6 class="col-12 mb-3 font-weight-bold">책임보험</h6>
                             <div class="col-3 mb-3">
-                                <label class="form-label" for="sel_ciIdx">보험 템플릿 선택</label>
-                                <select id="sel_ciIdx" name="sel_ciIdx" class="custom-select"
-                                        onchange="ciIdxchange();"></select>
+                                <label class="form-label" for="sel_ciTIdx">보험 템플릿 선택</label>
+                                <select id="sel_ciTIdx" name="sel_ciTIdx" class="custom-select"
+                                        onchange="ciTIdxchange();"></select>
                             </div>
                         </div>
                         <div class="row mt-2">
@@ -137,25 +141,25 @@
                             <h6 class="col-8 mb-3 font-weight-bold">자차보험</h6>
 
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="carDamage1Yn"
-                                       value="carDamage1Yn">
+                                <input class="form-check-input" type="checkbox" id="carDamage1Yn" name="carDamage1Yn"
+                                       value="Y">
                                 <label class="form-check-label" for="carDamage1Yn">자차 1</label>
                             </div>
 
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="carDamage2Yn"
-                                       value="carDamage2Yn">
+                                <input class="form-check-input" type="checkbox" id="carDamage2Yn" name="carDamage2Yn"
+                                       value="Y">
                                 <label class="form-check-label" for="carDamage2Yn">자차 2</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="carDamage3Yn"
-                                       value="carDamage3Yn">
+                                <input class="form-check-input" type="checkbox" id="carDamage3Yn" name="carDamage3Yn"
+                                       value="Y">
                                 <label class="form-check-label" for="carDamage3Yn">자차 3</label>
                             </div>
 
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="carDamage4Yn"
-                                       value="carDamage4Yn">
+                                <input class="form-check-input" type="checkbox" id="carDamage4Yn" name="carDamage4Yn"
+                                       value="Y">
                                 <label class="form-check-label" for="carDamage4Yn">자차 4</label>
                             </div>
 
@@ -237,8 +241,8 @@
                         <div class="row mt-2">
                             <h6 class="col-12 mb-3 font-weight-bold">요금</h6>
                             <div class="col-3 mb-3">
-                                <label class="form-label" for="sel_pyIdx">요금 템플릿</label>
-                                <select id="sel_pyIdx" name="sel_pyIdx" class="custom-select"  onchange="pyIdxchange();"></select>
+                                <label class="form-label" for="sel_pyTIdx">요금 템플릿</label>
+                                <select id="sel_pyTIdx" name="sel_pyTIdx" class="custom-select"  onchange="pyTIdxchange();"></select>
                             </div>
                         </div>
                         <div class="row mt-2">
@@ -324,13 +328,13 @@
                             <h6 class="col-12 mb-3 font-weight-bold">요금 계산기 [최초 사용 시 요금계산기 초기화를 누르신 후 사용해주세요]</h6>
                             <div class="col-3 mb-3">
                                 <label class="form-label" for="calRentStartDt">대여일시</label>
-                                <input type="text" class="form-control" vlaue="" id="calRentStartDt" name="calRentStartDt" data-mask="____-__-__ __:__"  />
-                                <input type="datetime-local" class="form-control" vlaue="" id="calRentStartDt" name="calRentStartDt2" />
+                                <input type="text" class="form-control" vlaue="" id="calRentStartDt" name="calRentStartDt" onblur="calcPeriodDt()" data-mask="____-__-__ __:__"  />
+                                <input type="datetime-local" class="form-control" vlaue="" id="calRentStartDt" name="calRentStartDt2" onblur="calcPeriodDt()" />
                             </div>
                             <div class="col-3 mb-3">
                                 <label class="form-label" for="calRentEndDt">반납일시</label>
-                                <input type="text" class="form-control" vlaue="" id="calRentEndDt" name="calRentEndDt" data-mask="____-__-__ __:__"  />
-                                <input type="datetime-local" class="form-control" vlaue="" id="calRentEndDt" name="calRentEndDt2" />
+                                <input type="text" class="form-control" vlaue="" id="calRentEndDt" name="calRentEndDt" onblur="calcPeriodDt()" data-mask="____-__-__ __:__"  />
+                                <input type="datetime-local" class="form-control" vlaue="" id="calRentEndDt" name="calRentEndDt2" onblur="calcPeriodDt()" />
                             </div>
                             <div class="col-3 mb-3">
                                 <label class="form-label" for="calRentPeriod">대여기간</label>
@@ -392,8 +396,8 @@
                                 <input type="text" class="form-control" name="calRentTotAmount" id="calRentTotAmount" readonly/>
                             </div>
                             <div class="col-6 mb-3">
-                                <label class="form-label" for="calCarssumRate">MOBILITY-K 수수료</label>
-                                <input type="text" class="form-control" name="calCarssumRate" id="calCarssumRate" readonly/>
+                                <label class="form-label" for="calDochaRate">MOBILITY-K 수수료</label>
+                                <input type="text" class="form-control" name="calDochaRate" id="calDochaRate" readonly/>
                             </div>
                         </div>
 
@@ -504,16 +508,16 @@
             <div class="text-right">
                 <div class="row">
                     <div class="mr-2 font-weight-bold" style="cursor: pointer"
-                         onclick="changeCardView('regCarDetail')">정비내역
+                         onclick="openSwal()">정비내역
                     </div>
                     <div class="mr-2 font-weight-bold" style="cursor: pointer"
-                         onclick="changeCardView('userReviewCard')">후기
+                         onclick="openSwal()">후기
                     </div>
                     <div class="mr-2 font-weight-bold" style="cursor: pointer"
-                         onclick="changeCardView('userReservationHisCard')">예약내역
+                         onclick="reserveList()">예약내역
                     </div>
                     <div class="mr-2 font-weight-bold" style="cursor: pointer"
-                         onclick="changeCardView('userGradeCard')">휴차일
+                         onclick="holidayList()">휴차일
                     </div>
                 </div>
             </div>
@@ -577,6 +581,20 @@
     }else{
         $("input[name=calRentStartDt]").remove();
         $("input[name=calRentEndDt]").remove();
+    }
+
+    function openSwal() {
+        swal("상세화면은 순차적으로 오픈할 예정입니다.", { icon: "warning", });
+    }
+
+    function reserveList() {
+        opener.location.href = '/reserve';
+        window.close();
+    }
+
+    function holidayList() {
+        opener.location.href = '/mem/rentshop';
+        window.close();
     }
 </script>
 </body>

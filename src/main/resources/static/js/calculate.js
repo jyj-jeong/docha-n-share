@@ -155,7 +155,7 @@ var drawTable = function drawTable(res, page, displayPageNum){
 				return displayText;  
 			}
 		},
-		{ "name": "carssumDisFee", "title": "카썸수수료", "breakpoints": "xs sm",
+		{ "name": "dochaDisFee", "title": "두차수수료", "breakpoints": "xs sm",
 			"formatter" : function(value, options, rowData){  
 				var displayText = '';
 				displayText = objectConvertToPriceFormat(value);  
@@ -489,7 +489,7 @@ var calculateDateCompanyModalDrawTable = function calculateDateCompanyModal(res,
 				return displayText;  
 			}
 		},
-		{ "name": "carssumDisFee", "title": "카썸수수료", "breakpoints": "xs sm",
+		{ "name": "dochaDisFee", "title": "두차수수료", "breakpoints": "xs sm",
 			"formatter" : function(value, options, rowData){  
 				var displayText = '';
 				displayText = objectConvertToPriceFormat(value);  
@@ -755,7 +755,7 @@ var calculateDateReserveModalDrawTable = function calculateDateReserveModal(res,
 				return displayText;  
 			}
 		},
-		{ "name": "carssumDisFee", "title": "카썸수수료", "breakpoints": "xs sm",
+		{ "name": "dochaDisFee", "title": "두차수수료", "breakpoints": "xs sm",
 			"formatter" : function(value, options, rowData){  
 				var displayText = '';
 				displayText = objectConvertToPriceFormat(value);  

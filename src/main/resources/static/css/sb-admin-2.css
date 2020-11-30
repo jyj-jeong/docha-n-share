@@ -11226,3 +11226,10 @@ footer.sticky-footer .copyright {
 body.sidebar-toggled footer.sticky-footer {
   width: 100%;
 }
+
+
+.car-radio { position: absolute;left: -9999px; }
+.car-radio + span { display: inline-block; vertical-align: middle; padding:0 15px; height: 38px; line-height:35px; border-radius:38px; text-align: center; background: #fff; font-size:1.4rem; font-weight: 500; color: #323d63; border:1px solid #e1e1e1;transition:all 0.3s ease;}
+.car-radio:checked + span { background: #323d63; border-color:#323d63; color: #fff; }
+.car-radio:disabled + span { background:#f8f8f8; color:#c2c2c2; border-color:#efefef; }
+.car-radio.small + span { height:28px; line-height:25px; padding:0 10px; font-size:1.2rem; }

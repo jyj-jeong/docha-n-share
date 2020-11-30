@@ -76,6 +76,7 @@ public class DochaAdminReserveInfoDetailResponse extends CommonResponseDto {
 	private String deliveryFee;
 	private String addFee;
 	private String paymentTotalAmount;
+	private String sumPaymentAmount;
 	private String paymentAmount;
 	private String refundFee;
 	private String miSu;
@@ -92,6 +93,8 @@ public class DochaAdminReserveInfoDetailResponse extends CommonResponseDto {
 	
 	private String flag;
 	private String msg;
+
+	private String modDt;
 
 	public String getRmIdx() {
 		return rmIdx;
@@ -128,12 +131,6 @@ public class DochaAdminReserveInfoDetailResponse extends CommonResponseDto {
 	}
 	public void setReserveUserContact1(String reserveUserContact1) {
 		this.reserveUserContact1 = reserveUserContact1;
-	}
-	public String getreserveUserBirthday() {
-		return reserveUserBirthday;
-	}
-	public void setreserveUserBirthday(String reserveUserBirthday) {
-		this.reserveUserBirthday = reserveUserBirthday;
 	}
 	public String getUserFlag() {
 		return userFlag;
@@ -501,7 +498,28 @@ public class DochaAdminReserveInfoDetailResponse extends CommonResponseDto {
 	public void setMiSu(String miSu) {
 		this.miSu = miSu;
 	}
-	
-	
 
+	public String getReserveUserBirthday() {
+		return reserveUserBirthday;
+	}
+
+	public void setReserveUserBirthday(String reserveUserBirthday) {
+		this.reserveUserBirthday = reserveUserBirthday;
+	}
+
+	public String getModDt() {
+		return modDt;
+	}
+
+	public void setModDt(String modDt) {
+		this.modDt = modDt;
+	}
+
+	public String getSumPaymentAmount() {
+		return sumPaymentAmount;
+	}
+
+	public void setSumPaymentAmount(String sumPaymentAmount) {
+		this.sumPaymentAmount = sumPaymentAmount;
+	}
 }

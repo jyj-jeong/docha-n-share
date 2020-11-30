@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="dataSourceStorageLocal">
-    <data-source name="test@drjins.sharenshare.kr" uuid="805795c6-08b5-43d7-8ff8-ab415cc4ff0d">
-      <database-info product="MariaDB" version="10.4.12-MariaDB" jdbc-version="4.2" driver-name="MariaDB Connector/J" driver-version="2.4.1" dbms="MARIADB" exact-version="10.4.12" exact-driver-version="2.4">
+    <data-source name="@192.168.35.123" uuid="ee1600b5-4258-49c3-8042-3909ac94d70c">
+      <database-info product="MariaDB" version="10.4.14-MariaDB" jdbc-version="4.2" driver-name="MariaDB Connector/J" driver-version="2.6.0" dbms="MARIADB" exact-version="10.4.14" exact-driver-version="2.6">
         <extra-name-characters>#@</extra-name-characters>
         <identifier-quote-string>`</identifier-quote-string>
       </database-info>
       <case-sensitivity plain-identifiers="exact" quoted-identifiers="exact" />
       <secret-storage>master_key</secret-storage>
-      <user-name>mesdev</user-name>
+      <user-name>ohdocha</user-name>
       <schema-mapping>
         <introspection-scope>
-          <node kind="schema" qname="test" />
+          <node kind="schema" qname="ohdocha" />
         </introspection-scope>
       </schema-mapping>
     </data-source>

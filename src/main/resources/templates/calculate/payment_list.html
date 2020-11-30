@@ -7,7 +7,7 @@
 <head>
     <title>정산 :: DoCha Admin Web</title>
 
-    <script src="/static/js/payment.js" th:src="@{/static/js/payment.js}"></script>
+    <script src="/static/js/calculateCustDtail.js" th:src="@{/static/js/calculateCustDtail.js}"></script>
 </head>
 <body id="page-top">
 
@@ -71,17 +71,17 @@
                                 </tr>
                                 </tfoot>
                                 <tbody>
-                                <tr th:each="payment, index : ${paymentInfoList}" style="cursor: pointer" th:data-value="${payment.getRmIdx()}">
-                                    <td th:text="${payment.getPaymentDate()}"></td>
-                                    <td th:text="${payment.getRtIdx()}"></td>
-                                    <td th:text="${payment.getRtIdx()}"></td>
-                                    <td th:text="${payment.getRtIdx()}"></td>
-                                    <td th:text="${payment.getRtIdx()}"></td>
-                                    <td th:text="${payment.getRtIdx()}"></td>
-                                    <td th:text="${payment.getRtIdx()}"></td>
-                                    <td th:text="${payment.getRtIdx()}"></td>
-                                    <td th:text="${payment.getRtIdx()}"></td>
-                                    <td th:text="${payment.getRtIdx()}"></td>
+                                <tr th:each="calculateInfo, index : ${calculateResponseList}" style="cursor: pointer" th:data-value="${calculateInfo.getRmIdx()}">
+                                    <td th:text="${calculateInfo.getAccountExpDt()}"></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td th:text="${#numbers.formatInteger(calculateInfo.getPaymentAmount(), 3, 'COMMA')}"></td>
+                                    <td th:text="${#numbers.formatInteger(calculateInfo.getDisCountFee(), 3 , 'COMMA')}"></td>
+                                    <td th:text="${#numbers.formatInteger(calculateInfo.getTotalFee(), 3 , 'COMMA')}"></td>
+                                    <td th:text="${#numbers.formatInteger(calculateInfo.getDochaDisFee(), 3 , 'COMMA')}"></td>
+                                    <td></td>
+                                    <td th:text="${#numbers.formatInteger(calculateInfo.getSuccessFee(), 3 , 'COMMA')}"></td>
+                                    <td th:text="${#numbers.formatInteger(calculateInfo.getOnMissFee(), 3 , 'COMMA')}"></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -130,31 +130,27 @@
 <script th:inline="javascript">
     initDataTables();
 
-    // $(document).ready(function(){
-    //     // Setup - add a text input to each footer cell
-    //     $('#example tfoot th').each( function () {
-    //         var title = $(this).text();
-    //         $(this).html( '<input type="text" placeholder="'+title+'" />' );
-    //     } );
-    //
-    //     // DataTable
-    //     var table = $('#example').DataTable({
-    //         initComplete: function () {
-    //             // Apply the search
-    //             this.api().columns().every( function () {
-    //                 var that = this;
-    //
-    //                 $( 'input', this.footer() ).on( 'keyup change clear', function () {
-    //                     if ( that.search() !== this.value ) {
-    //                         that
-    //                             .search( this.value )
-    //                             .draw();
-    //                     }
-    //                 } );
-    //             } );
-    //         }
-    //     });
-    // } );
+    /* 예약 관리 페이지 이동 */
+    $('table > tbody').on('click', 'tr', function () {
+        // let rmIdx = $(this).attr('data-value');
+        // if (rmIdx === "") return;
+
+        var url = "/settlement/detail";
+        var name = "test";
+        var width;
+        if (parseInt(window.innerWidth) < 1000){
+            width = 1000;
+        }else {
+            width = (parseInt(window.innerWidth) * 0.8);
+        }
+        var height = (parseInt(window.innerHeight) * 0.9);
+        var left =  (window.screen.width / 2) - (width / 2);
+        var top = (window.screen.height / 2) - (height / 2);
+
+
+        var option = "width=" + width +", height=" + height + " ,location=no, left=" + left + ", top=" + top;
+        window.open(url, name, option);
+    });
 
 </script>
 </body>

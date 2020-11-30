@@ -1,7 +1,9 @@
 package com.ohdocha.admin.controller;
 
+import com.ohdocha.admin.domain.reserve.payment.DochaAdminPaymentInfoRequest;
 import com.ohdocha.admin.domain.reserve.reserveInfoMnt.DochaAdminReserveInfoDetailRequest;
 import com.ohdocha.admin.domain.reserve.reserveInfoMnt.DochaAdminReserveInfoRequest;
+import com.ohdocha.admin.service.PaymentInfoService;
 import com.ohdocha.admin.service.ReserveService;
 import com.ohdocha.admin.util.DochaMap;
 import com.ohdocha.admin.util.ServiceMessage;
@@ -19,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 public class ReserveController extends ControllerExtension{
 
     private final ReserveService reserveService;
+    private final PaymentInfoService paymentInfoService;
 
     // region [ 예약 관리 ]
 
@@ -140,6 +143,9 @@ public class ReserveController extends ControllerExtension{
     @GetMapping(value = "/payment")
     public String regularPayment(HttpServletRequest request, ModelMap modelMap) {
         ServiceMessage serviceMessage = createServiceMessage(request);
+        serviceMessage.addData("reqParam", new DochaAdminPaymentInfoRequest());
+
+        paymentInfoService.paymentInfoList(serviceMessage);
 
         modelMap.addAllAttributes(serviceMessage);
         return "reservation/regular_payment_list";

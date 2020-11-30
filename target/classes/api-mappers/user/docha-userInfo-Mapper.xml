@@ -73,6 +73,10 @@
 							,  IFNULL(C.LICENSE_NUMBER     , '' )  AS LICENSE_NUMBER                  /*   면허번호                     */
 							,  IFNULL(C.LICENSE_CODE       , '' )  AS LICENSE_CODE                    /*   면허코드                     */
 							,  IFNULL(C.LICENSE_LOCATION   , '' )  AS LICENSE_LOCATION                /*   면허지역                     */
+							,  IFNULL(C.LICENSE_IMG_NAME   , '' )  AS LICENSE_IMG_NAME                /*   면허사진                     */
+							,  IFNULL(C.LICENSE_NUMBER2   , '' )  AS LICENSE_NUMBER2                  /*   면허번호2                     */
+							,  IFNULL(C.LICENSE_USER_BIRTHDAY   , '' )  AS LICENSE_USER_BIRTHDAY      /*   면허자 생년월일                     */
+							,  IFNULL(C.LICENSE_USER_NAME   , '' )  AS LICENSE_USER_NAME      /*   면허자 이름                    */
 							,  IFNULL(C.LICENSE_EXPIRATION , '' )  AS LICENSE_EXPIRATION              /*   갱신기간                     */
 							,  IFNULL(C.LICENSE_ISSUE_DT   , '' )  AS LICENSE_ISSUE_DT                /*   발급일                        */
 							,  IFNULL(C.LICENSE_OWNER_NAME , '' )  AS LICENSE_OWNER_NAME              /*   면허소유자명                 */
@@ -92,15 +96,15 @@
             <!-- 검색조건 START -->
             <!-- 회원번호 -->
             <if test="urIdx != null and urIdx != ''">
-                <![CDATA[  AND A.UR_IDX like #{urIdx} ]]>
+                <![CDATA[  AND A.UR_IDX = #{urIdx} ]]>
             </if>
             <!-- 아이디 -->
-            <if test="userId != null and userId != ''">
-                <![CDATA[   AND A.USER_ID like #{userId} ]]>
+            <if test="userId != null">
+                <![CDATA[   AND A.USER_ID = #{userId} ]]>
             </if>
             <!-- 이름 -->
             <if test="userName != null and userName != ''">
-                <![CDATA[	AND A.USER_NAME like #{userName} ]]>
+                <![CDATA[	AND A.USER_NAME = #{userName} ]]>
             </if>
             <!-- 생년월일 -->
             <if test="userBirthday != null and userBirthday != ''">
@@ -138,6 +142,7 @@
             <if test="userGradeCode 	!= null"><![CDATA[  , USER_GRADE_CODE		= #{userGradeCode} ]]></if>	    <!-- 회원등급 -->
             <if test="userLicenseOwnYn 	!= null"><![CDATA[  , USER_LICENSE_OWN_YN 	= #{userLicenseOwnYn}  	]]></if> 	<!-- 면허정보 사용 여부 -->
             <if test="modId 			!= null"><![CDATA[  , MOD_ID 				= #{modId}			]]></if> 	<!-- 수정자 -->
+            <if test="useYn 			!= null"><![CDATA[  , USE_YN 				= #{useYn}			]]></if> 	<!-- 접속허용 -->
         </trim>
         , MOD_DT = NOW()
         <trim prefix="WHERE" prefixOverrides="AND|OR">
@@ -150,14 +155,17 @@
     <!-- 사욛자 면허정보 UPDATE -->
     <update  id="updateUserLicenseInfo" parameterType="userLicenseInfoRequest">
         <![CDATA[ UPDATE DC_USER_LICENSE_INFO ]]>
-        <trim prefix="SET" suffixOverrides=",">
+        <trim prefix="SET" prefixOverrides=",">
             <if test="licenseNumber    	!= null"><![CDATA[     LICENSE_NUMBER		= #{licenseNumber}  	]]></if>
             <if test="licenseCode      	!= null"><![CDATA[  ,  LICENSE_CODE			= #{licenseCode}  		]]></if>
             <if test="licenseLocation  	!= null"><![CDATA[  ,  LICENSE_LOCATION		= #{licenseLocation}  	]]></if>
             <if test="licenseExpiration	!= null"><![CDATA[  ,  LICENSE_EXPIRATION	= #{licenseExpiration}  ]]></if>
             <if test="licenseIssueDt   	!= null"><![CDATA[  ,  LICENSE_ISSUE_DT		= #{licenseIssueDt}  	]]></if>
             <if test="licenseOwnerName 	!= null"><![CDATA[  ,  LICENSE_OWNER_NAME	= #{licenseOwnerName}   ]]></if>
-            <if test="useYn				!= null"><![CDATA[  ,  USE_YN				= #{useYn}  			]]></if>
+            <if test="licenseImageName 	!= null"><![CDATA[  ,  LICENSE_IMG_NAME	= #{licenseImageName}   ]]></if>
+            <if test="licenseNumber2 	!= null"><![CDATA[  ,  LICENSE_NUMBER2	= #{licenseNumber2}   ]]></if>
+            <if test="licenseUserBirthday 	!= null"><![CDATA[  ,  LICENSE_USER_BIRTHDAY	= #{licenseUserBirthday}   ]]></if>
+            <if test="licenseUserName 	!= null"><![CDATA[  ,  LICENSE_USER_NAME	= #{licenseUserName}   ]]></if>
             <if test="modId 			!= null"><![CDATA[  ,  MOD_ID 				= #{modId}				]]></if> 	<!-- 수정자 -->
             , MOD_DT = NOW()
         </trim>
@@ -180,9 +188,11 @@
 			,  LICENSE_EXPIRATION
 			,  LICENSE_ISSUE_DT
 			,  LICENSE_OWNER_NAME
+			,  LICENSE_NUMBER2
+			,  LICENSE_USER_BIRTHDAY
+			,  LICENSE_USER_NAME
 			,  REG_DT
 			,  REG_ID
-			,  USE_YN
 		) VALUES (
 				#{ulIdx}
 			,	#{urIdx}
@@ -192,13 +202,41 @@
 			,  	#{licenseExpiration}
 			,  	#{licenseIssueDt}
 			,  	#{licenseOwnerName}
+			,  	#{licenseNumber2}
+			,  	#{licenseUserBirthday}
+			,  	#{licenseUserName}
 			,  	NOW()
 			,  	#{regId}
-			,  	#{useYn}
 		)
 	]]>
     </insert>
 
+    <select id="selectLicenseImg" parameterType="String" resultType="userLicenseInfoResponse">
+        <![CDATA[
+				SELECT
+						  	   IFNULL(UR_IDX   , '') AS UR_IDX    /*모델 IDX*/
+							,  IFNULL(LICENSE_IMG_NAME   , '') AS LICENSE_IMG_NAME    /*이미지 IDX*/
+				  FROM DC_USER_LICENSE_INFO
+                      ]]>
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <![CDATA[ AND UL_IDX =#{ulIdx}        ]]>
+
+        </trim>
+    </select>
+
+    <!-- 면허 사진정보 UPDATE -->
+    <update  id="updateLicenseImg" parameterType="userLicenseInfoRequest">
+        <![CDATA[ UPDATE DC_USER_LICENSE_INFO ]]>
+        <trim prefix="SET" suffixOverrides=",">
+            <!-- 차량 기본정보 -->
+            <if test="licenseImageName      != null"><![CDATA[   LICENSE_IMG_NAME          = #{licenseImageName}        ]]></if>    <!-- imgIDX -->
+        </trim>
+        <trim prefix="WHERE" prefixOverrides="AND|OR">
+            <if test="ulIdx != null and ulIdx != ''">
+                <![CDATA[ UL_IDX = #{ulIdx} ]]>
+            </if>
+        </trim>
+    </update>
 
     <select id="selectLicenseInfo" parameterType="userLicenseInfoRequest"
             resultType="userLicenseInfoResponse">
@@ -210,18 +248,21 @@
 							,  IFNULL(T1.LICENSE_LOCATION     , '' ) AS LICENSE_LOCATION       /*면허지역*/
 							,  IFNULL(T1.LICENSE_NUMBER       , '' ) AS LICENSE_NUMBER         /*면허번호*/
 							,  IFNULL(T1.LICENSE_OWNER_NAME   , '' ) AS LICENSE_OWNER_NAME     /*면허소유자명*/
+							,  IFNULL(T1.LICENSE_IMG_NAME   , '' ) AS LICENSE_IMG_NAME         /*면허 사진*/
+							,  IFNULL(T1.LICENSE_NUMBER2   , '' ) AS LICENSE_NUMBER2           /*면허 번호2*/
+							,  IFNULL(T1.LICENSE_USER_BIRTHDAY   , '' ) AS LICENSE_USER_BIRTHDAY /*면허자 생년월일*/
+							,  IFNULL(T1.LICENSE_USER_NAME   , '' ) AS LICENSE_USER_NAME       /*면허자 이름*/
 							,  IFNULL(T1.MOD_DT               , '' ) AS MOD_DT                 /*수정일시*/
 							,  IFNULL(T1.MOD_ID               , '' ) AS MOD_ID                 /*수정자*/
 							,  IFNULL(T1.REG_DT               , '' ) AS REG_DT                 /*등록일시*/
 							,  IFNULL(T1.REG_ID               , '' ) AS REG_ID                 /*등록자*/
 							,  IFNULL(T1.UL_IDX               , '' ) AS UL_IDX                 /*면허idx*/
 							,  IFNULL(T1.UR_IDX               , '' ) AS UR_IDX                 /*회원iDX*/
-							,  IFNULL(T1.USE_YN			   , '' ) AS USE_YN					/*사용여부*/
-					FROM
-					DC_USER_LICENSE_INFO T1
+					FROM DC_USER_LICENSE_INFO T1
 					WHERE T1.UR_IDX = #{urIdx}
 			]]>
     </select>
+
     <select id="selectDuplicateLicenseInfo" parameterType="userLicenseInfoRequest"
             resultType="int">
         <![CDATA[
@@ -237,7 +278,7 @@
         </trim>
     </select>
 
-    <!-- 사용자 면허정보 INSERT -->
+    <!-- 사용자 정보 INSERT -->
     <insert  id="insertUserInfo" parameterType="insertUserInfoRequest">
 	<![CDATA[
 				INSERT INTO DC_USER_INFO
@@ -273,6 +314,7 @@
 				,  SOCIAL_LOGIN_EMAIL
 				,  USER_WITHDRAW_DATE
 				,  LOGIN_FAIL_COUNT
+				,  USE_YN
 				,  REG_DT
 				,  REG_ID
 				,  MOD_DT
@@ -311,6 +353,7 @@
 				,  #{socialLoginEmail}
 				,  #{userWithdrawDate}
 				,  #{loginFailCount}
+				,  #{useYn}
 				,  NOW()
 				,  #{regId}
 				,  NOW()

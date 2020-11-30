@@ -1,7 +1,10 @@
 package com.ohdocha.admin.service;
 
+import com.ohdocha.admin.domain.calculateMnt.DochaAdminCalculateRequest;
+import com.ohdocha.admin.domain.calculateMnt.DochaAdminCalculateResponse;
 import com.ohdocha.admin.domain.reserve.payment.DochaAdminPaymentInfoRequest;
 import com.ohdocha.admin.domain.reserve.payment.DochaAdminPaymentInfoResponse;
+import com.ohdocha.admin.mapper.DochaAdminCalculateMapper;
 import com.ohdocha.admin.mapper.DochaAdminPaymentInfoMapper;
 import com.ohdocha.admin.util.ServiceMessage;
 import lombok.AllArgsConstructor;
@@ -15,15 +18,30 @@ import java.util.List;
 @AllArgsConstructor
 public class PaymentInfoServiceImpl extends ServiceExtension implements PaymentInfoService {
 
-    DochaAdminPaymentInfoMapper paymentInfoMapper;
+    private DochaAdminPaymentInfoMapper paymentInfoMapper;
+    private DochaAdminCalculateMapper calculateMapper;
 
     @Override
     public void paymentInfoList(ServiceMessage message) {
         DochaAdminPaymentInfoRequest reqParam = message.getObject("reqParam", DochaAdminPaymentInfoRequest.class);
 
         List<DochaAdminPaymentInfoResponse> paymentInfoList = paymentInfoMapper.selectPaymentInfoList(reqParam);
+        if (paymentInfoList.size() != 0 ){
+            message.addData("code", 200);
+            message.addData("paymentInfoList", paymentInfoList);
+        }else {
+            message.addData("code", 400);
+            message.addData("errMsg", "정기결제 내역이 존재하지 않습니다.");
+        }
 
-        message.addData("paymentInfoList", paymentInfoList);
+    }
 
+    @Override
+    public void calculateDateReserveList(ServiceMessage message) {
+        DochaAdminCalculateRequest calculateRequest = new DochaAdminCalculateRequest();
+
+        List<DochaAdminCalculateResponse> calculateResponseList = calculateMapper.selectCalculateDateReserveList(calculateRequest);
+
+        message.addData("calculateResponseList", calculateResponseList);
     }
 }

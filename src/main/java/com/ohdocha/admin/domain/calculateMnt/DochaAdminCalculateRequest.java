@@ -9,7 +9,7 @@ import java.io.Serializable;
 @Alias("calculateRequest")						   	
 public class DochaAdminCalculateRequest  implements Serializable {
 	
-	DochaAdminCalculateRequest() {
+	public DochaAdminCalculateRequest() {
 		
 	}
 	

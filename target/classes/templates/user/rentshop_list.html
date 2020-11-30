@@ -32,7 +32,7 @@
                         <h6 class="m-0 font-weight-bold text-primary">회원사</h6>
                     </div>
                     <div class="card-body">
-                        <div class="mb-4 text-right">
+                        <div th:if="${#session.getAttribute('LOGIN_SESSION').userRole == 'RA'}" class="mb-4 text-right">
                             <button class="btn btn-primary" onclick="registerRentShop()">등록</button>
                             <button class="btn btn-primary" onclick="registerRentShopHoliday()">전체휴일 등록</button>
                             <button class="btn" id="btnExcel"></button>
@@ -49,8 +49,8 @@
                                     <th>주소</th>
                                     <th>관리자</th>
                                     <th>연락처</th>
-                                    <th>보유</th>
-                                    <th>등록</th>
+                                    <th>보유차량</th>
+                                    <th>등록차량</th>
                                 </tr>
                                 </thead>
                                 <tfoot>
@@ -63,8 +63,8 @@
                                     <th>주소</th>
                                     <th>관리자</th>
                                     <th>연락처</th>
-                                    <th>보유</th>
-                                    <th>등록</th>
+                                    <th>보유차량</th>
+                                    <th>등록차량</th>
                                 </tr>
                                 </tfoot>
                                 <tbody>
@@ -77,8 +77,8 @@
                                     <td th:text="${rentCompany.getCompanyAddressDetail()}"></td>
                                     <td th:text="${rentCompany.getStaffName()}"></td>
                                     <td th:text="${rentCompany.getStaffContact1()}"></td>
-                                    <td th:text="${rentCompany.getCarCount()}"></td>
-                                    <td th:text="${rentCompany.getRtIdx()}"></td>
+                                    <td th:text="${#numbers.formatInteger(rentCompany.getCarCount(), 0, 'COMMA')}"></td>
+                                    <td th:text="${#numbers.formatInteger(rentCompany.getRegCarCount(), 0, 'COMMA')}"></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -126,6 +126,10 @@
 </div>
 <script>
 
+    function getLoginUser() {
+        return /*[[${session.LOGIN_SESSION}]]*/ '';
+    }
+
     initDataTables();
 
     /* 회원사 상세 페이지 이동 */
@@ -135,7 +139,7 @@
 
         var url = "/mem/rentshop/" + rtIdx;
         var name = "test";
-        var option = "width = 1000, height =800 ,location=no, left=500, top=50";
+        var option = "width = 1400, height =800 ,location=no, left=500, top=50";
 
         window.open(url, name, option);
     });
@@ -144,8 +148,18 @@
     function registerRentShop() {
         var url = 'rentshop/register';
         var name = "test";
-        var option = "width = 1000, height =800 ,location=no, left=500, top=50";
+        var width;
+        if (parseInt(window.innerWidth) < 1000){
+            width = 1000;
+        }else {
+            width = (parseInt(window.innerWidth) * 0.8);
+        }
+        var height = (parseInt(window.innerHeight) * 0.9);
+        var left =  (window.screen.width / 2) - (width / 2);
+        var top = (window.screen.height / 2) - (height / 2);
 
+
+        var option = "width=" + width +", height=" + height + " ,location=no, left=" + left + ", top=" + top;
         window.open(url, name, option);
     }
 
@@ -153,7 +167,7 @@
     function registerRentShopHoliday() {
         var url = 'rentshop/hoilday';
         var name = "test";
-        var option = "width = 800, height =400 ,location=no, left=500, top=50";
+        var option = "width = 900, height =600 ,location=no, left=500, top=50";
 
         window.open(url, name, option);
     }

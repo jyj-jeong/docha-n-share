@@ -118,7 +118,7 @@ var drawTable = function drawTable(res, page, displayPageNum){
 				return displayText;  
 			}
 		},
-		{ "name": "carssumDisFee", "title": "카썸 수수료", "breakpoints": "xs sm",
+		{ "name": "dochaDisFee", "title": "두차 수수료", "breakpoints": "xs sm",
 			"formatter" : function(value, options, rowData){  
 				return objectConvertToPriceFormat(value);    
 			}

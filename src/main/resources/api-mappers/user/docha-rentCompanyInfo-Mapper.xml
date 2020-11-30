@@ -229,7 +229,8 @@
 			   	(
 			   		RT_IDX
 			   	,	COMPANY_NAME					
-				,	COMPANY_ZIPCODE				
+			   	,	COMPANY_CONTACT1
+				,	COMPANY_ZIPCODE
 				,   COMPANY_ADDRESS				
 				,	COMPANY_ADDRESS_DETAIL		
 				,	COMPANY_REGISTRATION_NUMBER	
@@ -249,7 +250,8 @@
 				VALUES(		
 					#{rtIdx}
 				,	#{companyName}				
-				,	#{companyZipcode}				
+				,	#{companyContact1}
+				,	#{companyZipcode}
 				,	#{companyAddress}				
 				,	#{companyAddressDetail}		
 				,	#{companyRegistrationNumber}	
