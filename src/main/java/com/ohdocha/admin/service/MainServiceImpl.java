@@ -14,7 +14,10 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @AllArgsConstructor
@@ -26,20 +29,22 @@ public class MainServiceImpl extends ServiceExtension implements MainService {
 
     @Override
     public void summaryRentCompanyInfo(ServiceMessage message) {
+        DochaMap reqParam = new DochaMap();
+        DochaMap loginUser = message.getObject("loginUser", DochaMap.class);
 
-        /* 메인화면 카운트 */
-        Integer calcDailySales = dashboardMapper.calcDailySales();
-        Integer calcMonthlySales = dashboardMapper.calcMonthlySales();
+        // region [ 메인화면 카운트 ]
+        Integer calcDailySales = dashboardMapper.calcDailySales(reqParam);
+        Integer calcMonthlySales = dashboardMapper.calcMonthlySales(reqParam);
 
-        Integer cntDailyReserve = dashboardMapper.cntDailyReserve();
-        Integer cntMontlyyReserve = dashboardMapper.cntMontlyyReserve();
+        Integer cntDailyReserve = dashboardMapper.cntDailyReserve(reqParam);
+        Integer cntMontlyyReserve = dashboardMapper.cntMontlyyReserve(reqParam);
 
         // todo 누적월차
 
-        Integer cntDailyCancel = dashboardMapper.cntDailyCancel();
-        Integer cntMonthlyCancel = dashboardMapper.cntMonthlyCancel();
+        Integer cntDailyCancel = dashboardMapper.cntDailyCancel(reqParam);
+        Integer cntMonthlyCancel = dashboardMapper.cntMonthlyCancel(reqParam);
 
-        Integer cntQnA = dashboardMapper.cntQnA();
+        Integer cntQnA = dashboardMapper.cntQnA(reqParam);
 
         message.addData("calcDailySales", calcDailySales);
         message.addData("calcMonthlySales", calcMonthlySales);
@@ -51,13 +56,11 @@ public class MainServiceImpl extends ServiceExtension implements MainService {
         message.addData("cntMonthlyCancel", cntMonthlyCancel);
 
         message.addData("cntQnA", cntQnA);
+        // endregion
 
-
-        /* 메인화면 그래프 */
+        // region [ 그래프 ]
 
         // 일매출 그래프프
-        DochaMap reqParam = new DochaMap();
-
         LocalDateTime baseDateTime = LocalDateTime.now();
 
         List<Map<String,Object>> salesGraphList = new ArrayList<>();
@@ -194,7 +197,7 @@ public class MainServiceImpl extends ServiceExtension implements MainService {
             cancelList.add(cancelCount);
         }
         message.addData("cancelList", cancelList);
-
+        // endregion
 
     }
 

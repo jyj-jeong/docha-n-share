@@ -6,6 +6,7 @@ import com.ohdocha.admin.domain.reserve.payment.DochaAdminPaymentInfoRequest;
 import com.ohdocha.admin.domain.reserve.payment.DochaAdminPaymentInfoResponse;
 import com.ohdocha.admin.mapper.DochaAdminCalculateMapper;
 import com.ohdocha.admin.mapper.DochaAdminPaymentInfoMapper;
+import com.ohdocha.admin.util.DochaMap;
 import com.ohdocha.admin.util.ServiceMessage;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,10 +39,29 @@ public class PaymentInfoServiceImpl extends ServiceExtension implements PaymentI
 
     @Override
     public void calculateDateReserveList(ServiceMessage message) {
-        DochaAdminCalculateRequest calculateRequest = new DochaAdminCalculateRequest();
+        DochaAdminCalculateRequest calculateRequest = message.getObject("calculateRequest", DochaAdminCalculateRequest.class);
 
         List<DochaAdminCalculateResponse> calculateResponseList = calculateMapper.selectCalculateDateReserveList(calculateRequest);
 
         message.addData("calculateResponseList", calculateResponseList);
+    }
+
+    @Override
+    public void calculateDateReserveInfo(ServiceMessage message) {
+        DochaAdminCalculateRequest calculateRequest = message.getObject("calculateRequest", DochaAdminCalculateRequest.class);
+
+        List<DochaAdminCalculateResponse> calculateResponseList = calculateMapper.selectCalculateDateReserveInfo(calculateRequest);
+
+        message.addData("calculateResponseList", calculateResponseList);
+
+    }
+
+    @Override
+    public void calculateDateAndRtIdxReserveInfo(ServiceMessage message) {
+        DochaAdminCalculateRequest calculateRequest = message.getObject("calculateRequest", DochaAdminCalculateRequest.class);
+
+        List<DochaAdminCalculateResponse> calculateRentCompanyResponseList = calculateMapper.selectCalculateDateRentCompanyReserveInfo(calculateRequest);
+
+        message.addData("result", calculateRentCompanyResponseList);
     }
 }

@@ -91,6 +91,11 @@ public class ControllerExtension {
         }
     }
 
+    public DochaMap getLoginUser(HttpServletRequest request){
+        DochaMap sessionObj = (DochaMap) request.getSession().getAttribute("LOGIN_SESSION");
+
+        return sessionObj;
+    }
 
     public String getLoginUserRtIdx(HttpServletRequest request){
         DochaMap sessionObj = (DochaMap) request.getSession().getAttribute("LOGIN_SESSION");

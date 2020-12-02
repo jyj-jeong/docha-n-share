@@ -24,6 +24,7 @@ public class DochaAdminPaymentInfoResponse extends CommonResponseDto {
 	private String rentEndDay           ;
 	private String rentStartTime        ;
 	private String rentEndTime          ;
+	private String periodDt				;
 	private String deliveryTypeCode     ;
 	private String deliveryTypeValue    ;
 	private String deliveryAddr         ;

@@ -31,12 +31,7 @@ public class MainController extends ControllerExtension {
         ServiceMessage serviceMessage = createServiceMessage(request);
 
         DochaMap loginUser = (DochaMap) request.getSession().getAttribute("LOGIN_SESSION");
-
-        if (loginUser.get("userRole").equals("RA")){
-
-        }else {
-
-        }
+        serviceMessage.addData("loginUser", loginUser);
 
         mainService.summaryRentCompanyInfo(serviceMessage);
 

@@ -67,55 +67,96 @@
 	</select>
 
 	<!-- 메인 화면 카운트 -->
-	<select id="calcDailySales" resultType="int">
+	<select id="calcDailySales" resultType="int" parameterType="DochaMap">
 		<![CDATA[
-			SELECT SUM(IFNULL(PAYMENT_AMOUNT, 0)) FROM DC_PAYMENT_LOG
-			WHERE APPROVAL_YN = 'Y'
-			AND DATE_FORMAT(PAYMENT_DATE, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d')
+			SELECT SUM(IFNULL(PL.PAYMENT_AMOUNT, 0)) AS PAYMENT_AMOUNT
+				   ,RM.RM_IDX
+			FROM DC_PAYMENT_LOG AS PL
+				JOIN DC_RESERVE_MASTER RM
+				ON PL.RM_IDX = RM.RM_IDX
+			WHERE PL.APPROVAL_YN = 'Y'
+			AND DATE_FORMAT(PL.PAYMENT_DATE, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d')
 		]]>
+		<if test="rtIdx != null and rtIdx != '' ">
+			AND <![CDATA[ RM.RT_IDX = #{rtIdx}  ]]>
+		</if>
+		<if test="rtPIdx != null and rtPIdx != '' ">
+			AND <![CDATA[ RM.RT_IDX = #{rtIdx}  ]]>
+		</if>
 	</select>
 
-	<select id="calcMonthlySales" resultType="int">
+	<select id="calcMonthlySales" resultType="int" parameterType="DochaMap">
 		<![CDATA[
-			SELECT SUM(PAYMENT_AMOUNT) FROM DC_PAYMENT_LOG
-			WHERE APPROVAL_YN = 'Y'
-			AND DATE_FORMAT(PAYMENT_DATE, '%m') = DATE_FORMAT(NOW(), '%m')
+			SELECT SUM(PL.PAYMENT_AMOUNT) AS PAYMENT_AMOUNT
+			 	  ,RM.RM_IDX
+			 FROM DC_PAYMENT_LOG PL
+			  JOIN DC_RESERVE_MASTER RM
+			  ON PL.RM_IDX = RM.RM_IDX
+			WHERE PL.APPROVAL_YN = 'Y'
+			AND DATE_FORMAT(PL.PAYMENT_DATE, '%m') = DATE_FORMAT(NOW(), '%m')
 		]]>
+		<if test="rtIdx != null and rtIdx != '' ">
+			AND <![CDATA[ RM.RT_IDX = #{rtIdx}  ]]>
+		</if>
+		<if test="rtPIdx != null and rtPIdx != '' ">
+			AND <![CDATA[ RM.RT_IDX = #{rtIdx}  ]]>
+		</if>
 	</select>
 
-	<select id="cntDailyReserve" resultType="int">
+	<select id="cntDailyReserve" resultType="int" parameterType="DochaMap">
 		<![CDATA[
-			SELECT COUNT(RM_IDX) FROM DC_RESERVE_MASTER
+			SELECT COUNT(RM_IDX)
+			FROM DC_RESERVE_MASTER RM
 			WHERE RESERVE_STATUS_CODE = '예약'
 			AND DATE_FORMAT(MOD_DT, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d')
 		]]>
+		<if test="rtIdx != null and rtIdx != '' ">
+			AND <![CDATA[ RM.RT_IDX = #{rtIdx}  ]]>
+		</if>
+		<if test="rtPIdx != null and rtPIdx != '' ">
+			AND <![CDATA[ RM.RT_IDX = #{rtIdx}  ]]>
+		</if>
 	</select>
 
-	<select id="cntMontlyyReserve" resultType="int">
+	<select id="cntMontlyyReserve" resultType="int" parameterType="DochaMap">
+		<![CDATA[
+			SELECT COUNT(RM_IDX)
+			FROM DC_RESERVE_MASTER RM
+			WHERE RESERVE_STATUS_CODE = '예약'
+			AND DATE_FORMAT(MOD_DT, '%m') = DATE_FORMAT(NOW(), '%m')
+		]]>
+		<if test="rtIdx != null and rtIdx != '' ">
+			AND <![CDATA[ RM.RT_IDX = #{rtIdx}  ]]>
+		</if>
+		<if test="rtPIdx != null and rtPIdx != '' ">
+			AND <![CDATA[ RM.RT_IDX = #{rtIdx}  ]]>
+		</if>
+	</select>
+
+	<select id="cntDailyCancel" resultType="int" parameterType="DochaMap">
+		<![CDATA[
+			SELECT COUNT(RM_IDX)
+			FROM DC_RESERVE_MASTER
+			WHERE RESERVE_STATUS_CODE = '취소'
+			AND DATE_FORMAT(MOD_DT, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d')
+		]]>
+		<if test="rtIdx != null and rtIdx != '' ">
+			AND <![CDATA[ RM.RT_IDX = #{rtIdx}  ]]>
+		</if>
+		<if test="rtPIdx != null and rtPIdx != '' ">
+			AND <![CDATA[ RM.RT_IDX = #{rtIdx}  ]]>
+		</if>
+	</select>
+
+	<select id="cntMonthlyCancel" resultType="int" parameterType="DochaMap">
 		<![CDATA[
 			SELECT COUNT(RM_IDX) FROM DC_RESERVE_MASTER
-			WHERE RESERVE_STATUS_CODE = '예약'
+			WHERE RESERVE_STATUS_CODE = '취소'
 			AND DATE_FORMAT(MOD_DT, '%m') = DATE_FORMAT(NOW(), '%m')
 		]]>
 	</select>
 
-	<select id="cntDailyCancel" resultType="int">
-		<![CDATA[
-			SELECT COUNT(RM_IDX) FROM DC_RESERVE_MASTER
-			WHERE RESERVE_STATUS_CODE = '취소'
-			AND DATE_FORMAT(MOD_DT, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d')
-		]]>
-	</select>
-
-	<select id="cntMonthlyCancel" resultType="int">
-		<![CDATA[
-			SELECT COUNT(RM_IDX) FROM DC_RESERVE_MASTER
-			WHERE RESERVE_STATUS_CODE = '취소'
-			AND DATE_FORMAT(MOD_DT, '%m') = DATE_FORMAT(NOW(), '%m')
-		]]>
-	</select>
-
-	<select id="cntQnA" resultType="int">
+	<select id="cntQnA" resultType="int" parameterType="DochaMap">
 		<![CDATA[
 			SELECT COUNT(QU_IDX) FROM DC_QUESTION
 		]]>

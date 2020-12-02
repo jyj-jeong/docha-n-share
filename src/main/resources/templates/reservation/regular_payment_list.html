@@ -78,7 +78,7 @@
                                     <td th:text="${payment.getRentEndDay()}"></td>
                                     <td th:text="${payment.getCompanyName() + ' (' + payment.getBranchName() + ')'}"></td>
                                     <td th:text="${payment.getCarNumber() + ' (' + payment.getModelName() + ')'}"></td>
-                                    <td></td>
+                                    <td th:text="${payment.getPeriodDt()}"></td>
                                     <td th:text="${#numbers.formatInteger(payment.getPaymentTotalAmount(), 3 , 'COMMA')}"></td>
                                     <td th:text="${#numbers.formatInteger(payment.getSumPaymentAmount(), 3, 'COMMA')}"></td>
                                     <td th:text="${payment.getPayCount() + ' / ' + payment.getTotalPayCount()}"></td>

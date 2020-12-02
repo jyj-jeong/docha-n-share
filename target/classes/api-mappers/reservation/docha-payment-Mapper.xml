@@ -180,6 +180,7 @@
                         ,      IFNULL(M.RENT_END_DAY            , '' ) AS RENT_END_DAY            /* 대여종료일      */
                         ,      IFNULL(M.RENT_START_TIME         , '' ) AS RENT_START_TIME         /* 대여시작시간      */
                         ,      IFNULL(M.RENT_END_TIME           , '' ) AS RENT_END_TIME           /* 대여종료시간      */
+                        ,      IFNULL(M.PERIOD_DT           , '' ) AS PERIOD_DT                  /* 대여기간      */
                         ,      IFNULL(CD1.CODE_VALUE         , '' ) AS FUEL_NAME               /* 연료타입값      */
                         ,      IFNULL(RC.COMPANY_NAME          , '' ) AS COMPANY_NAME           /* 회원사명         */
                         ,      IFNULL(RC.BRANCH_NAME          , '' ) AS BRANCH_NAME           /*  지점명         */
@@ -209,6 +210,7 @@
                                  , RM.RENT_END_TIME
                                  , RM.RENT_FEE
                                  , RM.PAYMENT_TOTAL_AMOUNT
+                                 , RM.PERIOD_DT
                                   , T2.SUM_PAYMENT_AMOUNT
                                   , T2.MONTHLY_FEE
                                   , T2.PAY_COUNT

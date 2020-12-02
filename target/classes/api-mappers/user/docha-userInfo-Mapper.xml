@@ -18,9 +18,8 @@
 				,	IFNULL(DATE_FORMAT(A.REG_DT , '%Y%m%d')  	, ' ' )  AS REG_DT 				 /*  등록일시         */
 				,	(SELECT COUNT(*) reserveCnt FROM DC_RESERVE_MASTER
 											   WHERE UR_IDX = A.UR_IDX
-											     AND RESERVE_STATUS_CODE in ('RS', 'RO', 'RW', 'RS')
--- 											     AND RESERVE_STATUS_CODE='QC'
--- 											     AND RESERVE_STATUS_CODE != 'CC'
+											     AND RESERVE_STATUS_CODE in ('예약', '대여중', '반납')
+											     AND RESERVE_STATUS_CODE != '취소'
 					) AS RESERVE_CNT   /*대여횟수*/
 					FROM DC_USER_INFO A
 		            LEFT OUTER JOIN DC_COMMON_CODE B

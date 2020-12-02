@@ -61,35 +61,35 @@
                                         </label>
                                     </div>
                                 </span>
-                        <div class="row mb-3">
-                            <div class="col-lg-4 float-l flex-1" >
+                        <div class="row">
+                            <div class="col-lg-4 mb-3 float-l flex-1" >
                                 <label>이름</label>
                                 <input type="text" class="form-control" id="firstDriverName" placeholder="" />
                             </div>
-                            <div class="col-lg-4 float-l flex-1" >
+                            <div class="col-lg-4 mb-3 float-l flex-1" >
                                 <label>연락처</label>
                                 <input type="text" class="form-control" id="firstDriverContact" placeholder="" />
                             </div>
-                            <div class="col-lg-4 float-l" style="flex:1;">
+                            <div class="col-lg-4 mb-3 float-l" style="flex:1;">
                                 <label>생년월일</label>
                                 <a id="firstDriverBirthDay" name="firstDriverBirthDay"></a>
                             </div>
                         </div>
-                        <div class="row mb-3">
-                            <div class="col-lg-3 float-l" style="flex:1;">
+                        <div class="row">
+                            <div class="col-lg-3 mb-3 float-l" style="flex:1;">
                                 <label>면허종류</label>
                                 <select id="sel_firstDriverLicenseCode" class="custom-select">
                                 </select>
                             </div>
-                            <div class="col-lg-3 float-l" style="flex:1;">
+                            <div class="col-lg-3 mb-3 float-l" style="flex:1;">
                                 <label>면허번호</label>
                                 <input type="text" id="firstDriverLicenseNumber" class="form-control" value="">
                             </div>
-                            <div class="col-lg-3 float-l" style="flex:1;">
+                            <div class="col-lg-3 mb-3 float-l" style="flex:1;">
                                 <label>적성검사 만료일</label>
                                 <a id="firstDriverExpirationDate" name="firstDriverExpirationDate"></a>
                             </div>
-                            <div class="col-lg-3 float-l" style="flex:1;">
+                            <div class="col-lg-3 mb-3 float-l" style="flex:1;">
                                 <label>발급일</label>
                                 <a id="firstDriverLicenseIsDate" name="firstDriverLicenseIsDate"></a>
                             </div>
@@ -99,35 +99,35 @@
                 <div class="main-card mb-3 card">
                     <div class="card-body"><h5 class="card-title">제2 운전자</h5>
                         <input type="hidden" id="ulIdx2" />
-                        <div class="row mb-3">
-                            <div class="col-lg-4 float-l flex-1" >
+                        <div class="row">
+                            <div class="col-lg-4 mb-3 float-l flex-1" >
                                 <label>이름</label>
                                 <input type="text" class="form-control" id="secondDriverName"  placeholder="" />
                             </div>
-                            <div class="col-lg-4 float-l flex-1" >
+                            <div class="col-lg-4 mb-3 float-l flex-1" >
                                 <label>연락처</label>
                                 <input type="text" class="form-control" id="secondDriverContact" placeholder="" />
                             </div>
-                            <div class="col-lg-4 float-l" style="flex:1;">
+                            <div class="col-lg-4 mb-3 float-l" style="flex:1;">
                                 <label>생년월일</label>
                                 <a id="secondDriverBirthDay" name="secondDriverBirthDay"></a>
                             </div>
                         </div>
-                        <div class="row mb-3">
-                            <div class="col-lg-3 float-l" style="flex:1;">
+                        <div class="row">
+                            <div class="col-lg-3 mb-3 float-l" style="flex:1;">
                                 <label>면허종류</label>
                                 <select id="sel_secondDriverLicenseCode" class="custom-select">
                                 </select>
                             </div>
-                            <div class="col-lg-3 float-l" style="flex:1;">
+                            <div class="col-lg-3 mb-3 float-l" style="flex:1;">
                                 <label>면허번호</label>
                                 <input type="text" id="secondDriverLicenseNumber" class="form-control" value="">
                             </div>
-                            <div class="col-lg-3 float-l" style="flex:1;">
+                            <div class="col-lg- mb-3 float-l" style="flex:1;">
                                 <label>적성검사 만료일</label>
                                 <a id="secondDriverExpirationDate" name="secondDriverExpirationDate"></a>
                             </div>
-                            <div class="col-lg-3 float-l" style="flex:1;">
+                            <div class="col-lg-3 mb-3 float-l" style="flex:1;">
                                 <label>발급일</label>
                                 <a id="secondDriverLicenseIsDate" name="secondDriverLicenseIsDate"></a>
                             </div>
@@ -156,29 +156,29 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="row mb-3">
-                            <div class="col-lg-3 float-l flex-1" >
+                        <div class="row ">
+                            <div class="col-lg-3 mb-3 float-l flex-1" >
                                 <label>대여방법</label>
                                 <select id="sel_deliveryTypeCode" class="custom-select" >
                                 </select>
                             </div>
-                            <div class="col-lg-3 float-l" style="flex:1;">
+                            <div class="col-lg-3 mb-3 float-l" style="flex:1;">
                                 <label>대여일시</label>
                                 <input type="text" id="rentStartDay" class="form-control" name="rentStartDay2" data-mask="____-__-__ __:__">
                                 <input type="datetime-local" class="form-control" id="rentStartDay" name="rentStartDay" onchange="calcPeriodDt()"/>
                             </div>
-                            <div class="col-lg-3 float-l" style="flex:1;">
+                            <div class="col-lg-3 mb-3 float-l" style="flex:1;">
                                 <label>반납일시</label>
                                 <input type="text" class="form-control" id="rentEndDay" name="rentEndDay2"  data-mask="____-__-__ __:__">
                                 <input type="datetime-local" class="form-control" id="rentEndDay" name="rentEndDay" onchange="calcPeriodDt()" />
                             </div>
-                            <div class="col-lg-3 float-l" style="flex:1;">
+                            <div class="col-lg-3 mb-3 float-l" style="flex:1;">
                                 <label>사용기간</label>
                                 <input type="text" class="form-control" id="periodDt" value="0개월 0일 0시 0분" readonly/>
                             </div>
                         </div>
-                        <div class="row mb-3">
-                            <div class="col-lg-12 float-l">
+                        <div class="row ">
+                            <div class="col-lg-12 mb-3 float-l">
                                 <label>대여위치</label>
                                 <div class="input-group">
                                     <input type="text" class="form-control" id="deliveryAddr"  placeholder=""/>
@@ -206,66 +206,66 @@
                 </div>
                 <div class="main-card mb-3 card">
                     <div class="card-body"><h5 class="card-title">차량</h5>
-                        <div class="row mb-3">
-                            <div class="col-lg-3 float-l flex-1" >
+                        <div class="row ">
+                            <div class="col-lg-3 mb-3 float-l flex-1" >
                                 <label>회사명(지점)</label>
                                 <select id="companyName" name="companyName" class="custom-select" onchange="selectCompany(this.value);">
                                 </select>
                             </div>
-                            <div class="col-lg-3 float-l flex-1" >
+                            <div class="col-lg-3 mb-3 float-l flex-1" >
                                 <label>관리자</label>
                                 <input type="text" class="form-control" id="staffName"  placeholder="" />
                             </div>
-                            <div class="col-lg-3 float-l" style="flex:1;">
+                            <div class="col-lg-3 mb-3 float-l" style="flex:1;">
                                 <label>연락처</label>
                                 <input type="text" id="staffContact1" class="form-control" value="">
                             </div>
-                            <div class="col-lg-3 float-l" style="flex:1;">
+                            <div class="col-lg-3 mb-3 float-l" style="flex:1;">
                                 <label>모델(번호)</label>
                                 <input type="hidden" id="mdIdx">
                                 <select id="sel_modelName"  class="custom-select" onchange="selectCarInfo('');">
                                 </select>
                             </div>
                         </div>
-                        <div class="row mb-3">
-                            <div class="col-lg-3 float-l flex-1" >
+                        <div class="row">
+                            <div class="col-lg-3 mb-3 float-l flex-1" >
                                 <label>연료</label>
                                 <select id="sel_fuel" class="custom-select">
                                 </select>
                             </div>
-                            <div class="col-lg-3 float-l flex-1" >
+                            <div class="col-lg-3 mb-3 float-l flex-1" >
                                 <label>출고연식</label>
                                 <input type="text" class="form-control" id="year"  placeholder="" />
                             </div>
-                            <div class="col-lg-3 float-l" style="flex:1;">
+                            <div class="col-lg-3 mb-3 float-l" style="flex:1;">
                                 <label>색상</label>
                                 <input type="text" class="form-control" id="colorName" value="">
                             </div>
-                            <div class="col-lg-3 float-l" style="flex:1;">
+                            <div class="col-lg-3 mb-3 float-l" style="flex:1;">
                                 <label>누적(km)</label>
                                 <input type="text" class="form-control" id="mileage" value="">
                             </div>
                         </div>
-                        <div class="row mb-3">
-                            <div class="col-lg-12 mt-3 float-l" id="optionDetailCode" >
+                        <div class="row">
+                            <div class="col-lg-12 mb-3 mt-3 float-l" id="optionDetailCode" >
                                 <label class="carInsuranceInfoOption" >옵션</label>
                                 <input type="text" id="optionCodeValue" class="form-control" value="">
                             </div>
                         </div>
-                        <div class="row mb-3">
-                            <div class="col-lg-3 float-l">
+                        <div class="row">
+                            <div class="col-lg-3 mb-3 float-l">
                                 <label>대인</label>
                                 <input type="text" id="personalCover" class="form-control" value="">
                             </div>
-                            <div class="col-lg-3 float-l">
+                            <div class="col-lg-3 mb-3 float-l">
                                 <label>대물</label>
                                 <input type="text" id="propertyDamageCover" class="form-control" value="">
                             </div>
-                            <div class="col-lg-3 float-l">
+                            <div class="col-lg-3 mb-3 float-l">
                                 <label>자손</label>
                                 <input type="text" id="onselfDamageCover" class="form-control" value="">
                             </div>
-                            <div class="col-lg-3 float-l">
+                            <div class="col-lg-3 mb-3 float-l">
                                 <label>자차 고객부담금</label>
                                 <input type="hidden" id="carDamageCover">
                                 <input type="hidden" id="insuranceCopayment">
@@ -277,39 +277,39 @@
                 </div>
                 <div class="main-card mb-3 card paymentDiv">
                     <div class="card-body"><h5 class="card-title">결제</h5>
-                        <div class="row mb-3">
-                            <div class="col-lg-4 float-l flex-1" >
+                        <div class="row">
+                            <div class="col-lg-4 mb-3 float-l flex-1" >
                                 <label>대여금액</label>
                                 <input type="text" class="form-control" id="rentFee" placeholder="" />
                             </div>
-                            <div class="col-lg-4 float-l flex-1" >
+                            <div class="col-lg-4 mb-3 float-l flex-1" >
                                 <label>왕복배달금액</label>
                                 <input type="text" class="form-control" id="deliveryFee" placeholder=""  value="0"/>
                             </div>
-                            <div class="col-lg-4 float-l" style="flex:1;">
+                            <div class="col-lg-4 mb-3 float-l" style="flex:1;">
                                 <label>보험료</label>
                                 <input type="text" id="insuranceFee" class="form-control" value="">
                             </div>
                         </div>
-                        <div class="row mb-3">
-                            <div class="col-lg-3 float-l" style="flex:1;">
+                        <div class="row">
+                            <div class="col-lg-3 mb-3 float-l" style="flex:1;">
                                 <label>총 대여금액</label>
                                 <input type="text" id="paymentTotalAmount" class="form-control" value="">
                             </div>
-                            <div class="col-lg-3 float-l flex-1" >
+                            <div class="col-lg-3 mb-3 float-l flex-1" >
                                 <label>추가금액</label>
                                 <input type="text" class="form-control" id="revaddFee" placeholder=""  value="0" />
                             </div>
-                            <div class="col-lg-3 float-l" style="flex:1;">
+                            <div class="col-lg-3 mb-3 float-l" style="flex:1;">
                                 <label>할인금액</label>
                                 <input type="text" id="discountFee" class="form-control" value="">
                             </div>
-                            <div class="col-lg-3 float-l" style="flex:1;">
+                            <div class="col-lg-3 mb-3 float-l" style="flex:1;">
                                 <label>결제금액</label>
                                 <input type="text" id="paymentAmount"  class="form-control" value="">
                             </div>
                         </div>
-                        <div class="col-lg-12 mt-3 mt-3 float-l" >
+                        <div class="col-lg-12 mb-3 mt-3 mt-3 float-l" >
                             <label id="calRentTotAmountEtc"></label>
                         </div>
                     </div>
@@ -339,7 +339,7 @@
                         <button id="btnReverse" th:if="${session.LOGIN_SESSION.userRole.equals('RA')}" class="btn btn-primary" type="button" onclick="reverse()">역경매 이동</button>
                         <button id="btnSave" class="btn btn-primary" type="button" onclick="detailValidation()">저장</button>
                         <button id="btnClose" class="btn btn-primary" type="button" onclick="self.close()">창 닫기</button>
-                        <button id="btnReturn" class="btn btn-primary" type="button" onclick="self.close()">반납</button>
+                        <button id="btnReturn" class="btn btn-primary" type="button" onclick="startReturn()">반납</button>
                     </div>
                 </div>
             </div>

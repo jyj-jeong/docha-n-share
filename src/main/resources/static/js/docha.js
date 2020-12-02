@@ -1270,3 +1270,7 @@ function formatDate(date) {
 
     return [year, month, day].join('-');
 }
+
+function preparingPage() {
+    swal("페이지 준비중입니다.", { icon: "warning", });
+}

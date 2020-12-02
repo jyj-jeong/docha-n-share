@@ -609,6 +609,13 @@ pre code {
   }
 }
 
+@media (max-width: 760px) {
+
+  .docha_logo{
+    width: 70px;
+  }
+}
+
 .row {
   display: flex;
   flex-wrap: wrap;

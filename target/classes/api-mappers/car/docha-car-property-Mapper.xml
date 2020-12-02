@@ -121,6 +121,24 @@
 
 	</select>
 
+	<!-- 차량 속성 색상 조회  -->
+	<select id="selectCarColorPropertyInfo"  parameterType="carPropertyRequest"
+			resultType="carPropertyResponse">
+		SELECT
+								IFNULL(T1.CODE_IDX  , '' ) AS CODE_IDX			/*	코드idx	*/
+								,	IFNULL(T1.RT_CODE   , '' ) AS RT_CODE		/*	최상위코드	*/
+								,	IFNULL(T1.P_CODE    , '' ) AS P_CODE		/*	부모코드	*/
+								,	IFNULL(T1.CODE      , '' ) AS CODE			/*	코드		*/
+								,	IFNULL(T1.CODE_VALUE, '' ) AS CODE_VALUE	/*	코드명	*/
+								, COUNT(T2.MD_IDX) AS PROPERTY_CNT 			/* 국가별 카운트 */
+					FROM DC_COMMON_CODE T1
+					LEFT JOIN DC_CAR_MODEL  T2
+						   ON T1.CODE =  T2.FUEL_CODE
+					WHERE T1.RT_CODE='CR' AND T1.P_CODE ='CL'
+					GROUP BY T1.CODE_IDX, T1.RT_CODE, T1.CODE, T1.P_CODE, T1.CODE_VALUE;
+
+	</select>
+
 
 	<!-- 속성 DELETE -->
 	<delete  id="deleteProperty" parameterType="carPropertyRequest">

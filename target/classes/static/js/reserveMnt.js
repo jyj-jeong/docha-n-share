@@ -397,6 +397,12 @@ function initDetailInfo(seq){
         dataSet.reserveInfo = data;
         dataSet.paymentList = paymentList;
 
+        if (data.reserveStatusCode === '반납'){
+            $('input').prop('readonly', true);
+            $('option').attr('disabled', true);
+            $('#btnSave').css('display','none');
+        }
+
         /*
          * 회원사 select box
          * 연료  select box
@@ -1482,8 +1488,8 @@ function detailValidation(){
 
     // 예약 값 체크
     let rmIdx = getPureText($('#rmIdx').val());
-    let rentStartDay = getPureText($('#rentStartDay').val()).replace('T', ' ');
-    let rentEndDay = getPureText($('#rentEndDay').val()).replace('T', ' ');
+    let rentStartDay = ($('#rentStartDay').val()).replace('T', ' ');
+    let rentEndDay = ($('#rentEndDay').val()).replace('T', ' ');
     let deliveryAddr = getPureText($('#deliveryAddr').val());
     let returnAddr = getPureText($('#returnAddr').val());
     let reserveStatusCode;
@@ -2178,4 +2184,44 @@ function convertTimeFormat12MIS(_time) {
     mm = String(mm).length == 1 ? '0' + mm : String(mm);
 
     return hh + ':' + mm;
+}
+
+// 반납 처리
+function startReturn(){
+
+    swal({
+        title: "반납하시겠습니까?",
+        icon: "warning",
+        buttons: [
+            '취소',
+            '반납'
+        ],
+        dangerMode: true,
+    }).then(function(isConfirm) {
+        if (isConfirm) {
+            var req = {
+                rmIdx : rmIdx,
+                reserveStatusCode : '반납',
+                modId : GLOBAL_LOGIN_USER_IDX
+            };
+
+            var target = 'updateReserveInfo';
+            var method = 'update';
+
+            fn_callApi(method, target, req, function (response) {
+                var res = response;
+
+                //200이라면 페이징을 구한다.
+                if(res.code == 200) {
+                    swal("반납 성공", {icon : "success"});
+                }else { //200이 아닐때 empty처리 error처리 등을 기록한다.
+                    errorAlert('조회중 에러가 발생했습니다. \r\n 관리자에게 문의하세요.');
+                    swal("반납 실패", {icon : "warning"});
+                }
+            });//end fn_callApi
+        } else {
+
+        }
+    });
+
 }

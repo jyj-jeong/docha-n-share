@@ -59,8 +59,8 @@ public class CarServiceImpl extends ServiceExtension implements CarService {
     @Override
     public void regCarList(ServiceMessage message) {
         String rtIdx = message.getString("rtIdx");
-        DochaAdminRegCarRequest regCarRequest = new DochaAdminRegCarRequest();
 
+        DochaAdminRegCarRequest regCarRequest = new DochaAdminRegCarRequest();
         regCarRequest.setRtIdx(rtIdx);
 
         List<DochaAdminRegCarResponse> responseDto = regCarMapper.selectRegCarInfo(regCarRequest);
@@ -473,6 +473,30 @@ public class CarServiceImpl extends ServiceExtension implements CarService {
         DochaAdminCarPropertyRequest carPropertyRequest = DochaAdminCarPropertyRequest.builder()
                 .rtCode("CR")
                 .pCode("FL")
+                .code(value)
+                .build();
+
+        int res = propertyMapper.insertCarProperty(carPropertyRequest);
+
+        message.addData("res", res);
+        message.addData("mdIdx", carPropertyRequest.getCodeIdx());
+    }
+
+    @Override
+    public void carColorProperty(ServiceMessage message) {
+        DochaAdminCarPropertyRequest carPropertyRequest = message.getObject("carPropertyRequest", DochaAdminCarPropertyRequest.class);
+
+        List<DochaAdminCarPropertyResponse> carPropertyResponseList = propertyMapper.selectCarColorPropertyInfo(carPropertyRequest);
+
+        message.addData("propertyList", carPropertyResponseList);
+    }
+
+    @Override
+    public void insertCarPropertyColor(ServiceMessage message) {
+        String value = message.getString("value", "");
+        DochaAdminCarPropertyRequest carPropertyRequest = DochaAdminCarPropertyRequest.builder()
+                .rtCode("CR")
+                .pCode("CL")
                 .code(value)
                 .build();
 

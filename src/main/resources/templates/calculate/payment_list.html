@@ -7,7 +7,7 @@
 <head>
     <title>정산 :: DoCha Admin Web</title>
 
-    <script src="/static/js/calculateCustDtail.js" th:src="@{/static/js/calculateCustDtail.js}"></script>
+    <script src="/static/js/calculateCustDtail.js" th:src="@{js/calculateCustDtail.js}"></script>
 </head>
 <body id="page-top">
 
@@ -73,13 +73,13 @@
                                 <tbody>
                                 <tr th:each="calculateInfo, index : ${calculateResponseList}" style="cursor: pointer" th:data-value="${calculateInfo.getRmIdx()}">
                                     <td th:text="${calculateInfo.getAccountExpDt()}"></td>
-                                    <td></td>
-                                    <td></td>
+                                    <td th:text="${calculateInfo.getCompanyCount()}"></td>
+                                    <td th:text="${calculateInfo.getRmCount()}"></td>
                                     <td th:text="${#numbers.formatInteger(calculateInfo.getPaymentAmount(), 3, 'COMMA')}"></td>
                                     <td th:text="${#numbers.formatInteger(calculateInfo.getDisCountFee(), 3 , 'COMMA')}"></td>
                                     <td th:text="${#numbers.formatInteger(calculateInfo.getTotalFee(), 3 , 'COMMA')}"></td>
                                     <td th:text="${#numbers.formatInteger(calculateInfo.getDochaDisFee(), 3 , 'COMMA')}"></td>
-                                    <td></td>
+                                    <td th:text="${#numbers.formatInteger(calculateInfo.getOnMissFee(), 3, 'COMMA')}"></td>
                                     <td th:text="${#numbers.formatInteger(calculateInfo.getSuccessFee(), 3 , 'COMMA')}"></td>
                                     <td th:text="${#numbers.formatInteger(calculateInfo.getOnMissFee(), 3 , 'COMMA')}"></td>
                                 </tr>
@@ -132,10 +132,10 @@
 
     /* 예약 관리 페이지 이동 */
     $('table > tbody').on('click', 'tr', function () {
-        // let rmIdx = $(this).attr('data-value');
-        // if (rmIdx === "") return;
+        let reserveDate = $(this).children()[0].textContent;
+        console.log(reserveDate);
 
-        var url = "/settlement/detail";
+        var url = "/settlement/" + reserveDate;
         var name = "test";
         var width;
         if (parseInt(window.innerWidth) < 1000){

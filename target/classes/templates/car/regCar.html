@@ -40,7 +40,7 @@
                                 <select class="form-control" name="year" id="year" >
 
                                 </select>
-<!--                                <input type="text" class="form-control" name="year" id="year" placeholder="년도" maxlength="4"/>-->
+                                <!--                                <input type="text" class="form-control" name="year" id="year" placeholder="년도" maxlength="4"/>-->
                             </div>
                             <div class="col-3 mb-3">
                                 <label class="form-label" for="sel_modelName">차종</label>
@@ -71,7 +71,7 @@
                             </div>
                             <div class="col-3 mb-3">
                                 <label class="form-label" for="carNumber">차량번호</label>
-                                <input type="text" class="form-control" name="carNumber" id="carNumber" maxlength="8" readonly/>
+                                <input type="text" class="form-control" name="carNumber" id="carNumber" maxlength="8"/>
                             </div>
                             <div class="col-3 mb-3">
                                 <label class="form-label" for="mileage">누적 km</label>
@@ -139,28 +139,29 @@
                     <div class="card-body">
                         <div class="row mt-2">
                             <h6 class="col-8 mb-3 font-weight-bold">자차보험</h6>
+                            <div class="col-4">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="carDamage1Yn" name="carDamage1Yn"
+                                           value="Y">
+                                    <label class="form-check-label" for="carDamage1Yn">자차 1</label>
+                                </div>
 
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="carDamage1Yn" name="carDamage1Yn"
-                                       value="Y">
-                                <label class="form-check-label" for="carDamage1Yn">자차 1</label>
-                            </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="carDamage2Yn" name="carDamage2Yn"
+                                           value="Y">
+                                    <label class="form-check-label" for="carDamage2Yn">자차 2</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="carDamage3Yn" name="carDamage3Yn"
+                                           value="Y">
+                                    <label class="form-check-label" for="carDamage3Yn">자차 3</label>
+                                </div>
 
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="carDamage2Yn" name="carDamage2Yn"
-                                       value="Y">
-                                <label class="form-check-label" for="carDamage2Yn">자차 2</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="carDamage3Yn" name="carDamage3Yn"
-                                       value="Y">
-                                <label class="form-check-label" for="carDamage3Yn">자차 3</label>
-                            </div>
-
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="checkbox" id="carDamage4Yn" name="carDamage4Yn"
-                                       value="Y">
-                                <label class="form-check-label" for="carDamage4Yn">자차 4</label>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" id="carDamage4Yn" name="carDamage4Yn"
+                                           value="Y">
+                                    <label class="form-check-label" for="carDamage4Yn">자차 4</label>
+                                </div>
                             </div>
 
                         </div>
@@ -286,10 +287,6 @@
                             <div class="col-3 mb-3">
                                 <label class="form-label" for="deliveryAddPay">배달 10km 단위 추가요금</label>
                                 <input type="text" class="form-control" name="deliveryAddPay" id="deliveryAddPay"/>
-                            </div>
-                            <div class="col-3 mb-3">
-                                <label class="form-label" for="deliveryMaxRate">배달 최대 할인율</label>
-                                <input type="text" class="form-control" name="deliveryMaxRate" id="deliveryMaxRate"/>
                             </div>
                         </div>
                         <div class="row mt-3">

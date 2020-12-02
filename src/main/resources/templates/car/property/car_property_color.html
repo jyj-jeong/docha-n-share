@@ -27,7 +27,7 @@
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">제조사 속성</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">색상 속성</h6>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -36,7 +36,7 @@
                             <div class="col-6 mb-3">
                                 <div class="input-group">
                                     <div class="custom-file">
-                                        <input type="text" class="form-control" id="property" aria-describedby="property" placeholder="제조사명">
+                                        <input type="text" class="form-control" id="property" aria-describedby="property" placeholder="옵션명">
                                     </div>
                                     <div class="input-group-append">
                                         <button class="btn btn-outline-secondary" type="button" id="propertyAdd">등록</button>
@@ -48,14 +48,14 @@
                         <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                             <thead>
                             <tr>
-                                <th>제조사 속성</th>
+                                <th>색상 속성</th>
                                 <th>적용 수</th>
                                 <th th:width="40">삭제</th>
                             </tr>
                             </thead>
                             <tfoot>
                             <tr>
-                                <th>제조사 속성</th>
+                                <th>색상 속성</th>
                                 <th>적용 수</th>
                                 <th>삭제</th>
                             </tr>
@@ -140,7 +140,7 @@
         if (confirm(msg)) {
             let value = $('#property').val();
             $.ajax({
-                url: '../property/manufacturer/' + value,
+                url: '../property/color/' + value,
                 dataType: "json",
                 method: 'POST',
                 contentType: 'application/json; charset=utf-8',

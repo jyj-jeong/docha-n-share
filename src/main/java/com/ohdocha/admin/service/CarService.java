@@ -52,6 +52,10 @@ public interface CarService {
 
     void insertCarPropertyFuel(ServiceMessage message);
 
+    void carColorProperty(ServiceMessage message);
+
+    void insertCarPropertyColor(ServiceMessage message);
+
     void insertPlanSettingDetail(ServiceMessage message);
 
     void getPeriodPlanList(ServiceMessage message);

@@ -28,6 +28,9 @@ public interface DochaAdminCarPropertyMapper {
 	//차량속성 조회 (연료)
 	public List<DochaAdminCarPropertyResponse> selectCarFuelPropertyInfo(DochaAdminCarPropertyRequest reqParam);
 
+	//차량속성 조회 (색상)
+	public List<DochaAdminCarPropertyResponse> selectCarColorPropertyInfo(DochaAdminCarPropertyRequest reqParam);
+
 
     //차량속성 삭제
     public int deleteProperty(String codeIdx);

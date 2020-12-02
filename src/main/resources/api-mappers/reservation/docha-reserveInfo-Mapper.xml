@@ -54,8 +54,8 @@ SELECT * FROM (
                         , IFNULL(C.MODEL_DETAIL_NAME, '') AS MODEL_DETAIL_NAME /* 차종상세명 */
                         , IFNULL(C.CAR_NUMBER, '') AS CAR_NUMBER /* 차량번호 */
                         , IFNULL(C.FUEL_CODE, '') AS FUEL_CODE /* 연료코드 */
-                        , DATE_FORMAT(STR_TO_DATE(CONCAT(RENT_START_DAY,' ', RENT_START_TIME), '%Y%m%d %H%i%s'), '%Y%m%d %H%i%s') AS RENT_START_DAY /* 대여 시작 일시 */
-                        , DATE_FORMAT(STR_TO_DATE(CONCAT(RENT_END_DAY,' ', RENT_END_TIME), '%Y%m%d %H%i%s'), '%Y%m%d %H%i%s') AS RENT_END_DAY /* 대여 종료 일시 */
+                        , DATE_FORMAT(STR_TO_DATE(CONCAT(RENT_START_DAY,' ', RENT_START_TIME), '%Y-%m-%d %H:%i'), '%Y-%m-%d %H:%i') AS RENT_START_DAY /* 대여 시작 일시 */
+                        , DATE_FORMAT(STR_TO_DATE(CONCAT(RENT_END_DAY,' ', RENT_END_TIME), '%Y-%m-%d %H:%i'), '%Y-%m-%d %H:%i') AS RENT_END_DAY /* 대여 종료 일시 */
                         , IFNULL(A.PERIOD_DT, '') AS  PERIOD_DT /* 대여기간 */
                         , IFNULL(D.COMPANY_NAME , '') AS COMPANY_NAME /* 회원사명 */
                         , IFNULL(D.BRANCH_NAME, '') AS BRANCH_NAME /* 지점명 */
@@ -417,6 +417,7 @@ SELECT * FROM (
               , CAR_DAMAGE_COVER
               , REG_ID
               , REG_DT
+              , MOD_DT
               , DEL_YN )
               VALUES(
                #{rmIdx}
@@ -476,6 +477,7 @@ SELECT * FROM (
               , #{insuranceCopayment}
               , #{carDamageCover}
               , #{regId}
+              , NOW()
               , NOW()
               , 'N' )
 

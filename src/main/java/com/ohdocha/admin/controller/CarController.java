@@ -32,9 +32,6 @@ public class CarController extends ControllerExtension {
     public String regCarList(HttpServletRequest request, ModelMap modelMap) {
         ServiceMessage serviceMessage = createServiceMessage(request)
                 .addData("rtIdx", getLoginUserRtIdx(request));
-        DochaMap loginUser = (DochaMap) request.getSession().getAttribute("LOGIN_SESSION");
-
-        serviceMessage.addData("loginUser", loginUser);
 
         carService.regCarList(serviceMessage);
 
@@ -287,10 +284,6 @@ public class CarController extends ControllerExtension {
     }
     //endregion
 
-
-
-
-
     //region [ 차량 속성 ]
     /* 차량속성 : 국가 등록 */
     @PostMapping(value = "/car/property/country/{value}")
@@ -418,6 +411,30 @@ public class CarController extends ControllerExtension {
 
         return "{\"result\":\"success\"}";
     }
+
+    /* 차량속성 : 색상 리스트 */
+    @GetMapping(value = "/car/property/color")
+    public String carColorProperty(HttpServletRequest request, ModelMap modelMap) {
+        ServiceMessage serviceMessage = createServiceMessage(request);
+
+        carService.carColorProperty(serviceMessage);
+
+        modelMap.addAllAttributes(serviceMessage);
+        return "car/property/car_property_color";
+    }
+
+    /* 차량속성 : 색상 등록 */
+    @PostMapping(value = "/car/property/color/{value}")
+    @ResponseBody
+    public Object insertCarPropertyColor(@PathVariable String value, HttpServletRequest request) {
+        ServiceMessage serviceMessage = createServiceMessage(request)
+                .addData("value", value);
+
+        carService.insertCarPropertyColor(serviceMessage);
+
+        return serviceMessage;
+    }
+
     //endregion
 
     //region [ 요금제 ]

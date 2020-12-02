@@ -508,9 +508,7 @@ function initDetailInfo(seq){
 		$('select[name="carRegDt"]').val(carRegDt);
 		$("#ageLimit").val(ageLimit);
 
-		$("#carNumber").attr('readonly', true);
 		$("#carChassisNumber").attr('readonly', true);
-
 
 		let insuranceItem = "<option selected value='" + rtIdx + "'>"+companyName+"</option>";
 		$('#companyName').empty();
@@ -1574,7 +1572,6 @@ function initDetailData(data){
 	initInput();
 
 	// input readonly 해제
-	$("#carNumber").attr('readonly', false);
 	$("#carChassisNumber").attr('readonly', false);
 
 	$("#companyName").val('').prop("selected", true);

@@ -8,4 +8,8 @@ public interface PaymentInfoService {
 
     void calculateDateReserveList(ServiceMessage message);  // 정산
 
+    void calculateDateReserveInfo(ServiceMessage message);  // 정산 상세
+
+    void calculateDateAndRtIdxReserveInfo(ServiceMessage message);  // 정산 상세
+
 }

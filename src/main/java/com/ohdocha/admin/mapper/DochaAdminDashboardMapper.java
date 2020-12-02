@@ -13,21 +13,21 @@ public interface DochaAdminDashboardMapper {
 	List<DochaMap> selectDochaDashboardList(DochaMap param);
 
 	/* 메인화면 count */
-	Integer calcDailySales();
+	Integer calcDailySales(DochaMap dochaMap);
 
-	Integer calcMonthlySales();
+	Integer calcMonthlySales(DochaMap dochaMap);
 
-	Integer cntDailyReserve();
+	Integer cntDailyReserve(DochaMap dochaMap);
 
-	Integer cntMontlyyReserve();
+	Integer cntMontlyyReserve(DochaMap dochaMap);
 
     // todo 누적 월차
 
-	Integer cntDailyCancel();
+	Integer cntDailyCancel(DochaMap dochaMap);
 
-	Integer cntMonthlyCancel();
+	Integer cntMonthlyCancel(DochaMap dochaMap);
 
-	Integer cntQnA();
+	Integer cntQnA(DochaMap dochaMap);
 
 	/* 메인화면 count */
 	Map<String,Object> salesGraph(DochaMap dochaMap);

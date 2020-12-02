@@ -38,7 +38,7 @@ function loadApi (fnc, page, displayPageNum, division) {
 	let showContents = $("#showContents option:selected").val();
 
 	showContents = isEmpty(showContents) ? 10 : showContents;
-	
+
 	CURRENT_PAGE = parseInt(page);
 	displayPageNum = parseInt(displayPageNum);
 
@@ -46,24 +46,24 @@ function loadApi (fnc, page, displayPageNum, division) {
 	displayPageNum = isNaN(displayPageNum) ? showContents: (typeof displayPageNum === 'number') ? displayPageNum : showContents;
 
 	let strReserveStatus = $("#reserveStatus option:selected").val();
-	
+
 	if(!isEmpty(showContents)) {
 		displayPageNum = Number(showContents);
 	}
-	
+
 	let req = {
     		'page' 		     	: CURRENT_PAGE
 			,'displayPageNum' 	: displayPageNum
 			,'searchType' 	 	: sel_search
 			,'searchKeyWord'    : strSearchKeyWord
-    }; 
-	 
+    };
+
 	let target = 'carModelInfo';
 	let method = 'select';
-    
+
     fn_callApi(method, target, req, function (response) {
     	let res = response;
-    	 
+
     	 // //200이라면 페이징을 구한다.
     	 // if(res.code == 200) {
     		//  fnc(res.data, page, displayPageNum, division);
@@ -77,18 +77,18 @@ function loadApi (fnc, page, displayPageNum, division) {
 var drawTable = function drawTable(res, page, displayPageNum){
 	page = parseInt(page);
 	displayPageNum = parseInt(displayPageNum);
-		
+
 	page = isNaN(page) ? 1 : (typeof page === 'number') ? page : 1;
 	displayPageNum = isNaN(displayPageNum) ? 10 : (typeof displayPageNum === 'number') ? displayPageNum : 10;
-	
+
 	let data = res.result;
-	
+
 	let rows = [];
 	let columns;
-	
-	columns = [  
 
-		{ "name": "rowNumber", "title": "No", "breakpoints": "all", "visible": false},  
+	columns = [
+
+		{ "name": "rowNumber", "title": "No", "breakpoints": "all", "visible": false},
 		{ "name": "mdIdx", "title": "모델번호" ,
 			"formatter" : function(value, options, rowData){
 				return '<a href="javascript:initDetailInfo(' + "'" +value + "'" +');"  >'+value+'</a>';
@@ -251,6 +251,14 @@ function changeList() {
 // init
 function initDetailInfo(seq){
 
+	var currentYear = new Date().getFullYear();
+	var str = '';
+	for(var i = 7; i >= 0; i--){
+		str += "<option value = '" + (currentYear-i) + "'>" + (currentYear-i) + "</option>";
+	}
+	str += "<option value = '" + (currentYear+1) + "'>" + (currentYear+1) + "</option>";
+	$('select[name="year"]').append(str);
+
 //	swal("상세화면은 순차적으로 오픈할 예정입니다.", { icon: "warning", });
 //	if(true){
 //		return;
@@ -306,9 +314,11 @@ function initDetailInfo(seq){
     		$("#mdIdx").val(mdIdx);
     		$("#modelName").val(modelName);
     		$("#modelDetailName").val(modelDetailName);
-    		$("#year").val(year);
 
-    		$("#maximumPassenger").val(maximumPassenger);
+		$('select[name="year"]').val(year);
+
+
+		$("#maximumPassenger").val(maximumPassenger);
     		$("#displacement").val(displacement);
 			$("#sel_countryCode").val(country).prop("sel_countryCode", true);
 
@@ -679,7 +689,7 @@ function initDetailSelectBox(data){
 function detailValidation(){
 
 	let mdIdx = $("#mdIdx").val();												// 모델순번
-	let year = $("#year").val();												// 모델순번
+	let year 				= $("#year option:selected").val();
 	let modelName = $("#modelName").val();										// 모델명
 	let modelDetailName = $("#modelDetailName").val();							// 모델상세명
 	let manufacturerCode = $("#sel_manufacturerCode option:selected").val();	// 제조사
@@ -769,7 +779,7 @@ function detailValidation(){
 	let cancel_text = '취소하셨습니다.';
 
 	call_before_save(title, text, icon, cancel_text, save_type, req);
-	
+
 }
 
 
@@ -782,10 +792,10 @@ function detailSubmit(save_type, req){
 		target = 'updateCarModelInfo';
 		method = 'update';
 	}
-	
+
 	fn_callApi(method, target, req, function(response) {
 		let data = response;
-		
+
 		// 200이라면 페이징을 구한다.
 		// if (res.code == 200) {
 
@@ -799,7 +809,7 @@ function detailSubmit(save_type, req){
 				}else {
 					loadApi(drawTable, CURRENT_PAGE, null);
 				}
-				
+
 			}
 		 else { // 200이 아닐때 empty처리 error처리 등을 기록한다.
 			errorAlert('저장 실패', '관리자에게 문의하세요.');
@@ -809,18 +819,18 @@ function detailSubmit(save_type, req){
 
 //모달 오픈
 function initDetailData(){
-	CRUD = 'insert'; 
-	
+	CRUD = 'insert';
+
 	initDetailSelectBox(null);
-	
+
 	$("#" + MODAL_NAME).find('input:text').each(function(){
-		$(this).val('');  
+		$(this).val('');
 	});
 
 	$("#" + MODAL_NAME).find('select').each(function(){
-		$(this).find('option').eq(0).prop('selected',true);    
-	});   
-	
+		$(this).find('option').eq(0).prop('selected',true);
+	});
+
 	// openIziModal(MODAL_NAME);
 }
 

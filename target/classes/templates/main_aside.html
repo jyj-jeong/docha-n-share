@@ -10,10 +10,7 @@
         <!-- Sidebar - Brand -->
         <a class="sidebar-brand d-flex align-items-center justify-content-center" href=""
            th:href="${#request.getContextPath() + '/'}">
-            <div class="sidebar-brand-icon">
-                <i class="fas fa-car"></i>
-            </div>
-            <div class="sidebar-brand-text mx-3">DoCha</div>
+            <img class="docha_logo" src="../../../img/logo_white.png" width="100"/>
         </a>
 
         <!-- Divider -->
@@ -82,8 +79,10 @@
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">차량</h6>
                 <a class="collapse-item" href="" th:href="${#request.getContextPath() + '/car'}">등록 차량</a>
-                <a class="collapse-item" href="" th:href="${#request.getContextPath() + '/car/control'}">차량 관제</a>
-                <a class="collapse-item" href="" th:href="${#request.getContextPath() + '/car/maintain'}">차량 정비</a>
+<!--                <a class="collapse-item" href="" th:href="${#request.getContextPath() + '/car/control'}">차량 관제</a>-->
+                <a class="collapse-item" style="cursor: pointer" onclick="preparingPage()">차량 관제</a>
+<!--                <a class="collapse-item" href="" th:href="${#request.getContextPath() + '/car/maintain'}">차량 정비</a>-->
+                <a class="collapse-item" style="cursor: pointer" onclick="preparingPage()">차량 정비</a>
                 <a class="collapse-item" href="" th:if="${#session.getAttribute('LOGIN_SESSION').userRole == 'RA'}" th:href="${#request.getContextPath() + '/car/model'}">차량 모델</a>
                 <a class="collapse-item collapsed" th:if="${#session.getAttribute('LOGIN_SESSION').userRole == 'RA'}" href="#" data-toggle="collapse" data-target="#collapseAdmin" aria-expanded="true" aria-controls="collapseAdmin">차량 속성</a>
                 <div id="collapseAdmin" class="collapse" aria-labelledby="collapseAdmin" data-parent="#collapseAdmin">
@@ -92,6 +91,7 @@
                     <div><a class="collapse-item" href="#" th:href="${#request.getContextPath() + '/car/property/cartype'}">등급</a></div>
                     <div><a class="collapse-item" href="#" th:href="${#request.getContextPath() + '/car/property/option'}">옵션</a></div>
                     <div><a class="collapse-item" href="#" th:href="${#request.getContextPath() + '/car/property/fuel'}">연료</a></div>
+                    <div><a class="collapse-item" href="#" th:href="${#request.getContextPath() + '/car/property/color'}">색상</a></div>
                 </div>
                 <a class="collapse-item collapsed" href="#" data-toggle="collapse" data-target="#Admin" aria-expanded="true" aria-controls="collapseAdmin">요금제</a>
                 <div id="Admin" class="collapse" aria-labelledby="collapseAdmin" data-parent="#Admin">
@@ -129,9 +129,12 @@
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">사이트</h6>
                     <a class="collapse-item" href="/site/main">메인</a>
-                    <a class="collapse-item" href="/site/coupon">쿠폰</a>
-                    <a class="collapse-item" href="/site/point">포인트</a>
-                    <a class="collapse-item collapsed" href="#" data-toggle="collapse" data-target="#collapseReview" aria-expanded="true" aria-controls="collapseReview">후기</a>
+<!--                    <a class="collapse-item" href="/site/coupon">쿠폰</a>-->
+                    <a class="collapse-item" style="cursor: pointer" onclick="preparingPage()">쿠폰</a>
+<!--                    <a class="collapse-item" href="/site/point">포인트</a>-->
+                    <a class="collapse-item" style="cursor: pointer" onclick="preparingPage()">포인트</a>
+<!--                    <a class="collapse-item collapsed" href="#" data-toggle="collapse" data-target="#collapseReview" aria-expanded="true" aria-controls="collapseReview">후기</a>-->
+                    <a class="collapse-item collapsed" style="cursor: pointer" onclick="preparingPage()">후기</a>
                     <div id="collapseReview" class="collapse" aria-labelledby="collapseReview" data-parent="#collapseReview">
                         <div><a class="collapse-item" href="#" th:href="${#request.getContextPath() + '/site/review'}">이용후기</a></div>
                         <div><a class="collapse-item" href="#" th:href="${#request.getContextPath() + '/site/rating'}">고객평점</a></div>
@@ -172,11 +175,6 @@
                 </div>
             </div>
         </li>
-
-        <!-- Sidebar Toggler (Sidebar) -->
-        <div class="text-center d-none d-md-inline">
-            <button class="rounded-circle border-0" id="sidebarToggle"></button>
-        </div>
 
     </ul>
 </nav>

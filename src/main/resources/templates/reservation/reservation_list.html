@@ -74,7 +74,11 @@
                                 <tr th:each="reservation, index : ${result}" style="cursor: pointer" th:data-value="${reservation.getRmIdx()}">
                                     <td th:text="${reservation.getRmIdx()}"></td>
                                     <td th:text="${reservation.getReserveDate()}"></td>
-                                    <td th:text="${reservation.getReserveStatusName() == null ? '미확인' : reservation.getReserveStatusName()}"></td>
+                                    <td th:if="${reservation.getReserveStatusName() == '예약'}" style="color: darkorange" th:text="${reservation.getReserveStatusName()}"></td>
+                                    <td th:if="${reservation.getReserveStatusName() == '대여중'}" style="color: teal" th:text="${reservation.getReserveStatusName()}"></td>
+                                    <td th:if="${reservation.getReserveStatusName() == '취소'}" style="color: gray" th:text="${reservation.getReserveStatusName()}"></td>
+                                    <td th:if="${reservation.getReserveStatusName() == '반납'}" style="color: gray" th:text="${reservation.getReserveStatusName()}"></td>
+                                    <td th:if="${reservation.getReserveStatusName() == '취소요청'}" style="color: red" th:text="${reservation.getReserveStatusName()}"></td>
                                     <td th:text="${reservation.getUserName() +' (' + reservation.getUserContact1()} + ')'"></td>
                                     <td th:text="${reservation.getModelName()+' ('+ reservation.getCarNumber() +')'}"></td>
                                     <td th:text="${reservation.getRentStartDay()}"></td>
