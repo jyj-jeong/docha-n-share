@@ -8,8 +8,6 @@
   <component name="ChangeListManager">
     <list default="true" id="e0c2fac4-e679-440e-8ffe-06e1c0fd9c27" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/main_aside.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/main_aside.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/templates/main_aside.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/main_aside.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -196,11 +194,6 @@
               <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@96caecf9" type="7427dc5b:ServiceModel$ServiceGroupNode" />
               <item name="com.intellij.execution.services.ServiceModel$ServiceNode@61a4797d" type="9fbbdea:ServiceModel$ServiceNode" />
             </path>
-            <path>
-              <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
-              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@96caecf9" type="7427dc5b:ServiceModel$ServiceGroupNode" />
-              <item name="com.intellij.execution.services.ServiceModel$ServiceNode@ad6e159" type="9fbbdea:ServiceModel$ServiceNode" />
-            </path>
           </expand>
           <select />
         </treeState>
@@ -325,7 +318,7 @@
       <workItem from="1606672865978" duration="23979000" />
       <workItem from="1606743585145" duration="6908000" />
       <workItem from="1606750578237" duration="28581000" />
-      <workItem from="1606873303742" duration="23357000" />
+      <workItem from="1606873303742" duration="24158000" />
     </task>
     <task id="LOCAL-00001" summary="js package 수정">
       <created>1598322077798</created>
@@ -593,7 +586,14 @@
       <option name="project" value="LOCAL" />
       <updated>1606903976989</updated>
     </task>
-    <option name="localTasksCounter" value="39" />
+    <task id="LOCAL-00039" summary="배달 최대 할인율 삭제">
+      <created>1606955005277</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1606955005277</updated>
+    </task>
+    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -648,7 +648,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value=" properties (product) server-host 변경" />
     <MESSAGE value=" 예약 메뉴 페이지 추가" />
     <MESSAGE value=" 로그인 기능 수정" />
     <MESSAGE value=" 관리자 메뉴 기능 수정" />
@@ -673,7 +672,8 @@
     <MESSAGE value="정산, 정기결제 리스트" />
     <MESSAGE value="회원사 담당자 등록 수정" />
     <MESSAGE value="정산, 정기결제" />
-    <option name="LAST_COMMIT_MESSAGE" value="정산, 정기결제" />
+    <MESSAGE value="배달 최대 할인율 삭제" />
+    <option name="LAST_COMMIT_MESSAGE" value="배달 최대 할인율 삭제" />
   </component>
   <component name="WindowStateProjectService">
     <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog" />
