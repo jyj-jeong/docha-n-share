@@ -482,7 +482,6 @@ function initDetailInfo(seq){
                     let month12Deposit 			= data.month12Deposit     ; //12개월보증금
                     let deliveryStandardPay 	= data.deliveryStandardPay; //배달기본요금
                     let deliveryAddPay 			= data.deliveryAddPay     ; //배달10KM단위추가요금
-                    let deliveryMaxRate 		= data.deliveryMaxRate    ; //배달최대할인율
 
 		let dailyYn 				= data.dailyYn            ; //일대여사용유무
 		let monthlyYn 				= data.monthlyYn          ; //월대여사용유무
@@ -540,7 +539,6 @@ function initDetailInfo(seq){
 		$("#month12Deposit").val(month12Deposit);
 		$("#deliveryStandardPay").val(deliveryStandardPay);
 		$("#deliveryAddPay").val(deliveryAddPay);
-		$("#deliveryMaxRate").val(deliveryMaxRate);
 
 //			$("#sel_fuel").val(fuelCode).prop("selected", true);
 //			$("#transmissionCode").val(transmissionCode);
@@ -946,7 +944,6 @@ function cancelData(cancel_type) {
 
 			$('#deliveryStandardPay').val('');
 			$('#deliveryAddPay').val('');
-			$('#deliveryMaxRate').val('');
 			$("#sel_pyTIdx").val('0').prop("selected", true);
 
 			break;
@@ -1053,7 +1050,6 @@ function setData(set_type, _data){
 			let month12Deposit       = objectConvertToPriceFormat(nullCheck(_data.month12Deposit));
 			let deliveryStandardPay  = objectConvertToPriceFormat(nullCheck(_data.deliveryStandardPay));
 			let deliveryAddPay       = objectConvertToPriceFormat(nullCheck(_data.deliveryAddPay));
-			let deliveryMaxRate      = objectConvertToPriceFormat(nullCheck(_data.deliveryMaxRate));
 
 			$('#dailyStandardPay').val(dailyStandardPay);
 			$('#dailyMaxRate').val(dailyMaxRate);
@@ -1066,7 +1062,6 @@ function setData(set_type, _data){
 
 			$('#deliveryStandardPay').val(deliveryStandardPay);
 			$('#deliveryAddPay').val(deliveryAddPay);
-			$('#deliveryMaxRate').val(deliveryMaxRate);
 
 			$("#sel_pyTIdx").val(pyTIdx).prop("selected", true);
 			break;
@@ -1347,7 +1342,6 @@ function detailValidation(save_type){
 				let month12Deposit 		= getPureText($('#month12Deposit').val());
 				let deliveryStandardPay = getPureText($('#deliveryStandardPay').val());
 				let deliveryAddPay 		= getPureText($('#deliveryAddPay').val());
-				let deliveryMaxRate 	= getPureText($('#deliveryMaxRate').val());
 
 				// TODO 차량 저장순서
 				if (isEmpty(crIdx)) {
@@ -1395,10 +1389,8 @@ function detailValidation(save_type){
 				}else if(!isEmpty(month3Deposit) && !$.isNumeric(deliveryAddPay)){
 					errorAlert('요금정보', '배달10KM단위추가요금은 숫자만 입력 가능합니다.');
 					return;
-				}else if(!isEmpty(month3Deposit) && !$.isNumeric(deliveryMaxRate)){
-					errorAlert('요금정보', '배달최대할인율은 숫자만 입력 가능합니다.');
-					return;
 				}
+
 				if(isEmpty(pyTIdx) || pyTIdx == '0'){
 					pyTIdx = '';
 				}else{
@@ -1424,8 +1416,6 @@ function detailValidation(save_type){
 						pyYn = 'N';
 					}else if(deliveryAddPay != nullCheck(planData[pyTIdxIndex].deliveryAddPay)){
 						pyYn = 'N';
-					}else if(deliveryMaxRate != nullCheck(planData[pyTIdxIndex].deliveryMaxRate)){
-						pyYn = 'N';
 					}
 
 
@@ -1449,7 +1439,6 @@ function detailValidation(save_type){
 					,	'month12Deposit' : month12Deposit
 					,	'deliveryStandardPay' : deliveryStandardPay
 					,	'deliveryAddPay' : deliveryAddPay
-					,	'deliveryMaxRate' : deliveryMaxRate
 					// ,	'modId' : GLOBAL_LOGIN_USER_IDX
 					// ,	'regId' : GLOBAL_LOGIN_USER_IDX
 				}
