@@ -636,6 +636,7 @@
 			, 	IFNULL(HOLIDAY_NAME		, '') AS HOLIDAY_NAME       /*휴일명*/
 			, 	IFNULL(DEL_YN          	, '') AS DEL_YN             /*삭제여부*/
 			, 	IFNULL(REG_ID          	, '') AS REG_ID             /*등록자*/
+			, 	IFNULL(REG_DT          	, '') AS REG_DT             /*등록일*/
 			FROM DC_HOLIDAYS
 
 		  ]]>
@@ -645,6 +646,9 @@
 			</if>
 			<if test="holIdx != null and holIdx != ''">
 				AND <![CDATA[ HOL_IDX = #{holIdx} ]]>
+			</if>
+			<if test="crIdx != null and crIdx != ''">
+				AND <![CDATA[ CR_IDX = #{crIdx} ]]>
 			</if>
 			<if test="holIdx != null and holIdx != ''">
 				AND <![CDATA[ HOL_IDX != #{holIdx} ]]>
@@ -683,6 +687,7 @@
 				,	HOLIDAY_START_DT
 				,	HOLIDAY_END_DT
 				,	HOLIDAY_NAME
+				,	CR_IDX
 				,	DEL_YN
 				,	REG_ID
 				,	REG_DT
@@ -693,6 +698,7 @@
 				,	#{holidayStartDt}
 				,	#{holidayEndDt}
 				,	#{holidayName}
+				,	#{crIdx}
 				,	#{delYn}
 				,	#{regId}
 				,	NOW()

@@ -245,7 +245,7 @@
 	<select id="selectCalculateDateReserveList" parameterType="calculateRequest" resultType="calculateResponse">
 			SELECT
 			       DATE_FORMAT(T1.MOD_DT, '%Y-%m-%d') AS ACCOUNT_EXP_DT                        /*정산일*/
-			      ,SUM(T1.RENT_FEE + T1.PAYMENT_TOTAL_AMOUNT + T1.DELIVERY_FEE) AS TOTAL_FEE         /*총금액*/
+			      ,SUM(T1.RENT_FEE + T1.INSURANCE_FEE + T1.DELIVERY_FEE) AS TOTAL_FEE         /*총금액*/
 			      ,SUM(T1.PAYMENT_TOTAL_AMOUNT) AS PAYMENT_AMOUNT                              /*결제금액*/
 			      ,SUM(T1.RENT_FEE - T1.DISCOUNT_FEE) AS DISCOUNT_FEE                             /*할인액*/
 			      ,SUM(T1.BALANCE) AS ONMISS_FEE                                               /*미정산금액*/
@@ -278,7 +278,7 @@
 	<select id="selectCalculateDateReserveInfo" parameterType="calculateRequest" resultType="calculateResponse">
 		SELECT
 			DATE_FORMAT(T1.MOD_DT, '%Y-%m-%d') AS ACCOUNT_EXP_DT                        /*정산일*/
-			,T1.RENT_FEE + T1.PAYMENT_TOTAL_AMOUNT + T1.DELIVERY_FEE AS TOTAL_FEE         /*총금액*/
+			,T1.RENT_FEE + T1.INSURANCE_FEE + T1.DELIVERY_FEE AS TOTAL_FEE         /*총금액*/
 			,T1.PAYMENT_TOTAL_AMOUNT AS PAYMENT_AMOUNT                              /*결제금액*/
 			,T1.RENT_FEE - T1.DISCOUNT_FEE AS DISCOUNT_FEE                             /*할인액*/
 			,T1.BALANCE AS ONMISS_FEE                                               /*미정산금액*/
@@ -298,6 +298,7 @@
 					,RM.MOD_DT
 					,RM.RENT_FEE
 					,RM.PAYMENT_TOTAL_AMOUNT
+					,RM.INSURANCE_FEE
 					,RM.DELIVERY_FEE
 					,RM.DISCOUNT_FEE
 					,RM.BALANCE
@@ -331,7 +332,7 @@
 
 		SELECT
 			DATE_FORMAT(T1.MOD_DT, '%Y-%m-%d') AS ACCOUNT_EXP_DT                        /*정산일*/
-			,T1.RENT_FEE + T1.PAYMENT_TOTAL_AMOUNT + T1.DELIVERY_FEE AS TOTAL_FEE         /*총금액*/
+			,T1.RENT_FEE + T1.INSURANCE_FEE + T1.DELIVERY_FEE AS TOTAL_FEE         /*총금액*/
 			,T1.PAYMENT_TOTAL_AMOUNT AS PAYMENT_AMOUNT                              /*결제금액*/
 			,T1.RENT_FEE - T1.DISCOUNT_FEE AS DISCOUNT_FEE                             /*할인액*/
 			,T1.BALANCE AS ONMISS_FEE                                               /*미정산금액*/
@@ -354,6 +355,7 @@
 			,RM.MOD_DT
 			,RM.RENT_FEE
 			,RM.PAYMENT_TOTAL_AMOUNT
+			,RM.INSURANCE_FEE
 			,RM.DELIVERY_FEE
 			,RM.DISCOUNT_FEE
 			,RM.BALANCE

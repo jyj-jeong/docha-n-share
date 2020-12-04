@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="header :: mainHead"></head>
+<head>
+    <title>차량 휴일 등록 :: DoCha Admin Web</title>
+
+</head>
+<body id="page-top">
+<div id="wrapper" style="height: 100%">
+    <div id="content-wrapper" class="d-flex flex-column">
+        <div id="content">
+            <div class="container-fluid">
+                <div class="card shadow mb-4 mt-3">
+
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary" style="cursor: pointer">차량 휴일 등록</h6>
+                    </div>
+
+                    <div class="card-body">
+
+                        <div class="row">
+                            <div class="col-lg-8">
+                                <p class="table_total_text" id="totalRowCount" ></p>
+                            </div>
+                            <div class="col-lg-4 float-l" >
+                                <div class="input-group">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary">휴차일 기간</button>
+                                    </div>
+                                    <input type="date" class="form-control" placeholder="휴차시작일"  id="suspendStartDt">
+                                    <span class="col-md-1 text-center"> ~ </span>
+                                    <input type="date" class="form-control" placeholder="휴차종료일"  id="suspendEndDt">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="mt-3 col-lg-6">
+                                <div class="text-right">
+                                    <button class="btn btn-primary right" type="submit" onclick="carSuspend();">등록</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="mt-5 col-lg-12">
+                                <div class="table-responsive">
+
+                                    <table class="table table-bordered" id="holDataTable">
+                                        <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>시작날짜</th>
+                                            <th>종료날짜</th>
+                                            <th>등록자</th>
+                                            <th>등록시간</th>
+                                            <th></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:inline="javascript">
+
+    var urIdx =/*[[${session.LOGIN_SESSION.urIdx}]]*/ '';
+
+    var rtIdx = decodeURI(getParam('rtIdx'));
+    var crIdx = decodeURI(getParam('crIdx'));
+
+    var req = {
+        rtIdx : rtIdx,
+        crIdx : crIdx
+    };
+
+    /* 차량 휴차일 테이블 init */
+    var holDataTable = $('#holDataTable').DataTable( {
+        language: {
+            emptyTable: "데이터가 존재하지 않습니다.",
+            lengthMenu: "페이지당 _MENU_ 개씩 보기",
+            info: "현재 _START_ - _END_ / _TOTAL_건",
+            infoEmpty: "0 건",
+            infoFiltered: "( _MAX_건의 데이터에서 필터링됨 )",
+            search: "검색: ",
+            zeroRecords: "일치하는 데이터가 존재하지 않습니다.",
+            loadingRecords: "로딩중...",
+            processing:     "잠시만 기다려 주세요...",
+            paginate: {
+                next: "다음",
+                previous: "이전"
+            }
+        },
+        pageMenu: 10,
+        dom : 'ftp',
+        orderMulti: true,
+        columns: [
+            { data : 'holIdx' },
+            { data : 'holidayStartDt' },
+            { data : 'holidayEndDt' },
+            { data : 'regId' },
+            { data : 'regDt' }
+        ],
+        columnDefs: [{
+            targets : [0],
+            data: 'holIdx',
+            visible : false,
+            searchable: false
+        },{
+            targets : [5],
+            data : null,
+            visible : true,
+            defaultContent : '<button class="btn btn-danger">삭제</button>'
+        }],
+        ajax : {
+            url: '/car/hoilday.json',
+            type: 'POST',
+            contentType : 'application/json',
+            dataType : 'json',
+            data : function () {
+                return JSON.stringify(req);
+            },
+            dataSrc : function (json) {
+                var data = json.result;
+                if (data === null || data === undefined){
+                    data = [];
+                }
+                return data;
+            },
+            error : function (xhr, error, code) {
+                console.log(error);
+            }
+        }
+    } );
+
+    /* 차량 휴차일 테이블 - 삭제 클릭시 동작*/
+    $('#holDataTable tbody').on('click', 'button', function () {
+        var row = holDataTable.row( this.parentElement ).data() ;
+        deleteCarHoliday(row.holIdx);
+    });
+
+    function deleteCarHoliday(holIdx) {
+
+        var req = {
+            holIdx : holIdx
+        };
+
+        var target = 'deleteRentCompanyHoliday';
+        var method = 'delete';
+
+        fn_callApi(method, target, req, function (response) {
+
+            var data = response;
+            if (data.code === 200){
+                location.reload();
+            }else {
+                errorAlert('삭제 실패', '관리자에게 문의하세요.');
+            }
+
+        });
+    }
+
+    /* 차량 휴차일 등록 */
+    function carSuspend() {
+
+        let suspendStartDt = $("#suspendStartDt").val();
+        let suspendEndDt = $("#suspendEndDt").val();
+
+        if(isEmpty(suspendStartDt)){
+            errorAlert('휴차일 등록', '휴차일 시작일을 입력해 주세요.');
+            return;
+        }else if(isEmpty(suspendEndDt)){
+            errorAlert('휴차일 등록', '휴차일 종료일을 입력해 주세요.');
+            return;
+        }else if(suspendStartDt > suspendEndDt){
+            errorAlert('휴차일 등록', '휴차일 시작일이 종료일보다 클수 없습니다.');
+            return;
+        }
+
+        let req = {
+            'rtIdx' : rtIdx
+            ,   'crIdx' : crIdx
+            ,	'holidayStartDt' : suspendStartDt
+            ,	'holidayEndDt' : suspendEndDt
+            ,	'modId' : urIdx
+            ,	'regId' : urIdx
+        };
+
+        let target = 'insertRentCompanyHoliday';
+        let method = 'insert';
+
+        fn_callApi(method, target, req, function(response) {
+            let res = response;
+
+            // 200이라면 페이징을 구한다.
+            if (res.code == 200) {
+                location.reload();
+            } else { // 200이 아닐때 empty처리 error처리 등을 기록한다.
+                errorAlert('저장 실패', '관리자에게 문의하세요.');
+            }
+        });// end fn_callApi
+    }
+
+    // url 에서 parameter 추출
+    function getParam(sname) {
+        var params = location.search.substr(location.search.indexOf("?") + 1);
+        params = params.split("&");
+
+        for (var i = 0; i < params.length; i++) {
+            var temp = params[i].split("=");
+            if (temp[0] === sname) return temp[1];
+        }
+
+        return '';
+    }
+
+</script>
+</body>
+</html>

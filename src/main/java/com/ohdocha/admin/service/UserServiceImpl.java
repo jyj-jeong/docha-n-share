@@ -39,6 +39,7 @@ public class UserServiceImpl extends ServiceExtension implements UserService {
     @Override
     public void getIntegratedUserList(ServiceMessage message) {
         DochaAdminUserInfoRequest userInfoRequest;
+
         if (message.get("userInfoRequest") != null){
             userInfoRequest = message.getObject("userInfoRequest", DochaAdminUserInfoRequest.class);
         }else {
@@ -534,9 +535,12 @@ public class UserServiceImpl extends ServiceExtension implements UserService {
     @Override
     public void selectRentCompanyHoliday(ServiceMessage message) {
         DochaAdminRentCompanyHolidayRequest rentCompanyHolidayRequest = message.getObject("rentCompanyHolidayRequest", DochaAdminRentCompanyHolidayRequest.class);
+
         if(rentCompanyHolidayRequest.getHolidayStartDt() == null || rentCompanyHolidayRequest.getHolidayStartDt().equals("")){
+
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
             String today = simpleDateFormat.format(new Date());
+
             rentCompanyHolidayRequest.setHolidayStartDt(today);
         }
 

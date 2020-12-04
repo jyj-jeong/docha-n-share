@@ -173,6 +173,21 @@ public class CarServiceImpl extends ServiceExtension implements CarService {
         message.addData("crIdx", basicPlanDetailRequest.getCrIdx());
     }
 
+    /* 차량 일대여, 월대여 설정 */
+    @Override
+    public void insertRentAble(ServiceMessage message) {
+        DochaAdminRegCarDetailRequest carDetailRequest = message.getObject("carDetailRequest", DochaAdminRegCarDetailRequest.class);
+
+        int res = regCarMapper.updateDcCarInfo(carDetailRequest);
+
+        if (res == 1){
+            message.addData("code", 200);
+        }else{
+            message.addData("code", 400);
+            message.addData("errMsg", "설정에 실패했습니다.");
+        }
+    }
+
     //region [ 등록차량 옵션 선택]
     /* 회사 옵션 선택 */
     @Override

@@ -89,4 +89,6 @@ public interface CarService {
     void updateDcInsuranceInfo(ServiceMessage message);
 
     void updateDcPaymentInfo(ServiceMessage message);
+
+    void insertRentAble(ServiceMessage message);
 }

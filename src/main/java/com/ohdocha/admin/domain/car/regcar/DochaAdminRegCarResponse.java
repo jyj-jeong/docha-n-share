@@ -26,7 +26,7 @@ public class DochaAdminRegCarResponse extends CommonResponseDto {
 	
 	private String dailyYn				; //일대여 사용유무
 	private String monthlyYn			; //월대여 사용유무
-	private String suspendCnt			; //휴차일 사용유무
+	private Integer suspendCnt			; //휴차일 사용유무
 
 	public String getCrIdx() {
 		return crIdx;
@@ -124,10 +124,10 @@ public class DochaAdminRegCarResponse extends CommonResponseDto {
 	public void setMonthlyYn(String monthlyYn) {
 		this.monthlyYn = monthlyYn;
 	}
-	public String getSuspendCnt() {
+	public Integer getSuspendCnt() {
 		return suspendCnt;
 	}
-	public void setSuspendCnt(String suspendCnt) {
+	public void setSuspendCnt(Integer suspendCnt) {
 		this.suspendCnt = suspendCnt;
 	}
 

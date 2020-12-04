@@ -6,8 +6,10 @@ import com.ohdocha.admin.domain.car.plan.insuranceTemplate.DochaAdminInsuranceTe
 import com.ohdocha.admin.domain.car.plan.insuranceTemplate.DochaAdminInsuranceTemplateRequest;
 import com.ohdocha.admin.domain.car.plan.periodplansetting.DochaAdminPeriodPlanSettingDetailRequest;
 import com.ohdocha.admin.domain.car.regcar.DochaAdminRegCarDetailRequest;
+import com.ohdocha.admin.domain.rentCompany.DochaAdminRentCompanyHolidayRequest;
 import com.ohdocha.admin.domain.reserve.reserveInfoMnt.DochaAdminReserveInfoRequest;
 import com.ohdocha.admin.service.CarService;
+import com.ohdocha.admin.service.UserService;
 import com.ohdocha.admin.util.DochaMap;
 import com.ohdocha.admin.util.ServiceMessage;
 import lombok.AllArgsConstructor;
@@ -25,6 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 public class CarController extends ControllerExtension {
 
     private final CarService carService;
+    private final UserService userService;
 
     //region [ 등록차량 ]
     /* 등록차량 리스트 */
@@ -141,6 +144,39 @@ public class CarController extends ControllerExtension {
         serviceMessage.addData("basicPlanDetailRequest", basicPlanDetailRequest);
 
         carService.updateDcPaymentInfo(serviceMessage);
+
+        return serviceMessage;
+    }
+
+    /* 차량 일대여, 월대여 설정 */
+    @PostMapping(value = "/car/rentAble.json")
+    @ResponseBody
+    public Object insertRentAble(@RequestBody DochaAdminRegCarDetailRequest carDetailRequest, HttpServletRequest request) {
+        ServiceMessage serviceMessage = createServiceMessage(request)
+                .addData("carDetailRequest", carDetailRequest);
+
+        carService.insertRentAble(serviceMessage);
+
+        return serviceMessage;
+    }
+
+    /* 차량 휴일 등록*/
+    @GetMapping(value = "/car/hoilday")
+    public String registerCarHolidayView(@RequestParam String crIdx, @RequestParam String rtIdx, HttpServletRequest request, ModelMap modelMap) {
+        ServiceMessage serviceMessage = createServiceMessage(request);
+
+        modelMap.addAllAttributes(serviceMessage);
+        return "car/car_holiday";
+    }
+
+    /* 차량 휴일 리스트 조회 */
+    @PostMapping(value = "/car/hoilday.json")
+    @ResponseBody
+    public Object carHolidayList(@RequestBody DochaAdminRentCompanyHolidayRequest holidayRequest, HttpServletRequest request) {
+        ServiceMessage serviceMessage = createServiceMessage(request);
+        serviceMessage.addData("rentCompanyHolidayRequest", holidayRequest);
+
+        userService.selectRentCompanyHoliday(serviceMessage);
 
         return serviceMessage;
     }

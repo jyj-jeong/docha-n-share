@@ -85,7 +85,8 @@
                                     <td th:text="${reservation.getRentEndDay()}"></td>
                                     <td th:text="${reservation.getPeriodDt()}"></td>
                                     <td th:text="${reservation.getCompanyName()+' ('+reservation.getBranchName()+ ')'}"></td>
-                                    <td th:text="${reservation.getDeliveryTypeName()}"></td>
+                                    <td th:if="${reservation.getDeliveryTypeName()=='DL'}">배달대여</td>
+                                    <td th:if="${reservation.getDeliveryTypeName()=='OF'}">지점방문</td>
                                     <td th:text="${#numbers.formatInteger(reservation.getPaymentTotalAmount(), 0, 'COMMA')}"></td>
                                     <td th:text="${#numbers.formatInteger(reservation.getPaymentAmount(), 0, 'COMMA')}"></td>
                                 </tr>

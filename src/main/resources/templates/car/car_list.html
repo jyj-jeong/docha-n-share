@@ -65,6 +65,7 @@
                                 </script>
                                 <thead>
                                 <tr>
+                                    <th style="display: none"></th>
                                     <th>등록차량번호</th>
                                     <th>회원사<br/>(지점)</th>
                                     <th>모델<br/>(차량번호)</th>
@@ -79,6 +80,7 @@
                                 </thead>
                                 <tfoot>
                                 <tr>
+                                    <th style="display: none"></th>
                                     <th>등록차량번호</th>
                                     <th>회원사<br/>(지점)</th>
                                     <th>모델<br/>(차량번호)</th>
@@ -93,6 +95,7 @@
                                 </tfoot>
                                 <tbody>
                                 <tr th:each="car, index : ${carRegList}" style="cursor: pointer" th:data-value="${car.getCrIdx()}">
+                                    <td style="display: none" th:text="${car.getRtIdx()}"></td>
                                     <td th:text="${car.getCrIdx()}"></td>
                                     <td th:text="${car.getCompanyName() + '(' + car.getBranchName() + ')'}"></td>
                                     <td th:text="${car.getModelName() + '(' + car.getCarNumber() + ')'}"></td>
@@ -102,35 +105,116 @@
                                     <td th:text="${#numbers.formatInteger(car.getMonthlyStandardPay(), 0, 'COMMA')}"></td>
                                     <td th:text="${car.getReserveStatus()}"></td>
                                     <td><div style="width: 100%; height: 2rem; background: green;"></div></td>
-                                    <td >
-                                        <button class="btn btn-primary">일대여</button>
-                                        <button class="btn btn-primary">월대여</button>
-                                        <button class="btn btn-primary">휴차일</button>
+                                    <td onclick="event.cancelBubble=true">
+                                        <label><input id="dailyRent" name="dailyRent" type="checkbox" value="일대여" class="car-radio" th:checked="${car.getDailyYn() == 'Y' && car.getDailyYn() != null}"><span>일대여</span></label>
+                                        <label><input id="monthlyRent" name="monthlyRent" type="checkbox" value="월대여" class="car-radio" th:checked="${car.getMonthlyYn() == 'Y'}"><span>월대여</span></label>
+                                        <label th:if="${car.getSuspendCnt() > 0}"><input id="carHoliday" name="carHoliday" type="button" value="휴차일" class="car-radio-checkd"><span>휴차일</span></label>
+                                        <label th:if="${car.getSuspendCnt() == 0}"><input id="carHoliday" name="carHoliday" type="button" value="휴차일" class="car-radio"><span>휴차일</span></label>
                                     </td>
                                 </tr>
                                 <script th:inline="javascript">
+
+                                    /* 일대여 변경 시 상태 update */
+                                    $('input:checkbox[id=dailyRent]').change(function () {
+                                        var crIdx = $(this).parent().parent().parent().data('value');
+                                        var index = $(this).parent().parent().parent().index();
+                                        var dailyYn = true; // 일대여 default true, null 일 경우도 true로 조회
+
+                                        var dailyRentArr = document.getElementsByName("dailyRent");
+                                        if(dailyRentArr[index].checked !== true) {
+                                            dailyYn = false;
+                                        }
+
+                                        dailyYn = dailyYn === true ? 'Y' : 'N';
+
+                                        var url = '/car/rentAble.json';
+                                        var data = {
+                                            crIdx : crIdx,
+                                            dailyYn : dailyYn
+                                        };
+
+                                        $.ajax({
+                                            url: url,
+                                            type: 'POST',
+                                            data: JSON.stringify(data),
+                                            dataType: 'json',
+                                            contentType: 'application/json',
+                                            cache: false,
+                                            async: true,
+                                            timeout: 1000
+                                        }).done(function (data, textStatus, jqXHR) {
+
+                                        });
+                                    });
+
+                                    /* 월대여 변경 시 상태 update */
+                                    $('input:checkbox[id=monthlyRent]').change(function () {
+                                        var crIdx = $(this).parent().parent().parent().data('value');
+                                        var index = $(this).parent().parent().parent().index();
+                                        var monthlyYn = true;
+
+                                        var monthlyRentArr = document.getElementsByName("monthlyRent");
+                                        if(monthlyRentArr[index].checked !== true) {
+                                            monthlyYn = false;
+                                        }
+
+                                        monthlyYn = monthlyYn === true ? 'Y' : 'N';
+
+                                        var url = '/car/rentAble.json';
+                                        var data = {
+                                            crIdx : crIdx,
+                                            monthlyYn : monthlyYn
+                                        };
+
+                                        $.ajax({
+                                            url: url,
+                                            type: 'POST',
+                                            data: JSON.stringify(data),
+                                            dataType: 'json',
+                                            contentType: 'application/json',
+                                            cache: false,
+                                            async: true,
+                                            timeout: 1000
+                                        }).done(function (data, textStatus, jqXHR) {
+
+                                        });
+                                    });
+
+                                    /* 차량 휴차일 설정 */
+                                    $('input:button[id=carHoliday]').click(function () {
+                                        var crIdx = $(this).parent().parent().parent().data('value');
+                                        var rtIdx = $(this).parent().parent().parent().children()[0].textContent;
+
+                                        var url = '/car/hoilday?rtIdx=' + encodeURI(rtIdx) + '&crIdx=' + encodeURI(crIdx);
+                                        var name = "test";
+                                        var option = "width = 900, height =600 ,location=no, left=500, top=50";
+
+                                        window.open(url, name, option);
+                                    });
+
                                     // 상세보기 이동
-                                    $('#dataTable > tbody > tr >').click(function () {
-                                        var crIdx = $(this).parent().attr('data-value');
+                                    $('#dataTable > tbody > tr').click(function () {
+                                        var crIdx = $(this).attr('data-value');
                                         if (crIdx === "") return;
 
                                         var url = "car/detail/" + crIdx;
                                         var name = "차량 수정";
                                         var width;
-                                        if (parseInt(window.innerWidth) < 1000){
+                                        if (parseInt(window.innerWidth) < 1000) {
                                             width = 1000;
-                                        }else {
+                                        } else {
                                             width = (parseInt(window.innerWidth) * 0.8);
                                         }
                                         var height = (parseInt(window.innerHeight) * 0.9);
-                                        var left =  (window.screen.width / 2) - (width / 2);
+                                        var left = (window.screen.width / 2) - (width / 2);
                                         var top = (window.screen.height / 2) - (height / 2);
 
 
-                                        var option = "width=" + width +", height=" + height + " ,location=no, left=" + left + ", top=" + top;
+                                        var option = "width=" + width + ", height=" + height + " ,location=no, left=" + left + ", top=" + top;
 
                                         window.open(url, name, option);
                                     });
+
                                 </script>
                                 </tbody>
                             </table>
@@ -179,32 +263,9 @@
 <script th:inline="javascript">
     initDataTables();
 
-    // $(document).ready(function() {
-    //     // Setup - add a text input to each footer cell
-    //     $('#example tfoot th').each( function () {
-    //         var title = $(this).text();
-    //         $(this).html( '<input type="text" placeholder="'+title+'" />' );
-    //     } );
-    //
-    //     // DataTable
-    //     var table = $('#example').DataTable({
-    //         initComplete: function () {
-    //             // Apply the search
-    //             this.api().columns().every( function () {
-    //                 var that = this;
-    //
-    //                 $( 'input', this.footer() ).on( 'keyup change clear', function () {
-    //                     if ( that.search() !== this.value ) {
-    //                         that
-    //                             .search( this.value )
-    //                             .draw();
-    //                     }
-    //                 } );
-    //             } );
-    //         }
-    //     });
-    // } );
-
+    function getLoginUser() {
+        return /*[[${session.LOGIN_SESSION}]]*/ '';
+    }
 </script>
 </body>
 </html>

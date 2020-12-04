@@ -120,6 +120,10 @@
         format: "YYYY년 MM월 DD일"
     });
 
+    function getLoginUser() {
+        return /*[[${session.LOGIN_SESSION}]]*/ '';
+    }
+
     function saveHoliday() {
         var holidayName = $('#holidayName').val().trim();
         var holidayDt = formatDate(holiday.date);

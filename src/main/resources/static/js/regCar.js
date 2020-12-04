@@ -561,9 +561,7 @@ function initDetailInfo(seq){
          */
 		initDetailSelectBox(data);
 
-		if(CRUD_METHOD !== 'insert'){
-			// openIziModal(MODAL_NAME);
-		}
+
 
 		CRUD_METHOD = 'update';
 
@@ -1512,7 +1510,6 @@ function detailSubmit(save_type, req){
 						let crIdx = data.crIdx;
 						$("#crIdx").val(crIdx);
 						// initDetailInfo(crIdx);
-//						$("#"+MODAL_NAME).iziModal('close');
 //						loadApi(drawTable, null, null);
 					}
 					break;
@@ -1568,19 +1565,6 @@ function initDetailData(data){
 	initDetailSelectBox(null);
 
 }
-
-$("#" + MODAL_NAME).iziModal({
-	radius: 5,
-	padding: 20,
-	closeButton: true,
-	overlayClose: false,
-	width: MODAL_WIDTH,
-	height:MODAL_HEIGHT,
-	title: MODAL_TITLE,
-	headerColor: '#002e5b',
-	backdrop: 'static',
-	keyboard: false
-});
 
 /*
  * input box 초기화
@@ -1883,45 +1867,45 @@ function carsuspend(crIdx) {
 	});// end fn_callApi
 }
 
-// 날짜 마스킹 처리
-Array.prototype.forEach.call(document.body.querySelectorAll("*[data-mask]"), applyDataMask);
-function applyDataMask(field) {
-	var mask = field.dataset.mask.split('');
-
-	// For now, this just strips everything that's not a number
-	function stripMask(maskedData) {
-		function isDigit(char) {
-			return /\d/.test(char);
-		}
-		return maskedData.split('').filter(isDigit);
-	}
-
-	// Replace `_` characters with characters from `data`
-	function applyMask(data) {
-		return mask.map(function(char) {
-			if (char != '_') return char;
-			if (data.length == 0) return char;
-			return data.shift();
-		}).join('')
-	}
-
-	function reapplyMask(data) {
-		return applyMask(stripMask(data));
-	}
-
-	function changed() {
-		var oldStart = field.selectionStart;
-		var oldEnd = field.selectionEnd;
-
-		field.value = reapplyMask(field.value);
-
-		field.selectionStart = oldStart;
-		field.selectionEnd = oldEnd;
-	}
-
-	field.addEventListener('click', changed)
-	field.addEventListener('keyup', changed)
-}
+// // 날짜 마스킹 처리
+// Array.prototype.forEach.call(document.body.querySelectorAll("*[data-mask]"), applyDataMask);
+// function applyDataMask(field) {
+// 	var mask = field.dataset.mask.split('');
+//
+// 	// For now, this just strips everything that's not a number
+// 	function stripMask(maskedData) {
+// 		function isDigit(char) {
+// 			return /\d/.test(char);
+// 		}
+// 		return maskedData.split('').filter(isDigit);
+// 	}
+//
+// 	// Replace `_` characters with characters from `data`
+// 	function applyMask(data) {
+// 		return mask.map(function(char) {
+// 			if (char != '_') return char;
+// 			if (data.length == 0) return char;
+// 			return data.shift();
+// 		}).join('')
+// 	}
+//
+// 	function reapplyMask(data) {
+// 		return applyMask(stripMask(data));
+// 	}
+//
+// 	function changed() {
+// 		var oldStart = field.selectionStart;
+// 		var oldEnd = field.selectionEnd;
+//
+// 		field.value = reapplyMask(field.value);
+//
+// 		field.selectionStart = oldStart;
+// 		field.selectionEnd = oldEnd;
+// 	}
+//
+// 	field.addEventListener('click', changed)
+// 	field.addEventListener('keyup', changed)
+// }
 
 // 대여기간 계산
 function calcPeriodDt() {
