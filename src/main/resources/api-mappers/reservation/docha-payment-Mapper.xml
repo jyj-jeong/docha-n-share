@@ -211,13 +211,13 @@
                                  , RM.RENT_FEE
                                  , RM.PAYMENT_TOTAL_AMOUNT
                                  , RM.PERIOD_DT
-                                  , T2.SUM_PAYMENT_AMOUNT
+                                  , RM.SUM_PAYMENT_AMOUNT
                                   , T2.MONTHLY_FEE
-                                  , T2.PAY_COUNT
+                                  , RM.PAY_COUNT
                                   , RM.TOTAL_PAY_COUNT
                                   , T2.LAST_PAY_DATE
                                   , RM.PAYMENT_TOTAL_AMOUNT - T2.SUM_PAYMENT_AMOUNT AS BALANCE
-                                  , DATE_FORMAT(RM.NEXT_PAYMENT_DAY,'%Y-%m-%d') AS NEXT_PAYMENT_DAY
+                                  , RM.NEXT_PAYMENT_DAY
                             FROM (
                                      SELECT
                                          *

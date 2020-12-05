@@ -19,9 +19,11 @@ public interface DochaAdminDashboardMapper {
 
 	Integer cntDailyReserve(DochaMap dochaMap);
 
-	Integer cntMontlyyReserve(DochaMap dochaMap);
+	Integer cntMonthlyReserve(DochaMap dochaMap);
 
-    // todo 누적 월차
+	Integer cntDailyRegularRent(DochaMap dochaMap);
+
+	Integer cntMonthlyRegularRent(DochaMap dochaMap);
 
 	Integer cntDailyCancel(DochaMap dochaMap);
 

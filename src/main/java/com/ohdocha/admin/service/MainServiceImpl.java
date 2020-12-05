@@ -30,16 +30,24 @@ public class MainServiceImpl extends ServiceExtension implements MainService {
     @Override
     public void summaryRentCompanyInfo(ServiceMessage message) {
         DochaMap reqParam = new DochaMap();
+
         DochaMap loginUser = message.getObject("loginUser", DochaMap.class);
+        String userRole = loginUser.getString("userRole");
+        String rtIdx = loginUser.getString("rtIdx");
+
+        if(userRole.equals("MA") || userRole.equals("MU")){
+            reqParam.put("rtIdx", rtIdx);
+        }
 
         // region [ 메인화면 카운트 ]
         Integer calcDailySales = dashboardMapper.calcDailySales(reqParam);
         Integer calcMonthlySales = dashboardMapper.calcMonthlySales(reqParam);
 
         Integer cntDailyReserve = dashboardMapper.cntDailyReserve(reqParam);
-        Integer cntMontlyyReserve = dashboardMapper.cntMontlyyReserve(reqParam);
+        Integer cntMonthlyReserve = dashboardMapper.cntMonthlyReserve(reqParam);
 
-        // todo 누적월차
+        Integer cntDailyRegularRent = dashboardMapper.cntDailyRegularRent(reqParam);
+        Integer cntMonthlyRegularRent = dashboardMapper.cntMonthlyRegularRent(reqParam);
 
         Integer cntDailyCancel = dashboardMapper.cntDailyCancel(reqParam);
         Integer cntMonthlyCancel = dashboardMapper.cntMonthlyCancel(reqParam);
@@ -50,7 +58,10 @@ public class MainServiceImpl extends ServiceExtension implements MainService {
         message.addData("calcMonthlySales", calcMonthlySales);
 
         message.addData("cntDailyReserve", cntDailyReserve);
-        message.addData("cntMontlyyReserve", cntMontlyyReserve);
+        message.addData("cntMonthlyReserve", cntMonthlyReserve);
+
+        message.addData("cntDailyRegularRent", cntDailyRegularRent);
+        message.addData("cntMonthlyRegularRent", cntMonthlyRegularRent);
 
         message.addData("cntDailyCancel", cntDailyCancel);
         message.addData("cntMonthlyCancel", cntMonthlyCancel);
@@ -75,8 +86,8 @@ public class MainServiceImpl extends ServiceExtension implements MainService {
             Map<String,Object> salesDatas = dashboardMapper.salesGraph(reqParam);
             if (salesDatas == null){
                 Map<String,Object> nullData = new HashMap<>();
-                nullData.put("amount", 0.0);
-                nullData.put("salesCount", 0L);
+                nullData.put("amount", 0);
+                nullData.put("salesCount", 0);
 
                 salesGraphList.add(nullData);
             }else {

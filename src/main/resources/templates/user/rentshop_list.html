@@ -73,8 +73,8 @@
                                     <td th:text="${rentCompany.getRtIdx()}"></td>
                                     <td th:text="${rentCompany.getCompanyName()}"></td>
                                     <td th:text="${rentCompany.getBranchName()}"></td>
-                                    <td th:text="${rentCompany.getCompanyAddress()}"></td>
-                                    <td th:text="${rentCompany.getCompanyAddressDetail()}"></td>
+                                    <td th:text="${#strings.substringBefore(rentCompany.getCompanyAddress(), ' ')}"></td>
+                                    <td th:text="${rentCompany.getCompanyAddress() + ' '} + ${rentCompany.getCompanyAddressDetail() == null ? '' :  rentCompany.getCompanyAddressDetail()}"></td>
                                     <td th:text="${rentCompany.getStaffName()}"></td>
                                     <td th:text="${rentCompany.getStaffContact1()}"></td>
                                     <td th:text="${#numbers.formatInteger(rentCompany.getCarCount(), 0, 'COMMA')}"></td>

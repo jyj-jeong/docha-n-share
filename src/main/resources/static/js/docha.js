@@ -970,7 +970,11 @@ function openDaumAddrApi(target){
             jibunAddress = data.jibunAddress;
             jibunAddressEnglish = data.jibunAddressEnglish;
 
-            $(id).val(jibunAddress);
+            if (jibunAddress === ''){
+                $(id).val(roadAddress);
+            }else {
+                $(id).val(jibunAddress);
+            }
         }
     }).open();
 

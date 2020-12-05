@@ -62,7 +62,7 @@
                                         <div class="col mr-2">
                                             <div class="text-xs font-weight-bold text-success text-uppercase mb-1">예약</div>
                                             <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${cntDailyReserve == null ? '일 0건' : '일 ' + cntDailyReserve + '건'}">일 1,000건</div>
-                                            <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${cntMontlyyReserve == null ? '월 0건' : '월 ' + cntMontlyyReserve + '건'}">월 1,000건</div>
+                                            <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${cntMonthlyReserve == null ? '월 0건' : '월 ' + cntMonthlyReserve + '건'}">월 1,000건</div>
                                         </div>
                                         <div class="col-auto">
                                             <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -80,8 +80,8 @@
                                         <div class="col mr-2">
                                             <div class="col mr-2">
                                                 <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">누적 월차</div>
-                                                <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${cntDailyCancel == null ? '0건' : cntDailyCancel + '건'}">1,000원</div>
-                                                <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${cntDailyCancel == null ? '0 원/월' : cntDailyCancel + '원/월'}">1,000,000,000 원/월</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${cntDailyRegularRent == null ? '0건' : cntDailyRegularRent + '건'}">0원</div>
+                                                <div class="h5 mb-0 font-weight-bold text-gray-800" th:text="${cntMonthlyRegularRent == null ? '0 원/월' : #numbers.formatInteger(cntMonthlyRegularRent, 3, 'COMMA') + '원/월'}">0 원/월</div>
                                             </div>
                                         </div>
                                         <div class="col-auto">
