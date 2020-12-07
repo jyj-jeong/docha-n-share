@@ -22,6 +22,8 @@ public interface DochaAdminRentCompanyInfoMapper {
 
     public int updateDcRentStaff(DochaAdminDcRentCompanyStaffRequest reqParam);
 
+    public int deleteDcRentStaff(DochaAdminDcRentCompanyStaffRequest reqParam);
+
     public int insertDcRentCompanyStaff(DochaAdminDcRentCompanyStaffRequest reqParam);
 
     public int updateDcRentStaffUserinfo(DochaAdminDcRentCompanyStaffRequest reqParam);
@@ -46,6 +48,8 @@ public interface DochaAdminRentCompanyInfoMapper {
     public int insertDcRentCompanyReserveMin(DochaAdminDcRentCompanyReserveMinRequest reqParam);
 
     public int updateDcRentCompanyReserveMin(DochaAdminDcRentCompanyReserveMinRequest reqParam);
+
+    public int deleteDcRentCompanyReserveMin(DochaAdminDcRentCompanyReserveMinRequest reqParam);
 
     // 회원사 - 휴무일 정보
     public List<DochaAdminRentCompanyHolidayResponse> selectRentCompanyHoliday(DochaAdminRentCompanyHolidayRequest reqParam);

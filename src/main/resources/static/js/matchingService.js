@@ -816,16 +816,16 @@ function selectCarInfo(){
 //	strOption += "<option value = ''>선택하세요</option>";
 // 
 //	if(!isEmpty(carDamageCover) && !isEmpty(insuranceCopayment)){
-//		strOption += "<option value = '"+insuranceCopayment+"'>" + "면책금:" + carDamageCover + "/보험금:" + insuranceCopayment + "</option>";
+//		strOption += "<option value = '"+insuranceCopayment+"'>" + "고객부담금:" + carDamageCover + "/보험금:" + insuranceCopayment + "</option>";
 //	}
 //	if(!isEmpty(carDamageCover2) && !isEmpty(insuranceCopayment2)){
-//		strOption += "<option value = '"+insuranceCopayment2+"'>" + "면책금:" + carDamageCover2 + "/보험금:" + insuranceCopayment2 + "</option>";
+//		strOption += "<option value = '"+insuranceCopayment2+"'>" + "고객부담금:" + carDamageCover2 + "/보험금:" + insuranceCopayment2 + "</option>";
 //	}
 //	if(!isEmpty(carDamageCover3) && !isEmpty(insuranceCopayment3)){
-//		strOption += "<option value = '"+insuranceCopayment3+"'>" + "면책금:" + carDamageCover3 + "/보험금:" + insuranceCopayment3 + "</option>";
+//		strOption += "<option value = '"+insuranceCopayment3+"'>" + "고객부담금:" + carDamageCover3 + "/보험금:" + insuranceCopayment3 + "</option>";
 //	}
 //	if(!isEmpty(carDamageCover4) && !isEmpty(insuranceCopayment4)){
-//		strOption += "<option value = '"+insuranceCopayment4+"'>" + "면책금:" + carDamageCover4 + "/보험금:" + insuranceCopayment4 + "</option>";
+//		strOption += "<option value = '"+insuranceCopayment4+"'>" + "고객부담금:" + carDamageCover4 + "/보험금:" + insuranceCopayment4 + "</option>";
 //	}
 //
 //	$('#sel_ciIdx').empty();

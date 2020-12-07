@@ -40,6 +40,8 @@ public interface UserService {
 
     void updateRentCompanyStaff(ServiceMessage message);            // 회원사 직원 수정
 
+    void deleteRentCompanyStaff(ServiceMessage message);            // 회원사 직원 삭제
+
     void getRentShopStaffList(ServiceMessage message);              // 회원사 직원 리스트 조회
 
     void updateRentCompanyCommission(ServiceMessage message);       // 회원사 수수료 정보 등록
@@ -72,4 +74,5 @@ public interface UserService {
 
     void selectMenuTemplateList(ServiceMessage message);            // 관리자 메뉴 조회
 
+    void deleteRentCompanyReserveMinList(ServiceMessage message);
 }

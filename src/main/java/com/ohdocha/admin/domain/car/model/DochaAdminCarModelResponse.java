@@ -2,9 +2,13 @@ package com.ohdocha.admin.domain.car.model;
 
 import com.ohdocha.admin.domain.common.CommonResponseDto;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.ibatis.type.Alias;
 
 @Data
+@Getter
+@Setter
 @Alias("carModelResponse")
 public class DochaAdminCarModelResponse extends CommonResponseDto {
 	
@@ -38,184 +42,7 @@ public class DochaAdminCarModelResponse extends CommonResponseDto {
 	private String modDt            ; //수정일시
 	private String delYn            ; //삭제여부
 	private String imgIdx           ; //이미지IDX
-	public String getMdIdx() {
-		return mdIdx;
-	}
-	public void setMdIdx(String mdIdx) {
-		this.mdIdx = mdIdx;
-	}
-	public String getModelName() {
-		return modelName;
-	}
-	public void setModelName(String modelName) {
-		this.modelName = modelName;
-	}
-	public String getModelDetailName() {
-		return modelDetailName;
-	}
-	public void setModelDetailName(String modelDetailName) {
-		this.modelDetailName = modelDetailName;
-	}
-	public String getManufacturerCode() {
-		return manufacturerCode;
-	}
-	public void setManufacturerCode(String manufacturerCode) {
-		this.manufacturerCode = manufacturerCode;
-	}
-	public String getManufacturerName() {
-		return manufacturerName;
-	}
-	public void setManufacturerName(String manufacturerName) {
-		this.manufacturerName = manufacturerName;
-	}
-	public void setConturyCode(String countryCode) {
-		this.countryCode = countryCode;
-	}
-	public String getConturyName() {
-		return countryName;
-	}
-	public void setConturyName(String countryName) {
-		this.countryName = countryName;
-	}
-	public String getImportCode() {
-		return importCode;
-	}
-	public void setImportCode(String importCode) {
-		this.importCode = importCode;
-	}
-	public String getImportName() {
-		return importName;
-	}
-	public void setImportName(String importName) {
-		this.importName = importName;
-	}
-	public String getCarTypeCode() {
-		return carTypeCode;
-	}
-	public void setCarTypeCode(String carTypeCode) {
-		this.carTypeCode = carTypeCode;
-	}
-	public String getCarTypeName() {
-		return carTypeName;
-	}
-	public void setCarTypeName(String carTypeName) {
-		this.carTypeName = carTypeName;
-	}
-	public String getFuelCode() {
-		return fuelCode;
-	}
-	public void setFuelCode(String fuelCode) {
-		this.fuelCode = fuelCode;
-	}
-	public String getFuelName() {
-		return fuelName;
-	}
-	public void setFuelName(String fuelName) {
-		this.fuelName = fuelName;
-	}
-	public String getTransmissionCode() {
-		return transmissionCode;
-	}
-	public void setTransmissionCode(String transmissionCode) {
-		this.transmissionCode = transmissionCode;
-	}
-	public String getTransmissionName() {
-		return transmissionName;
-	}
-	public void setTransmissionName(String transmissionName) {
-		this.transmissionName = transmissionName;
-	}
-	public String getDriveTypeCode() {
-		return driveTypeCode;
-	}
-	public void setDriveTypeCode(String driveTypeCode) {
-		this.driveTypeCode = driveTypeCode;
-	}
-	public String getDriveTypeName() {
-		return driveTypeName;
-	}
-	public void setDriveTypeName(String driveTypeName) {
-		this.driveTypeName = driveTypeName;
-	}
-	public String getDriveLicenseCode() {
-		return driveLicenseCode;
-	}
-	public void setDriveLicenseCode(String driveLicenseCode) {
-		this.driveLicenseCode = driveLicenseCode;
-	}
-	public String getDriveLicenseName() {
-		return driveLicenseName;
-	}
-	public void setDriveLicenseName(String driveLicenseName) {
-		this.driveLicenseName = driveLicenseName;
-	}
-	public String getMaximumPassenger() {
-		return maximumPassenger;
-	}
-	public void setMaximumPassenger(String maximumPassenger) {
-		this.maximumPassenger = maximumPassenger;
-	}
-	public String getDisplacement() {
-		return displacement;
-	}
-	public void setDisplacement(String displacement) {
-		this.displacement = displacement;
-	}
-	public String getYear() {
-		return year;
-	}
-	public void setYear(String year) {
-		this.year = year;
-	}
-	public String getColorName() {
-		return colorName;
-	}
-	public void setColorName(String colorName) {
-		this.colorName = colorName;
-	}
-	public String getPyIdx() {
-		return pyIdx;
-	}
-	public void setPyIdx(String pyIdx) {
-		this.pyIdx = pyIdx;
-	}
-	public String getRegId() {
-		return regId;
-	}
-	public void setRegId(String regId) {
-		this.regId = regId;
-	}
-	public String getRegDt() {
-		return regDt;
-	}
-	public void setRegDt(String regDt) {
-		this.regDt = regDt;
-	}
-	public String getModId() {
-		return modId;
-	}
-	public void setModId(String modId) {
-		this.modId = modId;
-	}
-	public String getModDt() {
-		return modDt;
-	}
-	public void setModDt(String modDt) {
-		this.modDt = modDt;
-	}
-	public String getDelYn() {
-		return delYn;
-	}
-	public void setDelYn(String delYn) {
-		this.delYn = delYn;
-	}
-	public String getImgIdx() {
-		return imgIdx;
-	}
-	public void setImgIdx(String imgIdx) {
-		this.imgIdx = imgIdx;
-	}
-	
-	
+	private String carCount           ; //차량대수
+
 
 }

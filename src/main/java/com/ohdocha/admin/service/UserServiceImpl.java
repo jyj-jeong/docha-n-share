@@ -492,6 +492,20 @@ public class UserServiceImpl extends ServiceExtension implements UserService {
     }
 
     @Override
+    public void deleteRentCompanyStaff(ServiceMessage message) {
+        DochaAdminDcRentCompanyStaffRequest rentCompanyStaffRequest = message.getObject("rentCompanyStaffRequest", DochaAdminDcRentCompanyStaffRequest.class);
+
+        int res = rentCompanyInfoMapper.deleteDcRentStaff(rentCompanyStaffRequest);
+
+        if (res == 1){
+            message.addData("code", 200);
+        }else {
+            message.addData("code", 400);
+            message.addData("errMsg", "담당자 삭제에 실패했습니다.");
+        }
+    }
+
+    @Override
     public void selectRentCompanyReserveMinList(ServiceMessage message) {
         DochaAdminDcRentCompanyReserveMinRequest rentCompanyReserveMinRequest = message.getObject("rentCompanyReserveMinRequest", DochaAdminDcRentCompanyReserveMinRequest.class);
 
@@ -500,6 +514,20 @@ public class UserServiceImpl extends ServiceExtension implements UserService {
         if (rentCompanyReserveMinResponseList.size() != 0){
             message.addData("code", 200);
             message.addData("result", rentCompanyReserveMinResponseList);
+        }else {
+            message.addData("code", 400);
+        }
+    }
+
+
+    @Override
+    public void deleteRentCompanyReserveMinList(ServiceMessage message) {
+        DochaAdminDcRentCompanyReserveMinRequest rentCompanyReserveMinRequest = message.getObject("rentCompanyReserveMinRequest", DochaAdminDcRentCompanyReserveMinRequest.class);
+
+        int res = rentCompanyInfoMapper.deleteDcRentCompanyReserveMin(rentCompanyReserveMinRequest);
+
+        if (res == 1){
+            message.addData("code", 200);
         }else {
             message.addData("code", 400);
         }

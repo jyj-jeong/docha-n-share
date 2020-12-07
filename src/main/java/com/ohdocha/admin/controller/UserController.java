@@ -300,6 +300,18 @@ public class UserController extends ControllerExtension {
         return serviceMessage;
     }
 
+    /* 회원사 직원 삭제 */
+    @PostMapping(value = "/api/v1.0/deleteDcRentCompanyStaff.do")
+    @ResponseBody
+    public Object deleteRentCompanyStaff(@RequestBody DochaAdminDcRentCompanyStaffRequest rentCompanyStaffRequest, HttpServletRequest request) {
+        ServiceMessage serviceMessage = createServiceMessage(request);
+        serviceMessage.addData("rentCompanyStaffRequest", rentCompanyStaffRequest);
+
+        userService.deleteRentCompanyStaff(serviceMessage);
+
+        return serviceMessage;
+    }
+
     /* 회원사 수수료 정보 추가 */
     @PostMapping(value = "/api/v1.0/updateDcRentCompanyCommission.do")
     @ResponseBody
@@ -333,6 +345,18 @@ public class UserController extends ControllerExtension {
         serviceMessage.addData("rentCompanyReserveMinRequest", rentCompanyReserveMinRequest);
 
         userService.insertRentCompanyReserveMinList(serviceMessage);
+
+        return serviceMessage;
+    }
+
+    /* 예약정보 특정 시간 삭제 */
+    @PostMapping(value = "/api/v1.0/deleteDcRentCompanyReserveMin.do")
+    @ResponseBody
+    public Object deleteDcRentCompanyReserveMin(@RequestBody DochaAdminDcRentCompanyReserveMinRequest rentCompanyReserveMinRequest, HttpServletRequest request) {
+        ServiceMessage serviceMessage = createServiceMessage(request);
+        serviceMessage.addData("rentCompanyReserveMinRequest", rentCompanyReserveMinRequest);
+
+        userService.deleteRentCompanyReserveMinList(serviceMessage);
 
         return serviceMessage;
     }

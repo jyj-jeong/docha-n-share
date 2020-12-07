@@ -55,7 +55,7 @@
                             </div>
                             <div class="col-3 mb-3">
                                 <label class="form-label" for="sel_fuel">연료</label>
-                                <input type="text" class="form-control" name="sel_fuel" id="sel_fuel"/>
+                                <select id="sel_fuel" name="sel_fuel" class="custom-select"></select>
                             </div>
                             <div class="col-3 mb-3">
                                 <label class="form-label" for="carRegDt">출고연식</label>
@@ -65,9 +65,8 @@
                             </div>
 
                             <div class="col-3 mb-3">
-                                <label class="form-label" for="colorName">색상</label>
-                                <input type="text" class="form-control" name="colorName" id="colorName"
-                                       placeholder="색상"/>
+                                <label class="form-label" for="sel_colorName">색상</label>
+                                <select id="sel_colorName" name="sel_colorName" class="custom-select"></select>
                             </div>
                             <div class="col-3 mb-3">
                                 <label class="form-label" for="carNumber">차량번호</label>
@@ -88,9 +87,10 @@
                             <!--                            </div>-->
                         </div>
                         <div class="row">
-                            <div class="col-3 mb-3">
+                            <div class="col-12 mb-3">
                                 <label class="form-label">옵션</label>
-                                <input type="text" class="form-control"/>
+                                <div id="carOptionList">
+                                </div>
                             </div>
                         </div>
 
@@ -175,7 +175,7 @@
                                         <input type="text" class="form-control float-l" id="insuranceCopayment" placeholder="단위:원"/>
                                     </div>
                                     <div class="m-1">
-                                        <label>자차1 보험 면책금</label>
+                                        <label>자차1 보험 고객부담금</label>
                                         <input type="text" class="form-control float-l" id="carDamageCover" placeholder="단위:원"/>
                                     </div>
                                 </div>
@@ -189,7 +189,7 @@
                                         <input type="text" class="form-control float-l" id="insuranceCopayment2" placeholder="단위:원"/>
                                     </div>
                                     <div class="m-1">
-                                        <label>자차2 보험 면책금</label>
+                                        <label>자차2 보험 고객부담금</label>
                                         <input type="text" class="form-control float-l" id="carDamageCover2" placeholder="단위:원"/>
                                     </div>
                                 </div>
@@ -205,7 +205,7 @@
                                         <input type="text" class="form-control float-l" id="insuranceCopayment3" placeholder="단위:원"/>
                                     </div>
                                     <div class="m-1">
-                                        <label>자차3 보험 면책금</label>
+                                        <label>자차3 보험 고객부담금</label>
                                         <input type="text" class="form-control float-l" id="carDamageCover3" placeholder="단위:원"/>
                                     </div>
                                 </div>
@@ -219,7 +219,7 @@
                                         <input type="text" class="form-control float-l" id="insuranceCopayment4" placeholder="단위:원"/>
                                     </div>
                                     <div class="m-1">
-                                        <label>자차4 보험 면책금</label>
+                                        <label>자차4 보험 고객부담금</label>
                                         <input type="text" class="form-control float-l" id="carDamageCover4" placeholder="단위:원"/>
                                     </div>
                                 </div>
@@ -249,7 +249,7 @@
                         <div class="row mt-2">
                             <div class="col-3 mb-3">
                                 <label class="form-label" for="dailyStandardPay">일 기본요금</label>
-                                <input type="text" class="form-control" name="dailyStandardPay" id="dailyStandardPay"/>
+                                <input type="text" class="form-control" onblur="this.value = objectConvertToPriceFormat(this.value)" name="dailyStandardPay" id="dailyStandardPay"/>
                             </div>
                             <div class="col-3 mb-3">
                                 <label class="form-label" for="dailyMaxRate">일 대여 최대 할인율</label>
@@ -258,7 +258,7 @@
                             </div>
                             <div class="col-3 mb-3">
                                 <label class="form-label" for="monthlyStandardPay">월 기본요금</label>
-                                <input type="text" class="form-control" name="monthlyStandardPay" id="monthlyStandardPay"/>
+                                <input type="text" class="form-control" onblur="this.value = objectConvertToPriceFormat(this.value)" name="monthlyStandardPay" id="monthlyStandardPay"/>
                             </div>
                             <div class="col-3 mb-3">
                                 <label class="form-label" for="monthlyMaxRate">월 대여 최대 할인율</label>
@@ -266,27 +266,27 @@
                             </div>
                             <div class="col-3 mb-3">
                                 <label class="form-label" for="month3Deposit">3개월 보증금</label>
-                                <input type="text" class="form-control" name="month3Deposit" id="month3Deposit"/>
+                                <input type="text" class="form-control" onblur="this.value = objectConvertToPriceFormat(this.value)" name="month3Deposit" id="month3Deposit"/>
                             </div>
                             <div class="col-3 mb-3">
                                 <label class="form-label" for="month6Deposit">6개월 보증금</label>
-                                <input type="text" class="form-control" name="month6Deposit" id="month6Deposit"/>
+                                <input type="text" class="form-control" onblur="this.value = objectConvertToPriceFormat(this.value)" name="month6Deposit" id="month6Deposit"/>
                             </div>
                             <div class="col-3 mb-3">
                                 <label class="form-label" for="month9Deposit">9개월 보증금</label>
-                                <input type="text" class="form-control" name="month9Deposit" id="month9Deposit"/>
+                                <input type="text" class="form-control" onblur="this.value = objectConvertToPriceFormat(this.value)" name="month9Deposit" id="month9Deposit"/>
                             </div>
                             <div class="col-3 mb-3">
                                 <label class="form-label" for="month12Deposit">12개월 보증금</label>
-                                <input type="text" class="form-control" name="month12Deposit" id="month12Deposit"/>
+                                <input type="text" class="form-control" onblur="this.value = objectConvertToPriceFormat(this.value)" name="month12Deposit" id="month12Deposit"/>
                             </div>
                             <div class="col-3 mb-3">
                                 <label class="form-label" for="deliveryStandardPay">배달 기본요금</label>
-                                <input type="text" class="form-control" name="deliveryStandardPay" id="deliveryStandardPay"/>
+                                <input type="text" class="form-control" onblur="this.value = objectConvertToPriceFormat(this.value)" name="deliveryStandardPay" id="deliveryStandardPay"/>
                             </div>
                             <div class="col-3 mb-3">
                                 <label class="form-label" for="deliveryAddPay">배달 10km 단위 추가요금</label>
-                                <input type="text" class="form-control" name="deliveryAddPay" id="deliveryAddPay"/>
+                                <input type="text" class="form-control" onblur="this.value = objectConvertToPriceFormat(this.value)" name="deliveryAddPay" id="deliveryAddPay"/>
                             </div>
                         </div>
                         <div class="row mt-3">
@@ -569,6 +569,10 @@
         initDetailData('insert');
     }else if (CRUD === "modify"){
         initDetailInfo(crIdx)
+    }
+
+    function getLoginUser() {
+        return /*[[${session.LOGIN_SESSION}]]*/ '';
     }
 
     var browse = navigator.userAgent.toLowerCase();

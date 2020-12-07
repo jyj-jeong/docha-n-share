@@ -44,13 +44,13 @@ public class DochaAdminRegCarDetailRequest extends CommonRequestDto {
 	private String propertyDamageCover; //대물보상금액
 	private String onselfDamageCover  ; //자손보상금액
 	private String insuranceCopayment ; //고객부담금(보험료)
-	private String carDamageCover     ; //자차보상금(면책금)
+	private String carDamageCover     ; //자차보상금(고객부담금)
 	private String insuranceCopayment2; //고객부담금2(보험료)
-	private String carDamageCover2    ; //자차보상금2(면책금)
+	private String carDamageCover2    ; //자차보상금2(고객부담금)
 	private String insuranceCopayment3; //고객부담금3(보험료)
-	private String carDamageCover3    ; //자차보상금3(면책금)
+	private String carDamageCover3    ; //자차보상금3(고객부담금)
 	private String insuranceCopayment4; //고객부담금4(보험료)
-	private String carDamageCover4    ; //자차보상금4(면책금)
+	private String carDamageCover4    ; //자차보상금4(고객부담금)
 	private String carDamage1Yn       ; //자차1사용유무
 	private String carDamage2Yn       ; //자차2사용유무
 	private String carDamage3Yn       ; //자차3사용유무

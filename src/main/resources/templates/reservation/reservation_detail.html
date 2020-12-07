@@ -199,9 +199,9 @@
                                 </div>
                             </div>
                         </div>
-<!--                        <div th:if="${session.LOGIN_SESSION.userRole.equals('RA')}" class="col-lg-12 float-l flex-1 text-right p-b-10">-->
-<!--                            <button class="btn btn-secondary ml-3" type="button">예약취소 및 환불</button>-->
-<!--                        </div>-->
+                        <!--                        <div th:if="${session.LOGIN_SESSION.userRole.equals('RA')}" class="col-lg-12 float-l flex-1 text-right p-b-10">-->
+                        <!--                            <button class="btn btn-secondary ml-3" type="button">예약취소 및 환불</button>-->
+                        <!--                        </div>-->
                     </div>
                 </div>
                 <div class="main-card mb-3 card">
@@ -249,27 +249,29 @@
                         <div class="row">
                             <div class="col-lg-12 mb-3 mt-3 float-l" id="optionDetailCode" >
                                 <label class="carInsuranceInfoOption" >옵션</label>
-                                <input type="text" id="optionCodeValue" class="form-control" value="">
+                                <input type="text" id="optionCodeValue" class="form-control" value="" readonly>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-3 mb-3 float-l">
                                 <label>대인</label>
-                                <input type="text" id="personalCover" class="form-control" value="">
+                                <input type="text" id="personalCover" class="form-control" value="" readonly>
                             </div>
                             <div class="col-lg-3 mb-3 float-l">
                                 <label>대물</label>
-                                <input type="text" id="propertyDamageCover" class="form-control" value="">
+                                <input type="text" id="propertyDamageCover" class="form-control" value="" readonly>
                             </div>
                             <div class="col-lg-3 mb-3 float-l">
                                 <label>자손</label>
-                                <input type="text" id="onselfDamageCover" class="form-control" value="">
+                                <input type="text" id="onselfDamageCover" class="form-control" value="" readonly>
                             </div>
                             <div class="col-lg-3 mb-3 float-l">
                                 <label>자차 고객부담금</label>
                                 <input type="hidden" id="carDamageCover">
                                 <input type="hidden" id="insuranceCopayment">
-                                <select id="sel_ciIdx" class="custom-select" onchange="selectInsuranceInfo();">
+                                <select th:if="${#session.getAttribute('LOGIN_SESSION').userRole == 'RA'}" id="sel_ciIdx" class="custom-select" onchange="selectInsuranceInfo();">
+                                </select>
+                                <select th:if="${#session.getAttribute('LOGIN_SESSION').userRole != 'RA'}" id="sel_ciIdx" class="custom-select" onchange="selectInsuranceInfo();"disabled>
                                 </select>
                             </div>
                         </div>
@@ -280,33 +282,34 @@
                         <div class="row">
                             <div class="col-lg-4 mb-3 float-l flex-1" >
                                 <label>대여금액</label>
-                                <input type="text" class="form-control" id="rentFee" placeholder="" />
+                                <input type="text" class="form-control" id="rentFee" placeholder="" readonly/>
                             </div>
                             <div class="col-lg-4 mb-3 float-l flex-1" >
                                 <label>왕복배달금액</label>
-                                <input type="text" class="form-control" id="deliveryFee" placeholder=""  value="0"/>
+                                <input type="text" class="form-control" id="deliveryFee" placeholder=""  value="0" readonly/>
                             </div>
                             <div class="col-lg-4 mb-3 float-l" style="flex:1;">
                                 <label>보험료</label>
-                                <input type="text" id="insuranceFee" class="form-control" value="">
+                                <input type="text" id="insuranceFee" class="form-control" value="" readonly>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-lg-3 mb-3 float-l" style="flex:1;">
                                 <label>총 대여금액</label>
-                                <input type="text" id="paymentTotalAmount" class="form-control" value="">
+                                <input type="text" id="paymentTotalAmount" class="form-control" value="" readonly>
                             </div>
                             <div class="col-lg-3 mb-3 float-l flex-1" >
                                 <label>추가금액</label>
-                                <input type="text" class="form-control" id="revaddFee" placeholder=""  value="0" />
+                                <input th:if="${#session.getAttribute('LOGIN_SESSION').userRole == 'RA'}" type="text" class="form-control" id="revaddFee" placeholder=""  value="0"/>
+                                <input th:if="${#session.getAttribute('LOGIN_SESSION').userRole != 'RA'}" type="text" class="form-control" id="revaddFee" placeholder=""  value="0" readonly/>
                             </div>
                             <div class="col-lg-3 mb-3 float-l" style="flex:1;">
                                 <label>할인금액</label>
-                                <input type="text" id="discountFee" class="form-control" value="">
+                                <input type="text" id="discountFee" class="form-control" value="" readonly>
                             </div>
                             <div class="col-lg-3 mb-3 float-l" style="flex:1;">
                                 <label>결제금액</label>
-                                <input type="text" id="paymentAmount"  class="form-control" value="">
+                                <input type="text" id="paymentAmount"  class="form-control" value="" readonly>
                             </div>
                         </div>
                         <div class="col-lg-12 mb-3 mt-3 mt-3 float-l" >

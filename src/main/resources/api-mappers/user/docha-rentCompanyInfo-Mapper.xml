@@ -228,31 +228,24 @@
 	<select id="selectrentCompanyStaffList" parameterType="dcRentCompanyStaffRequest"
 			resultType="dcRentCompanyStaffResponse">
 		<![CDATA[
-			SELECT * FROM (
 				SELECT
-						IFNULL(T2.RS_IDX          , '') AS RS_IDX             /*제휴사직원idsx*/
-					,	IFNULL(T2.RT_IDX          , '') AS RT_IDX             /*제휴사idx*/
-					,	IFNULL(T2.STAFF_NAME      , '') AS STAFF_NAME         /*직원명*/
-					,	IFNULL(T2.STAFF_CONTACT1  , '') AS STAFF_CONTACT1     /*연락처1*/
-					,	IFNULL(T2.STAFF_CONTACT2  , '') AS STAFF_CONTACT2     /*연락처2*/
-					,	IFNULL(T2.STAFF_EMAIL     , '') AS STAFF_EMAIL        /*이메일*/
-					,	IFNULL(T2.STAFF_TITLE     , '') AS STAFF_TITLE        /*직위*/
-					,	IFNULL(T2.OWNER_YN        , '') AS OWNER_YN           /*대표여부*/
-					,	IFNULL(T2.STAFF_TYPE_CODE , '') AS STAFF_TYPE_CODE    /*직원분류code*/
-					,	IFNULL(T2.REG_ID          , '') AS REG_ID             /*등록자*/
-					,	IFNULL(T2.REG_DT          , '') AS REG_DT             /*등록일시*/
-					,	IFNULL(T2.MOD_ID          , '') AS MOD_ID             /*수정자*/
-					,	IFNULL(T2.MOD_DT          , '') AS MOD_DT             /*수정일시*/
-					,	IFNULL(T2.DEL_YN          , '') AS DEL_YN             /*삭제여부*/			
-					,	IFNULL(T2.RS_IDX          , '') AS UR_IDX             /*회원순번*/
-			FROM DC_USER_INFO T1
-			LEFT JOIN DC_RENT_COMPANY_STAFF T2
-            	  ON T1.RT_IDX = T2.RT_IDX
-			WHERE T2.RS_IDX IS NOT NULL
-              AND 'N' = IFNULL(T2.DEL_YN, 'N')
-              ) A
+						IFNULL(RS_IDX          , '') AS RS_IDX             /*제휴사직원idsx*/
+					,	IFNULL(RT_IDX          , '') AS RT_IDX             /*제휴사idx*/
+					,	IFNULL(STAFF_NAME      , '') AS STAFF_NAME         /*직원명*/
+					,	IFNULL(STAFF_CONTACT1  , '') AS STAFF_CONTACT1     /*연락처1*/
+					,	IFNULL(STAFF_CONTACT2  , '') AS STAFF_CONTACT2     /*연락처2*/
+					,	IFNULL(STAFF_EMAIL     , '') AS STAFF_EMAIL        /*이메일*/
+					,	IFNULL(STAFF_TITLE     , '') AS STAFF_TITLE        /*직위*/
+					,	IFNULL(OWNER_YN        , '') AS OWNER_YN           /*대표여부*/
+					,	IFNULL(STAFF_TYPE_CODE , '') AS STAFF_TYPE_CODE    /*직원분류code*/
+					,	IFNULL(REG_ID          , '') AS REG_ID             /*등록자*/
+					,	IFNULL(REG_DT          , '') AS REG_DT             /*등록일시*/
+					,	IFNULL(MOD_ID          , '') AS MOD_ID             /*수정자*/
+					,	IFNULL(MOD_DT          , '') AS MOD_DT             /*수정일시*/
+					,	IFNULL(DEL_YN          , '') AS DEL_YN             /*삭제여부*/
+			FROM DC_RENT_COMPANY_STAFF
+              WHERE 'N' = IFNULL(DEL_YN, 'N')
 		]]>
-		<trim prefix="WHERE" prefixOverrides="AND|OR">
 			<if test="rtIdx != null and rtIdx != ''">
 				<![CDATA[ AND RT_IDX = #{rtIdx} ]]>
 			</if>
@@ -271,7 +264,6 @@
 			<if test="staffContact1 != null and staffContact1 != ''">
 				<![CDATA[ AND STAFF_CONTACT1 = #{staffContact1} ]]>
 			</if>
-		</trim>
 	</select>
 
 	<update  id="updateDcRentStaff" parameterType="dcRentCompanyStaffRequest">
@@ -348,45 +340,45 @@
     ]]>
     </insert>
 
+	<delete  id="deleteDcRentStaff" parameterType="RentCompanyHolidayRequest">
+		<![CDATA[ DELETE FROM DC_RENT_COMPANY_STAFF WHERE RS_IDX = #{rsIdx}]]>
+	</delete>
+
 	<!-- 
 	회원사별 최소예약정보 [일시 FR~TO, 최소예약 시간]
 	 -->
 	<select id="selectDcRentCompanyReserveMinList" parameterType="dcRentCompanyReserveMinRequest"
 			resultType="dcRentCompanyReserveMinResponse">
 		<![CDATA[
-		SELECT * FROM (
-								SELECT
-											IFNULL(MIN_IDX          	, '') AS MIN_IDX            /*특정기간idx*/
-										,	IFNULL(RT_IDX          	, '') AS RT_IDX             /*제휴사idx*/
-										,	IFNULL(MINIMUM_START_DT    , '') AS MINIMUM_START_DT	/*최소예약시간시작일*/
-										,	IFNULL(MINIMUM_END_DT  	, '') AS MINIMUM_END_DT     /*최소예약시간종료일*/
-										,	IFNULL(MINIMUM_TIME  		, '') AS MINIMUM_TIME     	/*최소시간*/
-										,	IFNULL(DEL_YN     			, '') AS DEL_YN        		/*삭제여부*/
-								FROM DC_RENT_COMPANY_RESERVE_MIN
-								WHERE 'N' = IFNULL(DEL_YN, 'N')
-		 ) A
+				SELECT
+							IFNULL(MIN_IDX          	, '') AS MIN_IDX            /*특정기간idx*/
+						,	IFNULL(RT_IDX          	, '') AS RT_IDX             /*제휴사idx*/
+						,	IFNULL(MINIMUM_START_DT    , '') AS MINIMUM_START_DT	/*최소예약시간시작일*/
+						,	IFNULL(MINIMUM_END_DT  	, '') AS MINIMUM_END_DT     /*최소예약시간종료일*/
+						,	IFNULL(MINIMUM_TIME  		, '') AS MINIMUM_TIME     	/*최소시간*/
+						,	IFNULL(DEL_YN     			, '') AS DEL_YN        		/*삭제여부*/
+				FROM DC_RENT_COMPANY_RESERVE_MIN
+				WHERE 'N' = IFNULL(DEL_YN, 'N')
+
 		]]>
-		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			<![CDATA[  ]]>
 			<if test="rtIdx != null and rtIdx != ''">
-				AND <![CDATA[ A.RT_IDX = #{rtIdx} ]]>
+				AND <![CDATA[ RT_IDX = #{rtIdx} ]]>
 			</if>
 			<if test="minIdx != null and minIdx != ''">
-				AND <![CDATA[ A.MIN_IDX = #{minIdx} ]]>
+				AND <![CDATA[ MIN_IDX = #{minIdx} ]]>
 			</if>
 			<if test="tminIdx != null and tminIdx != ''">
-				AND <![CDATA[ A.MIN_IDX != #{tminIdx} ]]>
+				AND <![CDATA[ MIN_IDX != #{tminIdx} ]]>
 			</if>
 			<if test="minimumStartDt != null and minimumStartDt != ''">
 				AND <![CDATA[
-	    		( A.MINIMUM_START_DT between #{minimumStartDt} and #{minimumEndDt}
-	    		OR A.MINIMUM_END_DT between #{minimumStartDt} and #{minimumEndDt}
-	    		OR #{minimumStartDt} BETWEEN A.MINIMUM_START_DT AND A.MINIMUM_END_DT
-	    		OR #{minimumEndDt} BETWEEN A.MINIMUM_START_DT AND A.MINIMUM_END_DT
+	    		( MINIMUM_START_DT between #{minimumStartDt} and #{minimumEndDt}
+	    		OR MINIMUM_END_DT between #{minimumStartDt} and #{minimumEndDt}
+	    		OR #{minimumStartDt} BETWEEN MINIMUM_START_DT AND MINIMUM_END_DT
+	    		OR #{minimumEndDt} BETWEEN MINIMUM_START_DT AND MINIMUM_END_DT
 	    		)
 	    		]]>
 			</if>
-		</trim>
 	</select>
 
 	<update  id="updateDcRentCompanyReserveMin" parameterType="dcRentCompanyReserveMinRequest">
@@ -435,6 +427,10 @@
 				)				
     ]]>
     </insert>
+
+	<delete  id="deleteDcRentCompanyReserveMin" parameterType="dcRentCompanyReserveMinRequest">
+		<![CDATA[ DELETE FROM DC_RENT_COMPANY_RESERVE_MIN WHERE MIN_IDX = #{minIdx}]]>
+	</delete>
 
 	<select id="selectRentCompanyComission" parameterType="dcRentCompanyComissionRequest"
 			resultType="dcRentCompanyComissionResponse">

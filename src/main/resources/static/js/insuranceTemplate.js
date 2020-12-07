@@ -531,7 +531,7 @@ function detailValidation(){
 		$('#insuranceCopayment').focus();
 		return;
 	}else if(isEmpty(carDamageCover)){
-		errorAlert('자차보험1', '자차보험 면책금 입력 하여주세요.');
+		errorAlert('자차보험1', '자차보험 고객부담금 입력 하여주세요.');
 		$('#carDamageCover').focus();
 		return;
 	}else if(!isEmpty(insuranceCopayment) && !$.isNumeric(insuranceCopayment)){
@@ -539,7 +539,7 @@ function detailValidation(){
 		$('#insuranceCopayment').focus();
 		return;
 	}else if(!isEmpty(carDamageCover) && !$.isNumeric(carDamageCover)){
-		errorAlert('자차보험 1', '자차보험 면책금 숫자만 입력 가능합니다.');
+		errorAlert('자차보험 1', '자차보험 고객부담금 숫자만 입력 가능합니다.');
 		$('#carDamageCover').focus();
 		return;
 	}else if(!isEmpty(insuranceCopayment2) && !$.isNumeric(insuranceCopayment2)){
@@ -547,7 +547,7 @@ function detailValidation(){
 		$('#insuranceCopayment2').focus();
 		return;
 	}else if(!isEmpty(carDamageCover2) && !$.isNumeric(carDamageCover2)){
-		errorAlert('자차보험 2', '자차보험 면책금 숫자만 입력 가능합니다.');
+		errorAlert('자차보험 2', '자차보험 고객부담금 숫자만 입력 가능합니다.');
 		$('#carDamageCover2').focus();
 		return;
 	}else if(!isEmpty(insuranceCopayment3) && !$.isNumeric(insuranceCopayment3)){
@@ -555,7 +555,7 @@ function detailValidation(){
 		$('#insuranceCopayment3').focus();
 		return;
 	}else if(!isEmpty(carDamageCover3) && !$.isNumeric(carDamageCover3)){
-		errorAlert('자차보험 3', '자차보험 면책금 숫자만 입력 가능합니다.');
+		errorAlert('자차보험 3', '자차보험 고객부담금 숫자만 입력 가능합니다.');
 		$('#carDamageCover3').focus();
 		return;
 	}else if(!isEmpty(insuranceCopayment4) && !$.isNumeric(insuranceCopayment4)){
@@ -563,7 +563,7 @@ function detailValidation(){
 		$('#insuranceCopayment4').focus();
 		return;
 	}else if(!isEmpty(carDamageCover4) && !$.isNumeric(carDamageCover4)){
-		errorAlert('자차보험 4', '자차보험 면책금 숫자만 입력 가능합니다.');
+		errorAlert('자차보험 4', '자차보험 고객부담금 숫자만 입력 가능합니다.');
 		$('#carDamageCover4').focus();
 		return;
 	}

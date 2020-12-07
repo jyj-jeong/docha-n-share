@@ -487,7 +487,7 @@ function initDetailInfo(seq) {
 			let accountHolder = data.accountHolder;
 			let alramYn = data.alarmYn;
 //			let taxInvoiceCode = data.taxInvoiceCode;
-			let commissionPer = data.commissionPer;
+			let commissionPer = isEmpty(data.commissionPer) ? 15.0 : data.commissionPer;
 			let accessYn = data.accessYn;
 
 			let ownerYn = data.ownerYn;
@@ -712,7 +712,8 @@ function staffListGrid(_rtIdx) {
 					"staffEmail" : data.staffEmail,
 					"staffTitle" : data.staffTitle,
 					"ownerYn" : data.ownerYn,
-					"urIdx" : data.urIdx
+					"urIdx" : data.urIdx,
+					"deleteStaff" : '삭제'
 				};
 
 				rows.push(staff);
@@ -759,9 +760,52 @@ function staffListGrid(_rtIdx) {
 						return setText;
 					}
 				},
-				{"name": "urIdx", "id": "urIdx", "title": "회원순번", "visible": false}
+				{"name": "urIdx", "id": "urIdx", "title": "회원순번", "visible": false},
+				{"name": "deleteStaff", "id":"deleteStaff", "title": "삭제", "type": "text", "formatter" : function () {
+						var actions = $('<div/>');
+
+						var btnDeleteStaff = ($('<button/>', {'class':'btn btn-outline-danger'})
+							.append('<span/>','삭제')
+							.on("click", this, deleteStaff))
+							.appendTo(actions);
+
+						return actions;
+				}}
 			];
 
+
+			function deleteStaff(){
+				var tr = $(this).closest('tr').children();
+				var rsIdx = tr[0].textContent;
+				var deleteYn = confirm("해당 담당자를 삭제하시겠습니까?");
+				if (deleteYn){
+
+					var url = '/api/v1.0/deleteDcRentCompanyStaff.do';
+					var req = {
+						rsIdx : rsIdx
+					};
+
+					$.ajax({
+						url: url,
+						type: 'POST',
+						data: JSON.stringify(req),
+						contentType: 'application/json',
+						cache: false,
+						acync : false,
+						timeout: 10000
+					}).done(function (data, textStatus, jqXHR) {
+
+						if( data.code == 400 ){
+							alert(data.errMsg);
+						}
+						if( data.code == 200 ){
+							location.reload();
+						}
+
+					});
+
+				}
+			}
 
 			$('#rentStaffList').empty();
 			$('#rentStaffList').footable({
@@ -792,17 +836,23 @@ function rentReserveMinListGrid(_rtIdx) {
 
 	fn_callApi(method, target, req, function (response) {
 		let res = response;
+		let rows = [];
 
 		if (res.code == 200) {
 
-			let data = res.result[0];
+			for (var i = 0; i< res.result.length; i++){
+				var data = res.result[i];
 
-			rows = [{
-				"minIdx": data.minIdx,
-				"minimumStartDt": data.minimumStartDt,
-				"minimumEndDt": data.minimumEndDt,
-				"minimumTime": data.minimumTime,
-			}];
+				var min = {
+					"minIdx": data.minIdx,
+					"minimumStartDt": data.minimumStartDt,
+					"minimumEndDt": data.minimumEndDt,
+					"minimumTime": data.minimumTime,
+					"deleteStaff" : '삭제'
+				};
+
+				rows.push(min);
+			}
 
 			let columns;
 			columns = [
@@ -810,7 +860,51 @@ function rentReserveMinListGrid(_rtIdx) {
 				{"name": "minimumStartDt", "title": "최소예약시간시작일", "breakpoints": "xs"},
 				{"name": "minimumEndDt", "title": "최소예약시간종료일", "breakpoints": "xs"},
 				{"name": "minimumTime", "title": "최소시간", "breakpoints": "xs"},
+				{"name": "deleteStaff", "id":"deleteStaff", "title": "삭제", "type": "text", "formatter" : function () {
+						var actions = $('<div/>');
+
+						var btnDeleteMin = ($('<button/>', {'class':'btn btn-outline-danger'})
+							.append('<span/>','삭제')
+							.on("click", this, deleteReserveMin))
+							.appendTo(actions);
+
+						return actions;
+					}}
 			];
+
+
+			function deleteReserveMin(){
+				var tr = $(this).closest('tr').children();
+				var minIdx = tr[0].textContent;
+				var deleteYn = confirm("해당 최소예약시간을 삭제하시겠습니까?");
+				if (deleteYn){
+
+					var url = '/api/v1.0/deleteDcRentCompanyReserveMin.do';
+					var req = {
+						minIdx : minIdx
+					};
+
+					$.ajax({
+						url: url,
+						type: 'POST',
+						data: JSON.stringify(req),
+						contentType: 'application/json',
+						cache: false,
+						acync : false,
+						timeout: 10000
+					}).done(function (data, textStatus, jqXHR) {
+
+						if( data.code == 400 ){
+							alert(data.errMsg);
+						}
+						if( data.code == 200 ){
+							location.reload();
+						}
+
+					});
+
+				}
+			}
 
 			$('#rentReserveMinList').empty();
 			$('#rentReserveMinList').footable({
@@ -841,20 +935,75 @@ function holidayListGrid(_rtIdx) {
 
 	fn_callApi(method, target, req, function (response) {
 		let res = response;
+		let rows = [];
 
 		if (res.code == 200) {
 
-			let data = res.result;
+			for (var i = 0; i < res.result.length; i++){
+				let data = res.result[i];
+
+				var holiday = {
+					"holIdx": data.holIdx,
+					"holidayStartDt": data.holidayStartDt,
+					"holidayEndDt": data.holidayEndDt,
+					"holidayName": data.holidayName,
+					"deleteStaff" : '삭제'
+				};
+
+				rows.push(holiday);
+			}
 
 			let columns;
 			columns = [
-				{"name": "rowNumber", "id": "rowNum", "title": "No", "visible": false},
-				{"name": "holIdx", "id": "minIdx", "title": "휴무일번호"},
+				{"name": "holIdx", "id": "holIdx", "title": "휴무일번호"},
 				{"name": "holidayStartDt", "title": "휴무일시작일", "breakpoints": "xs"},
 				{"name": "holidayEndDt", "title": "휴무일종료일", "breakpoints": "xs"},
 				{"name": "holidayName", "title": "휴무일명", "breakpoints": "xs"},
+				{"name": "deleteStaff", "id":"deleteStaff", "title": "삭제", "type": "text", "formatter" : function () {
+						var actions = $('<div/>');
+
+						var btnDeleteHoliday = ($('<button/>', {'class':'btn btn-outline-danger'})
+							.append('<span/>','삭제')
+							.on("click", this, deleteReserveHoliday))
+							.appendTo(actions);
+
+						return actions;
+					}}
 			];
 
+
+			function deleteReserveHoliday(){
+				var tr = $(this).closest('tr').children();
+				var holIdx = tr[0].textContent;
+				var deleteYn = confirm("해당 휴무일을 삭제하시겠습니까?");
+				if (deleteYn){
+
+					var url = '/api/v1.0/deleteRentCompanyHoliday.do';
+					var req = {
+						holIdx : holIdx
+					};
+
+					$.ajax({
+						url: url,
+						type: 'POST',
+						data: JSON.stringify(req),
+						contentType: 'application/json',
+						cache: false,
+						acync : false,
+						timeout: 10000
+					}).done(function (data, textStatus, jqXHR) {
+
+						if( data.code == 400 ){
+							alert(data.errMsg);
+						}
+						if( data.code == 200 ){
+							location.reload();
+						}
+
+					});
+
+				}
+			}
 			$('#holidayList').empty();
 			$('#holidayList').footable({
 				'calculateWidthOverride': function () {
@@ -865,7 +1014,7 @@ function holidayListGrid(_rtIdx) {
 					}
 				},
 				"columns": columns,
-				"rows": data
+				"rows": rows
 			});
 
 		}// end 200 check
@@ -1393,11 +1542,6 @@ function detailValidation(save_type) {
 
 				if (holidayStartDt > holidayEndDt) {
 					errorAlert('휴무일', '휴무일 시작일은 종료일 보다 클수 없습니다.');
-					return;
-				}
-
-				if (isEmpty(holidayName)) { // is not empty
-					errorAlert('휴무일명', '휴무일명은 필수 입력값 입니다.');
 					return;
 				}
 

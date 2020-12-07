@@ -403,6 +403,33 @@ function initDetailInfo(seq){
 	// input box 초기화
 	initInput();
 
+	// 차량 옵션 리스트
+	var carReq = {
+		rtCode:'CR',
+		pCode: 'OT'
+	};
+
+	var target = 'commonCodeInfo';
+	var method = 'select';
+
+	fn_callApi(method, target, carReq, function (response) {
+
+		var strOption = "";
+
+		for ( var i=0; i< response.length; i++) {
+			strOption += "<label class='d-inline-block mr-3 checkbox-inline'>" +
+				"<input type='checkbox' value='" + response[i].codeValue + "' name='carOption'/>"
+				+ response[i].codeValue
+				+ "</label>";
+
+		}
+
+		$('#carOptionList').empty();
+		$('#carOptionList').append(strOption).addClass('mr-3 checkbox-inline');
+
+	});
+
+
 	let _crIdx = seq;
 
 	_crIdx = seq;
@@ -412,8 +439,8 @@ function initDetailInfo(seq){
 		crIdx : _crIdx
 	};
 
-	let target = 'regCarDetail';
-	let method = 'select';
+	target = 'regCarDetail';
+	method = 'select';
 
 	fn_callApi(method,target, req, function(response) {
 		let data = response[0];
@@ -435,53 +462,53 @@ function initDetailInfo(seq){
 		let colorName 				= data.colorName          ; //색상
 		let carNumber 				= data.carNumber          ; //차량번호
 		let carChassisNumber 		= data.carChassisNumber   ; //차대번호
-		let mileage 				= data.mileage            ; //주행거리
+		let mileage 				= isEmpty(data.mileage) ? '0' : objectConvertToPriceFormat(data.mileage)   ; //주행거리
 		let reserveAbleYn 			= data.reserveAbleYn      ; //차량예약가능여부code
 		let delYn 					= data.delYn              ; //차량삭제여부
 		let ageLimit 				= data.ageLimit           ; //대여연령제한(장기,단기)
 
 
-                    // 차량 추가 정보
-                    let transmissionCode 		= data.transmissionCode   ; //변속기구분code
-                    let driveTypeCode 			= data.driveTypeCode      ; //구동방식구분code
-                    let cartypeCode 			= data.cartypeCode        ; //차종code
-                    let driveLicenseCode 		= data.driveLicenseCode   ; //면허구분code
-                    let manufacturerCode 		= data.manufacturerCode   ; //제조사code
-                    let displacement 			= data.displacement       ; //배기량
-                    let maximumPassenger 		= data.maximumPassenger   ; //승차인원
-                    let imgIdx 					= data.imgIdx             ; //이미지idx
-        //			let carDriveLimit 			= data.carDriveLimit      ; //주행거리제한
-        //			let garageAddr 				= data.garageAddr         ; //차고지주소
-        //			let carEtc 					= data.carEtc             ; //비고
-                    // 보험정보
-                    let ciTIdx 					= data.ciTIdx              ; //보험정보idx
-                    let personalCover 			= data.personalCover      ; //대인보상금액
-                    let propertyDamageCover 	= data.propertyDamageCover; //대물보상금액
-                    let onselfDamageCover 		= data.onselfDamageCover  ; //자손보상금액
-                    let insuranceCopayment 		= data.insuranceCopayment ; //고객부담금(보험료)
-                    let carDamageCover 			= data.carDamageCover     ; //자차보상금(면책금)
-                    let insuranceCopayment2 	= data.insuranceCopayment2; //고객부담금2(보험료)
-                    let carDamageCover2 		= data.carDamageCover2    ; //자차보상금2(면책금)
-                    let insuranceCopayment3 	= data.insuranceCopayment3; //고객부담금3(보험료)
-                    let carDamageCover3 		= data.carDamageCover3    ; //자차보상금3(면책금)
-                    let insuranceCopayment4 	= data.insuranceCopayment4; //고객부담금4(보험료)
-                    let carDamageCover4 		= data.carDamageCover4    ; //자차보상금4(면책금)
-                    let carDamage1Yn 			= data.carDamage1Yn       ; //자차1사용유무
-                    let carDamage2Yn 			= data.carDamage2Yn       ; //자차2사용유무
-                    let carDamage3Yn 			= data.carDamage3Yn       ; //자차3사용유무
-                    let carDamage4Yn 			= data.carDamage4Yn       ; //자차4사용유무
-                    // 기본요금
-                    // let pyIdx 					= data.pyIdx              ; //요금idx
-                    let dailyStandardPay 		= data.dailyStandardPay   ; //일기본요금
-                    let dailyMaxRate 			= data.dailyMaxRate       ; //일대여최대할인율
-                    let monthlyStandardPay 		= data.monthlyStandardPay ; //월기본요금
-                    let monthlyMaxRate 			= data.monthlyMaxRate     ; //월대여최대할인율
-                    let month3Deposit 			= data.month3Deposit      ; //3개월보증금
-                    let month6Deposit 			= data.month6Deposit      ; //6개월보증금
-                    let month9Deposit 			= data.month9Deposit      ; //9개월보증금
-                    let month12Deposit 			= data.month12Deposit     ; //12개월보증금
-                    let deliveryStandardPay 	= data.deliveryStandardPay; //배달기본요금
-                    let deliveryAddPay 			= data.deliveryAddPay     ; //배달10KM단위추가요금
+		// 차량 추가 정보
+		let transmissionCode 		= data.transmissionCode   ; //변속기구분code
+		let driveTypeCode 			= data.driveTypeCode      ; //구동방식구분code
+		let cartypeCode 			= data.cartypeCode        ; //차종code
+		let driveLicenseCode 		= data.driveLicenseCode   ; //면허구분code
+		let manufacturerCode 		= data.manufacturerCode   ; //제조사code
+		let displacement 			= data.displacement       ; //배기량
+		let maximumPassenger 		= data.maximumPassenger   ; //승차인원
+		let imgIdx 					= data.imgIdx             ; //이미지idx
+		//			let carDriveLimit 			= data.carDriveLimit      ; //주행거리제한
+		//			let garageAddr 				= data.garageAddr         ; //차고지주소
+		//			let carEtc 					= data.carEtc             ; //비고
+		// 보험정보
+		let ciTIdx 					= data.ciTIdx              ; //보험정보idx
+		let personalCover 			= data.personalCover      ; //대인보상금액
+		let propertyDamageCover 	= data.propertyDamageCover; //대물보상금액
+		let onselfDamageCover 		= data.onselfDamageCover  ; //자손보상금액
+		let insuranceCopayment 		= data.insuranceCopayment ; //고객부담금(보험료)
+		let carDamageCover 			= data.carDamageCover     ; //자차보상금(고객부담금)
+		let insuranceCopayment2 	= data.insuranceCopayment2; //고객부담금2(보험료)
+		let carDamageCover2 		= data.carDamageCover2    ; //자차보상금2(고객부담금)
+		let insuranceCopayment3 	= data.insuranceCopayment3; //고객부담금3(보험료)
+		let carDamageCover3 		= data.carDamageCover3    ; //자차보상금3(고객부담금)
+		let insuranceCopayment4 	= data.insuranceCopayment4; //고객부담금4(보험료)
+		let carDamageCover4 		= data.carDamageCover4    ; //자차보상금4(고객부담금)
+		let carDamage1Yn 			= data.carDamage1Yn       ; //자차1사용유무
+		let carDamage2Yn 			= data.carDamage2Yn       ; //자차2사용유무
+		let carDamage3Yn 			= data.carDamage3Yn       ; //자차3사용유무
+		let carDamage4Yn 			= data.carDamage4Yn       ; //자차4사용유무
+		// 기본요금
+		// let pyIdx 					= data.pyIdx              ; //요금idx
+		let dailyStandardPay 		= data.dailyStandardPay   ; //일기본요금
+		let dailyMaxRate 			= data.dailyMaxRate       ; //일대여최대할인율
+		let monthlyStandardPay 		= data.monthlyStandardPay ; //월기본요금
+		let monthlyMaxRate 			= data.monthlyMaxRate     ; //월대여최대할인율
+		let month3Deposit 			= data.month3Deposit      ; //3개월보증금
+		let month6Deposit 			= data.month6Deposit      ; //6개월보증금
+		let month9Deposit 			= data.month9Deposit      ; //9개월보증금
+		let month12Deposit 			= data.month12Deposit     ; //12개월보증금
+		let deliveryStandardPay 	= data.deliveryStandardPay; //배달기본요금
+		let deliveryAddPay 			= data.deliveryAddPay     ; //배달10KM단위추가요금
 
 		let dailyYn 				= data.dailyYn            ; //일대여사용유무
 		let monthlyYn 				= data.monthlyYn          ; //월대여사용유무
@@ -501,7 +528,7 @@ function initDetailInfo(seq){
 		$("#crIdx").val(crIdx);
 		$("#carNumber").val(carNumber);
 		$('select[name="year"]').val(year);
-		$("#colorName").val(colorName);
+		$("#sel_colorName").val(colorName).prop("selected", true);
 		$("#mileage").val(mileage);
 		$("#carChassisNumber").val(carChassisNumber);
 		$('select[name="carRegDt"]').val(carRegDt);
@@ -540,16 +567,14 @@ function initDetailInfo(seq){
 		$("#deliveryStandardPay").val(deliveryStandardPay);
 		$("#deliveryAddPay").val(deliveryAddPay);
 
-//			$("#sel_fuel").val(fuelCode).prop("selected", true);
-//			$("#transmissionCode").val(transmissionCode);
-//			$("#driveTypeCode").val(driveTypeCode);
-//			$("#cartypeCode").val(cartypeCode);
-//			$("#driveLicenseCode").val(driveLicenseCode);
-//			$("#manufacturerCode").val(manufacturerCode);
-//			$("#displacement").val(displacement);
-//			$("#maximumPassenger").val(maximumPassenger);
-//			$("#carDriveLimit").val(carDriveLimit);
-
+		$("#sel_fuel").val(fuelCode).prop("selected", true);
+		// $("#transmissionCode").val(transmissionCode);
+		// $("#driveTypeCode").val(driveTypeCode);
+		// $("#cartypeCode").val(cartypeCode);
+		// $("#driveLicenseCode").val(driveLicenseCode);
+		// $("#manufacturerCode").val(manufacturerCode);
+		// $("#displacement").val(displacement);
+		// $("#maximumPassenger").val(maximumPassenger);
 
 		/*
          * 회원사 select box
@@ -614,78 +639,105 @@ function initDetailSelectBox(_data){
 		});// end fn_callApi
 	}
 
-	if(_data !== '*'){
-		// 연료  select box
-		req = {
-			rtCode:'CR',
-			pCode: 'FL'
-		};
+	// 연료  select box
+	req = {
+		rtCode:'CR',
+		pCode: 'FL'
+	};
 
-		target = 'commonCodeInfo';
-		method = 'select';
+	target = 'commonCodeInfo';
+	method = 'select';
 
-		fn_callApi(method, target, req, function (response) {
-			res = response;
+	fn_callApi(method, target, req, function (response) {
+		data = response;
 
-			if (res.code == 200) {
+		strOption = "";
+		strOption += "<option value = '0'>선택하세요</option>";
 
-				data = res.data.result;
-
-				strOption = "";
-				strOption += "<option value = '0'>선택하세요</option>";
-
-				for ( let i in data) {
-					if (data[i].codeValue) {
-						strOption += "<option value = '"+ data[i].code + "'>"+ data[i].codeValue + "</option>";
-					}
-				}
-
-				$('#sel_fuel').empty();
-				$('#sel_fuel').append(strOption);
-				$("#sel_fuel").val('0').prop("selected", true);
-
-				if(!isEmpty(_data)){
-					let fuelCode = _data.fuelCode           ; //연료구분code
-					$("#sel_fuel").val(fuelCode).prop("selected", true);
-				}
-			}
-		});
-
-		// 차종  select box
-		target = 'selectCarModelForSelectBox';
-		method = 'select';
-
-		fn_callApi(method, target, req, function (response) {
-			data = response;
-
-			// //200이라면 페이징을 구한다.
-			// if(res.code == 200) {
-			// 	data = res.data.result;
-
-			strOption = "";
-			strOption += "<option value = '0'>선택하세요</option>";
-
-			for ( var i in data) {
-
-				if (data[i].modelName) {
-					strOption += "<option value = '" + data[i].modelName + "'>" + nullCheck(data[i].modelName) + "</option>";
-				}
-			}
-			$('#sel_modelName').empty();
-			$('#sel_modelName').append(strOption);
-			$("#sel_modelName").val('0').prop("selected", true);
-
-			if(!isEmpty(_data)){
-				let modelName = _data.modelName; //모델명
-				$("#sel_modelName").val(modelName).prop("selected", true);
-				selectCarModelDetail(modelName, _data);
+		for ( let i in data) {
+			if (data[i].codeValue) {
+				strOption += "<option value = '"+ data[i].code + "'>"+ data[i].codeValue + "</option>";
 			}
 
-			// }
+			$('#sel_fuel').empty();
+			$('#sel_fuel').append(strOption);
+			$("#sel_fuel").val('0').prop("selected", true);
 
-		});//end fn_callApi
+		}
 
-	}
+		if(!isEmpty(_data)){
+			let fuelCode = _data.fuelCode           ; //연료구분code
+			$("#sel_fuel").val(fuelCode).prop("selected", true);
+		}
+	});
+
+	// 색상  select box
+	req = {
+		rtCode:'CR',
+		pCode: 'CL'
+	};
+
+	target = 'commonCodeInfo';
+	method = 'select';
+
+	fn_callApi(method, target, req, function (response) {
+		data = response;
+
+		strOption = "";
+		strOption += "<option value = '0'>선택하세요</option>";
+
+		for ( let i in data) {
+			if (data[i].codeValue) {
+				strOption += "<option value = '"+ data[i].code + "'>"+ data[i].codeValue + "</option>";
+			}
+
+			$('#sel_colorName').empty();
+			$('#sel_colorName').append(strOption);
+			$("#sel_colorName").val('0').prop("selected", true);
+
+		}
+
+		if(!isEmpty(_data)){
+			let colorName = _data.colorName           ; // 색상code
+			$("#sel_colorName").val(colorName).prop("selected", true);
+		}
+	});
+
+	// 차종  select box
+	target = 'selectCarModelForSelectBox';
+	method = 'select';
+
+	fn_callApi(method, target, req, function (response) {
+		data = response;
+
+		// //200이라면 페이징을 구한다.
+		// if(res.code == 200) {
+		// 	data = res.data.result;
+
+		strOption = "";
+		strOption += "<option value = '0'>선택하세요</option>";
+
+		for ( var i in data) {
+
+			if (data[i].modelName) {
+				strOption += "<option value = '" + data[i].modelName + "'>" + nullCheck(data[i].modelName) + "</option>";
+			}
+		}
+		$('#sel_modelName').empty();
+		$('#sel_modelName').append(strOption);
+		$("#sel_modelName").val('0').prop("selected", true);
+
+		if(!isEmpty(_data)){
+			let modelName = _data.modelName; //모델명
+			$("#sel_modelName").val(modelName).prop("selected", true);
+			selectCarModelDetail(modelName, _data);
+		}
+
+		// }
+
+	});//end fn_callApi
+
+
 
 	// 보험료템플릿 가져오기
 	let rtIdx = $("#companyName option:selected").val();
@@ -864,7 +916,7 @@ function modelDetailNamechange() {
 		$("#manufacturerCode").val('');
 		$("#displacement").val('');
 		$("#maximumPassenger").val('');
-//		$("#sel_fuel option:selected").val('0');
+		$("#sel_fuel option:selected").val('0');
 		return;
 	}
 
@@ -915,13 +967,13 @@ function cancelData(cancel_type) {
 			$('#onselfDamageCover').val('');	//자손보상금액
 			$('#propertyDamageCover').val('');	//대물보상금액
 
-			$('#carDamageCover').val('');		//자차보상금액(면책금)
+			$('#carDamageCover').val('');		//자차보상금액(고객부담금)
 			$('#insuranceCopayment').val('');	//고객부담금(보험료)
-			$('#carDamageCover2').val('');		//자차보상금액2(면책금)
+			$('#carDamageCover2').val('');		//자차보상금액2(고객부담금)
 			$('#insuranceCopayment2').val('');	//고객부담금2(보험료)
-			$('#carDamageCover3').val('');		//자차보상금액3(면책금)
+			$('#carDamageCover3').val('');		//자차보상금액3(고객부담금)
 			$('#insuranceCopayment3').val('');	//고객부담금3(보험료)
-			$('#carDamageCover4').val('');		//자차보상금액4(면책금)
+			$('#carDamageCover4').val('');		//자차보상금액4(고객부담금)
 			$('#insuranceCopayment4').val('');	//고객부담금4(보험료)
 			$("input:radio[name='carDamage1Yn']:radio[value='Y']").prop('checked', true);
 			$("input:radio[name='carDamage2Yn']:radio[value='Y']").prop('checked', true);
@@ -1000,13 +1052,13 @@ function setData(set_type, _data){
 			$('#onselfDamageCover').val(onselfDamageCover);		//자손보상금액
 			$('#propertyDamageCover').val(propertyDamageCover);	//대물보상금액
 
-			$('#carDamageCover').val(carDamageCover);			//자차보상금액(면책금)
+			$('#carDamageCover').val(carDamageCover);			//자차보상금액(고객부담금)
 			$('#insuranceCopayment').val(insuranceCopayment);	//고객부담금(보험료)
-			$('#carDamageCover2').val(carDamageCover2);			//자차보상금액2(면책금)
+			$('#carDamageCover2').val(carDamageCover2);			//자차보상금액2(고객부담금)
 			$('#insuranceCopayment2').val(insuranceCopayment2);	//고객부담금2(보험료)
-			$('#carDamageCover3').val(carDamageCover3);			//자차보상금액3(면책금)
+			$('#carDamageCover3').val(carDamageCover3);			//자차보상금액3(고객부담금)
 			$('#insuranceCopayment3').val(insuranceCopayment3);	//고객부담금3(보험료)
-			$('#carDamageCover4').val(carDamageCover4);			//자차보상금액4(면책금)
+			$('#carDamageCover4').val(carDamageCover4);			//자차보상금액4(고객부담금)
 			$('#insuranceCopayment4').val(insuranceCopayment4);	//고객부담금4(보험료)
 
 			// 자차1사용유무
@@ -1090,7 +1142,7 @@ function detailValidation(save_type){
 				let modelDetailName 	= $("#sel_modelDetailName option:selected").text();
 				let mdIdx 				= $("#sel_modelDetailName").val();
 				let fuelCode			= $("#sel_fuel").val();
-				let colorName 			= $("#colorName").val();
+				let colorName 			= $("#sel_colorName").val();
 				let mileage 			= $("#mileage").val();
 				let ageLimit 			= $("#ageLimit").val();
 
@@ -1103,6 +1155,15 @@ function detailValidation(save_type){
 				let maximumPassenger 	= $("#maximumPassenger").val();
 
 				// let regDt = 'zz';
+
+				var carOptionList = $('input[name=carOption]:checked');
+				var carOption = [];
+
+				if (carOptionList.length !== 0){
+					for (var i = 0; i < carOptionList.length; i++){
+						carOption.push(carOptionList[i].value);
+					}
+				}
 
 
 				// let pp = companyName+'\n'+carNumber+'\n'+year+'\n'+carRegDt+'\n'+modelName+'\n'+modelDetailName+'\n'+mdIdx+'\n'+fuelCode+'\n'+colorName+'\n'+mileage+'\n'+ageLimit+'\n';
@@ -1182,8 +1243,8 @@ function detailValidation(save_type){
 					'manufacturerCode' : manufacturerCode,
 					'displacement' : displacement,
 					'maximumPassenger' : maximumPassenger,
-					// 'regId' : GLOBAL_LOGIN_USER_IDX,
-					// 'modId' : GLOBAL_LOGIN_USER_IDX
+					'regId' : getLoginUser().urIdx,
+					'modId' : getLoginUser().urIdx
 				};
 
 				title = '차량정보 저장';
@@ -1199,13 +1260,13 @@ function detailValidation(save_type){
 				let onselfDamageCover 	= getPureText($('#onselfDamageCover').val());	//자손보상금액
 				let propertyDamageCover = getPureText($('#propertyDamageCover').val());	//대물보상금액
 
-				let carDamageCover 		= getPureText($('#carDamageCover').val());		//자차보상금액(면책금)
+				let carDamageCover 		= getPureText($('#carDamageCover').val());		//자차보상금액(고객부담금)
 				let insuranceCopayment 	= getPureText($('#insuranceCopayment').val());	//고객부담금(보험료)
-				let carDamageCover2 	= getPureText($('#carDamageCover2').val());		//자차보상금액2(면책금)
+				let carDamageCover2 	= getPureText($('#carDamageCover2').val());		//자차보상금액2(고객부담금)
 				let insuranceCopayment2 = getPureText($('#insuranceCopayment2').val());	//고객부담금2(보험료)
-				let carDamageCover3 	= getPureText($('#carDamageCover3').val());		//자차보상금액3(면책금)
+				let carDamageCover3 	= getPureText($('#carDamageCover3').val());		//자차보상금액3(고객부담금)
 				let insuranceCopayment3	= getPureText($('#insuranceCopayment3').val());	//고객부담금3(보험료)
-				let carDamageCover4 	= getPureText($('#carDamageCover4').val());		//자차보상금액4(면책금)
+				let carDamageCover4 	= getPureText($('#carDamageCover4').val());		//자차보상금액4(고객부담금)
 				let insuranceCopayment4 = getPureText($('#insuranceCopayment4').val());	//고객부담금4(보험료)
 
 				let carDamage1Yn 		=  insuranceCopayment === '' ? 'N' : $(':input:radio[name=carDamage1Yn]:checked').val();
@@ -1231,31 +1292,31 @@ function detailValidation(save_type){
 					errorAlert('자차보험1', '자차 보험 요금/일은 필수 입력값 입니다.');
 					return;
 				}else if(isEmpty(carDamageCover)){
-					errorAlert('자차보험1', '자차보험 면책금은 필수 입력값 입니다.');
+					errorAlert('자차보험1', '자차보험 고객부담금은 필수 입력값 입니다.');
 					return;
 				}else if(!isEmpty(insuranceCopayment) && !$.isNumeric(insuranceCopayment)){
 					errorAlert('자차보험1', '자차 보험 요금/일 숫자만 입력 가능합니다.');
 					return;
 				}else if(!isEmpty(carDamageCover) && !$.isNumeric(carDamageCover)){
-					errorAlert('자차보험1', '자차보험 면책금 숫자만 입력 가능합니다.');
+					errorAlert('자차보험1', '자차보험 고객부담금 숫자만 입력 가능합니다.');
 					return;
 				}else if(!isEmpty(insuranceCopayment2) && !$.isNumeric(insuranceCopayment2)){
 					errorAlert('자차보험2', '자차 보험 요금/일 숫자만 입력 가능합니다.');
 					return;
 				}else if(!isEmpty(carDamageCover2) && !$.isNumeric(carDamageCover2)){
-					errorAlert('자차보험2', '자차보험 면책금 숫자만 입력 가능합니다.');
+					errorAlert('자차보험2', '자차보험 고객부담금 숫자만 입력 가능합니다.');
 					return;
 				}else if(!isEmpty(insuranceCopayment3) && !$.isNumeric(insuranceCopayment3)){
 					errorAlert('자차보험3', '자차 보험 요금/일 숫자만 입력 가능합니다.');
 					return;
 				}else if(!isEmpty(carDamageCover3) && !$.isNumeric(carDamageCover3)){
-					errorAlert('자차보험3', '자차보험 면책금 숫자만 입력 가능합니다.');
+					errorAlert('자차보험3', '자차보험 고객부담금 숫자만 입력 가능합니다.');
 					return;
 				}else if(!isEmpty(insuranceCopayment4) && !$.isNumeric(insuranceCopayment4)){
 					errorAlert('자차보험4', '자차 보험 요금/일 숫자만 입력 가능합니다.');
 					return;
 				}else if(!isEmpty(carDamageCover4) && !$.isNumeric(carDamageCover4)){
-					errorAlert('자차보험4', '자차보험 면책금 숫자만 입력 가능합니다.');
+					errorAlert('자차보험4', '자차보험 고객부담금 숫자만 입력 가능합니다.');
 					return;
 				}
 
@@ -1487,8 +1548,8 @@ function detailSubmit(save_type, req){
 			// 	target = 'insertDcCarPaymentInfo';
 			// 	method = 'insert';
 			// } else if (CRUD_METHOD === 'update') {
-				target = 'updateDcPayment';
-				method = 'update';
+			target = 'updateDcPayment';
+			method = 'update';
 			// }
 			break;
 
@@ -1711,29 +1772,29 @@ function initcal(){
 	$("#calPaymentAmount").val('');
 
 	// 보험료 select box 생성
-	let carDamageCover 		= getPureText($('#carDamageCover').val());		//자차보상금액(면책금)
+	let carDamageCover 		= getPureText($('#carDamageCover').val());		//자차보상금액(고객부담금)
 	let insuranceCopayment 	= getPureText($('#insuranceCopayment').val());	//고객부담금(보험료)
-	let carDamageCover2 	= getPureText($('#carDamageCover2').val());		//자차보상금액2(면책금)
+	let carDamageCover2 	= getPureText($('#carDamageCover2').val());		//자차보상금액2(고객부담금)
 	let insuranceCopayment2 = getPureText($('#insuranceCopayment2').val());	//고객부담금2(보험료)
-	let carDamageCover3 	= getPureText($('#carDamageCover3').val());		//자차보상금액3(면책금)
+	let carDamageCover3 	= getPureText($('#carDamageCover3').val());		//자차보상금액3(고객부담금)
 	let insuranceCopayment3	= getPureText($('#insuranceCopayment3').val());	//고객부담금3(보험료)
-	let carDamageCover4 	= getPureText($('#carDamageCover4').val());		//자차보상금액4(면책금)
+	let carDamageCover4 	= getPureText($('#carDamageCover4').val());		//자차보상금액4(고객부담금)
 	let insuranceCopayment4 = getPureText($('#insuranceCopayment4').val());	//고객부담금4(보험료)
 
 	let strOption = "";
 	strOption += "<option value = '0'>선택하세요</option>";
 
 	if(!isEmpty(carDamageCover) && !isEmpty(insuranceCopayment)){
-		strOption += "<option value = '"+insuranceCopayment+"'>" + "면책금:" + carDamageCover + "/보험금:" + insuranceCopayment + "</option>";
+		strOption += "<option value = '"+insuranceCopayment+"'>" + "고객부담금:" + carDamageCover + "/보험금:" + insuranceCopayment + "</option>";
 	}
 	if(!isEmpty(carDamageCover2) && !isEmpty(insuranceCopayment2)){
-		strOption += "<option value = '"+insuranceCopayment2+"'>" + "면책금:" + carDamageCover2 + "/보험금:" + insuranceCopayment2 + "</option>";
+		strOption += "<option value = '"+insuranceCopayment2+"'>" + "고객부담금:" + carDamageCover2 + "/보험금:" + insuranceCopayment2 + "</option>";
 	}
 	if(!isEmpty(carDamageCover3) && !isEmpty(insuranceCopayment3)){
-		strOption += "<option value = '"+insuranceCopayment3+"'>" + "면책금:" + carDamageCover3 + "/보험금:" + insuranceCopayment3 + "</option>";
+		strOption += "<option value = '"+insuranceCopayment3+"'>" + "고객부담금:" + carDamageCover3 + "/보험금:" + insuranceCopayment3 + "</option>";
 	}
 	if(!isEmpty(carDamageCover4) && !isEmpty(insuranceCopayment4)){
-		strOption += "<option value = '"+insuranceCopayment4+"'>" + "면책금:" + carDamageCover4 + "/보험금:" + insuranceCopayment4 + "</option>";
+		strOption += "<option value = '"+insuranceCopayment4+"'>" + "고객부담금:" + carDamageCover4 + "/보험금:" + insuranceCopayment4 + "</option>";
 	}
 
 	$('#selInsuranceFee').empty();

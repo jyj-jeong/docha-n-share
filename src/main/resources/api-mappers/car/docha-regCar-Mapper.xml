@@ -144,13 +144,13 @@
                         ,   IFNULL(T3.PROPERTY_DAMAGE_COVER  , '' ) AS    PROPERTY_DAMAGE_COVER /*대물보상금액*/
                         ,   IFNULL(T3.ONSELF_DAMAGE_COVER    , '' ) AS    ONSELF_DAMAGE_COVER   /*자손보상금액*/
                         ,   IFNULL(T3.INSURANCE_COPAYMENT    , '' ) AS    INSURANCE_COPAYMENT   /*고객부담금(보험료)*/
-                        ,   IFNULL(T3.CAR_DAMAGE_COVER       , '' ) AS    CAR_DAMAGE_COVER      /*자차보상금액(면책금)*/
+                        ,   IFNULL(T3.CAR_DAMAGE_COVER       , '' ) AS    CAR_DAMAGE_COVER      /*자차보상금액(고객부담금)*/
                         ,   IFNULL(T3.INSURANCE_COPAYMENT2   , '' ) AS    INSURANCE_COPAYMENT2  /*고객부담금2(보험료)*/
-                        ,   IFNULL(T3.CAR_DAMAGE_COVER2      , '' ) AS    CAR_DAMAGE_COVER2     /*자차보상금액2(면책금)*/
+                        ,   IFNULL(T3.CAR_DAMAGE_COVER2      , '' ) AS    CAR_DAMAGE_COVER2     /*자차보상금액2(고객부담금)*/
                         ,   IFNULL(T3.INSURANCE_COPAYMENT3   , '' ) AS    INSURANCE_COPAYMENT3  /*고객부담금3(보험료)*/
-                        ,   IFNULL(T3.CAR_DAMAGE_COVER3      , '' ) AS    CAR_DAMAGE_COVER3     /*자차보상금액3(면책금)*/
+                        ,   IFNULL(T3.CAR_DAMAGE_COVER3      , '' ) AS    CAR_DAMAGE_COVER3     /*자차보상금액3(고객부담금)*/
                         ,   IFNULL(T3.INSURANCE_COPAYMENT4   , '' ) AS    INSURANCE_COPAYMENT4  /*고객부담금4(보험료)*/
-                        ,   IFNULL(T3.CAR_DAMAGE_COVER4      , '' ) AS    CAR_DAMAGE_COVER4     /*자차보상금액4(면책금)*/
+                        ,   IFNULL(T3.CAR_DAMAGE_COVER4      , '' ) AS    CAR_DAMAGE_COVER4     /*자차보상금액4(고객부담금)*/
                         ,   IFNULL(T3.CAR_DAMAGE1_YN         , 'Y') AS    CAR_DAMAGE1_YN        /*자차1사용유무*/
                         ,   IFNULL(T3.CAR_DAMAGE2_YN         , 'Y') AS    CAR_DAMAGE2_YN        /*자차2사용유무*/
                         ,   IFNULL(T3.CAR_DAMAGE3_YN         , 'Y') AS    CAR_DAMAGE3_YN        /*자차3사용유무*/
@@ -232,6 +232,8 @@
 			<if test="ageLimit         != null"><![CDATA[  , AGE_LIMIT          = #{ageLimit}           ]]></if>    <!-- 대여연령제한(장기,단기) -->
 			<if test="dailyYn         != null"><![CDATA[  , DAILY_YN          = #{dailyYn}           ]]></if>    <!-- 일대여 -->
 			<if test="monthlyYn         != null"><![CDATA[  , MONTHLY_YN          = #{monthlyYn}           ]]></if>    <!-- 월대여 -->
+			<if test="modId         != null"><![CDATA[  , MOD_ID          = #{modId}        ]]></if>    <!-- 월대여 -->
+			<if test="modDt         != null"><![CDATA[  , MOD_DT          = NOW()          ]]></if>    <!-- 월대여 -->
 
 		</trim>
 		<trim prefix="WHERE" prefixOverrides="AND|OR">

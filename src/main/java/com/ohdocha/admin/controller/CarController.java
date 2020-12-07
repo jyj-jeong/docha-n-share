@@ -5,6 +5,8 @@ import com.ohdocha.admin.domain.car.plan.basicplan.DochaAdminBaiscPlanDetailRequ
 import com.ohdocha.admin.domain.car.plan.insuranceTemplate.DochaAdminInsuranceTemplateDetailRequest;
 import com.ohdocha.admin.domain.car.plan.insuranceTemplate.DochaAdminInsuranceTemplateRequest;
 import com.ohdocha.admin.domain.car.plan.periodplansetting.DochaAdminPeriodPlanSettingDetailRequest;
+import com.ohdocha.admin.domain.car.property.DochaAdminCarPropertyRequest;
+import com.ohdocha.admin.domain.car.regcar.DochaAdminDcCarInfoOption;
 import com.ohdocha.admin.domain.car.regcar.DochaAdminRegCarDetailRequest;
 import com.ohdocha.admin.domain.rentCompany.DochaAdminRentCompanyHolidayRequest;
 import com.ohdocha.admin.domain.reserve.reserveInfoMnt.DochaAdminReserveInfoRequest;

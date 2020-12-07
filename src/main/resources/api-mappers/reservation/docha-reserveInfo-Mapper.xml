@@ -6,7 +6,7 @@
     <!-- 예약 리스트 -->
     <select id="selectReserveInfoList" parameterType="reserveInfoRequest" resultType="reserveInfoResponse">
         <![CDATA[
-SELECT * FROM (
+           SELECT * FROM (
             SELECT   RM_IDX                                                       /* 회원순번 */
                   , RT_IDX                                                    /* 회원사 순번 */
                   , RT_P_IDX                                                    /* 부모 회원사 */
@@ -41,12 +41,12 @@ SELECT * FROM (
                         , C.RT_IDX /* 회원사 순번 */
                         , D.RT_P_IDX /* 부모 회원사 */
                         , RESERVE_TYPE_CODE AS RESERVE_TYPE_CODE /* 예약종류code */
-                        , CASE WHEN IFNULL(A.RESERVE_STATUS_CODE, 'RS') = 'RS' AND NOW() > STR_TO_DATE(A.RENT_END_DAY || A.RENT_END_TIME, '%Y%m%d%H:%i:%s') THEN 'RW'
-                              WHEN IFNULL(A.RESERVE_STATUS_CODE, 'RS') = 'RS' AND NOW() BETWEEN STR_TO_DATE(A.RENT_START_DAY || A.RENT_START_TIME, '%Y%m%d%H:%i:%s') AND STR_TO_DATE(A.RENT_END_DAY || A.RENT_END_TIME, '%Y-%m-%d %H:%i:%s') THEN 'RO'
+                        , CASE WHEN IFNULL(A.RESERVE_STATUS_CODE, 'RS') = 'RS' AND NOW() > STR_TO_DATE(A.RENT_END_DAY || A.RENT_END_TIME, '%Y-%m-%d %H:%i:%s') THEN 'RW'
+                              WHEN IFNULL(A.RESERVE_STATUS_CODE, 'RS') = 'RS' AND NOW() BETWEEN STR_TO_DATE(A.RENT_START_DAY || A.RENT_START_TIME, '%Y-%m-%d %H:%i:%s') AND STR_TO_DATE(A.RENT_END_DAY || A.RENT_END_TIME, '%Y-%m-%d %H:%i:%s') THEN 'RO'
                                 ELSE IFNULL(A.RESERVE_STATUS_CODE, 'RS') END
                           AS RESERVE_STATUS_CODE /* 상태 */
                         , IFNULL(A.RESERVE_CHANNEL, 'CS') AS RESERVE_CHANNEL /* 예약 경로 [CA:두차관리자, CS:웹,어플] */
-                        , ROUND((STR_TO_DATE(A.RENT_END_DAY || A.RENT_END_TIME, '%Y%m%d%H:%i:%s') - STR_TO_DATE(A.RENT_START_DAY || A.RENT_START_TIME, '%Y%m%d%H:%i:%s'))*24*60) AS RENT_MI /* 총 예약 시간(분) */
+                        , ROUND((STR_TO_DATE(A.RENT_END_DAY || A.RENT_END_TIME, '%Y-%m-%d %H:%i:%s') - STR_TO_DATE(A.RENT_START_DAY || A.RENT_START_TIME, '%Y-%m-%d %H:%i:%s'))*24*60) AS RENT_MI /* 총 예약 시간(분) */
                         , DATE_FORMAT(A.RESERVE_DATE, '%Y-%m-%d %H:%i:%s') AS RESERVE_DATE /* 예약일 */
                         , IFNULL(A.RESERVE_USER_NAME, '') AS USER_NAME /* 예약자명 */
                         , IFNULL(A.RESERVE_USER_CONTACT1, '') AS USER_CONTACT1 /* 예약자 전화번호 */
@@ -65,54 +65,14 @@ SELECT * FROM (
                         , (SELECT SUM(IFNULL(PAYMENT_AMOUNT, '0')) FROM DC_PAYMENT_DETAIL WHERE RM_IDX = A.RM_IDX) AS PAYMENT_AMOUNT /* 총 결제금액 */
                         , CASE WHEN INSTR(D.COMPANY_AddRESS||D.COMPANY_AddRESS_DETAIL, '제주') > 0 THEN 'JJ' ELSE 'IL' END AS LAND_CODE /* 내륙/제주 구분 [JJ:제주,IL:내륙,IS:제주 제외한 섬] */
                      FROM DC_RESERVE_MASTER A INNER JOIN DC_CAR_INFO C ON A.CR_IDX = C.CR_IDX
-                                         INNER JOIN DC_RENT_COMPANY D ON A.RT_IDX = D.RT_IDX
-                  ) X
-                 ORDER BY RESERVE_DATE DESC) Y
-            ]]>
-        <trim prefix="WHERE" prefixOverrides="AND|OR">
-            <if test="gbnDay != null and gbnDay != ''">
-                AND YMD = #{gbnDay}
-            </if>
-            <if test="gbnLocation != null and gbnLocation != ''">
-                AND LAND_CODE = #{gbnLocation}
-            </if>
-            <if test="gbnReserve != null and gbnReserve != ''">
-                AND RESERVE_TYPE_CODE = #{gbnReserve}
-            </if>
-            <if test="gbnStatus != null and gbnStatus != ''">
-                AND RESERVE_STATUS_CODE = #{gbnStatus}
-            </if>
-            <if test="gbnInput != null and gbnInput != ''">
-                <choose>
-                    <when test ="gbnInput == 'CT' and searchKeyWord != null and searchKeyWord != '' " >
-                        AND USER_CONTACT1 LIKE '%' || #{searchKeyWord} || '%'
-                    </when>
-                    <when test ="gbnInput == 'MD' and searchKeyWord != null and searchKeyWord != ''  " >
-                        AND (MODEL_NAME || ' ' || MODEL_DETAIL_NAME) LIKE '%' || #{searchKeyWord} || '%'
-                    </when>
-                    <when test ="gbnInput == 'CM' and searchKeyWord != null and searchKeyWord != ''  " >
-                        AND COMPANY_NAME LIKE '%' || #{searchKeyWord} || '%'
-                    </when>
-                    <when test ="gbnInput == 'DL' and searchKeyWord != null and searchKeyWord != ''  " >
-                        AND DELIVERY_TYPE_NAME LIKE '%' || #{searchKeyWord} || '%'
-                    </when>
-                    <when test ="gbnInput == 'RM' and searchKeyWord != null and searchKeyWord != ''  " >
-                        AND RM_IDX LIKE '%' || #{searchKeyWord} || '%'
-                    </when>
-                    <when test ="gbnInput == 'CR' and searchKeyWord != null and searchKeyWord != ''  " >
-                        AND CAR_NUMBER LIKE '%' || #{searchKeyWord} || '%'
-                    </when>
-                    <otherwise>
-                    </otherwise>
-                </choose>
-            </if>
-            <if test="rtIdx != null and rtIdx != '' ">
-                AND RT_IDX = #{rtIdx}
-            </if>
-            <if test="rtPIdx != null and rtPIdx != '' ">
-                AND RT_P_IDX = #{rtPIdx}
-            </if>
-        </trim>
+                                         INNER JOIN DC_RENT_COMPANY D ON A.RT_IDX = D.RT_IDX ]]>
+                                         <if test="rtIdx != null and rtIdx != '' ">
+                                             <![CDATA[ AND RT_IDX = #{rtIdx} ]]>
+                                         </if>
+                                         <if test="rtPIdx != null and rtPIdx != '' ">
+                                             <![CDATA[  AND RT_P_IDX = #{rtPIdx} ]]>
+                                         </if>
+                  ) X ) X2 ORDER BY RESERVE_DATE DESC
     </select>
 
     <!-- 예약 상세 -->
@@ -172,7 +132,7 @@ SELECT * FROM (
               , IFNULL(C.ONSELF_DAMAGE_COVER, '0') AS ONSELF_DAMAGE_COVER /* 자손보상금액 */
               , IFNULL(C.PERSONAL_COVER, '0') AS PERSONAL_COVER /* 대인보상금액 */
               , IFNULL(C.PROPERTY_DAMAGE_COVER, '0') AS PROPERTY_DAMAGE_COVER   /* 대물보상금액 */
-              , IFNULL(A.CAR_DAMAGE_COVER, '') AS CAR_DAMAGE_COVER /* 예약시 자차보상금(면책금)*/
+              , IFNULL(A.CAR_DAMAGE_COVER, '') AS CAR_DAMAGE_COVER /* 예약시 자차보상금(고객부담금)*/
               , IFNULL(A.INSURANCE_COPAYMENT, '') AS INSURANCE_COPAYMENT /* 예약시 고객부담금(보험료)*/
               , IFNULL(C.FUEL_CODE, '') AS FUEL_CODE /* 연료코드 */
 
@@ -214,6 +174,7 @@ SELECT * FROM (
                  ,      IFNULL(PD.UR_IDX              , '' ) AS UR_IDX
                  ,      RM.MOD_DT
                  ,      RM.SUM_PAYMENT_AMOUNT
+                 ,      RM.NEXT_PAYMENT_DAY
                  FROM   DC_PAYMENT_DETAIL PD
                  INNER JOIN DC_RESERVE_MASTER RM ON PD.RM_IDX = RM.RM_IDX
                  WHERE  PD.RM_IDX = #{rmIdx}
@@ -837,7 +798,7 @@ FROM (
       FROM   DC_RENT_COMPANY T1
       LEFT OUTER JOIN DC_RENT_COMPANY_STAFF T2
           ON T1.RT_IDX = T2.RT_IDX
-          AND T2.OWNER_YN = 'Y'
+          AND IFNULL(T2.OWNER_YN, 'N') = 'Y'
       WHERE  T1.RT_IDX = #{rtIdx}
    </select>
 
@@ -889,14 +850,14 @@ FROM (
          ,      IFNULL(T1.AGE_LIMIT             ,  '' ) AS AGE_LIMIT                  /*연령제한      */
          ,      IFNULL(T1.DEL_YN                ,  '' ) AS DEL_YN                     /*삭제여부      */
 
-         ,      IFNULL(T1.INSURANCE_COPAYMENT      ,  '' ) AS INSURANCE_COPAYMENT      /*보험료      */
-         ,      IFNULL(T1.CAR_DAMAGE_COVER         ,  '' ) AS CAR_DAMAGE_COVER         /*면책금      */
-         ,      IFNULL(T1.INSURANCE_COPAYMENT2      ,  '' ) AS INSURANCE_COPAYMENT2     /*보험료2      */
-         ,      IFNULL(T1.CAR_DAMAGE_COVER2      ,  '' ) AS CAR_DAMAGE_COVER2        /*면책금2      */
-         ,      IFNULL(T1.INSURANCE_COPAYMENT3      ,  '' ) AS INSURANCE_COPAYMENT3     /*보험료3      */
-         ,      IFNULL(T1.CAR_DAMAGE_COVER3      ,  '' ) AS CAR_DAMAGE_COVER3        /*면책금3      */
-         ,      IFNULL(T1.INSURANCE_COPAYMENT4      ,  '' ) AS INSURANCE_COPAYMENT4     /*보험료4      */
-         ,      IFNULL(T1.CAR_DAMAGE_COVER4      ,  '' ) AS CAR_DAMAGE_COVER4        /*면책금4      */
+         ,      IFNULL(Z.INSURANCE_COPAYMENT      ,  '' ) AS INSURANCE_COPAYMENT      /*보험료      */
+         ,      IFNULL(Z.CAR_DAMAGE_COVER         ,  '' ) AS CAR_DAMAGE_COVER         /*고객부담금      */
+         ,      IFNULL(Z.INSURANCE_COPAYMENT2      ,  '' ) AS INSURANCE_COPAYMENT2     /*보험료2      */
+         ,      IFNULL(Z.CAR_DAMAGE_COVER2      ,  '' ) AS CAR_DAMAGE_COVER2        /*고객부담금2      */
+         ,      IFNULL(Z.INSURANCE_COPAYMENT3      ,  '' ) AS INSURANCE_COPAYMENT3     /*보험료3      */
+         ,      IFNULL(Z.CAR_DAMAGE_COVER3      ,  '' ) AS CAR_DAMAGE_COVER3        /*고객부담금3      */
+         ,      IFNULL(Z.INSURANCE_COPAYMENT4      ,  '' ) AS INSURANCE_COPAYMENT4     /*보험료4      */
+         ,      IFNULL(Z.CAR_DAMAGE_COVER4      ,  '' ) AS CAR_DAMAGE_COVER4        /*고객부담금4      */
          ,      IFNULL(CA.CAROPTION_LIST_VALUE, '') AS OPTION_CODE_VALUE /* 옵션정보*/
          FROM   DC_CAR_INFO T1
                            LEFT OUTER JOIN
@@ -909,6 +870,8 @@ FROM (
                                   AND Y.RT_CODE = 'CR'
                               GROUP BY X.CR_IDX
                            ) CA ON T1.CR_IDX = CA.CR_IDX
+                           INNER JOIN DC_CAR_INFO_INSURANCE Z
+                                  ON T1.CR_IDX = Z.CR_IDX
          WHERE  T1.RT_IDX = #{rtIdx}
       ]]>
         <if test="rentStartDay != null and rentStartDay != '' and rentEndDay != null and rentEndDay != ''">
