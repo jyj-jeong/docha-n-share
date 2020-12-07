@@ -18,15 +18,11 @@ import com.ohdocha.admin.domain.car.plan.periodplansetting.DochaAdminPeriodPlanS
 import com.ohdocha.admin.domain.car.plan.periodplansetting.DochaAdminPeriodPlanSettingResponse;
 import com.ohdocha.admin.domain.car.property.DochaAdminCarPropertyRequest;
 import com.ohdocha.admin.domain.car.property.DochaAdminCarPropertyResponse;
-import com.ohdocha.admin.domain.car.regcar.DochaAdminRegCarDetailRequest;
-import com.ohdocha.admin.domain.car.regcar.DochaAdminRegCarDetailResponse;
-import com.ohdocha.admin.domain.car.regcar.DochaAdminRegCarRequest;
-import com.ohdocha.admin.domain.car.regcar.DochaAdminRegCarResponse;
+import com.ohdocha.admin.domain.car.regcar.*;
 import com.ohdocha.admin.domain.reserve.reserveInfoMnt.DochaAdminReserveInfoRequest;
 import com.ohdocha.admin.domain.reserve.reserveInfoMnt.DochaRentCompanyDto;
 import com.ohdocha.admin.exception.BadRequestException;
 import com.ohdocha.admin.mapper.*;
-import com.ohdocha.admin.util.DochaMap;
 import com.ohdocha.admin.util.FileHelper;
 import com.ohdocha.admin.util.ServiceMessage;
 import lombok.AllArgsConstructor;
@@ -34,7 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
+import java.io.File;
 import java.util.List;
 import java.util.UUID;
 
@@ -89,6 +85,21 @@ public class CarServiceImpl extends ServiceExtension implements CarService {
         message.addData("crIdx", regCarDetailRequest.getCrIdx());
     }
 
+    @Override
+    public void insertRegCarOption(ServiceMessage message) {
+        List<DochaAdminDcCarInfoOption> carInfoOptionList = message.getListObject("carInfoOptionList", DochaAdminDcCarInfoOption.class);
+        DochaAdminRegCarDetailRequest carPropertyRequest = new DochaAdminRegCarDetailRequest();
+        carPropertyRequest.setCrIdx(carInfoOptionList.get(0).getCrIdx());
+
+        int deleteRes = regCarMapper.deleteRegCarDetailOption(carPropertyRequest);
+
+        for (DochaAdminDcCarInfoOption carInfoOption : carInfoOptionList) {
+
+            int res = regCarMapper.insertRegCarInfoOption(carInfoOption);
+        }
+
+    }
+
     /* 등록차량 요금제 추가 */
     @Override
     public void insertRegCarPayment(ServiceMessage message) {
@@ -106,8 +117,10 @@ public class CarServiceImpl extends ServiceExtension implements CarService {
         DochaAdminRegCarDetailRequest regCarDetailRequest = message.getObject("regCarDetailRequest", DochaAdminRegCarDetailRequest.class);
 
         List<DochaAdminRegCarDetailResponse> regCarDetailResponseList = regCarMapper.selectRegCarDetail(regCarDetailRequest);
+        List<DochaAdminDcCarInfoOption> regCarOptionList = regCarMapper.selectRegCarDetailOption(regCarDetailRequest);
 
         message.addData("result", regCarDetailResponseList);
+        message.addData("regCarOptionList", regCarOptionList);
     }
 
     /* 등록차량 요금 계산 */
@@ -143,7 +156,7 @@ public class CarServiceImpl extends ServiceExtension implements CarService {
         // 차량이 있으면 update
         if (countRegCar > 0 ) {
             res = regCarMapper.updateRegCarInsuranceInfo(insuranceTemplateDetailRequest);
-        // 차량이 없으면 insert
+            // 차량이 없으면 insert
         } else {
             res = regCarMapper.insertRegCarInsurance(insuranceTemplateDetailRequest);
         }
@@ -669,7 +682,7 @@ public class CarServiceImpl extends ServiceExtension implements CarService {
     public void selectRegCarDetailOption(ServiceMessage message) {
         DochaAdminRegCarDetailRequest reqParam = message.getObject("reqParam", DochaAdminRegCarDetailRequest.class);
 
-        List<DochaAdminRegCarMapper> regCarMapperList = regCarMapper.selectRegCarDetailOption(reqParam);
+        List<DochaAdminDcCarInfoOption> regCarMapperList = regCarMapper.selectRegCarDetailOption(reqParam);
 
         message.addData("result", regCarMapperList);
     }

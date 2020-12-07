@@ -2,10 +2,8 @@ package com.ohdocha.admin.mapper;
 
 import com.ohdocha.admin.domain.car.plan.basicplan.DochaAdminBaiscPlanDetailRequest;
 import com.ohdocha.admin.domain.car.plan.insuranceTemplate.DochaAdminInsuranceTemplateDetailRequest;
-import com.ohdocha.admin.domain.car.regcar.DochaAdminRegCarDetailRequest;
-import com.ohdocha.admin.domain.car.regcar.DochaAdminRegCarDetailResponse;
-import com.ohdocha.admin.domain.car.regcar.DochaAdminRegCarRequest;
-import com.ohdocha.admin.domain.car.regcar.DochaAdminRegCarResponse;
+import com.ohdocha.admin.domain.car.property.DochaAdminCarPropertyRequest;
+import com.ohdocha.admin.domain.car.regcar.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -20,10 +18,15 @@ public interface DochaAdminRegCarMapper {
     public List<DochaAdminRegCarDetailResponse> selectRegCarDetail(DochaAdminRegCarDetailRequest reqParam);
 
     //등록차량 상세 옵션
-    public List<DochaAdminRegCarMapper> selectRegCarDetailOption(DochaAdminRegCarDetailRequest reqParam);
+    public List<DochaAdminDcCarInfoOption> selectRegCarDetailOption(DochaAdminRegCarDetailRequest reqParam);
+
+    public int deleteRegCarDetailOption(DochaAdminRegCarDetailRequest reqParam);
 
     //등록차량 저장
     public int insertDcCarInfo(DochaAdminRegCarDetailRequest reqParam);
+
+    //등록차량 저장
+    public int insertRegCarInfoOption(DochaAdminDcCarInfoOption reqParam);
 
     //등록차량 사진 수정
     public int updateRegCarImg(DochaAdminRegCarDetailRequest reqParam);

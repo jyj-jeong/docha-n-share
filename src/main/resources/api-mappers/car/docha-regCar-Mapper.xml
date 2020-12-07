@@ -102,7 +102,6 @@
 		</trim>
 	</update>
 
-
 	<!-- 등록차량 상세 -->
 	<select id="selectRegCarDetail" parameterType="regCarDetailRequest"
 			resultType="regCarDetailResponse">
@@ -196,23 +195,24 @@
 	</select>
 
 	<select id="selectRegCarDetailOption" parameterType="regCarDetailRequest"
-			resultType="regCarDetailResponse">
+			resultType="dcCarInfoOption">
 		<![CDATA[
             SELECT
-                     IFNULL(T1.CO_IDX              , '' ) AS CO_IDX               /*차량옵션idx*/
+                   IFNULL(T1.CO_IDX              , '' ) AS CO_IDX               /*차량옵션idx*/
                ,   IFNULL(T1.CR_IDX              , '' ) AS CR_IDX               /*차량idx*/
                ,   IFNULL(T1.OPTION_DETAIL_CODE  , '' ) AS OPTION_DETAIL_CODE   /*옵션상세code*/
                ,   IFNULL(T1.DEL_YN              , '' ) AS DEL_YN               /*삭제여부*/
             FROM   DC_CAR_INFO_OPTION T1
-
+            WHERE IFNULL(T1.DEL_YN, 'N') = 'N'
      ]]>
-		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			<if test="crIdx != null and crIdx != ''">
-				<![CDATA[   T1.CR_IDX = #{crIdx} ]]>
-			</if>
-			<![CDATA[   T1.DEL_YN='N' ]]>
-		</trim>
+	<if test="crIdx != null and crIdx != ''">
+		<![CDATA[ AND T1.CR_IDX = #{crIdx} ]]>
+	</if>
 	</select>
+
+    <delete id="deleteRegCarDetailOption" parameterType="regCarDetailRequest">
+           <![CDATA[ DELETE FROM DC_CAR_INFO_OPTION WHERE CR_IDX = #{crIdx} ]]>
+    </delete>
 
 	<!-- 차량정보 UPDATE ( 차량 부분 ) -->
 	<update  id="updateDcCarInfo" parameterType="regCarDetailRequest">
@@ -378,6 +378,21 @@
    ]]>
     </insert>
 
+	<!-- 차량 옵션정보 INSERT -->
+	<insert  id="insertRegCarInfoOption" parameterType="dcCarInfoOption">
+   <![CDATA[
+        INSERT INTO DC_CAR_INFO_OPTION (
+		  CR_IDX
+		 , OPTION_DETAIL_CODE
+		 , DEL_YN
+      ) VALUES (
+             #{crIdx}
+         ,   #{optionDetailCode}
+         ,   'N'
+      )
+   ]]>
+    </insert>
+
 	<!-- 차량 보험정보 INSERT -->
 	<insert  id="insertRegCarInsurance" parameterType="regCarDetailRequest">
    <![CDATA[
@@ -465,7 +480,6 @@
       )
    ]]>
     </insert>
-
 
 	<select id="selectReserveAmt" parameterType="regCarDetailRequest"
 			resultType="regCarDetailResponse">

@@ -10,6 +10,8 @@ public interface CarService {
 
     void regCarAdd(ServiceMessage message);
 
+    void insertRegCarOption(ServiceMessage message);
+
     void companyList(ServiceMessage message);
 
     void selectCarModelForSelectBox(ServiceMessage message);

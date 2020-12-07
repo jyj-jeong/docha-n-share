@@ -253,8 +253,7 @@
                             </div>
                             <div class="col-3 mb-3">
                                 <label class="form-label" for="dailyMaxRate">일 대여 최대 할인율</label>
-                                <input type="text" class="form-control" name="dailyMaxRate"
-                                       id="dailyMaxRate"/>
+                                <input type="text" class="form-control" name="dailyMaxRate" id="dailyMaxRate" onblur="this.value = objectConvertToRateFormat(this.value)"/>
                             </div>
                             <div class="col-3 mb-3">
                                 <label class="form-label" for="monthlyStandardPay">월 기본요금</label>
@@ -262,7 +261,7 @@
                             </div>
                             <div class="col-3 mb-3">
                                 <label class="form-label" for="monthlyMaxRate">월 대여 최대 할인율</label>
-                                <input type="text" class="form-control" name="monthlyMaxRate" id="monthlyMaxRate"/>
+                                <input type="text" class="form-control" name="monthlyMaxRate" id="monthlyMaxRate" onblur="this.value = objectConvertToRateFormat(this.value)"/>
                             </div>
                             <div class="col-3 mb-3">
                                 <label class="form-label" for="month3Deposit">3개월 보증금</label>
@@ -596,6 +595,27 @@
     function holidayList() {
         opener.location.href = '/mem/rentshop';
         window.close();
+    }
+
+    // 할인율 %
+    function objectConvertToRateFormat(obj) {
+
+        var resValue = obj.toString().replace(/\s/g, '').replace(/\%/g, '')
+        var rate;
+
+        // back space
+        if(event.which === 8){
+            rate = resValue.substr(0, resValue.length - 1);
+        }
+        else {
+            rate = resValue;
+        }
+
+        rate = (rate == '')
+            ? ''
+            : rate + ' %';
+
+        return rate;
     }
 </script>
 </body>

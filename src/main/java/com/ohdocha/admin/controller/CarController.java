@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Slf4j
 @AllArgsConstructor
@@ -67,6 +68,18 @@ public class CarController extends ControllerExtension {
         return serviceMessage;
     }
 
+    /* 등록차량 옵션 추가 */
+    @PostMapping(value = "/api/v1.0/insertDcCarInfoOption.do")
+    @ResponseBody
+    public Object insertDcCarInfoOption(@RequestBody List<DochaAdminDcCarInfoOption> carInfoOptionList, HttpServletRequest request) {
+        ServiceMessage serviceMessage = createServiceMessage(request);
+        serviceMessage.addData("carInfoOptionList", carInfoOptionList);
+
+        carService.insertRegCarOption(serviceMessage);
+
+        return serviceMessage;
+    }
+
     /* 등록차량 요금제 추가 */
     @PostMapping(value = "/api/v1.0/insertDcCarPaymentInfo.do")
     @ResponseBody
@@ -99,7 +112,7 @@ public class CarController extends ControllerExtension {
 
         carService.regCarDetail(serviceMessage);
 
-        return serviceMessage.get("result");
+        return serviceMessage;
     }
 
     /* 등록차량 요금 계산  */

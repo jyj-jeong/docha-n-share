@@ -624,6 +624,7 @@ function objectConvertToPriceFormat(obj) {
     return resValue;
 }
 
+
 //regDt
 //parameter YYYYMMDD24MISS
 //return yyyy.mm.dd hh:min:sec

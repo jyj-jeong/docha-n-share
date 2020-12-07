@@ -24,6 +24,7 @@ var MODAL_HEIGHT = 1500;
 var CURRENT_PAGE = 0;
 var insuranceData = [];			// 보험 select box 배열
 var planData = [];				// 기본요금 select box 배열
+var carOption = [];
 var carmodeldetaildata = [];	// 차량상세모델 select box 배열
 var CRUD_METHOD = '';			// 저장 구분자
 var calinit = 0;
@@ -386,11 +387,6 @@ function initDetailInfoSub(seq){
 // Modal Detail Start
 function initDetailInfo(seq){
 
-//	swal("상세화면은 순차적으로 오픈할 예정입니다.", { icon: "warning", });
-//	if(true){
-//		return;
-//	}
-
 	var currentYear = new Date().getFullYear();
 	var strOption = '';
 	for(var i = 7; i >= 0; i--){
@@ -443,11 +439,16 @@ function initDetailInfo(seq){
 	method = 'select';
 
 	fn_callApi(method,target, req, function(response) {
-		let data = response[0];
+		let data = response.result[0];
+		let carOptionInfo = response.regCarOptionList;
 
 		// 200이라면 페이징을 구한다.
 		// if (res.code === 200) {
-		// 	let data = res.data.result[0];
+
+		for (var i=0; i<carOptionInfo.length; i++){
+			$("input:checkbox[name='carOption']:checkbox[value='"+carOptionInfo[i].optionDetailCode+"']").prop('checked', true);
+
+		}
 
 		let rtIdx 					= data.rtIdx              ; //제휴사idx
 		let crIdx 					= data.crIdx			  ; //차량idx
@@ -1154,21 +1155,17 @@ function detailValidation(save_type){
 				let displacement 		= $("#displacement").val();
 				let maximumPassenger 	= $("#maximumPassenger").val();
 
-				// let regDt = 'zz';
-
 				var carOptionList = $('input[name=carOption]:checked');
-				var carOption = [];
 
 				if (carOptionList.length !== 0){
 					for (var i = 0; i < carOptionList.length; i++){
-						carOption.push(carOptionList[i].value);
+						carOption.push({
+							crIdx : crIdx,
+							optionDetailCode : carOptionList[i].value
+						});
 					}
 				}
 
-
-				// let pp = companyName+'\n'+carNumber+'\n'+year+'\n'+carRegDt+'\n'+modelName+'\n'+modelDetailName+'\n'+mdIdx+'\n'+fuelCode+'\n'+colorName+'\n'+mileage+'\n'+ageLimit+'\n';
-				// pp += crIdx+'\n'+transmissionCode+'\n'+driveTypeCode+'\n'+cartypeCode+'\n'+driveLicenseCode+'\n'+manufacturerCode+'\n'+displacement+'\n'+maximumPassenger;
-				// alert(pp);
 				if (isEmpty(companyName)) { // is not empty
 					errorAlert('차량정보', '회사명은 필수 입력값 입니다.\n\r회원사명 선택하여 주세요.');
 					$('#companyName').focus();
@@ -1179,15 +1176,15 @@ function detailValidation(save_type){
 					return;
 				}
 				if (isEmpty(modelName)) { // is not empty
-					errorAlert('차량정보', '차종은 필수 입력값 입니다.\n\차종을 선택하여 주세요.');
+					errorAlert('차량정보', '차종은 필수 입력값 입니다.\n\r차종을 선택하여 주세요.');
 					return;
 				}
 				if (isEmpty(mdIdx) || mdIdx === '0') { // is not empty
-					errorAlert('차량정보', '차종상세는 필수 입력값 입니다.\n\차종상세를 선택하여 주세요.');
+					errorAlert('차량정보', '차종상세는 필수 입력값 입니다.\n\r차종상세를 선택하여 주세요.');
 					return;
 				}
 				if (isEmpty(fuelCode)) { // is not empty
-					errorAlert('차량정보', '연료는 필수 입력값 입니다.\n\연료를 선택하여 주세요.');
+					errorAlert('차량정보', '연료는 필수 입력값 입니다.\n\r연료를 선택하여 주세요.');
 					return;
 				}
 				if (isEmpty(carRegDt)) { // is not empty
@@ -1202,10 +1199,6 @@ function detailValidation(save_type){
 					errorAlert('차량정보', '차량번호는 필수 입력값 입니다.');
 					return;
 				}
-//			if (isEmpty(carChassisNumber)) { // is not empty
-//				errorAlert('차량정보', '차량대번호는 필수 입력값 입니다.');
-//				return;
-//			}
 
 				if (isEmpty(mileage)) { // is not empty
 					mileage = '0';
@@ -1274,7 +1267,6 @@ function detailValidation(save_type){
 				let carDamage3Yn 		=  insuranceCopayment3 === '' ? 'N' : $(':input:radio[name=carDamage3Yn]:checked').val();
 				let carDamage4Yn 		=  insuranceCopayment4 == '' ? 'N' : $(':input:radio[name=carDamage4Yn]:checked').val();
 
-				// TODO 차량 저장순서
 				if (isEmpty(crIdx)) {
 					errorAlert('차량정보', '차량정보를 먼저 저장해 주세요.');
 					return;
@@ -1402,7 +1394,6 @@ function detailValidation(save_type){
 				let deliveryStandardPay = getPureText($('#deliveryStandardPay').val());
 				let deliveryAddPay 		= getPureText($('#deliveryAddPay').val());
 
-				// TODO 차량 저장순서
 				if (isEmpty(crIdx)) {
 					errorAlert('차량정보', '차량정보를 먼저 저장해 주세요.');
 					return;
@@ -1554,6 +1545,21 @@ function detailSubmit(save_type, req){
 			break;
 
 	}// end switch
+
+	if (save_type === 'saveCarinfo' && carOption !== 0){
+
+		$.ajax({
+			url: '/api/v1.0/insertDcCarInfoOption.do',
+			type: 'POST',
+			dataType: 'json',
+			data: JSON.stringify(carOption),
+			contentType: 'application/json;charset=UTF-8',
+			cache: false,
+			async: false
+		}).done(function (data, textStatus, jqXHR) {
+			console.log(data);
+		});
+	}
 
 	fn_callApi(method, target, req, function(response) {
 		let data = response;
@@ -1927,46 +1933,6 @@ function carsuspend(crIdx) {
 		// }
 	});// end fn_callApi
 }
-
-// // 날짜 마스킹 처리
-// Array.prototype.forEach.call(document.body.querySelectorAll("*[data-mask]"), applyDataMask);
-// function applyDataMask(field) {
-// 	var mask = field.dataset.mask.split('');
-//
-// 	// For now, this just strips everything that's not a number
-// 	function stripMask(maskedData) {
-// 		function isDigit(char) {
-// 			return /\d/.test(char);
-// 		}
-// 		return maskedData.split('').filter(isDigit);
-// 	}
-//
-// 	// Replace `_` characters with characters from `data`
-// 	function applyMask(data) {
-// 		return mask.map(function(char) {
-// 			if (char != '_') return char;
-// 			if (data.length == 0) return char;
-// 			return data.shift();
-// 		}).join('')
-// 	}
-//
-// 	function reapplyMask(data) {
-// 		return applyMask(stripMask(data));
-// 	}
-//
-// 	function changed() {
-// 		var oldStart = field.selectionStart;
-// 		var oldEnd = field.selectionEnd;
-//
-// 		field.value = reapplyMask(field.value);
-//
-// 		field.selectionStart = oldStart;
-// 		field.selectionEnd = oldEnd;
-// 	}
-//
-// 	field.addEventListener('click', changed)
-// 	field.addEventListener('keyup', changed)
-// }
 
 // 대여기간 계산
 function calcPeriodDt() {
