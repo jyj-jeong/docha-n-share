@@ -77,6 +77,13 @@
                                 <input type="text" class="form-control" name="mileage" id="mileage"
                                        placeholder="누적 Km"/>
                             </div>
+                            <div class="col-3 mb-3">
+                                <label class="form-label" for="sel_ageLimit">연령 제한</label>
+                                <select class="form-control" id="sel_ageLimit">
+                                    <option value="21">21</option>
+                                    <option value="26">26</option>
+                                </select>
+                            </div>
                             <!--                            <div class="col-3 mb-3">-->
                             <!--                                <label class="form-label">정비</label>-->
                             <!--                                <input type="text" class="form-control"/>-->
@@ -163,8 +170,69 @@
                                     <label class="form-check-label" for="carDamage4Yn">자차 4</label>
                                 </div>
                             </div>
-
                         </div>
+                        <script>
+                            $('input:checkbox[id=carDamage1Yn]').change(function () {
+                                var carDamageYn = $('input:checkbox[id=carDamage1Yn]').is(":checked");
+                                if (carDamageYn){
+                                    $('#insuranceCopayment').removeAttr('readonly');
+                                    $('#carDamageCover').removeAttr('readonly');
+
+                                    $('#insuranceCopayment').val('미가입');
+                                    $('#carDamageCover').val('미가입');
+                                }else {
+                                    $('#insuranceCopayment').attr('readonly', 'readonly');
+                                    $('#carDamageCover').attr('readonly', 'readonly');
+
+                                    $('#insuranceCopayment').val('미가입');
+                                    $('#carDamageCover').val('미가입');
+                                }
+                            });
+
+                            $('input:checkbox[id=carDamage2Yn]').change(function () {
+                                var carDamage2Yn = $('input:checkbox[id=carDamage2Yn]').is(":checked");
+                                if (carDamage2Yn){
+                                    $('#insuranceCopayment2').removeAttr('readonly');
+                                    $('#carDamageCover2').removeAttr('readonly');
+                                }else {
+                                    $('#insuranceCopayment2').attr('readonly', 'readonly');
+                                    $('#carDamageCover2').attr('readonly', 'readonly');
+
+                                    $('#insuranceCopayment2').val('0');
+                                    $('#carDamageCover2').val('0');
+                                }
+                            });
+
+                            $('input:checkbox[id=carDamage3Yn]').change(function () {
+                                var carDamage3Yn = $('input:checkbox[id=carDamage3Yn]').is(":checked");
+                                if (carDamage3Yn){
+                                    $('#insuranceCopayment3').removeAttr('readonly');
+                                    $('#carDamageCover3').removeAttr('readonly');
+                                }else {
+                                    $('#insuranceCopayment3').attr('readonly', 'readonly');
+                                    $('#carDamageCover3').attr('readonly', 'readonly');
+
+                                    $('#insuranceCopayment3').val('0');
+                                    $('#carDamageCover3').val('0');
+                                }
+                            });
+
+                            $('input:checkbox[id=carDamage4Yn]').change(function () {
+                                var carDamage4Yn = $('input:checkbox[id=carDamage4Yn]').is(":checked");
+                                if (carDamage4Yn){
+                                    $('#insuranceCopayment4').removeAttr('readonly');
+                                    $('#carDamageCover4').removeAttr('readonly');
+                                }else {
+                                    $('#insuranceCopayment4').attr('readonly', 'readonly');
+                                    $('#carDamageCover4').attr('readonly', 'readonly');
+
+                                    $('#insuranceCopayment4').val('0');
+                                    $('#carDamageCover4').val('0');
+                                }
+                            });
+
+                        </script>
+
                         <div class="row mt-4">
 
                             <div class="col-6 mb-3">
@@ -172,11 +240,11 @@
                                 <div class="form-check-inline">
                                     <div class="m-1">
                                         <label>자차1 보험 요금/일</label>
-                                        <input type="text" class="form-control float-l" id="insuranceCopayment" placeholder="단위:원"/>
+                                        <input type="text" class="form-control float-l" id="insuranceCopayment" placeholder="단위:원" readonly/>
                                     </div>
                                     <div class="m-1">
                                         <label>자차1 보험 고객부담금</label>
-                                        <input type="text" class="form-control float-l" id="carDamageCover" placeholder="단위:원"/>
+                                        <input type="text" class="form-control float-l" id="carDamageCover" placeholder="단위:원" readonly/>
                                     </div>
                                 </div>
                             </div>
@@ -186,11 +254,11 @@
                                 <div class="form-check-inline">
                                     <div class="m-1">
                                         <label>자차2 보험 요금/일</label>
-                                        <input type="text" class="form-control float-l" id="insuranceCopayment2" placeholder="단위:원"/>
+                                        <input type="text" class="form-control float-l" id="insuranceCopayment2" placeholder="단위:원" readonly/>
                                     </div>
                                     <div class="m-1">
                                         <label>자차2 보험 고객부담금</label>
-                                        <input type="text" class="form-control float-l" id="carDamageCover2" placeholder="단위:원"/>
+                                        <input type="text" class="form-control float-l" id="carDamageCover2" placeholder="단위:원" readonly/>
                                     </div>
                                 </div>
                             </div>
@@ -202,11 +270,11 @@
                                 <div class="form-check-inline">
                                     <div class="m-1">
                                         <label>자차3 보험 요금/일</label>
-                                        <input type="text" class="form-control float-l" id="insuranceCopayment3" placeholder="단위:원"/>
+                                        <input type="text" class="form-control float-l" id="insuranceCopayment3" placeholder="단위:원" readonly/>
                                     </div>
                                     <div class="m-1">
                                         <label>자차3 보험 고객부담금</label>
-                                        <input type="text" class="form-control float-l" id="carDamageCover3" placeholder="단위:원"/>
+                                        <input type="text" class="form-control float-l" id="carDamageCover3" placeholder="단위:원" readonly/>
                                     </div>
                                 </div>
                             </div>
@@ -216,11 +284,11 @@
                                 <div class="form-check-inline">
                                     <div class="m-1">
                                         <label>자차4 보험 요금/일</label>
-                                        <input type="text" class="form-control float-l" id="insuranceCopayment4" placeholder="단위:원"/>
+                                        <input type="text" class="form-control float-l" id="insuranceCopayment4" placeholder="단위:원" readonly/>
                                     </div>
                                     <div class="m-1">
                                         <label>자차4 보험 고객부담금</label>
-                                        <input type="text" class="form-control float-l" id="carDamageCover4" placeholder="단위:원"/>
+                                        <input type="text" class="form-control float-l" id="carDamageCover4" placeholder="단위:원" readonly/>
                                     </div>
                                 </div>
                             </div>
@@ -343,7 +411,7 @@
                         </div>
 
                         <div class="row mt-2">
-                            <div class="custom-control custom-radio custom-control-inline col-2 mb-3">
+                            <div class="custom-control custom-radio custom-control-inline ml-3 mr-5 mb-3">
                                 <input type="radio" id="customRadioInline1" name="customRadioInline1"
                                        class="custom-control-input">
                                 <label class="custom-control-label" for="customRadioInline1">지점방문</label>
@@ -355,15 +423,42 @@
                             </div>
                         </div>
 
+                        <script>
+                            $('input:radio[id="customRadioInline1"]').click(function () {
+                                $('#rentlocation').attr('readonly', 'readonly');
+                                $('#rentlocation').attr('placeholder', '지점방문');
+                                $('#returnAddr').attr('readonly', 'readonly');
+                                $('#returnAddr').attr('placeholder', '지점방문');
+                            });
+
+                            $('input:radio[id="customRadioInline2"]').click(function () {
+                                $('#rentlocation').removeAttr('readonly', 'readonly');
+                                $('#rentlocation').attr('placeholder', '주소');
+                                $('#returnAddr').removeAttr('readonly', 'readonly');
+                                $('#returnAddr').attr('placeholder', '주소');
+
+                            });
+
+                        </script>
 
                         <div class="row mt-2">
-                            <div class="col-6 mb-3">
-                                <label class="form-label" for="rentlocation">대여위치</label>
-                                <input type="text" class="form-control" name="rentlocation" id="rentlocation"/>
+                            <div class="col-lg-6 mb-3 float-l flex-1" >
+                                <label>대여위치</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" id="rentlocation"  placeholder=""/>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" onclick="openDaumAddrApi('rentlocation');" >주소찾기</button>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="col-6 mb-3">
-                                <label class="form-label" for="returnAddr">반납위치</label>
-                                <input type="text" class="form-control" name="returnAddr" id="returnAddr"/>
+                            <div class="col-lg-6 mb-3 float-l flex-1" >
+                                <label>반납위치</label>
+                                <div class="input-group">
+                                    <input type="text" id="returnAddr" class="form-control" value=""  />
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" onclick="openDaumAddrApi('returnAddr');">주소찾기</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -378,7 +473,7 @@
                             </div>
                             <div class="col-3 mb-3">
                                 <label class="form-label" for="cardeposit">할증금액</label>
-                                <input type="text" class="form-control" name="cardeposit" id="cardeposit"/>
+                                <input type="text" class="form-control" name="cardeposit" id="cardeposit" onblur="this.value = objectConvertToPriceFormat(this.value)"/>
                             </div>
                             <div class="col-3 mb-3">
                                 <label class="form-label" for="licenseIssueDt">배달 금액</label>

@@ -48,33 +48,32 @@
                                 <thead>
                                 <tr>
                                     <th>기간요금번호</th>
-                                    <th>회원사<br>(지점)</th>
-                                    <th>시작일<br>종료일</th>
+                                    <th>회원사 (지점)</th>
+                                    <th>시작일 /종료일</th>
                                     <th>할증금액/일</th>
                                     <th>할인금액/일</th>
-                                    <th>설정차량대수</th>
                                     <th>내용</th>
                                 </tr>
                                 </thead>
                                 <tfoot>
                                 <tr>
                                     <th>기간요금번호</th>
-                                    <th>회원사<br>(지점)</th>
-                                    <th>시작일<br>종료일</th>
+                                    <th>회원사 (지점)</th>
+                                    <th>시작일 / 종료일</th>
                                     <th>할증금액/일</th>
                                     <th>할인금액/일</th>
-                                    <th>설정차량대수</th>
                                     <th>내용</th>
                                 </tr>
                                 </tfoot>
                                 <tbody>
                                 <tr th:each="period, index : ${periodList}" style="cursor: pointer" th:data-value="${period.getPerIdx()}">
                                     <td th:text="${period.getPerIdx()}"></td>
-                                    <td th:text="${period.getCompanyName() + '(' + period.getBranchName() + ')'}"></td>
-                                    <td th:text="${period.getPeriodStartDt() + ' (' + period.getPeriodEndDt() + ')'}"></td>
-                                    <td th:text="${#numbers.formatInteger(period.getPeriodPay(), 0, 'COMMA')}"></td>
-                                    <td th:text="${#numbers.formatInteger(period.getPeriodPay(), 0, 'COMMA')}"></td>
-                                    <td th:text="${period.getSettingCarCnt()}"></td>
+                                    <td th:text="${period.getCompanyName() + ' (' + period.getBranchName() + ')'}"></td>
+                                    <td th:text="${period.getPeriodStartDt() + ' / ' + period.getPeriodEndDt()}"></td>
+                                    <td th:if="${period.getDiscountExtrachargeCode() == '할증'}" th:text="${#numbers.formatInteger(period.getPeriodPay(), 0, 'COMMA')}"></td>
+                                    <td th:if="${period.getDiscountExtrachargeCode() != '할증'}"></td>
+                                    <td th:if="${period.getDiscountExtrachargeCode() == '할인'}" th:text="${#numbers.formatInteger(period.getPeriodPay(), 0, 'COMMA')}"></td>
+                                    <td th:if="${period.getDiscountExtrachargeCode() != '할인'}"></td>
                                     <td th:text="${period.getPeriodEtc()}"></td>
                                 </tr>
                                 <script th:inline="javascript">

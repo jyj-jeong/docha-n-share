@@ -2,8 +2,8 @@
 <html lang="ko" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="header :: mainHead"></head>
 <head>
-    <title th:if="${CRUD == 'insert'}">기간요금 등록 :: DoCha Admin Web</title>
-    <title th:if="${CRUD == 'modify'}">기간요금 상세 :: DoCha Admin Web</title>
+    <title th:if="${CRUD == 'insert'}">기본요금 등록 :: DoCha Admin Web</title>
+    <title th:if="${CRUD == 'modify'}">기본요금 상세 :: DoCha Admin Web</title>
 
     <script src="/js/basicPlan.js" th:src="@{/js/basicPlan.js}"></script>
 </head>
@@ -27,12 +27,13 @@
 
                         <!-- 회원사 -->
                         <div class="row mt-2">
+                            <input type="text" class="form-control d-none" name="rtIdx" id="rtIdx"/>
                             <input type="text" class="form-control d-none" name="pyTIdx" id="pyTIdx"/>
                             <label class="form-label mb-3" for="companyName">
                                 <b class="-bold col-1">회원사</b></label>
                             <div class="col-12 mb-3">
                                 <label class="form-label" for="companyName">회사명(지점)</label>
-                                <select class="custom-select" name="companyName" id="companyName"></select>
+                                <select class="custom-select" name="companyName" id="companyName" onchange="companyChanged()"></select>
                             </div>
                         </div>
                     </div>
@@ -105,20 +106,30 @@
 
                 </div>
 
-                <!-- 일정 -->
+                <!-- 차량 -->
                 <div class="card shadow mb-4">
                     <div class="card-body">
                         <div class="row mt-2">
                             <label class="form-label mb-3" for="companyName">
                                 <b class="-bold col-1">차량</b></label>
-                            <div class="col-12 mb-3">
-                                <label class="form-label" for="companyName">경차</label>
-                                <input type="text" class="form-control float-1"/>
-                            </div>
-                            <div class="col-12 mb-3">
-                                <label class="form-label" for="companyName">준중형</label>
-                                <input type="text" class="form-control float-1"/>
-                            </div>
+
+                            <label class="form-label col-12">경차</label>
+                            <div id="subCompactCarList" class="col-12 mb-3"></div>
+
+                            <label class="form-label col-12">소형</label>
+                            <div id="compactCarList" class="col-12 mb-3"></div>
+
+                            <label class="form-label col-12">중형</label>
+                            <div id="mediumCarList" class="col-12 mb-3"></div>
+
+                            <label class="form-label col-12">대형</label>
+                            <div id="largeCarList" class="col-12 mb-3"></div>
+
+                            <label class="form-label col-12">SUV</label>
+                            <div id="suvCarList" class="col-12 mb-3"></div>
+
+                            <label class="form-label col-12">승합</label>
+                            <div id="vanList" class="col-12 mb-3"></div>
                         </div>
                     </div>
                 </div>
@@ -182,11 +193,68 @@
     CRUD = /*[[${CRUD}]]*/'';
     pyTIdx = /*[[${pyTIdx}]]*/'';
 
+    function getLoginUser() {
+        return /*[[${session.LOGIN_SESSION}]]*/ '';
+    }
+
     if(CRUD === "insert"){
         initDetailData('insert');
     }else if (CRUD === "modify"){
         initDetailInfo(pyTIdx)
     }
+
+
+    /* 차량 체크박스 전체선택 */
+    $(document).on('change', '#subCompactCarListAll', function () {
+        if(this.checked){
+            $('#subCompactCarList input:checkbox').prop("checked", true);
+        }else {
+            $('#subCompactCarList input:checkbox').prop("checked", false);
+        }
+    });
+
+    $(document).on('change', '#compactCarListAll', function () {
+        if(this.checked){
+            $('#compactCarList input:checkbox').prop("checked", true);
+        }else {
+            $('#compactCarList input:checkbox').prop("checked", false);
+        }
+    })
+
+    $(document).on('change', '#mediumCarListAll', function () {
+        if(this.checked){
+            $('#mediumCarList input:checkbox').prop("checked", true);
+        }else {
+            $('#mediumCarList input:checkbox').prop("checked", false);
+        }
+    })
+
+    $(document).on('change', '#largeCarListAll', function () {
+        if(this.checked){
+            $('#largeCarList input:checkbox').prop("checked", true);
+        }else {
+            $('#largeCarList input:checkbox').prop("checked", false);
+        }
+    })
+
+    $(document).on('change', '#suvCarListAll', function () {
+        if(this.checked){
+            $('#suvCarList input:checkbox').prop("checked", true);
+        }else {
+            $('#suvCarList input:checkbox').prop("checked", false);
+        }
+    })
+
+
+    $(document).on('change', '#vanListAll', function () {
+        if(this.checked){
+            $('#vanList input:checkbox').prop("checked", true);
+        }else {
+            $('#vanList input:checkbox').prop("checked", false);
+        }
+    })
+
+
 </script>
 </body>
 </html>

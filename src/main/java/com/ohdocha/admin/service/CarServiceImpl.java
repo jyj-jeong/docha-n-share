@@ -23,6 +23,7 @@ import com.ohdocha.admin.domain.reserve.reserveInfoMnt.DochaAdminReserveInfoRequ
 import com.ohdocha.admin.domain.reserve.reserveInfoMnt.DochaRentCompanyDto;
 import com.ohdocha.admin.exception.BadRequestException;
 import com.ohdocha.admin.mapper.*;
+import com.ohdocha.admin.util.DochaMap;
 import com.ohdocha.admin.util.FileHelper;
 import com.ohdocha.admin.util.ServiceMessage;
 import lombok.AllArgsConstructor;
@@ -31,7 +32,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Slf4j
@@ -199,6 +202,24 @@ public class CarServiceImpl extends ServiceExtension implements CarService {
             message.addData("code", 400);
             message.addData("errMsg", "설정에 실패했습니다.");
         }
+    }
+
+    @Override
+    public void selectRentCompanyCarList(ServiceMessage message) {
+        DochaAdminRegCarDetailRequest regCarDetailRequest = message.getObject("regCarDetailRequest", DochaAdminRegCarDetailRequest.class);
+
+        String[] carTypeCodes = {"경차", "소형", "중형", "대형", "SUV", "승합"};
+        Map<Integer, Object> rentCompanyCarList = new HashMap<>();
+
+        for (int i = 0; i < carTypeCodes.length; i++) {
+            regCarDetailRequest.setCartypeCode(carTypeCodes[i]);
+
+            List<DochaAdminRegCarDetailResponse> carList = regCarMapper.selectRentCompanyCarList(regCarDetailRequest);
+
+            rentCompanyCarList.put(i , carList);
+        }
+
+        message.addData("rentCompanyCarList", rentCompanyCarList);
     }
 
     //region [ 등록차량 옵션 선택]
@@ -558,9 +579,10 @@ public class CarServiceImpl extends ServiceExtension implements CarService {
     /* 기간 요금제 등록 */
     @Override
     public void insertPlanSettingDetail(ServiceMessage message) {
+        int res = 0;
         DochaAdminPeriodPlanSettingDetailRequest periodPlanSettingDetailRequest = message.getObject("periodPlanSettingDetailRequest", DochaAdminPeriodPlanSettingDetailRequest.class);
 
-        int res = periodPlanSettingMapper.insertPlanSettingDetail(periodPlanSettingDetailRequest);
+        res = periodPlanSettingMapper.insertPlanSettingDetail(periodPlanSettingDetailRequest);
 
         message.addData("res", res);
     }
@@ -569,6 +591,11 @@ public class CarServiceImpl extends ServiceExtension implements CarService {
     @Override
     public void getPeriodPlanList(ServiceMessage message) {
         DochaAdminPeriodPlanSettingRequest reqParam = new DochaAdminPeriodPlanSettingRequest();
+
+        DochaMap loginUser = message.getObject("loginUser", DochaMap.class);
+        if (!loginUser.getString("userRole").equals("RA")){
+            reqParam.setRtIdx(loginUser.getString("rtIdx"));
+        }
 
         List<DochaAdminPeriodPlanSettingResponse> responseDto = periodPlanSettingMapper.selectPeriodPlanInfo(reqParam);
 
@@ -610,6 +637,11 @@ public class CarServiceImpl extends ServiceExtension implements CarService {
     public void getBasicPlanList(ServiceMessage message) {
         DochaAdminBaiscPlanRequest baiscPlanRequest = new DochaAdminBaiscPlanRequest();
 
+        DochaMap loginUser = message.getObject("loginUser", DochaMap.class);
+        if (!loginUser.getString("userRole").equals("RA")){
+            baiscPlanRequest.setRtIdx(loginUser.getString("rtIdx"));
+        }
+
         List<DochaAdminBasicPlanResponse> basicPlanResponseList = basicPlanMapper.selectBasicPlan(baiscPlanRequest);
 
         message.addData("basicPlanList", basicPlanResponseList);
@@ -650,6 +682,11 @@ public class CarServiceImpl extends ServiceExtension implements CarService {
     @Override
     public void getInsuranceTemplateList(ServiceMessage message) {
         DochaAdminInsuranceTemplateRequest insuranceTemplateRequest = new DochaAdminInsuranceTemplateRequest();
+
+        DochaMap loginUser = message.getObject("loginUser", DochaMap.class);
+        if (!loginUser.getString("userRole").equals("RA")){
+            insuranceTemplateRequest.setRtIdx(loginUser.getString("rtIdx"));
+        }
 
         List<DochaAdminInsuranceTemplateResponse> insuranceTemplateResponseList = insuranceTemplateMapper.selectInsuranceTemplateInfo(insuranceTemplateRequest);
 

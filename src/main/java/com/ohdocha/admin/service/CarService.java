@@ -93,4 +93,6 @@ public interface CarService {
     void updateDcPaymentInfo(ServiceMessage message);
 
     void insertRentAble(ServiceMessage message);
+
+    void selectRentCompanyCarList(ServiceMessage message);
 }

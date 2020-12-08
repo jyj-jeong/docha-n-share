@@ -551,11 +551,30 @@ function initDetailInfo(seq){
 		$("#carDamageCover3").val(carDamageCover3);
 		$("#insuranceCopayment4").val(insuranceCopayment4);
 		$("#carDamageCover4").val(carDamageCover4);
-		$("input:checkbox[name='carDamage1Yn']:checkbox[value='Y']").prop('checked', true);
-		$("input:checkbox[name='carDamage2Yn']:checkbox[value='Y']").prop('checked', true);
-		$("input:checkbox[name='carDamage3Yn']:checkbox[value='Y']").prop('checked', true);
-		$("input:checkbox[name='carDamage4Yn']:checkbox[value='Y']").prop('checked', true);
+		$("input:checkbox[name='carDamage1Yn']:checkbox[value='"+ carDamage1Yn +"']").prop('checked', true);
+		$("input:checkbox[name='carDamage2Yn']:checkbox[value='"+ carDamage2Yn +"']").prop('checked', true);
+		$("input:checkbox[name='carDamage3Yn']:checkbox[value='"+ carDamage3Yn +"']").prop('checked', true);
+		$("input:checkbox[name='carDamage4Yn']:checkbox[value='"+ carDamage4Yn +"']").prop('checked', true);
 
+		if (carDamage1Yn === 'Y'){
+			$('#insuranceCopayment').removeAttr('readonly');
+			$('#carDamageCover').removeAttr('readonly');
+		}
+
+		if (carDamage2Yn === 'Y'){
+			$('#insuranceCopayment2').removeAttr('readonly');
+			$('#carDamageCover2').removeAttr('readonly');
+		}
+
+		if (carDamage3Yn === 'Y'){
+			$('#insuranceCopayment3').removeAttr('readonly');
+			$('#carDamageCover3').removeAttr('readonly');
+		}
+
+		if (carDamage4Yn === 'Y'){
+			$('#insuranceCopayment4').removeAttr('readonly');
+			$('#carDamageCover4').removeAttr('readonly');
+		}
 
 		$("#dailyStandardPay").val(dailyStandardPay);
 		$("#dailyMaxRate").val(dailyMaxRate);
@@ -569,13 +588,6 @@ function initDetailInfo(seq){
 		$("#deliveryAddPay").val(deliveryAddPay);
 
 		$("#sel_fuel").val(fuelCode).prop("selected", true);
-		// $("#transmissionCode").val(transmissionCode);
-		// $("#driveTypeCode").val(driveTypeCode);
-		// $("#cartypeCode").val(cartypeCode);
-		// $("#driveLicenseCode").val(driveLicenseCode);
-		// $("#manufacturerCode").val(manufacturerCode);
-		// $("#displacement").val(displacement);
-		// $("#maximumPassenger").val(maximumPassenger);
 
 		/*
          * 회원사 select box
@@ -1033,21 +1045,21 @@ function setData(set_type, _data){
 			break;
 		case 'saveInsurance':	// 보험정보
 			let ciTIdx                		= nullCheck(_data.ciTIdx);
-			let onselfDamageCover           = nullCheck(_data.onselfDamageCover) == '' ? '' : objectConvertToPriceFormat(nullCheck(_data.onselfDamageCover));;
-			let personalCover               = nullCheck(_data.personalCover) == '' ? '' : objectConvertToPriceFormat(nullCheck(_data.personalCover));;
-			let propertyDamageCover     	= nullCheck(_data.propertyDamageCover) == '' ? '' : objectConvertToPriceFormat(nullCheck(_data.propertyDamageCover));;
-			let carDamageCover              = nullCheck(_data.carDamageCover) == '' ? '' : objectConvertToPriceFormat(nullCheck(_data.carDamageCover));
-			let insuranceCopayment          = nullCheck(_data.insuranceCopayment) == '' ? '' : objectConvertToPriceFormat(nullCheck(_data.insuranceCopayment));
-			let carDamageCover2             = nullCheck(_data.carDamageCover2) == '' ? '' : objectConvertToPriceFormat(nullCheck(_data.carDamageCover2));
-			let insuranceCopayment2         = nullCheck(_data.insuranceCopayment2) == '' ? '' : objectConvertToPriceFormat(nullCheck(_data.insuranceCopayment2));
-			let carDamageCover3             = nullCheck(_data.carDamageCover3) == '' ? '' : objectConvertToPriceFormat(nullCheck(_data.carDamageCover3));
-			let insuranceCopayment3         = nullCheck(_data.insuranceCopayment3) == '' ? '' : objectConvertToPriceFormat(nullCheck(_data.insuranceCopayment3));
-			let carDamageCover4             = nullCheck(_data.carDamageCover4) == '' ? '' : objectConvertToPriceFormat(nullCheck(_data.carDamageCover4));
-			let insuranceCopayment4         = nullCheck(_data.insuranceCopayment4) == '' ? '' : objectConvertToPriceFormat(nullCheck(_data.insuranceCopayment4));
-			let carDamage1Yn                = nullCheck(_data.carDamage1Yn) == '' ? 'N' : nullCheck(_data.carDamage1Yn);
-			let carDamage2Yn                = nullCheck(_data.carDamage2Yn) == '' ? 'N' : nullCheck(_data.carDamage2Yn);
-			let carDamage3Yn                = nullCheck(_data.carDamage3Yn) == '' ? 'N' : nullCheck(_data.carDamage3Yn);
-			let carDamage4Yn                = nullCheck(_data.carDamage4Yn) == '' ? 'N' : nullCheck(_data.carDamage4Yn);
+			let onselfDamageCover           = nullCheck(_data.onselfDamageCover) === '' ? '' : objectConvertToPriceFormat(nullCheck(_data.onselfDamageCover));;
+			let personalCover               = nullCheck(_data.personalCover) === '' ? '' : objectConvertToPriceFormat(nullCheck(_data.personalCover));;
+			let propertyDamageCover     	= nullCheck(_data.propertyDamageCover) === '' ? '' : objectConvertToPriceFormat(nullCheck(_data.propertyDamageCover));;
+			let carDamageCover              = nullCheck(_data.carDamageCover) === '' ? '' : objectConvertToPriceFormat(nullCheck(_data.carDamageCover));
+			let insuranceCopayment          = nullCheck(_data.insuranceCopayment) === '' ? '' : objectConvertToPriceFormat(nullCheck(_data.insuranceCopayment));
+			let carDamageCover2             = nullCheck(_data.carDamageCover2) === '' ? '' : objectConvertToPriceFormat(nullCheck(_data.carDamageCover2));
+			let insuranceCopayment2         = nullCheck(_data.insuranceCopayment2) === '' ? '' : objectConvertToPriceFormat(nullCheck(_data.insuranceCopayment2));
+			let carDamageCover3             = nullCheck(_data.carDamageCover3) === '' ? '' : objectConvertToPriceFormat(nullCheck(_data.carDamageCover3));
+			let insuranceCopayment3         = nullCheck(_data.insuranceCopayment3) === '' ? '' : objectConvertToPriceFormat(nullCheck(_data.insuranceCopayment3));
+			let carDamageCover4             = nullCheck(_data.carDamageCover4) === '' ? '' : objectConvertToPriceFormat(nullCheck(_data.carDamageCover4));
+			let insuranceCopayment4         = nullCheck(_data.insuranceCopayment4) === '' ? '' : objectConvertToPriceFormat(nullCheck(_data.insuranceCopayment4));
+			let carDamage1Yn                = nullCheck(_data.carDamage1Yn) === '' ? 'N' : nullCheck(_data.carDamage1Yn);
+			let carDamage2Yn                = nullCheck(_data.carDamage2Yn) === '' ? 'N' : nullCheck(_data.carDamage2Yn);
+			let carDamage3Yn                = nullCheck(_data.carDamage3Yn) === '' ? 'N' : nullCheck(_data.carDamage3Yn);
+			let carDamage4Yn                = nullCheck(_data.carDamage4Yn) === '' ? 'N' : nullCheck(_data.carDamage4Yn);
 
 			$('#personalCover').val(personalCover);				//대인보상금액
 			$('#onselfDamageCover').val(onselfDamageCover);		//자손보상금액
@@ -1135,25 +1147,26 @@ function detailValidation(save_type){
 		switch (save_type) {
 			case 'saveCarinfo':		// 차량기본정보
 				let companyName 		= _rtIdx;
-				let carNumber 			= $("#carNumber").val();
-				let carChassisNumber 	= $("#carChassisNumber").val();
-				let year 				= $("#year option:selected").val();
-				let carRegDt 				= $("#carRegDt option:selected").val();
-				let modelName 			= $("#sel_modelName").val();
+				let carNumber 			= $("#carNumber").val().trim();
+				let carChassisNumber 	= $("#carChassisNumber").val().trim();
+				let year 				= $("#year option:selected").val().trim();
+				let carRegDt 				= $("#carRegDt option:selected").val().trim();
+				let modelName 			= $("#sel_modelName").val().trim();
 				let modelDetailName 	= $("#sel_modelDetailName option:selected").text();
-				let mdIdx 				= $("#sel_modelDetailName").val();
-				let fuelCode			= $("#sel_fuel").val();
-				let colorName 			= $("#sel_colorName").val();
-				let mileage 			= $("#mileage").val();
-				let ageLimit 			= $("#ageLimit").val();
+				let mdIdx 				= $("#sel_modelDetailName").val().trim();
+				let fuelCode			= $("#sel_fuel").val().trim();
+				let colorName 			= $("#sel_colorName").val().trim();
+				let mileage 			= $("#mileage").val().trim();
 
-				let transmissionCode 	= $("#transmissionCode").val();
-				let driveTypeCode 		= $("#driveTypeCode").val();
-				let cartypeCode 		= $("#cartypeCode").val();
-				let driveLicenseCode 	= $("#driveLicenseCode").val();
-				let manufacturerCode 	= $("#manufacturerCode").val();
-				let displacement 		= $("#displacement").val();
-				let maximumPassenger 	= $("#maximumPassenger").val();
+				let ageLimit 				= $("#sel_ageLimit option:selected").val();
+
+				let transmissionCode 	= $("#transmissionCode").val().trim();
+				let driveTypeCode 		= $("#driveTypeCode").val().trim();
+				let cartypeCode 		= $("#cartypeCode").val().trim();
+				let driveLicenseCode 	= $("#driveLicenseCode").val().trim();
+				let manufacturerCode 	= $("#manufacturerCode").val().trim();
+				let displacement 		= $("#displacement").val().trim();
+				let maximumPassenger 	= $("#maximumPassenger").val().trim();
 
 				var carOptionList = $('input[name=carOption]:checked');
 
@@ -1249,23 +1262,26 @@ function detailValidation(save_type){
 				break;
 			case 'saveInsurance':	// 보험정보
 				let ciTIdx 				= $("#sel_ciTIdx option:selected").val();
-				let personalCover 		= getPureText($('#personalCover').val());		//대인보상금액
-				let onselfDamageCover 	= getPureText($('#onselfDamageCover').val());	//자손보상금액
-				let propertyDamageCover = getPureText($('#propertyDamageCover').val());	//대물보상금액
+				let personalCover 		= getPureText($('#personalCover').val().trim());		//대인보상금액
+				let onselfDamageCover 	= getPureText($('#onselfDamageCover').val().trim());	//자손보상금액
+				let propertyDamageCover = getPureText($('#propertyDamageCover').val().trim());	//대물보상금액
 
-				let carDamageCover 		= getPureText($('#carDamageCover').val());		//자차보상금액(고객부담금)
-				let insuranceCopayment 	= getPureText($('#insuranceCopayment').val());	//고객부담금(보험료)
-				let carDamageCover2 	= getPureText($('#carDamageCover2').val());		//자차보상금액2(고객부담금)
-				let insuranceCopayment2 = getPureText($('#insuranceCopayment2').val());	//고객부담금2(보험료)
-				let carDamageCover3 	= getPureText($('#carDamageCover3').val());		//자차보상금액3(고객부담금)
-				let insuranceCopayment3	= getPureText($('#insuranceCopayment3').val());	//고객부담금3(보험료)
-				let carDamageCover4 	= getPureText($('#carDamageCover4').val());		//자차보상금액4(고객부담금)
-				let insuranceCopayment4 = getPureText($('#insuranceCopayment4').val());	//고객부담금4(보험료)
+				let carDamageCover 		= getPureText($('#carDamageCover').val().trim());		//자차보상금액(고객부담금)
+				carDamageCover = carDamageCover === '미가입' ? 0 : carDamageCover;
+				let insuranceCopayment 	= getPureText($('#insuranceCopayment').val().trim());	//고객부담금(보험료)
+				insuranceCopayment = insuranceCopayment === '미가입' ? 0 : insuranceCopayment;
+				let carDamageCover2 	= getPureText($('#carDamageCover2').val().trim());		//자차보상금액2(고객부담금)
+				let insuranceCopayment2 = getPureText($('#insuranceCopayment2').val().trim());	//고객부담금2(보험료)
+				let carDamageCover3 	= getPureText($('#carDamageCover3').val().trim());		//자차보상금액3(고객부담금)
+				let insuranceCopayment3	= getPureText($('#insuranceCopayment3').val().trim());	//고객부담금3(보험료)
+				let carDamageCover4 	= getPureText($('#carDamageCover4').val().trim());		//자차보상금액4(고객부담금)
+				let insuranceCopayment4 = getPureText($('#insuranceCopayment4').val().trim());	//고객부담금4(보험료)
 
-				let carDamage1Yn 		=  insuranceCopayment === '' ? 'N' : $(':input:radio[name=carDamage1Yn]:checked').val();
-				let carDamage2Yn 		=  insuranceCopayment2 === '' ? 'N' : $(':input:radio[name=carDamage2Yn]:checked').val();
-				let carDamage3Yn 		=  insuranceCopayment3 === '' ? 'N' : $(':input:radio[name=carDamage3Yn]:checked').val();
-				let carDamage4Yn 		=  insuranceCopayment4 == '' ? 'N' : $(':input:radio[name=carDamage4Yn]:checked').val();
+				let carDamage1Yn 		=  $('input:checkbox[id=carDamage1Yn]').is(":checked") === true ? 'Y' : 'N';
+				let carDamage2Yn 		=  $('input:checkbox[id=carDamage2Yn]').is(":checked") === true ? 'Y' : 'N';
+				let carDamage3Yn 		=  $('input:checkbox[id=carDamage3Yn]').is(":checked") === true ? 'Y' : 'N';
+				let carDamage4Yn 		=  $('input:checkbox[id=carDamage4Yn]').is(":checked") === true ? 'Y' : 'N';
+
 
 				if (isEmpty(crIdx)) {
 					errorAlert('차량정보', '차량정보를 먼저 저장해 주세요.');
@@ -1285,12 +1301,6 @@ function detailValidation(save_type){
 					return;
 				}else if(isEmpty(carDamageCover)){
 					errorAlert('자차보험1', '자차보험 고객부담금은 필수 입력값 입니다.');
-					return;
-				}else if(!isEmpty(insuranceCopayment) && !$.isNumeric(insuranceCopayment)){
-					errorAlert('자차보험1', '자차 보험 요금/일 숫자만 입력 가능합니다.');
-					return;
-				}else if(!isEmpty(carDamageCover) && !$.isNumeric(carDamageCover)){
-					errorAlert('자차보험1', '자차보험 고객부담금 숫자만 입력 가능합니다.');
 					return;
 				}else if(!isEmpty(insuranceCopayment2) && !$.isNumeric(insuranceCopayment2)){
 					errorAlert('자차보험2', '자차 보험 요금/일 숫자만 입력 가능합니다.');
@@ -1369,8 +1379,8 @@ function detailValidation(save_type){
 					,	'carDamage2Yn' : carDamage2Yn
 					,	'carDamage3Yn' : carDamage3Yn
 					,	'carDamage4Yn' : carDamage4Yn
-					// ,	'modId' : GLOBAL_LOGIN_USER_IDX
-					// ,	'regId' : GLOBAL_LOGIN_USER_IDX
+					,	'modId' : getLoginUser().urIdx
+					,	'regId' : getLoginUser().urIdx
 				}
 
 				title = '보험정보 저장';
@@ -1383,16 +1393,16 @@ function detailValidation(save_type){
 				break;
 			case 'savePaymentinfo':	// 기본요금정보
 				let pyTIdx 				= $("#sel_pyTIdx option:selected").val();
-				let dailyStandardPay 	= getPureText($('#dailyStandardPay').val());
-				let dailyMaxRate 		= getPureText($('#dailyMaxRate').val());
-				let monthlyStandardPay 	= getPureText($('#monthlyStandardPay').val());
-				let monthlyMaxRate 		= getPureText($('#monthlyMaxRate').val());
-				let month3Deposit 		= getPureText($('#month3Deposit').val());
-				let month6Deposit 		= getPureText($('#month6Deposit').val());
-				let month9Deposit 		= getPureText($('#month9Deposit').val());
-				let month12Deposit 		= getPureText($('#month12Deposit').val());
-				let deliveryStandardPay = getPureText($('#deliveryStandardPay').val());
-				let deliveryAddPay 		= getPureText($('#deliveryAddPay').val());
+				let dailyStandardPay 	= getPureText($('#dailyStandardPay').val().trim());
+				let dailyMaxRate 		= getPureText($('#dailyMaxRate').val().trim());
+				let monthlyStandardPay 	= getPureText($('#monthlyStandardPay').val().trim());
+				let monthlyMaxRate 		= getPureText($('#monthlyMaxRate').val().trim());
+				let month3Deposit 		= getPureText($('#month3Deposit').val().trim());
+				let month6Deposit 		= getPureText($('#month6Deposit').val().trim());
+				let month9Deposit 		= getPureText($('#month9Deposit').val().trim());
+				let month12Deposit 		= getPureText($('#month12Deposit').val().trim());
+				let deliveryStandardPay = getPureText($('#deliveryStandardPay').val().trim());
+				let deliveryAddPay 		= getPureText($('#deliveryAddPay').val().trim());
 
 				if (isEmpty(crIdx)) {
 					errorAlert('차량정보', '차량정보를 먼저 저장해 주세요.');
@@ -1655,10 +1665,10 @@ function rentcal(){
 		errorAlert('요금계산', '요금 계산기 초기화를 먼저 실행하여 주세요.');
 		return;
 	}
-	let crIdx = $("#crIdx").val();
+	let crIdx = $("#crIdx").val().trim();
 	let calRentStartDt = $("#calRentStartDt").val().replace('____-__-__ __:__','').replace('T',' ');
 	let calRentEndDt = $("#calRentEndDt").val().replace('____-__-__ __:__','').replace('T',' ');
-	let selInsuranceFee = $("#selInsuranceFee").val();
+	let selInsuranceFee = $("#selInsuranceFee").val().trim();
 
 	if(isEmpty(calRentStartDt)){
 		errorAlert('요금계산', '대여일시를 입력해 주세요.');
@@ -1778,14 +1788,14 @@ function initcal(){
 	$("#calPaymentAmount").val('');
 
 	// 보험료 select box 생성
-	let carDamageCover 		= getPureText($('#carDamageCover').val());		//자차보상금액(고객부담금)
-	let insuranceCopayment 	= getPureText($('#insuranceCopayment').val());	//고객부담금(보험료)
-	let carDamageCover2 	= getPureText($('#carDamageCover2').val());		//자차보상금액2(고객부담금)
-	let insuranceCopayment2 = getPureText($('#insuranceCopayment2').val());	//고객부담금2(보험료)
-	let carDamageCover3 	= getPureText($('#carDamageCover3').val());		//자차보상금액3(고객부담금)
-	let insuranceCopayment3	= getPureText($('#insuranceCopayment3').val());	//고객부담금3(보험료)
-	let carDamageCover4 	= getPureText($('#carDamageCover4').val());		//자차보상금액4(고객부담금)
-	let insuranceCopayment4 = getPureText($('#insuranceCopayment4').val());	//고객부담금4(보험료)
+	let carDamageCover 		= getPureText($('#carDamageCover').val().trim());		//자차보상금액(고객부담금)
+	let insuranceCopayment 	= getPureText($('#insuranceCopayment').val().trim());	//고객부담금(보험료)
+	let carDamageCover2 	= getPureText($('#carDamageCover2').val().trim());		//자차보상금액2(고객부담금)
+	let insuranceCopayment2 = getPureText($('#insuranceCopayment2').val().trim());	//고객부담금2(보험료)
+	let carDamageCover3 	= getPureText($('#carDamageCover3').val().trim());		//자차보상금액3(고객부담금)
+	let insuranceCopayment3	= getPureText($('#insuranceCopayment3').val().trim());	//고객부담금3(보험료)
+	let carDamageCover4 	= getPureText($('#carDamageCover4').val().trim());		//자차보상금액4(고객부담금)
+	let insuranceCopayment4 = getPureText($('#insuranceCopayment4').val().trim());	//고객부담금4(보험료)
 
 	let strOption = "";
 	strOption += "<option value = '0'>선택하세요</option>";

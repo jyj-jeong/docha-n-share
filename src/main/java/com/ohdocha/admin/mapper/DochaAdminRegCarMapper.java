@@ -17,6 +17,9 @@ public interface DochaAdminRegCarMapper {
     //등록차량 상세 조회
     public List<DochaAdminRegCarDetailResponse> selectRegCarDetail(DochaAdminRegCarDetailRequest reqParam);
 
+    //등록차량 상세 조회
+    public List<DochaAdminRegCarDetailResponse> selectRentCompanyCarList(DochaAdminRegCarDetailRequest reqParam);
+
     //등록차량 상세 옵션
     public List<DochaAdminDcCarInfoOption> selectRegCarDetailOption(DochaAdminRegCarDetailRequest reqParam);
 

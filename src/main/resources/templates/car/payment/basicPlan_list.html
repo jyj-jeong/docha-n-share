@@ -52,7 +52,6 @@
                                     <th>제목</th>
                                     <th>일기본요금</th>
                                     <th>월기본요금</th>
-                                    <th>설정차량대수</th>
                                 </tr>
                                 </thead>
                                 <tfoot>
@@ -62,7 +61,6 @@
                                     <th>제목</th>
                                     <th>일기본요금</th>
                                     <th>월기본요금</th>
-                                    <th>설정차량대수</th>
                                 </tr>
                                 </tfoot>
                                 <tbody>
@@ -72,7 +70,6 @@
                                     <td th:text="${basicPlan.getPyEtc()}"></td>
                                     <td th:text="${#numbers.formatInteger(basicPlan.getDailyStandardPay(), 0, 'COMMA')}"></td>
                                     <td th:text="${#numbers.formatInteger(basicPlan.getMonthlyStandardPay(), 0, 'COMMA')}"></td>
-                                    <td th:text="${basicPlan.getSettingCarCnt()}"></td>
                                 </tr>
                                 <script th:inline="javascript">
                                     // 상세보기 이동

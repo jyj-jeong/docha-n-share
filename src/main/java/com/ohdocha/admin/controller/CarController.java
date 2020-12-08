@@ -516,6 +516,10 @@ public class CarController extends ControllerExtension {
     @GetMapping(value = "/car/payment/period")
     public String periodPlanList(HttpServletRequest request, ModelMap modelMap) {
         ServiceMessage serviceMessage = createServiceMessage(request);
+
+        DochaMap loginUser = (DochaMap) request.getSession().getAttribute("LOGIN_SESSION");
+        serviceMessage.addData("loginUser", loginUser);
+
         carService.getPeriodPlanList(serviceMessage);
 
         modelMap.addAllAttributes(serviceMessage);
@@ -523,7 +527,7 @@ public class CarController extends ControllerExtension {
     }
 
     /* 기간요금제 상세 화면 */
-    @GetMapping(value = "/car/payment/period/{perIdx}")
+    @RequestMapping(value = "/car/payment/period/{perIdx}")
     public String updatePeriodPlanView(@PathVariable String perIdx, HttpServletRequest request, ModelMap modelMap) {
         ServiceMessage serviceMessage = createServiceMessage(request);
         serviceMessage.addData("perIdx", perIdx);
@@ -542,7 +546,19 @@ public class CarController extends ControllerExtension {
 
         carService.selectPeriodPlanDetail(serviceMessage);
 
-        return serviceMessage.get("result");
+        return serviceMessage;
+    }
+
+    /* 기간요금제 차량 리스트  */
+    @PostMapping(value = "/api/v1.0/selectRentCompanyCarList.json")
+    @ResponseBody
+    public Object selectRentCompanyCarList(@RequestBody DochaAdminRegCarDetailRequest regCarDetailRequest, HttpServletRequest request) {
+        ServiceMessage serviceMessage = createServiceMessage(request);
+        serviceMessage.addData("regCarDetailRequest", regCarDetailRequest);
+
+        carService.selectRentCompanyCarList(serviceMessage);
+
+        return serviceMessage;
     }
 
     /* 기간요금제 수정 */
@@ -584,6 +600,10 @@ public class CarController extends ControllerExtension {
     @GetMapping(value = "/car/payment/basic")
     public String basicPlanList(HttpServletRequest request, ModelMap modelMap) {
         ServiceMessage serviceMessage = createServiceMessage(request);
+
+        DochaMap loginUser = (DochaMap) request.getSession().getAttribute("LOGIN_SESSION");
+        serviceMessage.addData("loginUser", loginUser);
+
         carService.getBasicPlanList(serviceMessage);
 
         modelMap.addAllAttributes(serviceMessage);
@@ -652,6 +672,9 @@ public class CarController extends ControllerExtension {
     @GetMapping(value = "/car/payment/insurance")
     public String insuranceTemplateView(HttpServletRequest request, ModelMap modelMap) {
         ServiceMessage serviceMessage = createServiceMessage(request);
+
+        DochaMap loginUser = (DochaMap) request.getSession().getAttribute("LOGIN_SESSION");
+        serviceMessage.addData("loginUser", loginUser);
 
         carService.getInsuranceTemplateList(serviceMessage);
 

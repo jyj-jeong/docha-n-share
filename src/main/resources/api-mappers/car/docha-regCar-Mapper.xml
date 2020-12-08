@@ -194,6 +194,34 @@
 		</trim>
 	</select>
 
+	<!-- 기간요금제 회원사 차량 리스트 -->
+	<select id="selectRentCompanyCarList" parameterType="regCarDetailRequest"
+			resultType="regCarDetailResponse">
+		<![CDATA[
+                  SELECT
+                            IFNULL(T1.CR_IDX                 , '' ) AS    CR_IDX                /*차량idx*/
+                        ,   IFNULL(T1.RT_IDX                 , '' ) AS    RT_IDX                /*제휴사idx*/
+                        ,   IFNULL(T2.COMPANY_NAME           , '' ) AS    COMPANY_NAME          /*회사명*/
+                        ,   IFNULL(T2.BRANCH_NAME            , '' ) AS    BRANCH_NAME           /*지점명*/
+                        ,   IFNULL(T1.MD_IDX                 , '' ) AS    MD_IDX                /*모델idx*/
+                        ,   IFNULL(T1.MODEL_NAME              , '' ) AS    MODEL_NAME            /*모델명*/
+                        ,   IFNULL(T1.MODEL_DETAIL_NAME      , '' ) AS    MODEL_DETAIL_NAME     /*모델상세명*/
+                        ,   IFNULL(T1.CARTYPE_CODE      , '' ) AS    CAR_TYPE_CODE        /*차종*/
+                  FROM DC_CAR_INFO T1
+         INNER JOIN DC_RENT_COMPANY T2
+                    ON T1.RT_IDX = T2.RT_IDX
+         ]]>
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			 <![CDATA[   T1.DEL_YN='N' ]]>
+			<if test="rtIdx != null and rtIdx != ''">
+				<![CDATA[ AND T1.RT_IDX = #{rtIdx} ]]>
+			</if>
+			<if test="cartypeCode != null and cartypeCode != ''">
+				<![CDATA[ AND T1.CARTYPE_CODE = #{cartypeCode} ]]>
+			</if>
+		</trim>
+	</select>
+
 	<select id="selectRegCarDetailOption" parameterType="regCarDetailRequest"
 			resultType="dcCarInfoOption">
 		<![CDATA[

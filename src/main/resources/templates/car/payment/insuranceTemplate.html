@@ -2,8 +2,7 @@
 <html lang="ko" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="header :: mainHead"></head>
 <head>
-    <title th:if="${CRUD == 'insert'}">차량 등록 :: DoCha Admin Web</title>
-    <title th:if="${CRUD == 'modify'}">차량 상세 :: DoCha Admin Web</title>
+    <title>보험템플릿 :: DoCha Admin Web</title>
 
     <script src="/js/insuranceTemplate.js" th:src="@{/js/insuranceTemplate.js}"></script>
 </head>
@@ -89,6 +88,68 @@
                                 <label class="form-check-label" for="carDamage4Yn">자차 4</label>
                             </div>
 
+                            <script>
+                                $('input:checkbox[id=carDamage1Yn]').change(function () {
+                                    var carDamageYn = $('input:checkbox[id=carDamage1Yn]').is(":checked");
+                                    if (carDamageYn){
+                                        $('#insuranceCopayment').removeAttr('readonly');
+                                        $('#carDamageCover').removeAttr('readonly');
+
+                                        $('#insuranceCopayment').val('미가입');
+                                        $('#carDamageCover').val('미가입');
+                                    }else {
+                                        $('#insuranceCopayment').attr('readonly', 'readonly');
+                                        $('#carDamageCover').attr('readonly', 'readonly');
+
+                                        $('#insuranceCopayment').val('미가입');
+                                        $('#carDamageCover').val('미가입');
+                                    }
+                                });
+
+                                $('input:checkbox[id=carDamage2Yn]').change(function () {
+                                    var carDamage2Yn = $('input:checkbox[id=carDamage2Yn]').is(":checked");
+                                    if (carDamage2Yn){
+                                        $('#insuranceCopayment2').removeAttr('readonly');
+                                        $('#carDamageCover2').removeAttr('readonly');
+                                    }else {
+                                        $('#insuranceCopayment2').attr('readonly', 'readonly');
+                                        $('#carDamageCover2').attr('readonly', 'readonly');
+
+                                        $('#insuranceCopayment2').val('0');
+                                        $('#carDamageCover2').val('0');
+                                    }
+                                });
+
+                                $('input:checkbox[id=carDamage3Yn]').change(function () {
+                                    var carDamage3Yn = $('input:checkbox[id=carDamage3Yn]').is(":checked");
+                                    if (carDamage3Yn){
+                                        $('#insuranceCopayment3').removeAttr('readonly');
+                                        $('#carDamageCover3').removeAttr('readonly');
+                                    }else {
+                                        $('#insuranceCopayment3').attr('readonly', 'readonly');
+                                        $('#carDamageCover3').attr('readonly', 'readonly');
+
+                                        $('#insuranceCopayment3').val('0');
+                                        $('#carDamageCover3').val('0');
+                                    }
+                                });
+
+                                $('input:checkbox[id=carDamage4Yn]').change(function () {
+                                    var carDamage4Yn = $('input:checkbox[id=carDamage4Yn]').is(":checked");
+                                    if (carDamage4Yn){
+                                        $('#insuranceCopayment4').removeAttr('readonly');
+                                        $('#carDamageCover4').removeAttr('readonly');
+                                    }else {
+                                        $('#insuranceCopayment4').attr('readonly', 'readonly');
+                                        $('#carDamageCover4').attr('readonly', 'readonly');
+
+                                        $('#insuranceCopayment4').val('0');
+                                        $('#carDamageCover4').val('0');
+                                    }
+                                });
+
+                            </script>
+
                         </div>
                         <div class="row mt-4">
                             <div class="col-6 mb-3">
@@ -96,11 +157,11 @@
                                 <div class="form-check-inline">
                                     <div class="m-1">
                                         <label>자차1 보험 요금/일</label>
-                                        <input type="text" class="form-control float-l" id="insuranceCopayment" placeholder="단위:원"/>
+                                        <input type="text" class="form-control float-l" id="insuranceCopayment" placeholder="단위:원" readonly/>
                                     </div>
                                     <div class="m-1">
                                         <label>자차1 보험 고객부담금</label>
-                                        <input type="text" class="form-control float-l" id="carDamageCover" placeholder="단위:원"/>
+                                        <input type="text" class="form-control float-l" id="carDamageCover" placeholder="단위:원" readonly/>
                                     </div>
                                 </div>
                             </div>
@@ -110,11 +171,11 @@
                                 <div class="form-check-inline">
                                     <div class="m-1">
                                         <label>자차2 보험 요금/일</label>
-                                        <input type="text" class="form-control float-l" id="insuranceCopayment2" placeholder="단위:원"/>
+                                        <input type="text" class="form-control float-l" id="insuranceCopayment2" placeholder="단위:원" readonly/>
                                     </div>
                                     <div class="m-1">
                                         <label>자차2 보험 고객부담금</label>
-                                        <input type="text" class="form-control float-l" id="carDamageCover2" placeholder="단위:원"/>
+                                        <input type="text" class="form-control float-l" id="carDamageCover2" placeholder="단위:원" readonly/>
                                     </div>
                                 </div>
                             </div>
@@ -126,11 +187,11 @@
                                 <div class="form-check-inline">
                                     <div class="m-1">
                                         <label>자차3 보험 요금/일</label>
-                                        <input type="text" class="form-control float-l" id="insuranceCopayment3" placeholder="단위:원"/>
+                                        <input type="text" class="form-control float-l" id="insuranceCopayment3" placeholder="단위:원" readonly/>
                                     </div>
                                     <div class="m-1">
                                         <label>자차3 보험 고객부담금</label>
-                                        <input type="text" class="form-control float-l" id="carDamageCover3" placeholder="단위:원"/>
+                                        <input type="text" class="form-control float-l" id="carDamageCover3" placeholder="단위:원" readonly/>
                                     </div>
                                 </div>
                             </div>
@@ -140,11 +201,11 @@
                                 <div class="form-check-inline">
                                     <div class="m-1">
                                         <label>자차4 보험 요금/일</label>
-                                        <input type="text" class="form-control float-l" id="insuranceCopayment4" placeholder="단위:원"/>
+                                        <input type="text" class="form-control float-l" id="insuranceCopayment4" placeholder="단위:원" readonly/>
                                     </div>
                                     <div class="m-1">
                                         <label>자차4 보험 고객부담금</label>
-                                        <input type="text" class="form-control float-l" id="carDamageCover4" placeholder="단위:원"/>
+                                        <input type="text" class="form-control float-l" id="carDamageCover4" placeholder="단위:원" readonly/>
                                     </div>
                                 </div>
                             </div>
@@ -204,6 +265,10 @@
 <script th:inline="javascript">
     CRUD = /*[[${CRUD}]]*/'';
     ciTIdx = /*[[${ciTIdx}]]*/'';
+
+    function getLoginUser() {
+        return /*[[${session.LOGIN_SESSION}]]*/ '';
+    }
 
     if(CRUD === "insert"){
         initDetailData('insert');

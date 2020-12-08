@@ -6,54 +6,43 @@
 	<select id="selectInsuranceTemplateInfo"  parameterType="insuranceTemplateRequest" 
       			   				  	 resultType="insuranceTemplateResponse">
       	<![CDATA[
--- 		SELECT * FROM (
--- 			SELECT ROWNUM AS ROW_NUMBER, COUNT(*) OVER() TOTAL_ROW_COUNT, A.*
--- 			FROM (
-     				 SELECT 
-							    IFNULL(T1.CI_T_IDX				, '') AS CI_T_IDX                 /*보험정보idx*/
-							,   IFNULL(T1.INSURANCE_FEE		, '') AS INSURANCE_FEE          /*보험요금*/
-							,   IFNULL(T1.CAR_DAMAGE_COVER		, '') AS CAR_DAMAGE_COVER       /*자차보상금액*/
-							,   IFNULL(T1.ONSELF_DAMAGE_COVER	, '') AS ONSELF_DAMAGE_COVER    /*자손보상금액*/
-							,   IFNULL(T1.PERSONAL_COVER		, '') AS PERSONAL_COVER         /*대인보상금액*/
-							,   IFNULL(T1.PROPERTY_DAMAGE_COVER, '') AS PROPERTY_DAMAGE_COVER  /*대물보상금액*/
-							,   IFNULL(T1.INSURANCE_COPAYMENT	, '') AS INSURANCE_COPAYMENT    /*고객부담금*/
-							,   IFNULL(T1.AGE_LIMIT			, '') AS AGE_LIMIT              /*연령제한(장기,단기)*/
-							,   IFNULL(T1.DRIVE_CAREER_LIMIT	, '') AS DRIVE_CAREER_LIMIT     /*운전경력제한*/
-							,   IFNULL(T1.REG_ID				, '') AS REG_ID                 /*등록자*/
-							,   IFNULL(T1.REG_DT				, '') AS REG_DT                 /*등록일시*/
-							,   IFNULL(T1.MOD_ID				, '') AS MOD_ID                 /*수정자*/
-							,   IFNULL(T1.MOD_DT				, '') AS MOD_DT                 /*수정일시*/
-							,   IFNULL(T1.DEL_YN				, '') AS DEL_YN                 /*삭제여부*/
-							,   IFNULL(T1.RT_IDX				, '') AS RT_IDX                 /*회원사idx*/
-							,   IFNULL(T1.CAR_DAMAGE_COVER2	, '') AS CAR_DAMAGE_COVER2      /*자차보상금액2*/
-							,   IFNULL(T1.INSURANCE_COPAYMENT2	, '') AS INSURANCE_COPAYMENT2   /*고객부담금2*/
-							,   IFNULL(T1.CAR_DAMAGE_COVER3	, '') AS CAR_DAMAGE_COVER3      /*자차보상금액3*/
-							,   IFNULL(T1.INSURANCE_COPAYMENT3	, '') AS INSURANCE_COPAYMENT3   /*고객부담금3*/
-							,   IFNULL(T1.CAR_DAMAGE_COVER4	, '') AS CAR_DAMAGE_COVER4      /*자차보상금액4*/
-							,   IFNULL(T1.INSURANCE_COPAYMENT4	, '') AS INSURANCE_COPAYMENT4   /*고객부담금4*/
-							,   IFNULL(T1.CAR_DAMAGE1_YN		, '') AS CAR_DAMAGE1_YN         /*자차1사용유무*/
-							,   IFNULL(T1.CAR_DAMAGE2_YN		, '') AS CAR_DAMAGE2_YN         /*자차2사용유무*/
-							,   IFNULL(T1.CAR_DAMAGE3_YN		, '') AS CAR_DAMAGE3_YN         /*자차3사용유무*/
-							,   IFNULL(T1.CAR_DAMAGE4_YN		, '') AS CAR_DAMAGE4_YN         /*자차4사용유무*/
-							,   IFNULL(T1.CI_ETC				, '') AS CI_ETC                 /*비고(템플릿제목)*/
-      						,   IFNULL(T2.COMPANY_NAME		 	, '') AS COMPANY_NAME /* 회원사명 */
-      						,   IFNULL(T2.BRANCH_NAME			, '') AS BRANCH_NAME /* 지점명 */
-      						,   (SELECT COUNT(CR_IDX) FROM DC_CAR_INFO WHERE CI_T_IDX = T1.CI_T_IDX) AS SETTING_CAR_CNT /* 설정차량대수 */
-      				FROM DC_INSURANCE_TEMPLATE T1
-      				INNER JOIN DC_RENT_COMPANY T2
-      						ON T1.RT_IDX = T2.RT_IDX
--- 				) A
+     	   SELECT
+		  		    IFNULL(T1.CI_T_IDX				, '') AS CI_T_IDX                 /*보험정보idx*/
+		  		,   IFNULL(T1.INSURANCE_FEE		, '') AS INSURANCE_FEE          /*보험요금*/
+		  		,   IFNULL(T1.CAR_DAMAGE_COVER		, '') AS CAR_DAMAGE_COVER       /*자차보상금액*/
+		  		,   IFNULL(T1.ONSELF_DAMAGE_COVER	, '') AS ONSELF_DAMAGE_COVER    /*자손보상금액*/
+		  		,   IFNULL(T1.PERSONAL_COVER		, '') AS PERSONAL_COVER         /*대인보상금액*/
+		  		,   IFNULL(T1.PROPERTY_DAMAGE_COVER, '') AS PROPERTY_DAMAGE_COVER  /*대물보상금액*/
+		  		,   IFNULL(T1.INSURANCE_COPAYMENT	, '') AS INSURANCE_COPAYMENT    /*고객부담금*/
+		  		,   IFNULL(T1.AGE_LIMIT			, '') AS AGE_LIMIT              /*연령제한(장기,단기)*/
+		  		,   IFNULL(T1.DRIVE_CAREER_LIMIT	, '') AS DRIVE_CAREER_LIMIT     /*운전경력제한*/
+		  		,   IFNULL(T1.REG_ID				, '') AS REG_ID                 /*등록자*/
+		  		,   IFNULL(T1.REG_DT				, '') AS REG_DT                 /*등록일시*/
+		  		,   IFNULL(T1.MOD_ID				, '') AS MOD_ID                 /*수정자*/
+		  		,   IFNULL(T1.MOD_DT				, '') AS MOD_DT                 /*수정일시*/
+		  		,   IFNULL(T1.DEL_YN				, '') AS DEL_YN                 /*삭제여부*/
+		  		,   IFNULL(T1.RT_IDX				, '') AS RT_IDX                 /*회원사idx*/
+		  		,   IFNULL(T1.CAR_DAMAGE_COVER2	, '') AS CAR_DAMAGE_COVER2      /*자차보상금액2*/
+		  		,   IFNULL(T1.INSURANCE_COPAYMENT2	, '') AS INSURANCE_COPAYMENT2   /*고객부담금2*/
+		  		,   IFNULL(T1.CAR_DAMAGE_COVER3	, '') AS CAR_DAMAGE_COVER3      /*자차보상금액3*/
+		  		,   IFNULL(T1.INSURANCE_COPAYMENT3	, '') AS INSURANCE_COPAYMENT3   /*고객부담금3*/
+		  		,   IFNULL(T1.CAR_DAMAGE_COVER4	, '') AS CAR_DAMAGE_COVER4      /*자차보상금액4*/
+		  		,   IFNULL(T1.INSURANCE_COPAYMENT4	, '') AS INSURANCE_COPAYMENT4   /*고객부담금4*/
+		  		,   IFNULL(T1.CAR_DAMAGE1_YN		, '') AS CAR_DAMAGE1_YN         /*자차1사용유무*/
+		  		,   IFNULL(T1.CAR_DAMAGE2_YN		, '') AS CAR_DAMAGE2_YN         /*자차2사용유무*/
+		  		,   IFNULL(T1.CAR_DAMAGE3_YN		, '') AS CAR_DAMAGE3_YN         /*자차3사용유무*/
+		  		,   IFNULL(T1.CAR_DAMAGE4_YN		, '') AS CAR_DAMAGE4_YN         /*자차4사용유무*/
+		  		,   IFNULL(T1.CI_ETC				, '') AS CI_ETC                 /*비고(템플릿제목)*/
+      	  		,   IFNULL(T2.COMPANY_NAME		 	, '') AS COMPANY_NAME /* 회원사명 */
+      	  		,   IFNULL(T2.BRANCH_NAME			, '') AS BRANCH_NAME /* 지점명 */
+      	  		,   (SELECT COUNT(CR_IDX) FROM DC_CAR_INFO WHERE CI_T_IDX = T1.CI_T_IDX) AS SETTING_CAR_CNT /* 설정차량대수 */
+      	  FROM DC_INSURANCE_TEMPLATE T1
+      	  INNER JOIN DC_RENT_COMPANY T2
+      	  		ON T1.RT_IDX = T2.RT_IDX
          ]]>
-<!--		 <trim prefix="WHERE" prefixOverrides="AND|OR">-->
-<!--				1=1-->
-<!--         </trim>-->
      	 <if test="rtIdx != null  and rtIdx != '' ">
-	    	AND <![CDATA[    A.RT_IDX = #{rtIdx} ]]>
+	    	AND <![CDATA[  T1.RT_IDX = #{rtIdx} ]]>
 		 </if>
-<!--         <![CDATA[	) X ]]> -->
-<!--         <trim prefix="WHERE" prefixOverrides="AND|OR">-->
-<!--         		<![CDATA[	ROWNUM <= #{displayPageNum} AND ROW_NUMBER > (#{page}-1) * #{displayPageNum} ]]>-->
-<!--       	</trim>						  		-->
 	</select>    
 	
 	<select id="insuranceTemplateinfoDetail"  parameterType="insuranceTemplateRequest" 
