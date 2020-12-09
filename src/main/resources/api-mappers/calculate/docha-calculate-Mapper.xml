@@ -247,7 +247,7 @@
 			       DATE_FORMAT(T1.MOD_DT, '%Y-%m-%d') AS ACCOUNT_EXP_DT                        /*정산일*/
 			      ,SUM(T1.RENT_FEE + T1.INSURANCE_FEE + T1.DELIVERY_FEE) AS TOTAL_FEE         /*총금액*/
 			      ,SUM(T1.PAYMENT_TOTAL_AMOUNT) AS PAYMENT_AMOUNT                              /*결제금액*/
-			      ,SUM(T1.RENT_FEE - T1.DISCOUNT_FEE) AS DISCOUNT_FEE                             /*할인액*/
+			      ,SUM(T1.DISCOUNT_FEE) AS DISCOUNT_FEE                                        /*할인액*/
 			      ,SUM(T1.BALANCE) AS ONMISS_FEE                                               /*미정산금액*/
 			      ,SUM(T1.SUM_PAYMENT_AMOUNT) AS SUCCESS_FEE                                   /*정산완료금액*/
 			      ,COUNT(DISTINCT T1.RT_IDX) AS COMPANY_COUNT                               /* 회원사CNT */
@@ -280,7 +280,7 @@
 			DATE_FORMAT(T1.MOD_DT, '%Y-%m-%d') AS ACCOUNT_EXP_DT                        /*정산일*/
 			,T1.RENT_FEE + T1.INSURANCE_FEE + T1.DELIVERY_FEE AS TOTAL_FEE         /*총금액*/
 			,T1.PAYMENT_TOTAL_AMOUNT AS PAYMENT_AMOUNT                              /*결제금액*/
-			,T1.RENT_FEE - T1.DISCOUNT_FEE AS DISCOUNT_FEE                             /*할인액*/
+			,T1.DISCOUNT_FEE AS DISCOUNT_FEE                             /*할인액*/
 			,T1.BALANCE AS ONMISS_FEE                                               /*미정산금액*/
 			,T1.SUM_PAYMENT_AMOUNT AS SUCCESS_FEE                                   /*정산완료금액*/
 			,COUNT(DISTINCT T1.RM_IDX) AS RM_COUNT
@@ -334,7 +334,7 @@
 			DATE_FORMAT(T1.MOD_DT, '%Y-%m-%d') AS ACCOUNT_EXP_DT                        /*정산일*/
 			,T1.RENT_FEE + T1.INSURANCE_FEE + T1.DELIVERY_FEE AS TOTAL_FEE         /*총금액*/
 			,T1.PAYMENT_TOTAL_AMOUNT AS PAYMENT_AMOUNT                              /*결제금액*/
-			,T1.RENT_FEE - T1.DISCOUNT_FEE AS DISCOUNT_FEE                             /*할인액*/
+			,T1.DISCOUNT_FEE AS DISCOUNT_FEE                             /*할인액*/
 			,T1.BALANCE AS ONMISS_FEE                                               /*미정산금액*/
 			,T1.SUM_PAYMENT_AMOUNT AS SUCCESS_FEE                                   /*정산완료금액*/
 			,T1.COMPANY_NAME

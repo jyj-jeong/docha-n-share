@@ -627,9 +627,28 @@ public class CarServiceImpl extends ServiceExtension implements CarService {
     public void insertBasicPlanInfo(ServiceMessage message) {
         DochaAdminBaiscPlanDetailRequest baiscPlanDetailRequest = message.getObject("baiscPlanDetailRequest", DochaAdminBaiscPlanDetailRequest.class);
 
+        // 템플릿 등록
         int res = basicPlanMapper.insertBasicPlanInfo(baiscPlanDetailRequest);
 
-        message.addData("res", res);
+        if (res == 1){
+            String[] crIdxList = baiscPlanDetailRequest.getCrIdx().split(" ");
+
+            for (String crIdx : crIdxList){
+                baiscPlanDetailRequest.setCrIdx(crIdx);
+
+                // 선택한 차량의 요금 정보 update
+                res = regCarMapper.updateRegCarPaymentInfo(baiscPlanDetailRequest);
+
+                // 차량의 요금정보가 기존에 없는 경우 insert
+                if (res == 0){
+                    regCarMapper.insertRegCarPayment(baiscPlanDetailRequest);
+                }
+            }
+
+            message.addData("res", res);
+        }else {
+            message.addData("res", res);
+        }
     }
 
     /* 기본 요금제 리스트 */
@@ -664,7 +683,20 @@ public class CarServiceImpl extends ServiceExtension implements CarService {
 
         int res = basicPlanMapper.updateBasicPlanInfo(baiscPlanDetailRequest);
 
-        message.addData("res", res);
+        if (res == 1){
+            String[] crIdxList = baiscPlanDetailRequest.getCrIdx().split(" ");
+
+            for (String crIdx : crIdxList){
+                baiscPlanDetailRequest.setCrIdx(crIdx);
+
+                res = regCarMapper.updateRegCarPaymentInfo(baiscPlanDetailRequest);
+
+                if (res == 0){
+                    regCarMapper.insertRegCarPayment(baiscPlanDetailRequest);
+                }
+            }
+        }
+
     }
 
 

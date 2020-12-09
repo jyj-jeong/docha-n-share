@@ -1,20 +1,20 @@
 /*
  * periodPlanSetting.js
  * 차량 > 요금제 > 기간요금제설정
- * 
+ *
  * 2020-02-04 lws 최초생성
- * 
- * 
- * 
+ *
+ *
+ *
  * update history
  * =============================================
  * |date       |comment             | author   |
  * =============================================
  * |2020-02-05 |ready 함수 제거             | pws      |
- * 
- * 
- * 
- * 
+ *
+ *
+ *
+ *
  * */
 
 var modalName = 'periodPlanSettingDetail';
@@ -244,7 +244,7 @@ function bindEvent(){
 
 			var displayPageNum = $("#showContents").val();
 
-			if(!isNaN(clickPage)) { //숫자면 현재 페이지므로 
+			if(!isNaN(clickPage)) { //숫자면 현재 페이지므로
 				CURRENT_PAGE = parseInt(clickPage);
 			} else { //
 				if(clickPage == '«Previous Over') {
@@ -441,23 +441,32 @@ function initDetailSelectBox(_data){
 	// 회사리스트
 	fn_callApi(method, target, req, function(response) {
 		let data = response;
-		// 200이라면 페이징을 구한다.
-		// if (res.code == 200) {
-		// 	let data = res.data.result.result;
+
 		let strOption = "<option value=''>선택</option>";
+
 		for ( var i=0; i<data.length; i++ ) {
+
 			if(!isEmpty(data[i].branchName)){
 				companyName = data[i].companyName + "(" + nullCheck(data[i].branchName) + ")";
 			}else{
 				companyName = data[i].companyName;
 			}
+
 			strOption += "<option value = '" + data[i].rtIdx + "'>" + companyName + "</option>";
 		}
+
 		$('#companyName').append(strOption);
-		$('#companyName').attr('disabled', false);
-		// } else { // 200이 아닐때 empty처리 error처리 등을 기록한다.
-		// 	errorAlert('API ERROR', '조회중 에러가 발생했습니다. \r\n 관리자에게 문의하세요.');
-		// }
+
+		// 최고관리자 권한이 아닐 경우 회원사 지정.
+		if (CRUD_METHOD === 'insert' && getLoginUser().userRole !== 'RA'){
+
+			$('select[id=companyName]').val(getLoginUser().rtIdx).prop("selected",true);
+			$('#companyName').attr('disabled', true);
+
+		}else {
+			$('#companyName').attr('disabled', false);
+		}
+
 	});// end fn_callApi
 
 

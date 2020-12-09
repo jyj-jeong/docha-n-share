@@ -8,30 +8,12 @@
   <component name="ChangeListManager">
     <list default="true" id="e0c2fac4-e679-440e-8ffe-06e1c0fd9c27" name="Default Changelist" comment="- 회원사 담당자, 예약정보 개별삭제">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ohdocha/admin/controller/CarController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ohdocha/admin/controller/CarController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ohdocha/admin/domain/car/plan/basicplan/DochaAdminBaiscPlanDetailRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ohdocha/admin/domain/car/plan/basicplan/DochaAdminBaiscPlanDetailRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ohdocha/admin/domain/car/plan/basicplan/DochaAdminBasicPlanDetailResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ohdocha/admin/domain/car/plan/basicplan/DochaAdminBasicPlanDetailResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ohdocha/admin/domain/car/plan/periodplansetting/DochaAdminPeriodPlanSettingDetailRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ohdocha/admin/domain/car/plan/periodplansetting/DochaAdminPeriodPlanSettingDetailRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ohdocha/admin/domain/car/plan/periodplansetting/DochaAdminPeriodPlanSettingRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ohdocha/admin/domain/car/plan/periodplansetting/DochaAdminPeriodPlanSettingRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ohdocha/admin/domain/car/regcar/DochaAdminRegCarDetailRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ohdocha/admin/domain/car/regcar/DochaAdminRegCarDetailRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ohdocha/admin/mapper/DochaAdminRegCarMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ohdocha/admin/mapper/DochaAdminRegCarMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ohdocha/admin/service/CarService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ohdocha/admin/service/CarService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/ohdocha/admin/service/CarServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ohdocha/admin/service/CarServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/api-mappers/calculate/docha-calculate-Mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/api-mappers/calculate/docha-calculate-Mapper.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/api-mappers/car/docha-regCar-Mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/api-mappers/car/docha-regCar-Mapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/api-mappers/car/plan/docha-basicplan.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/api-mappers/car/plan/docha-basicplan.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/api-mappers/car/plan/docha-insuranceTemplate.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/api-mappers/car/plan/docha-insuranceTemplate.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/api-mappers/car/plan/docha-periodPlanSertting.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/api-mappers/car/plan/docha-periodPlanSertting.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/basicPlan.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/js/basicPlan.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/insuranceTemplate.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/js/insuranceTemplate.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/periodPlanSetting.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/js/periodPlanSetting.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/regCar.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/js/regCar.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/car/payment/basicPlan.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/car/payment/basicPlan.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/car/payment/basicPlan_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/car/payment/basicPlan_list.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/car/payment/insuranceTemplate.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/car/payment/insuranceTemplate.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/car/payment/insuranceTemplate_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/car/payment/insuranceTemplate_list.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/car/payment/periodPlan.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/car/payment/periodPlan.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/car/payment/periodPlan_list.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/car/payment/periodPlan_list.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/car/regCar.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/car/regCar.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/api-mappers/calculate/docha-calculate-Mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/api-mappers/calculate/docha-calculate-Mapper.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/api-mappers/car/docha-car-model-Mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/api-mappers/car/docha-car-model-Mapper.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/api-mappers/car/docha-regCar-Mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/api-mappers/car/docha-regCar-Mapper.xml" afterDir="false" />
@@ -47,7 +29,9 @@
       <change beforePath="$PROJECT_DIR$/target/classes/com/ohdocha/admin/controller/UserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ohdocha/admin/controller/UserController.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/ohdocha/admin/domain/car/model/DochaAdminCarModelResponse.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ohdocha/admin/domain/car/model/DochaAdminCarModelResponse.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/ohdocha/admin/domain/car/plan/basicplan/DochaAdminBaiscPlanDetailRequest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ohdocha/admin/domain/car/plan/basicplan/DochaAdminBaiscPlanDetailRequest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ohdocha/admin/domain/car/plan/basicplan/DochaAdminBasicPlanDetailResponse.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ohdocha/admin/domain/car/plan/basicplan/DochaAdminBasicPlanDetailResponse.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/ohdocha/admin/domain/car/plan/periodplansetting/DochaAdminPeriodPlanSettingDetailRequest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ohdocha/admin/domain/car/plan/periodplansetting/DochaAdminPeriodPlanSettingDetailRequest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ohdocha/admin/domain/car/plan/periodplansetting/DochaAdminPeriodPlanSettingRequest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ohdocha/admin/domain/car/plan/periodplansetting/DochaAdminPeriodPlanSettingRequest.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/ohdocha/admin/domain/car/regcar/DochaAdminDcCarInfoOption.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ohdocha/admin/domain/car/regcar/DochaAdminDcCarInfoOption.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/ohdocha/admin/domain/car/regcar/DochaAdminRegCarDetailRequest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ohdocha/admin/domain/car/regcar/DochaAdminRegCarDetailRequest.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/classes/com/ohdocha/admin/domain/car/regcar/DochaAdminRegCarResponse.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ohdocha/admin/domain/car/regcar/DochaAdminRegCarResponse.class" afterDir="false" />
@@ -117,14 +101,6 @@
         <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
         <item name="ohdocha: schema" type="ebfa3cd1:MariaImplModel$Schema" />
         <item name="tables" type="d4e8921:DatabaseStructure$FamilyGroup" />
-      </path>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="@192.168.35.123" type="feb32156:DbDataSourceImpl" />
-        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="ohdocha: schema" type="ebfa3cd1:MariaImplModel$Schema" />
-        <item name="tables" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="DC_PAYMENT_TEMPLATE: table" type="dbc44a63:MariaImplModel$Table" />
       </path>
       <path>
         <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
@@ -263,11 +239,6 @@
               <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@76306961" type="7427dc5b:ServiceModel$ServiceGroupNode" />
               <item name="com.intellij.execution.services.ServiceModel$ServiceNode@7d089b" type="9fbbdea:ServiceModel$ServiceNode" />
             </path>
-            <path>
-              <item name="services root" type="e789fda9:ObjectUtils$Sentinel" />
-              <item name="com.intellij.execution.services.ServiceModel$ServiceGroupNode@76306961" type="7427dc5b:ServiceModel$ServiceGroupNode" />
-              <item name="com.intellij.execution.services.ServiceModel$ServiceNode@6713342f" type="9fbbdea:ServiceModel$ServiceNode" />
-            </path>
           </expand>
           <select />
         </treeState>
@@ -401,7 +372,7 @@
       <workItem from="1607273725671" duration="9045000" />
       <workItem from="1607282870663" duration="11057000" />
       <workItem from="1607308565822" duration="30487000" />
-      <workItem from="1607386337830" duration="15366000" />
+      <workItem from="1607386337830" duration="29652000" />
     </task>
     <task id="LOCAL-00001" summary="js package 수정">
       <created>1598322077798</created>
@@ -725,7 +696,14 @@
       <option name="project" value="LOCAL" />
       <updated>1607325091471</updated>
     </task>
-    <option name="localTasksCounter" value="47" />
+    <task id="LOCAL-00047" summary="요금제 차량 등록">
+      <created>1607406696178</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1607406696178</updated>
+    </task>
+    <option name="localTasksCounter" value="48" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -780,7 +758,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value=" login mapper DB 스키마 변경" />
     <MESSAGE value=" clean code" />
     <MESSAGE value=" logout modal href 수정" />
     <MESSAGE value="예약하기 수정" />
@@ -805,7 +782,8 @@
     <MESSAGE value="- 메인 대쉬보드 수정" />
     <MESSAGE value="- 회원사 담당자, 예약정보 개별삭제" />
     <MESSAGE value="- 차량 옵션 수정" />
-    <option name="LAST_COMMIT_MESSAGE" value="- 차량 옵션 수정" />
+    <MESSAGE value="요금제 차량 등록" />
+    <option name="LAST_COMMIT_MESSAGE" value="요금제 차량 등록" />
   </component>
   <component name="WindowStateProjectService">
     <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog" />

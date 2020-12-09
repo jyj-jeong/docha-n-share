@@ -532,8 +532,8 @@ function initDetailInfo(seq){
 		$("#sel_colorName").val(colorName).prop("selected", true);
 		$("#mileage").val(mileage);
 		$("#carChassisNumber").val(carChassisNumber);
-		$('select[name="carRegDt"]').val(carRegDt);
-		$("#ageLimit").val(ageLimit);
+		$('select[name="carRegDt"]').val(carRegDt).prop("selected", true);
+		$('select[id="sel_ageLimit"]').val(ageLimit).prop("selected", true);
 
 		$("#carChassisNumber").attr('readonly', true);
 
@@ -1148,11 +1148,11 @@ function detailValidation(save_type){
 			case 'saveCarinfo':		// 차량기본정보
 				let companyName 		= _rtIdx;
 				let carNumber 			= $("#carNumber").val().trim();
-				let carChassisNumber 	= $("#carChassisNumber").val().trim();
-				let year 				= $("#year option:selected").val().trim();
-				let carRegDt 				= $("#carRegDt option:selected").val().trim();
+				let carChassisNumber 	= $("#carChassisNumber").val();
+				let year 				= $("#year option:selected").val();
+				let carRegDt 			= $("#carRegDt option:selected").val();
 				let modelName 			= $("#sel_modelName").val().trim();
-				let modelDetailName 	= $("#sel_modelDetailName option:selected").text();
+				let modelDetailName 	= $("#sel_modelDetailName option:selected").val();
 				let mdIdx 				= $("#sel_modelDetailName").val().trim();
 				let fuelCode			= $("#sel_fuel").val().trim();
 				let colorName 			= $("#sel_colorName").val().trim();
@@ -1160,13 +1160,13 @@ function detailValidation(save_type){
 
 				let ageLimit 				= $("#sel_ageLimit option:selected").val();
 
-				let transmissionCode 	= $("#transmissionCode").val().trim();
-				let driveTypeCode 		= $("#driveTypeCode").val().trim();
-				let cartypeCode 		= $("#cartypeCode").val().trim();
-				let driveLicenseCode 	= $("#driveLicenseCode").val().trim();
-				let manufacturerCode 	= $("#manufacturerCode").val().trim();
-				let displacement 		= $("#displacement").val().trim();
-				let maximumPassenger 	= $("#maximumPassenger").val().trim();
+				let transmissionCode 	= $("#transmissionCode").val();
+				let driveTypeCode 		= $("#driveTypeCode").val();
+				let cartypeCode 		= $("#cartypeCode").val();
+				let driveLicenseCode 	= $("#driveLicenseCode").val();
+				let manufacturerCode 	= $("#manufacturerCode").val();
+				let displacement 		= $("#displacement").val();
+				let maximumPassenger 	= $("#maximumPassenger").val();
 
 				var carOptionList = $('input[name=carOption]:checked');
 

@@ -290,18 +290,22 @@
 		<![CDATA[ UPDATE DC_CAR_INFO_INSURANCE ]]>
 		<trim prefix="SET" suffixOverrides=",">
 			<!-- 차량 기본정보 -->
-			<if test="rtIdx != null"><![CDATA[  RT_IDX            = #{rtIdx}            ]]></if>   <!-- 회원사순번 -->
-			<if test="onselfDamageCover       != null"><![CDATA[  , ONSELF_DAMAGE_COVER         = #{onselfDamageCover}        ]]></if>   <!-- 차량번호 -->
-			<if test="personalCover             != null"><![CDATA[  , PERSONAL_COVER               = #{personalCover}              ]]></if>   <!-- 연식 -->
-			<if test="propertyDamageCover          != null"><![CDATA[  , PROPERTY_DAMAGE_COVER         = #{propertyDamageCover}           ]]></if>   <!-- 차량등록일 -->
-			<if test="carDamageCover       != null"><![CDATA[  , CAR_DAMAGE_COVER         = #{carDamageCover}        ]]></if>   <!-- 차종명 -->
-			<if test="insuranceCopayment   != null"><![CDATA[  , INSURANCE_COPAYMENT      = #{insuranceCopayment}     ]]></if>   <!-- 차종상세명 -->
-			<if test="carDamageCover2          != null"><![CDATA[  , CAR_DAMAGE_COVER2            = #{carDamageCover2}             ]]></if>   <!-- 차종순번 -->
-			<if test="insuranceCopayment2         != null"><![CDATA[  , INSURANCE_COPAYMENT2          = #{insuranceCopayment2}           ]]></if>    <!-- 연료code -->
-			<if test="carDamageCover3       != null"><![CDATA[  , CAR_DAMAGE_COVER3          = #{carDamageCover3}        ]]></if>    <!-- 색상 -->
-			<if test="insuranceCopayment3         != null"><![CDATA[  , INSURANCE_COPAYMENT3             = #{insuranceCopayment3}           ]]></if>    <!-- 주행거리 -->
-			<if test="carDamageCover4         != null"><![CDATA[  , CAR_DAMAGE_COVER4          = #{carDamageCover4}           ]]></if>    <!-- 대여연령제한(장기,단기) -->
-			<if test="insuranceCopayment4         != null"><![CDATA[  , INSURANCE_COPAYMENT4             = #{insuranceCopayment4}           ]]></if>    <!-- 주행거리 -->
+			<if test="rtIdx                       != null"><![CDATA[    RT_IDX                   = #{rtIdx}                 ]]></if>   <!-- 회원사순번 -->
+			<if test="onselfDamageCover           != null"><![CDATA[  , ONSELF_DAMAGE_COVER      = #{onselfDamageCover}        ]]></if>   <!-- 차량번호 -->
+			<if test="personalCover               != null"><![CDATA[  , PERSONAL_COVER           = #{personalCover}              ]]></if>   <!-- 연식 -->
+			<if test="propertyDamageCover         != null"><![CDATA[  , PROPERTY_DAMAGE_COVER    = #{propertyDamageCover}           ]]></if>   <!-- 차량등록일 -->
+			<if test="carDamageCover              != null"><![CDATA[  , CAR_DAMAGE_COVER         = #{carDamageCover}        ]]></if>   <!-- 차종명 -->
+			<if test="insuranceCopayment          != null"><![CDATA[  , INSURANCE_COPAYMENT      = #{insuranceCopayment}     ]]></if>   <!-- 차종상세명 -->
+			<if test="carDamageCover2             != null"><![CDATA[  , CAR_DAMAGE_COVER2        = #{carDamageCover2}             ]]></if>   <!-- 차종순번 -->
+			<if test="insuranceCopayment2         != null"><![CDATA[  , INSURANCE_COPAYMENT2     = #{insuranceCopayment2}           ]]></if>    <!-- 연료code -->
+			<if test="carDamageCover3             != null"><![CDATA[  , CAR_DAMAGE_COVER3        = #{carDamageCover3}        ]]></if>    <!-- 색상 -->
+			<if test="insuranceCopayment3         != null"><![CDATA[  , INSURANCE_COPAYMENT3     = #{insuranceCopayment3}           ]]></if>    <!-- 주행거리 -->
+			<if test="carDamageCover4             != null"><![CDATA[  , CAR_DAMAGE_COVER4        = #{carDamageCover4}           ]]></if>    <!-- 대여연령제한(장기,단기) -->
+			<if test="insuranceCopayment4         != null"><![CDATA[  , INSURANCE_COPAYMENT4     = #{insuranceCopayment4}           ]]></if>    <!-- 주행거리 -->
+			<if test="carDamage1Yn                != null"><![CDATA[  , CAR_DAMAGE1_YN    		 = #{carDamage1Yn}           ]]></if>    <!-- 주행거리 -->
+			<if test="carDamage2Yn        		  != null"><![CDATA[  , CAR_DAMAGE2_YN    		 = #{carDamage2Yn}           ]]></if>    <!-- 주행거리 -->
+			<if test="carDamage3Yn        		  != null"><![CDATA[  , CAR_DAMAGE3_YN    		 = #{carDamage3Yn}           ]]></if>    <!-- 주행거리 -->
+			<if test="carDamage4Yn        		  != null"><![CDATA[  , CAR_DAMAGE4_YN    		 = #{carDamage4Yn}           ]]></if>    <!-- 주행거리 -->
 
 		</trim>
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
@@ -342,6 +346,8 @@
 			<if test="deliveryStandardPay         != null"><![CDATA[  , DELIVERY_STANDARD_PAY             = #{deliveryStandardPay}           ]]></if>    <!-- 주행거리 -->
 			<if test="deliveryAddPay         != null"><![CDATA[  , DELIVERY_ADD_PAY          = #{deliveryAddPay}           ]]></if>    <!-- 대여연령제한(장기,단기) -->
 			<if test="deliveryMaxRate         != null"><![CDATA[  , DELIVERY_MAX_RATE             = #{deliveryMaxRate}           ]]></if>    <!-- 주행거리 -->
+			<if test="modId         != null"><![CDATA[  , MOD_ID             = #{modId}           ]]></if>    <!-- 변경자 Idx -->
+			, MOD_DT = NOW()
 
 		</trim>
 		<trim prefix="WHERE" prefixOverrides="AND|OR">

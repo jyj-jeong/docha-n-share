@@ -301,16 +301,12 @@ function initDetailInfo(seq){
 		let branchName	         = nullCheck(data.branchName);
 		let settingCarCnt        = nullCheck(data.settingCarCnt);
 
-		// 선택된 차량 정보
-		let crIdx                = nullCheck(data.crIdx);
-		var selectedCar = crIdx.split(' ');
-
 		$('#pyEtc').val(pyEtc);
 		$('#pyTIdx').val(pyTIdx);
 
 		// 회원사별 차량 리스트
 		$('#rtIdx').val(rtIdx);
-		getCompanyCarList(selectedCar);
+		getCompanyCarList();
 
 		$('#dailyStandardPay').val(dailyStandardPay + '원');
 		$('#dailyMaxRate').val(dailyMaxRate + '%');
@@ -358,7 +354,7 @@ function initDetailData(data){
 
 function initDetailSelectBox(_data){
 
-	if(CRUD_METHOD == 'insert'){
+	if(CRUD_METHOD === 'insert'){
 		$('#companyName').empty();
 		$('#modelName').empty();
 		// input box 초기화	
@@ -372,27 +368,33 @@ function initDetailSelectBox(_data){
 	// 회사리스트
 	fn_callApi(method, target, req, function(response) {
 		let data = response;
-		// 200이라면 페이징을 구한다.
-		// if (res.code == 200) {
-		// 	let data = res.data.result.result;
+
 		let strOption = "<option value=''>선택</option>";
+
 		for ( var i=0; i<data.length; i++ ) {
+
 			if(!isEmpty(data[i].branchName)){
 				companyName = data[i].companyName + "(" + nullCheck(data[i].branchName) + ")";
 			}else{
 				companyName = data[i].companyName;
 			}
 			strOption += "<option value = '" + data[i].rtIdx + "'>" + companyName + "</option>";
+
 		}
+
 		$('#companyName').append(strOption);
-		$('#companyName').attr('disabled', false);
-		// } else { // 200이 아닐때 empty처리 error처리 등을 기록한다.
-		// 	errorAlert('API ERROR', '조회중 에러가 발생했습니다. \r\n 관리자에게 문의하세요.');
-		// }
+
+		if (CRUD_METHOD === 'insert' && getLoginUser().userRole !== 'RA'){
+			$('select[id=companyName]').val(getLoginUser().rtIdx).prop("selected",true);
+			$('#companyName').attr('disabled', true);
+		}else {
+			$('#companyName').attr('disabled', false);
+		}
+
 	});// end fn_callApi
 
 	// company init
-	if( CRUD_METHOD == 'insert' ){
+	if( CRUD_METHOD === 'insert' ){
 		// openIziModal(modalName);
 	}
 
@@ -422,8 +424,10 @@ function detailValidation(){
 
 	if (selectedCarList.length !== 0){
 		for (var i = 0; i < selectedCarList.length; i++){
-            carList += selectedCarList[i].id;
-            carList += ' ';
+			if (!selectedCarList[i].id.includes('All')){
+				carList += selectedCarList[i].id;
+				carList += ' ';
+			}
 		}
 	}
 
@@ -518,13 +522,9 @@ function detailSubmit(method, reqParam){
 
 	fn_callApi(_method, _target, param, function(response) {
 		let data = response;
-		$("#"+modalName).iziModal('close');
 
-		if(data.res === 1){
-			swal("저장 성공", { icon: "success"});
-		}else{
-			errorAlert('저장 실패', '관리자에게 문의하세요.');
-		}
+		swal("저장 성공", { icon: "success"});
+
 	});
 
 }
@@ -537,7 +537,7 @@ function companyChanged() {
 	getCompanyCarList();
 }
 
-function getCompanyCarList(selectedCar) {
+function getCompanyCarList() {
 
 	var rtIdx = $('#rtIdx').val();
 
@@ -579,10 +579,6 @@ function getCompanyCarList(selectedCar) {
 		// 승합 리스트
 		var vanList = data.rentCompanyCarList[5];
 		makeCheckBox(vanList, "vanList", "승합");
-
-		for (var i in selectedCar){
-			$('input:checkbox[id="'+selectedCar[i]+'"]').prop("checked", true);
-		}
 
 	});
 }
