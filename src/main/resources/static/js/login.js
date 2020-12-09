@@ -4,42 +4,6 @@ $( document ).ready(function() {
         if (key.keyCode == 13) {
             $('#btnLogin').trigger('click');
         }
-
-
-        if( key.keyCode == 70 ){
-            let url = '/api/v1.0/docha.login';
-            var userId = 'woosung.lee@carssum.com';
-            var userPassword = '1234';
-
-            var req = {
-                userId : userId
-                ,	userPassword : userPassword
-            }
-
-            $.ajax({
-                url: url,
-                type: 'POST',
-                data: JSON.stringify(req),
-                contentType: 'application/json',
-                cache: false,
-                acync : false,
-                timeout: 10000
-            }).done(function (data, textStatus, jqXHR) {
-
-                if( data.code == 400 ){
-                    alert(data.data.errMsg);
-                }
-                if( data.code == 200 ){
-                    location.href = 'main.do';
-                }
-
-            }).fail(function (jqXHR, textStatus, errorThrown) {
-                alert(jqXHR.status + '서버와의 통신에 오류가 있습니다.');
-            }).always(function () {
-
-            });
-
-        }
     });
 
 

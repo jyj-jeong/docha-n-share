@@ -39,6 +39,9 @@ public class CarController extends ControllerExtension {
         ServiceMessage serviceMessage = createServiceMessage(request)
                 .addData("rtIdx", getLoginUserRtIdx(request));
 
+        DochaMap loginUser = (DochaMap) request.getSession().getAttribute("LOGIN_SESSION");
+        serviceMessage.addData("loginUser", loginUser);
+
         carService.regCarList(serviceMessage);
 
         modelMap.addAllAttributes(serviceMessage);

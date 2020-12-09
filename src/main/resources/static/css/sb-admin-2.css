@@ -11242,3 +11242,8 @@ body.sidebar-toggled footer.sticky-footer {
 
 .car-radio-checkd { position: absolute;left: -9999px; cursor: pointer; }
 .car-radio-checkd + span { display: inline-block; vertical-align: middle; padding:0 15px; line-height:35px; border-radius:38px; text-align: center; background: #008080; border-color:#008080; color: #fff; font-size:1rem; font-weight: 500; transition:all 0.3s ease; }
+
+.underline-text {
+  border: 0 solid black;
+  border-bottom: 1px solid #d1d3e2;
+}

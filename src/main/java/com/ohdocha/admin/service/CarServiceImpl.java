@@ -60,7 +60,11 @@ public class CarServiceImpl extends ServiceExtension implements CarService {
         String rtIdx = message.getString("rtIdx");
 
         DochaAdminRegCarRequest regCarRequest = new DochaAdminRegCarRequest();
-        regCarRequest.setRtIdx(rtIdx);
+
+        DochaMap loginUser = message.getObject("loginUser", DochaMap.class);
+        if (!loginUser.getString("userRole").equals("RA")){
+            regCarRequest.setRtIdx(rtIdx);
+        }
 
         List<DochaAdminRegCarResponse> responseDto = regCarMapper.selectRegCarInfo(regCarRequest);
 

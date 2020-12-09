@@ -1,20 +1,7 @@
 /*
  * carModel.js
  * 차량 > 차량모델
- * 
- * 2020-02-04 lws 최초생성
- * 
- * 
- * 
- * update history
- * =============================================
- * |date       |comment             | author   |
- * =============================================
- * |2020-02-05 |ready 함수 제거             | pws      |
- * 
- * 
- * 
- * 
+ *
  * */
 
 var DEFAULT_PAGENUM = 15;
@@ -335,8 +322,6 @@ function initDetailInfo(seq){
     		}
 
 
-
-    		// openIziModal(MODAL_NAME);
     	 // }else { //200이 아닐때 empty처리 error처리 등을 기록한다.
  		// 	errorAlert('조회중 에러가 발생했습니다', '관리자에게 문의하세요');
     	 // }
@@ -799,7 +784,7 @@ function detailSubmit(save_type, req){
 		// 200이라면 페이징을 구한다.
 		// if (res.code == 200) {
 
-			$("#"+MODAL_NAME).iziModal('close');
+
 			if (data.res === 1) {
 				swal("저장 성공", {icon : "success"});
 				if(CRUD === 'insert'){

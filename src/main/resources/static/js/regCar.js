@@ -1,20 +1,7 @@
 /*
  * regCar.js
  * 차량 > 등록차량
- * 
- * 2020-02-04 lws 최초생성
- * 
- * 
- * 
- * update history
- * =============================================
- * |date       |comment             | author   |
- * =============================================
- * |2020-02-05 |ready 함수 제거             | pws      |
- * 
- * 
- * 
- * 
+ *
  * */
 
 var MODAL_NAME = 'regCarDetail';
@@ -414,7 +401,7 @@ function initDetailInfo(seq){
 
 		for ( var i=0; i< response.length; i++) {
 			strOption += "<label class='d-inline-block mr-3 checkbox-inline'>" +
-				"<input type='checkbox' value='" + response[i].codeValue + "' name='carOption'/>"
+				"<input type='checkbox' value='" + response[i].codeValue + "' name='carOption'/> "
 				+ response[i].codeValue
 				+ "</label>";
 
@@ -629,12 +616,12 @@ function initDetailSelectBox(_data){
 		// 회사리스트
 		fn_callApi(method, target, req, function(response) {
 			data = response;
-			// 200이라면 페이징을 구한다.
-			// if (res.code === 200) {
-			// 	data = res.data.result.result;
 			strOption = "<option value=''>선택</option>";
+
 			for ( var i=0; i<data.length; i++ ) {
+
 				let companyName = '';
+
 				if(!isEmpty(data[i].branchName)){
 					companyName = data[i].companyName + "(" + nullCheck(data[i].branchName) + ")";
 				}else{
@@ -645,10 +632,15 @@ function initDetailSelectBox(_data){
 			}
 			$('#companyName').empty();
 			$('#companyName').append(strOption);
-			$('#companyName').attr('disabled', false);
-			// } else { // 200이 아닐때 empty처리 error처리 등을 기록한다.
-			// 	errorAlert('API ERROR', '조회중 에러가 발생했습니다. \r\n 관리자에게 문의하세요.');
-			// }
+
+			if (CRUD_METHOD === 'insert' && getLoginUser().userRole !== 'RA'){
+
+				$('select[id=companyName]').val(getLoginUser().rtIdx).prop("selected",true);
+				$('#companyName').attr('disabled', true);
+
+			}else {
+				$('#companyName').attr('disabled', false);
+			}
 		});// end fn_callApi
 	}
 
@@ -1147,7 +1139,7 @@ function detailValidation(save_type){
 		switch (save_type) {
 			case 'saveCarinfo':		// 차량기본정보
 				let companyName 		= _rtIdx;
-				let carNumber 			= $("#carNumber").val().trim();
+				let carNumber 			= $("#carNumber").val();
 				let carChassisNumber 	= $("#carChassisNumber").val();
 				let year 				= $("#year option:selected").val();
 				let carRegDt 			= $("#carRegDt option:selected").val();
@@ -1156,7 +1148,7 @@ function detailValidation(save_type){
 				let mdIdx 				= $("#sel_modelDetailName").val().trim();
 				let fuelCode			= $("#sel_fuel").val().trim();
 				let colorName 			= $("#sel_colorName").val().trim();
-				let mileage 			= $("#mileage").val().trim();
+				let mileage 			= getPureText($("#mileage").val());
 
 				let ageLimit 				= $("#sel_ageLimit option:selected").val();
 

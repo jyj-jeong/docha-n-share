@@ -8,24 +8,6 @@ import org.apache.commons.codec.binary.StringUtils;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-/**
- * <pre>
- * DochaMap
- * </pre>
- *
- * @author pws
- * @version 1.0
- * @ClassName : DochaMap.java
- * @Description : LinkedHashMap 재정의
- * @Modification Information
- * <pre>
- *     since          author              description
- *  ===========    =============    ===========================
- *  2019. 11. 20.     pws         	최초 생성
- * </pre>
- * @see
- * @since 2019. 11. 20
- */
 public class DochaMap extends LinkedHashMap<String, Object> {
     private static final long serialVersionUID = -1505528434264002754L;
 

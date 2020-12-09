@@ -564,14 +564,6 @@ public class UserServiceImpl extends ServiceExtension implements UserService {
     public void selectRentCompanyHoliday(ServiceMessage message) {
         DochaAdminRentCompanyHolidayRequest rentCompanyHolidayRequest = message.getObject("rentCompanyHolidayRequest", DochaAdminRentCompanyHolidayRequest.class);
 
-        if(rentCompanyHolidayRequest.getHolidayStartDt() == null || rentCompanyHolidayRequest.getHolidayStartDt().equals("")){
-
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-            String today = simpleDateFormat.format(new Date());
-
-            rentCompanyHolidayRequest.setHolidayStartDt(today);
-        }
-
         List<DochaAdminRentCompanyHolidayResponse> rentCompanyHolidayResponseList = rentCompanyInfoMapper.selectRentCompanyHoliday(rentCompanyHolidayRequest);
 
         if (rentCompanyHolidayResponseList.size() != 0){
