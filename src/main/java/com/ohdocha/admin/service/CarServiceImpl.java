@@ -279,8 +279,17 @@ public class CarServiceImpl extends ServiceExtension implements CarService {
     @Override
     public void insertCarModelInfo(ServiceMessage message) {
         DochaAdminCarModelDetailRequest carModelDetailRequest = message.getObject("carModelDetailRequest", DochaAdminCarModelDetailRequest.class);
+        String[] modelDetailNameList = carModelDetailRequest.getModelDetailNameList();
 
-        int res = carModelMapper.insertCarModelInfo(carModelDetailRequest);
+        int res = 0;
+
+        if (modelDetailNameList.length != 0 ){
+            for (String modelDetail : modelDetailNameList){
+                carModelDetailRequest.setModelDetailName(modelDetail);
+
+                res = carModelMapper.insertCarModelInfo(carModelDetailRequest);
+            }
+        }
 
         message.addData("res", res);
         message.addData("mdIdx", carModelDetailRequest.getMdIdx());

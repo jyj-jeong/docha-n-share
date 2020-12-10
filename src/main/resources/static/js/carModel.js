@@ -39,25 +39,25 @@ function loadApi (fnc, page, displayPageNum, division) {
 	}
 
 	let req = {
-    		'page' 		     	: CURRENT_PAGE
-			,'displayPageNum' 	: displayPageNum
-			,'searchType' 	 	: sel_search
-			,'searchKeyWord'    : strSearchKeyWord
-    };
+		'page' 		     	: CURRENT_PAGE
+		,'displayPageNum' 	: displayPageNum
+		,'searchType' 	 	: sel_search
+		,'searchKeyWord'    : strSearchKeyWord
+	};
 
 	let target = 'carModelInfo';
 	let method = 'select';
 
-    fn_callApi(method, target, req, function (response) {
-    	let res = response;
+	fn_callApi(method, target, req, function (response) {
+		let res = response;
 
-    	 // //200이라면 페이징을 구한다.
-    	 // if(res.code == 200) {
-    		//  fnc(res.data, page, displayPageNum, division);
-    	 // }else { //200이 아닐때 empty처리 error처리 등을 기록한다.
-			// errorAlert('조회중 에러가 발생했습니다', '관리자에게 문의하세요');
-    	 // }
-     });//end fn_callApi
+		// //200이라면 페이징을 구한다.
+		// if(res.code == 200) {
+		//  fnc(res.data, page, displayPageNum, division);
+		// }else { //200이 아닐때 empty처리 error처리 등을 기록한다.
+		// errorAlert('조회중 에러가 발생했습니다', '관리자에게 문의하세요');
+		// }
+	});//end fn_callApi
 
 }
 
@@ -103,14 +103,14 @@ var drawTable = function drawTable(res, page, displayPageNum){
 
 	$('#listTable').empty();
 	$('#listTable').footable({
-		 'calculateWidthOverride': function() {
-			    return { width: $(window).width() };
-			  },
-        'on': {
-            'postinit.ft.table': function(e, ft) {
+		'calculateWidthOverride': function() {
+			return { width: $(window).width() };
+		},
+		'on': {
+			'postinit.ft.table': function(e, ft) {
 
-            }
-        },
+			}
+		},
 		"columns": columns,
 		"rows": data
 	});
@@ -119,11 +119,11 @@ var drawTable = function drawTable(res, page, displayPageNum){
 	let perPageNum = res.paging.cri.perPageNum;
 	let showDisplayPageNum = res.paging.cri.displayPageNum;
 
-    //page는 전역변수 사용
+	//page는 전역변수 사용
 	let prev = res.paging.prev;
 	let next = res.paging.next;
 
-    makePaging(totalCnt, perPageNum, showDisplayPageNum, page, prev, next, $("#page"));
+	makePaging(totalCnt, perPageNum, showDisplayPageNum, page, prev, next, $("#page"));
 
 	if(!isEmpty(totalCnt)) {
 		$('#totalRowCount').text('총 [' + totalCnt + '] 건이 검색되었습니다.');
@@ -246,35 +246,26 @@ function initDetailInfo(seq){
 	str += "<option value = '" + (currentYear+1) + "'>" + (currentYear+1) + "</option>";
 	$('select[name="year"]').append(str);
 
-//	swal("상세화면은 순차적으로 오픈할 예정입니다.", { icon: "warning", });
-//	if(true){
-//		return;
-//	}
 	CRUD = 'update';
 
 	let mdIdx = seq;
 
 	let req = {
-    	mdIdx:mdIdx
-    };
+		mdIdx:mdIdx
+	};
 
 
 	let target = 'carModelDetail';
 	let method = 'select';
 
-    fn_callApi(method, target, req, function (response) {
-    	 let data = response[0];
+	fn_callApi(method, target, req, function (response) {
+		let data = response[0];
 
-    	 // //200이라면 페이징을 구한다.
-    	 // if(res.code == 200) {
-    		//
-    		// let data = res.data.result[0];
-
-    		let mdIdx 				= data.mdIdx            ; //모델idx
-    		let modelName 			= data.modelName        ; //모델명
-    		let modelDetailName 	= data.modelDetailName  ; //모델상세명
-    		let country 	= data.countryCode  ; //모델상세명
-    		let year 	= data.year  ; //모델상세명
+		let mdIdx 				= data.mdIdx            ; //모델idx
+		let modelName 			= data.modelName        ; //모델명
+		let modelDetailName 	= data.modelDetailName  ; //모델상세명
+		let country 	= data.countryCode  ; //모델상세명
+		let year 	= data.year  ; //모델상세명
 //    		let manufacturerCode 	= data.manufacturerCode ; //제조사code
 //    		let manufacturerName 	= data.manufacturerName ; //제조사명
 //    			let countryCode 		= data.countryCode      ; //국가code
@@ -291,41 +282,38 @@ function initDetailInfo(seq){
 //    		let driveTypeName 		= data.driveTypeName    ; //구동방식구분명
 //    		let driveLicenseCode 	= data.driveLicenseCode ; //면허구분code
 //    		let driveLicenseName 	= data.driveLicenseName ; //면허구분이름
-    		let maximumPassenger 	= data.maximumPassenger ; //승차인원
-    		let displacement 		= data.displacement     ; //배기량
-    		let delYn 				= data.delYn     		; //삭제여부
-    		let imgIdx 				= data.imgIdx     		; //차량 이미지
+		let maximumPassenger 	= data.maximumPassenger ; //승차인원
+		let displacement 		= data.displacement     ; //배기량
+		let delYn 				= data.delYn     		; //삭제여부
+		let imgIdx 				= data.imgIdx     		; //차량 이미지
 
-    		initDetailSelectBox(data);
+		initDetailSelectBox(data);
 
-    		$("#mdIdx").val(mdIdx);
-    		$("#modelName").val(modelName);
-    		$("#modelDetailName").val(modelDetailName);
+		$("#mdIdx").val(mdIdx);
+		$("#modelName").val(modelName);
+		$("#modelDetailName").val(modelDetailName);
 
 		$('select[name="year"]').val(year);
 
 
 		$("#maximumPassenger").val(maximumPassenger);
-    		$("#displacement").val(displacement);
-			$("#sel_countryCode").val(country).prop("sel_countryCode", true);
+		$("#displacement").val(displacement);
+		$("#sel_countryCode").val(country).prop("sel_countryCode", true);
 
-			// devleop
-			// $('#car_img').attr('src','C:/ohdocha/data/temp/' + imgIdx);
+		// devleop
+		// $('#car_img').attr('src','C:/ohdocha/data/temp/' + imgIdx);
 
-			//product
-			$('#car_img').attr('src','https://admin.docha.co.kr/img/car/' + imgIdx);
+		//product
+		$('#car_img').attr('src','https://admin.docha.co.kr/img/car/' + imgIdx);
 
-    		if(!isEmpty(delYn)){
-        		$("#delYn").val(delYn).prop("delYn", true);
-    		}else {
-        		$("#delYn").val('N').prop("delYn", true);
-    		}
+		if(!isEmpty(delYn)){
+			$("#delYn").val(delYn).prop("delYn", true);
+		}else {
+			$("#delYn").val('N').prop("delYn", true);
+		}
 
 
-    	 // }else { //200이 아닐때 empty처리 error처리 등을 기록한다.
- 		// 	errorAlert('조회중 에러가 발생했습니다', '관리자에게 문의하세요');
-    	 // }
-     });//end fn_callApi
+	});//end fn_callApi
 
 
 }
@@ -384,25 +372,23 @@ function initDetailSelectBox(data){
 		// 200이라면 페이징을 구한다.
 		// if (res.code == 200) {
 
-			// let data = res.data.result;
+		let strOption = "";
 
-			let strOption = "";
-
-			strOption += "<option value = '0'>선택하세요</option>";
-			for ( var i in data) {
-				if (data[i].codeValue) {
-					strOption += "<option value = '" + data[i].code + "'>" + data[i].codeValue + "</option>";
-				}
+		strOption += "<option value = '0'>선택하세요</option>";
+		for ( var i in data) {
+			if (data[i].codeValue) {
+				strOption += "<option value = '" + data[i].code + "'>" + data[i].codeValue + "</option>";
 			}
-			$('#sel_countryCode').empty();
-			$('#sel_countryCode').append(strOption);
+		}
+		$('#sel_countryCode').empty();
+		$('#sel_countryCode').append(strOption);
 
-			//국가
-			if(!isEmpty(countryCode)) {
-				$("#sel_countryCode").val(countryCode).prop("sel_countryCode", true);
-			}else{
-				$("#sel_countryCode").val('0').prop("sel_countryCode", true);
-			}// 국가
+		//국가
+		if(!isEmpty(countryCode)) {
+			$("#sel_countryCode").val(countryCode).prop("sel_countryCode", true);
+		}else{
+			$("#sel_countryCode").val('0').prop("sel_countryCode", true);
+		}// 국가
 
 		// } else { // 200이 아닐때 empty처리 error처리 등을 기록한다.
 		// 	errorAlert('API ERROR', '조회중 에러가 발생했습니다. \r\n 관리자에게 문의하세요.');
@@ -421,25 +407,23 @@ function initDetailSelectBox(data){
 		// 200이라면 페이징을 구한다.
 		// if (res.code == 200) {
 
-			// let data = res.data.result;
+		let strOption = "";
 
-			let strOption = "";
-
-			strOption += "<option value = '0'>선택하세요</option>";
-			for ( var i in data) {
-				if (data[i].codeValue) {
-					strOption += "<option value = '" + data[i].code + "'>" + data[i].codeValue + "</option>";
-				}
+		strOption += "<option value = '0'>선택하세요</option>";
+		for ( var i in data) {
+			if (data[i].codeValue) {
+				strOption += "<option value = '" + data[i].code + "'>" + data[i].codeValue + "</option>";
 			}
-			$('#sel_manufacturerCode').empty();
-			$('#sel_manufacturerCode').append(strOption);
+		}
+		$('#sel_manufacturerCode').empty();
+		$('#sel_manufacturerCode').append(strOption);
 
-    		//제조사
-			if(!isEmpty(manufacturerCode)) {
-				$("#sel_manufacturerCode").val(manufacturerCode).prop("sel_manufacturerCode", true);
-			}else{
-				$("#sel_manufacturerCode").val('0').prop("sel_manufacturerCode", true);
-			}// 제조사
+		//제조사
+		if(!isEmpty(manufacturerCode)) {
+			$("#sel_manufacturerCode").val(manufacturerCode).prop("sel_manufacturerCode", true);
+		}else{
+			$("#sel_manufacturerCode").val('0').prop("sel_manufacturerCode", true);
+		}// 제조사
 
 		// } else { // 200이 아닐때 empty처리 error처리 등을 기록한다.
 		// 	errorAlert('API ERROR', '조회중 에러가 발생했습니다. \r\n 관리자에게 문의하세요.');
@@ -457,26 +441,24 @@ function initDetailSelectBox(data){
 
 		// 200이라면 페이징을 구한다.
 		// if (res.code == 200) {
-		//
-		// 	let data = res.data.result;
 
-			let strOption = "";
+		let strOption = "";
 
-			strOption += "<option value = '0'>선택하세요</option>";
-			for ( var i in data) {
-				if (data[i].codeValue) {
-					strOption += "<option value = '" + data[i].code + "'>" + data[i].codeValue + "</option>";
-				}
+		strOption += "<option value = '0'>선택하세요</option>";
+		for ( var i in data) {
+			if (data[i].codeValue) {
+				strOption += "<option value = '" + data[i].code + "'>" + data[i].codeValue + "</option>";
 			}
-			$('#sel_cartypeCode').empty();
-			$('#sel_cartypeCode').append(strOption);
+		}
+		$('#sel_cartypeCode').empty();
+		$('#sel_cartypeCode').append(strOption);
 
-			//차종
-			if(!isEmpty(cartypeCode)) {
-				$("#sel_cartypeCode").val(cartypeCode).prop("sel_cartypeCode", true);
-			}else{
-				$("#sel_cartypeCode").val('0').prop("sel_cartypeCode", true);
-			}// 차종
+		//차종
+		if(!isEmpty(cartypeCode)) {
+			$("#sel_cartypeCode").val(cartypeCode).prop("sel_cartypeCode", true);
+		}else{
+			$("#sel_cartypeCode").val('0').prop("sel_cartypeCode", true);
+		}// 차종
 
 		// } else { // 200이 아닐때 empty처리 error처리 등을 기록한다.
 		// 	errorAlert('API ERROR', '조회중 에러가 발생했습니다. \r\n 관리자에게 문의하세요.');
@@ -495,25 +477,23 @@ function initDetailSelectBox(data){
 		// 200이라면 페이징을 구한다.
 		// if (res.code == 200) {
 
-			// let data = res.data.result;
+		let strOption = "";
 
-			let strOption = "";
-
-			strOption += "<option value = '0'>선택하세요</option>";
-			for ( var i in data) {
-				if (data[i].codeValue) {
-					strOption += "<option value = '" + data[i].code + "'>" + data[i].codeValue + "</option>";
-				}
+		strOption += "<option value = '0'>선택하세요</option>";
+		for ( var i in data) {
+			if (data[i].codeValue) {
+				strOption += "<option value = '" + data[i].code + "'>" + data[i].codeValue + "</option>";
 			}
-			$('#sel_fuelCode').empty();
-			$('#sel_fuelCode').append(strOption);
+		}
+		$('#sel_fuelCode').empty();
+		$('#sel_fuelCode').append(strOption);
 
-			//연료
-			if(!isEmpty(fuelCode)) {
-				$("#sel_fuelCode").val(fuelCode).prop("sel_fuelCode", true);
-			}else{
-				$("#sel_fuelCode").val('0').prop("sel_fuelCode", true);
-			}// 연료
+		//연료
+		if(!isEmpty(fuelCode)) {
+			$("#sel_fuelCode").val(fuelCode).prop("sel_fuelCode", true);
+		}else{
+			$("#sel_fuelCode").val('0').prop("sel_fuelCode", true);
+		}// 연료
 
 		// } else { // 200이 아닐때 empty처리 error처리 등을 기록한다.
 		// 	errorAlert('API ERROR', '조회중 에러가 발생했습니다. \r\n 관리자에게 문의하세요.');
@@ -532,25 +512,23 @@ function initDetailSelectBox(data){
 		// 200이라면 페이징을 구한다.
 		// if (res.code == 200) {
 
-			// let data = res.data.result;
+		let strOption = "";
 
-			let strOption = "";
-
-			strOption += "<option value = '0'>선택하세요</option>";
-			for ( var i in data) {
-				if (data[i].codeValue) {
-					strOption += "<option value = '" + data[i].code + "'>" + data[i].codeValue + "</option>";
-				}
+		strOption += "<option value = '0'>선택하세요</option>";
+		for ( var i in data) {
+			if (data[i].codeValue) {
+				strOption += "<option value = '" + data[i].code + "'>" + data[i].codeValue + "</option>";
 			}
-			$('#sel_importCode').empty();
-			$('#sel_importCode').append(strOption);
+		}
+		$('#sel_importCode').empty();
+		$('#sel_importCode').append(strOption);
 
-			//연료
-			if(!isEmpty(importCode)) {
-				$("#sel_importCode").val(importCode).prop("sel_importCode", true);
-			}else{
-				$("#sel_importCode").val('0').prop("sel_importCode", true);
-			}// 연료
+		//연료
+		if(!isEmpty(importCode)) {
+			$("#sel_importCode").val(importCode).prop("sel_importCode", true);
+		}else{
+			$("#sel_importCode").val('0').prop("sel_importCode", true);
+		}// 연료
 
 		// } else { // 200이 아닐때 empty처리 error처리 등을 기록한다.
 		// 	errorAlert('API ERROR', '조회중 에러가 발생했습니다. \r\n 관리자에게 문의하세요.');
@@ -569,25 +547,23 @@ function initDetailSelectBox(data){
 		// 200이라면 페이징을 구한다.
 		// if (res.code == 200) {
 
-			// let data = res.data.result;
+		let strOption = "";
 
-			let strOption = "";
-
-			strOption += "<option value = '0'>선택하세요</option>";
-			for ( var i in data) {
-				if (data[i].codeValue) {
-					strOption += "<option value = '" + data[i].code + "'>" + data[i].codeValue + "</option>";
-				}
+		strOption += "<option value = '0'>선택하세요</option>";
+		for ( var i in data) {
+			if (data[i].codeValue) {
+				strOption += "<option value = '" + data[i].code + "'>" + data[i].codeValue + "</option>";
 			}
-			$('#sel_transmissionCode').empty();
-			$('#sel_transmissionCode').append(strOption);
+		}
+		$('#sel_transmissionCode').empty();
+		$('#sel_transmissionCode').append(strOption);
 
-			//연료
-			if(!isEmpty(transmissionCode)) {
-				$("#sel_transmissionCode").val(transmissionCode).prop("sel_transmissionCode", true);
-			}else{
-				$("#sel_transmissionCode").val('0').prop("sel_transmissionCode", true);
-			}// 연료
+		//연료
+		if(!isEmpty(transmissionCode)) {
+			$("#sel_transmissionCode").val(transmissionCode).prop("sel_transmissionCode", true);
+		}else{
+			$("#sel_transmissionCode").val('0').prop("sel_transmissionCode", true);
+		}// 연료
 
 		// } else { // 200이 아닐때 empty처리 error처리 등을 기록한다.
 		// 	errorAlert('API ERROR', '조회중 에러가 발생했습니다. \r\n 관리자에게 문의하세요.');
@@ -605,26 +581,24 @@ function initDetailSelectBox(data){
 
 		// 200이라면 페이징을 구한다.
 		// if (res.code == 200) {
-		//
-		// 	let data = res.data.result;
 
-			let strOption = "";
+		let strOption = "";
 
-			strOption += "<option value = '0'>선택하세요</option>";
-			for ( var i in data) {
-				if (data[i].codeValue) {
-					strOption += "<option value = '" + data[i].code + "'>" + data[i].codeValue + "</option>";
-				}
+		strOption += "<option value = '0'>선택하세요</option>";
+		for ( var i in data) {
+			if (data[i].codeValue) {
+				strOption += "<option value = '" + data[i].code + "'>" + data[i].codeValue + "</option>";
 			}
-			$('#sel_driveTypeCode').empty();
-			$('#sel_driveTypeCode').append(strOption);
+		}
+		$('#sel_driveTypeCode').empty();
+		$('#sel_driveTypeCode').append(strOption);
 
-			//연료
-			if(!isEmpty(driveTypeCode)) {
-				$("#sel_driveTypeCode").val(driveTypeCode).prop("sel_driveTypeCode", true);
-			}else{
-				$("#sel_driveTypeCode").val('0').prop("sel_driveTypeCode", true);
-			}// 연료
+		//연료
+		if(!isEmpty(driveTypeCode)) {
+			$("#sel_driveTypeCode").val(driveTypeCode).prop("sel_driveTypeCode", true);
+		}else{
+			$("#sel_driveTypeCode").val('0').prop("sel_driveTypeCode", true);
+		}// 연료
 
 		// } else { // 200이 아닐때 empty처리 error처리 등을 기록한다.
 		// 	errorAlert('API ERROR', '조회중 에러가 발생했습니다. \r\n 관리자에게 문의하세요.');
@@ -642,26 +616,24 @@ function initDetailSelectBox(data){
 
 		// 200이라면 페이징을 구한다.
 		// if (res.code == 200) {
-		//
-		// 	let data = res.data.result;
 
-			let strOption = "";
+		let strOption = "";
 
-			strOption += "<option value = '0'>선택하세요</option>";
-			for ( var i in data) {
-				if (data[i].codeValue) {
-					strOption += "<option value = '" + data[i].code + "'>" + data[i].codeValue + "</option>";
-				}
+		strOption += "<option value = '0'>선택하세요</option>";
+		for ( var i in data) {
+			if (data[i].codeValue) {
+				strOption += "<option value = '" + data[i].code + "'>" + data[i].codeValue + "</option>";
 			}
-			$('#sel_driveLicenseCode').empty();
-			$('#sel_driveLicenseCode').append(strOption);
+		}
+		$('#sel_driveLicenseCode').empty();
+		$('#sel_driveLicenseCode').append(strOption);
 
-			//연료
-			if(!isEmpty(driveLicenseCode)) {
-				$("#sel_driveLicenseCode").val(driveLicenseCode).prop("sel_driveLicenseCode", true);
-			}else{
-				$("#sel_driveLicenseCode").val('0').prop("sel_driveLicenseCode", true);
-			}// 연료
+		//연료
+		if(!isEmpty(driveLicenseCode)) {
+			$("#sel_driveLicenseCode").val(driveLicenseCode).prop("sel_driveLicenseCode", true);
+		}else{
+			$("#sel_driveLicenseCode").val('0').prop("sel_driveLicenseCode", true);
+		}// 연료
 
 		// } else { // 200이 아닐때 empty처리 error처리 등을 기록한다.
 		// 	errorAlert('API ERROR', '조회중 에러가 발생했습니다. \r\n 관리자에게 문의하세요.');
@@ -676,7 +648,6 @@ function detailValidation(){
 	let mdIdx = $("#mdIdx").val();												// 모델순번
 	let year 				= $("#year option:selected").val();
 	let modelName = $("#modelName").val();										// 모델명
-	let modelDetailName = $("#modelDetailName").val();							// 모델상세명
 	let manufacturerCode = $("#sel_manufacturerCode option:selected").val();	// 제조사
 	let countryCode = $("#sel_countryCode option:selected").val();				// 국가
 	let importCode = $("#sel_importCode option:selected").val();				// 국내/외구분
@@ -689,6 +660,13 @@ function detailValidation(){
 	let maximumPassenger = $("#maximumPassenger").val();						// 승차인원
 	let delYn = $("#delYn option:selected").val();								// 삭제여부
 
+	let inputCarModelDetails = $('#carModelDetailList #modelDetail');
+
+	var modelDetailName = [];
+
+	for (var i = 0; i < inputCarModelDetails.length; i++){
+		modelDetailName.push(inputCarModelDetails[i].textContent);
+	}
 
 	if(isEmpty(countryCode) || countryCode === '0') {
 		errorAlert('모델 정보', '국가는 필수 항목입니다.');
@@ -705,57 +683,35 @@ function detailValidation(){
 	else if(isEmpty(modelName)) {
 		errorAlert('모델 정보', '차종은 필수 항목입니다.');
 		return;
-	}else if(isEmpty(modelDetailName)) {
+	}else if(modelDetailName.length === 0) {
 		errorAlert('모델 정보', '차종상세는 필수 항목입니다.');
 		return;
 	}
-	else if(isEmpty(cartypeCode) || cartypeCode == '0') {
+	else if(isEmpty(cartypeCode) || cartypeCode === '0') {
 		errorAlert('모델 정보', '등급은 필수 항목입니다.');
 		return;
 	}
 
-	// else if(isEmpty(importCode) || importCode == '0') {
-	// 	errorAlert('모델 정보', '국내/외구분은 필수 항목입니다.');
-	// 	return;
-	// }else if(isEmpty(fuelCode) || fuelCode == '0') {
-	// 	errorAlert('모델 정보', '연료는 필수 항목입니다.');
-	// 	return;
-	// }else if(isEmpty(transmissionCode) || transmissionCode == '0') {
-	// 	errorAlert('모델 정보', '변속은 필수 항목입니다.');
-	// 	return;
-	// }else if(isEmpty(driveTypeCode) || driveTypeCode == '0') {
-	// 	errorAlert('모델 정보', '구동방식은 필수 항목입니다.');
-	// 	return;
-	// }else if(isEmpty(driveLicenseCode) || driveLicenseCode == '0') {
-	// 	errorAlert('모델 정보', '면허구분은 필수 항목입니다.');
-	// 	return;
-	// }else if(isEmpty(maximumPassenger)) {
-	// 	errorAlert('모델 정보', '승차인원은 필수 항목입니다.');
-	// 	return;
-	// }else if(isEmpty(displacement)) {
-	// 	errorAlert('모델 정보', '배기량은 필수 항목입니다.');
-	// 	return;
-	// }
 
 	let save_type = CRUD;
 	let req = {
-			'mdIdx' : mdIdx
-			,	'modelName' : modelName
-			,	'modelDetailName' : modelDetailName
-			,	'manufacturerCode' : manufacturerCode
-			,	'countryCode' : countryCode
-			,	'year' : year
-			,	'importCode' : importCode
-			,	'cartypeCode' : cartypeCode
-			,	'fuelCode' : fuelCode
-			,	'transmissionCode' : transmissionCode
-			,	'driveTypeCode' : driveTypeCode
-			,	'driveLicenseCode' : driveLicenseCode
-			,	'displacement' : displacement
-			,	'maximumPassenger' : maximumPassenger
-			,	'delYn' : delYn
-			// ,	'modId' : GLOBAL_LOGIN_USER_IDX
-			// ,	'regId' : GLOBAL_LOGIN_USER_IDX
+		'mdIdx' : mdIdx
+		,	'modelName' : modelName
+		,	'modelDetailNameList' : modelDetailName
+		,	'manufacturerCode' : manufacturerCode
+		,	'countryCode' : countryCode
+		,	'year' : year
+		,	'importCode' : importCode
+		,	'cartypeCode' : cartypeCode
+		,	'fuelCode' : fuelCode
+		,	'transmissionCode' : transmissionCode
+		,	'driveTypeCode' : driveTypeCode
+		,	'driveLicenseCode' : driveLicenseCode
+		,	'displacement' : displacement
+		,	'maximumPassenger' : maximumPassenger
+		,	'delYn' : delYn
+		,	'modId' : getLoginUser().urIdx
+		,	'regId' : getLoginUser().urIdx
 	};
 
 	let title = '모델정보 저장';
@@ -785,18 +741,20 @@ function detailSubmit(save_type, req){
 		// if (res.code == 200) {
 
 
-			if (data.res === 1) {
-				swal("저장 성공", {icon : "success"});
-				if(CRUD === 'insert'){
-					loadApi(drawTable, null, null);
-					let mdIdx = data.mdIdx;
-					$("#mdIdx").val(mdIdx);
-				}else {
-					loadApi(drawTable, CURRENT_PAGE, null);
-				}
+		if (data.res === 1) {
+			swal("저장 성공", {icon : "success"});
+			if(CRUD === 'insert'){
+
+				let mdIdx = data.mdIdx;
+				$("#mdIdx").val(mdIdx);
+
+			}else {
+				swal("저장 실패", {icon : "warning"});
 
 			}
-		 else { // 200이 아닐때 empty처리 error처리 등을 기록한다.
+
+		}
+		else { // 200이 아닐때 empty처리 error처리 등을 기록한다.
 			errorAlert('저장 실패', '관리자에게 문의하세요.');
 		}
 	});// end fn_callApi
@@ -806,30 +764,17 @@ function detailSubmit(save_type, req){
 function initDetailData(){
 	CRUD = 'insert';
 
+	var currentYear = new Date().getFullYear();
+	var str = '';
+	for(var i = 7; i >= 0; i--){
+		str += "<option value = '" + (currentYear-i) + "'>" + (currentYear-i) + "</option>";
+	}
+	str += "<option value = '" + (currentYear+1) + "'>" + (currentYear+1) + "</option>";
+	$('select[name="year"]').append(str);
+
 	initDetailSelectBox(null);
 
-	$("#" + MODAL_NAME).find('input:text').each(function(){
-		$(this).val('');
-	});
-
-	$("#" + MODAL_NAME).find('select').each(function(){
-		$(this).find('option').eq(0).prop('selected',true);
-	});
-
-	// openIziModal(MODAL_NAME);
 }
 
-$("#" + MODAL_NAME).iziModal({
-	 radius: 5,
-	 padding: 20,
-	 closeButton: true,
-	 overlayClose: false,
-	 width: MODAL_WIDTH,
-	 height:MODAL_HEIGTH,
-	 title: MODAL_TITLE,
-	 headerColor: '#002e5b',
-	 backdrop: 'static',
-	 keyboard: false
-});
 
 /* =========================== detail function end ======================================*/

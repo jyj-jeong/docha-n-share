@@ -959,16 +959,16 @@ function selectCarInfo(crIdx){
         acync : false,
         timeout: 10000
     }).done(function (data, textStatus, jqXHR) {
-        var response = data[0];
+        var response = data.result[0];
 
-        carDamageCover = nullCheck(response.carDamageCover) == ''?'':objectConvertToPriceFormat(response.carDamageCover);
-        insuranceCopayment = nullCheck(response.insuranceCopayment) == ''?'':objectConvertToPriceFormat(response.insuranceCopayment);
-        carDamageCover2 = nullCheck(response.carDamageCover2) == ''?'':objectConvertToPriceFormat(response.carDamageCover2);
-        insuranceCopayment2 = nullCheck(response.insuranceCopayment2) == ''?'':objectConvertToPriceFormat(response.insuranceCopayment2);
-        carDamageCover3 = nullCheck(response.carDamageCover3) == ''?'':objectConvertToPriceFormat(response.carDamageCover3);
-        insuranceCopayment3 = nullCheck(response.insuranceCopayment3) == ''?'':objectConvertToPriceFormat(response.insuranceCopayment3);
-        carDamageCover4 = nullCheck(response.carDamageCover4) == ''?'':objectConvertToPriceFormat(response.carDamageCover4);
-        insuranceCopayment4 = nullCheck(response.insuranceCopayment4) == ''?'':objectConvertToPriceFormat(response.insuranceCopayment4);
+        carDamageCover = nullCheck(response.carDamageCover) === ''?'':objectConvertToPriceFormat(response.carDamageCover);
+        insuranceCopayment = nullCheck(response.insuranceCopayment) === ''?'':objectConvertToPriceFormat(response.insuranceCopayment);
+        carDamageCover2 = nullCheck(response.carDamageCover2) === ''?'':objectConvertToPriceFormat(response.carDamageCover2);
+        insuranceCopayment2 = nullCheck(response.insuranceCopayment2) === ''?'':objectConvertToPriceFormat(response.insuranceCopayment2);
+        carDamageCover3 = nullCheck(response.carDamageCover3) === ''?'':objectConvertToPriceFormat(response.carDamageCover3);
+        insuranceCopayment3 = nullCheck(response.insuranceCopayment3) === ''?'':objectConvertToPriceFormat(response.insuranceCopayment3);
+        carDamageCover4 = nullCheck(response.carDamageCover4) === ''?'':objectConvertToPriceFormat(response.carDamageCover4);
+        insuranceCopayment4 = nullCheck(response.insuranceCopayment4) === ''?'':objectConvertToPriceFormat(response.insuranceCopayment4);
 
 
         let strOption = "";
@@ -2178,10 +2178,10 @@ function cancelPay() {
             "merchant_uid": merchantUid, // 주문번호
             "rmIdx": rmIdx, // 예약 idx
             "cancel_request_amount": refundRequestFee, // 환불금액
-            "reason": "관리자에 의한 환불", // 환불사유
+            "reason": "관리자에 의한 환불" // 환불사유
         };
 
-        jQuery.ajax({
+        $.ajax({
             "url": "/payments/cancel",
             "type": "POST",
             "contentType": "application/json",

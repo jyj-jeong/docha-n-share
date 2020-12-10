@@ -11,6 +11,7 @@ public class DochaAdminCarModelDetailRequest extends CommonRequestDto {
 	private int mdIdx            ; //모델idx
 	private String modelName        ; //모델명
 	private String modelDetailName  ; //모델상세명
+	private String[] modelDetailNameList  ; //모델상세명리스트
 	private String manufacturerCode ; //제조사code
 	private String manufacturerName ; //제조사명
 	private String countryCode      ; //국가code

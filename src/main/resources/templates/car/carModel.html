@@ -70,13 +70,26 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-12 mb-3">
-                                <input type="text" class="form-control underline-text" />
+                            <div id="carModelDetailList" class="col-12 mb-3">
+
+
                             </div>
                         </div>
                         <script th:inline="javascript">
                             $('#addModelDetailName').click(function () {
+                                var modelDetailName = $('#modelDetailName').val();
 
+                                if (modelDetailName !== ''){
+
+                                    var strOption = '<div class="d-inline-block mr-2 alert alert-dark alert-dismissible fade show" role="alert">'
+                                                    + '<span id="modelDetail">' + modelDetailName + '</span>'
+                                                    + '<button type="button" class="close" data-dismiss="alert" aria-label="Close">'
+                                                    + '<span aria-hidden="true">&times;</span>\n'
+                                                    + '</button>'
+                                                    + '</div>';
+
+                                    $('#carModelDetailList').append(strOption);
+                                }
                             });
                         </script>
                         <button class="btn btn-primary" type="button" onclick="detailValidation();" style="float: right">저장</button>
@@ -108,7 +121,6 @@
                     </div>
                 </div>
             </div>
-            <!--            <form action="writeImg.mew" method="post" enctype="multipart/form-data"></form>-->
             <script th:inline="javascript">
                 var inputFile = document.querySelector("#carImg");
 
@@ -164,31 +176,6 @@
                     path = ($("#depth_container").text()).replace("/" + "");
                     var type = "html";
 
-
-                    // var data = {
-                    //     "image" : inputFile.files[0],
-                    //     "mdIdx" : mdIdx
-                    // };
-                    //
-                    // $.ajax({
-                    //     url: '/api/v1.0/uploadCarImage.do',
-                    //     type: 'POST',
-                    //     contentType: 'application/json',
-                    //     async: false,
-                    //     cache:false,
-                    //     data: JSON.stringify(data),
-                    //     error: function(jqxhr, textStatus,error) {
-                    //         //alert(textStatus+'\n' terror);
-                    //         alert("선택된 파일이 없습니다.");
-                    //     },
-                    //     success: function(data) {
-                    //         alert("success");
-                    //
-                    //         sessionStorage.setItem("flagUploadSuccess", "Y");
-                    //         window.location.reload(true);
-                    //         //loadFileList();
-                    //     }
-                    // });
                 });
             </script>
 
@@ -241,6 +228,10 @@
 <script th:inline="javascript">
     CRUD = /*[[${CRUD}]]*/'';
     mdIdx = /*[[${mdIdx}]]*/'';
+
+    function getLoginUser() {
+        return /*[[${session.LOGIN_SESSION}]]*/ '';
+    }
 
     if(CRUD === "insert"){
         initDetailData();

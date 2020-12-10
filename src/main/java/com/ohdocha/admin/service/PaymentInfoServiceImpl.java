@@ -93,13 +93,14 @@ public class PaymentInfoServiceImpl extends ServiceExtension implements PaymentI
 
     @Override
     public void reservationRefund(ServiceMessage message) throws Exception {
-        DochaMap param = message.getObject("reqParam", DochaMap.class);
+        DochaMap param = new DochaMap();
+        param.putAll(message.getObject("reqParam", DochaMap.class));
 
         Map<String, Object> result = null;
         Map<String, Object> payData = null;
 
-        List<DochaAdminPaymentInfoRequest> reserveInfoList = paymentInfoMapper.selectReserveInfo(param);
-        DochaAdminPaymentInfoRequest reserveInfo = reserveInfoList.get(0);
+        List<DochaAdminPaymentInfoResponse> reserveInfoList = paymentInfoMapper.selectReserveInfo(param);
+        DochaAdminPaymentInfoResponse reserveInfo = reserveInfoList.get(0);
 
         double cancelAmountDouble = param.getDouble("cancel_request_amount");
         int cancelAmount = (int) Math.floor(cancelAmountDouble);
@@ -114,7 +115,6 @@ public class PaymentInfoServiceImpl extends ServiceExtension implements PaymentI
         String impKey = properties.getImpKey();
         String impSecret = properties.getImpSecret();
 
-        // 결제 금액이 있어서 결제금액을 환불해야 할 경우
         String accessToken = getAccessToken(impKey, impSecret, url);
 
         // 헤더에 AccessToken 설정

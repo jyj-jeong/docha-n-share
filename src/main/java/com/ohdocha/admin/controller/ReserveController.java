@@ -9,11 +9,14 @@ import com.ohdocha.admin.util.DochaMap;
 import com.ohdocha.admin.util.ServiceMessage;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 @Slf4j
 @Controller
@@ -152,5 +155,17 @@ public class ReserveController extends ControllerExtension{
     }
 
     // endregion
+
+    /* 취소요청 - 환불 */
+    @PostMapping(value = "/payments/cancel")
+    @ResponseBody
+    public Object paymentsCancel(@RequestBody Map<String, Object> reqParam, ModelAndView mv, HttpServletRequest request, Authentication authentication) throws Exception {
+        ServiceMessage serviceMessage = createServiceMessage(request);
+        serviceMessage.addData("reqParam", reqParam);
+
+        paymentInfoService.reservationRefund(serviceMessage);
+
+        return serviceMessage;
+    }
 
 }

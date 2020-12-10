@@ -72,15 +72,4 @@ public class PaymentInfoController extends ControllerExtension {
         return serviceMessage;
     }
 
-    @PostMapping(value = "/payments/cancel")
-    @ResponseBody
-    public Object paymentsCancel(@RequestBody Map<String, Object> reqParam, ModelAndView mv, HttpServletRequest request, Authentication authentication) throws Exception {
-        ServiceMessage serviceMessage = createServiceMessage(request);
-        serviceMessage.addData("reqParam", reqParam);
-
-        paymentInfoService.reservationRefund(serviceMessage);
-
-        return serviceMessage;
-    }
-
 }

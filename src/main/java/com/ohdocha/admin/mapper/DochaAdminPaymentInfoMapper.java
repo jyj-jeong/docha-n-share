@@ -16,7 +16,7 @@ public interface DochaAdminPaymentInfoMapper {
     public int insertPaymentDetail(DochaAdminPaymentInfoRequest reqParam);
 
     // 예약 정보
-    public List<DochaAdminPaymentInfoRequest> selectReserveInfo(DochaMap param);
+    public List<DochaAdminPaymentInfoResponse> selectReserveInfo(DochaMap param);
 
     // 즉시 취소
     public int updateCancelReserve(DochaMap paramMap);

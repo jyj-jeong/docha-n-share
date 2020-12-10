@@ -1616,6 +1616,31 @@ function initDetailData(data){
 	$('select[name="carRegDt"]').append(str);
 
 
+	// 차량 옵션 리스트
+	var carReq = {
+		rtCode:'CR',
+		pCode: 'OT'
+	};
+
+	var target = 'commonCodeInfo';
+	var method = 'select';
+
+	fn_callApi(method, target, carReq, function (response) {
+
+		var strOption = "";
+
+		for ( var i=0; i< response.length; i++) {
+			strOption += "<label class='d-inline-block mr-3 checkbox-inline'>" +
+				"<input type='checkbox' value='" + response[i].codeValue + "' name='carOption'/> "
+				+ response[i].codeValue
+				+ "</label>";
+
+		}
+
+		$('#carOptionList').empty();
+		$('#carOptionList').append(strOption).addClass('mr-3 checkbox-inline');
+
+	});
 
 	// 모델 상세 초기화
 	let strOption = "";

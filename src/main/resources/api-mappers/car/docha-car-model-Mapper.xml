@@ -27,10 +27,10 @@
               ,  IFNULL(T1.MOD_ID              , '') AS MOD_ID                                              /*수정자*/
               ,  IFNULL(T1.MOD_DT              , '') AS MOD_DT                                              /*수정일시*/
               ,  IFNULL(T1.DEL_YN              , '') AS DEL_YN                                              /*삭제여부*/
-              ,  IFNULL(T1.IMG_IDX            , '') AS IMG_IDX                                      /*이미지IDX*/
+              ,  IFNULL(T1.IMG_IDX            , '') AS IMG_IDX                                              /*등록차량 대수*/
               ,  IFNULL(COUNT(CI.MD_IDX),0)  AS CAR_COUNT
          FROM DC_CAR_MODEL AS T1 LEFT OUTER JOIN DC_CAR_INFO AS CI ON T1.MD_IDX = CI.MD_IDX
-         GROUP BY T1.MD_IDX
+         GROUP BY T1.MODEL_NAME, T1.COUNTRY_CODE, T1.MANUFACTURER_CODE, T1.YEAR, T1.CARTYPE_CODE
          ]]>
 	</select>
 
