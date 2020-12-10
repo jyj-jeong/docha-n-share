@@ -1,6 +1,8 @@
 package com.ohdocha.admin.mapper;
 
 import com.ohdocha.admin.domain.rentCompany.*;
+import com.ohdocha.admin.domain.reserve.reserveInfoMnt.DochaRentCompanyDto;
+import com.ohdocha.admin.util.DochaMap;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -68,6 +70,11 @@ public interface DochaAdminRentCompanyInfoMapper {
     public int updateDcRentCompanyAblearea(DochaAdminDcRentCompanyAbleareaRequest reqParam);
 
     public int deleteRentCompanyAblearea(DochaAdminDcRentCompanyAbleareaRequest reqParam);
+
+
+    // 알림톡을 보내는 회원사 번호 리스트
+    public List<DochaRentCompanyDto> selectCompanyContactListForAlarmTalk(DochaMap param);
+
 
 
 }

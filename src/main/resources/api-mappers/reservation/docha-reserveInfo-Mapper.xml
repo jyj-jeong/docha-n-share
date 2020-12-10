@@ -81,6 +81,7 @@
               SELECT
               A.RM_IDX /* 예약순번 */
               , A.UR_IDX /* 예약자 순번 */
+              , A.RT_IDX /* 회원사 IDX */
               , A.RESERVE_USER_NAME /* 예약자명 */
               , IFNULL(A.RESERVE_USER_GENDER, B.USER_GENDER) AS RESERVE_USER_GENDER /* 예약자 성별 */
               , IFNULL(A.RESERVE_USER_EMAIL, B.USER_ID) AS RESERVE_USER_EMAIL /* 예약자 이메일 [회원:ID, 비회원:EMAIL] */
@@ -142,8 +143,10 @@
               , IFNULL(A.DELIVERY_FEE, '0') AS DELIVERY_FEE /* 왕복배달금액 */
               , IFNULL(A.ADD_FEE, '0') AS ADD_FEE /* 추가수수료 */
               , IFNULL(A.PAYMENT_TOTAL_AMOUNT, '0') AS PAYMENT_TOTAL_AMOUNT /* 총 대여금액 */
+              , IFNULL(A.MERCHANT_UID, '0') AS MERCHANT_UID /* MERCHANCT_UID */
               , CASE WHEN LONGTERM_YN = 'LT' THEN C.MONTHLY_STANDARD_PAY ELSE IFNULL(A.PAYMENT_TOTAL_AMOUNT, '0') END AS PAYMENT_AMOUNT /* 결제금액 */
-              , IFNULL(A.REFUND_FEE, '0') AS REFUND_FEE /* 환불금액 */
+              , IFNULL(A.CANCEL_FEE, '0') AS CANCEL_FEE /* 환불금액 */
+              , IFNULL(A.REFUND_FEE, '0') AS REFUND_FEE /* 환불요청금액 */
               , IFNULL(A.PAYMENT_TOTAL_AMOUNT, '0') - (SELECT SUM(PAYMENT_AMOUNT) FROM DC_PAYMENT_DETAIL WHERE RM_IDX = A.RM_IDX) AS MISU /* 미납금 */
               FROM DC_RESERVE_MASTER A LEFT JOIN DC_USER_INFO B ON A.UR_IDX = B.UR_IDX
                                         INNER JOIN DC_CAR_INFO C ON A.CR_IDX = C.CR_IDX
@@ -710,7 +713,7 @@ FROM (
 
    </select>
 
-    <select id="selectCompanyList" parameterType="reserveInfoRequest" resultType="DocahRentCompanyDto">
+    <select id="selectCompanyList" parameterType="reserveInfoRequest" resultType="DochaRentCompanyDto">
 
         SELECT RT_IDX
         ,      IFNULL(RT_P_IDX                     , '' ) AS RT_P_IDX
@@ -757,7 +760,7 @@ FROM (
         ORDER BY COMPANY_NAME
     </select>
 
-    <select id="selectCompanyInfo" parameterType="reserveInfoRequest" resultType="DocahRentCompanyDto">
+    <select id="selectCompanyInfo" parameterType="reserveInfoRequest" resultType="DochaRentCompanyDto">
 
       SELECT T1.RT_IDX
       ,      IFNULL(T1.RT_P_IDX                     , '' ) AS RT_P_IDX

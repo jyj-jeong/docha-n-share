@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.ohdocha.cu.kprojectcu.mapper.DochaScheduledDao">
+
+    <select id="selectScheduledList" parameterType="DochaMap" resultType="DochaScheduledDto" >
+    	<![CDATA[
+				SELECT 
+					IFNULL(A.PAYMENT_DATE , '')		AS paymentDate
+					, IFNULL(A.PAYMENT_AMOUNT , '')			AS amount
+					, IFNULL(C.USER_CONTACT1 , '')	AS userContact1
+				FROM 
+				DC_PAYMENT_SCHEDULE A
+					INNER JOIN DC_RESERVE_MASTER B
+						ON A.RM_IDX  = B.RM_IDX 
+					INNER JOIN DC_USER_INFO C
+						ON B.UR_IDX = C.UR_IDX 
+				WHERE A.PAYMENT_DATE = DATE_SUB(DATE_FORMAT(NOW(), '%Y-%m-%d'), INTERVAL #{interval} DAY);
+	        ]]>	 
+	       
+	</select>
+
+	<!--카드 등록-->
+	<insert id="insertPaymentSchedule" parameterType="hashMap">
+    <![CDATA[
+                                        INSERT INTO DC_PAYMENT_SCHEDULE(
+                                               RM_IDX
+                                        ,      MERCHANT_UID
+                                        ,      CUSTOMER_UID
+                                        ,      PAYMENT_DATE
+                                        ,      PAYMENT_AMOUNT
+                                        ,      PAY_COUNT
+                                        ,      TOTAL_PAY_COUNT
+                                        ,      PAYMENT_STATUS_CODE
+                                        ,      REG_DT
+                                        )
+                                        VALUES(
+                                               #{rmIdx}
+                                        ,	   #{merchant_uid}
+                                        ,	   #{customer_uid}
+                                        ,	   #{schedule_at}
+                                        ,      #{amount}
+                                        ,      #{payCount}
+                                        ,      #{totalPayCount}
+                                        ,      'ready'
+                                        ,      NOW()
+                                        )
+        ]]>
+    </insert>
+
+	<!-- 취소 시 결제 스케쥴에서 예약 된 결제들 가져옴 -->
+	<select id="selectScheduledListForCancel" parameterType="DochaMap" resultType="DochaScheduledDto" >
+	    <![CDATA[
+			SELECT
+				    IFNULL(RM_IDX      			  					, '') AS RM_IDX
+				     ,  IFNULL(PAYMENT_DATE      			  		, '') AS PAYMENT_DATE
+				     ,  IFNULL(MERCHANT_UID      			  		, '') AS MERCHANT_UID
+				     ,  IFNULL(CUSTOMER_UID      			  		, '') AS CUSTOMER_UID
+				FROM DC_PAYMENT_SCHEDULE
+				WHERE
+        RM_IDX =#{rmIdx} AND PAYMENT_STATUS_CODE = 'ready'
+
+		]]>
+    </select>
+
+	<!-- 취소 시 스케쥴 상태를 cancel로 변경 -->
+	<update id="updateCancelScheduleStatus" parameterType="DochaMap">
+	    <![CDATA[
+			UPDATE DC_PAYMENT_SCHEDULE
+			SET
+				    PAYMENT_STATUS_CODE = 'cancel'
+
+			WHERE RM_IDX =#{rmIdx}
+
+		]]>
+    </update>
+
+
+</mapper>
+
+

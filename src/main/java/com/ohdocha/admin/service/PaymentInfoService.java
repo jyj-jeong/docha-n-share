@@ -12,4 +12,9 @@ public interface PaymentInfoService {
 
     void calculateDateAndRtIdxReserveInfo(ServiceMessage message);  // 정산 상세
 
+    // 환불
+
+    void reservationRefund(ServiceMessage message) throws Exception;  // 정산 상세
+
+
 }

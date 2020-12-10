@@ -95,6 +95,7 @@ public class DochaAdminReserveInfoDetailResponse extends CommonResponseDto {
 	private String paymentDate;
 	private String nextPaymentDay;
 	private String etc;
+	private String merchantUid; //결제id
 	
 	private String flag;
 	private String msg;

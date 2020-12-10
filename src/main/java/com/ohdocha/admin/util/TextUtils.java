@@ -6,6 +6,7 @@ import com.ohdocha.admin.exception.BadRequestException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -105,5 +106,43 @@ public class TextUtils {
 
     public static long localDateTimeToLong(LocalDateTime localDateTime) {
         return Timestamp.valueOf(localDateTime).getTime();
+    }
+
+    public static String getWeekByString(String date, String dateType){
+        String day = "" ;
+        SimpleDateFormat dateFormat = new SimpleDateFormat(dateType) ;
+        Date nDate = null;
+        try {
+            nDate = dateFormat.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        Calendar cal = Calendar.getInstance() ;
+        cal.setTime(nDate);
+        int dayNum = cal.get(Calendar.DAY_OF_WEEK) ;
+        switch(dayNum){
+            case 1:
+                day = "일";
+                break ;
+            case 2:
+                day = "월";
+                break ;
+            case 3:
+                day = "화";
+                break ;
+            case 4:
+                day = "수";
+                break ;
+            case 5:
+                day = "목";
+                break ;
+            case 6:
+                day = "금";
+                break ;
+            case 7:
+                day = "토";
+                break ;
+        }
+        return day ;
     }
 }

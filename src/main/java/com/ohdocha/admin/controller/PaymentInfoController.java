@@ -6,11 +6,14 @@ import com.ohdocha.admin.util.DochaMap;
 import com.ohdocha.admin.util.ServiceMessage;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 @Slf4j
 @AllArgsConstructor
@@ -27,11 +30,11 @@ public class PaymentInfoController extends ControllerExtension {
         DochaAdminCalculateRequest calculateRequest = new DochaAdminCalculateRequest();
 
         DochaMap loginUser = getLoginUser(request);
-        if (loginUser.get("userRole").equals("MA") || loginUser.get("userRole").equals("MU")){
+        if (loginUser.get("userRole").equals("MA") || loginUser.get("userRole").equals("MU")) {
             calculateRequest.setRtIdx(loginUser.getString("rtIdx"));
         }
 
-        serviceMessage.addData("calculateRequest" , calculateRequest);
+        serviceMessage.addData("calculateRequest", calculateRequest);
         paymentInfoService.calculateDateReserveList(serviceMessage);
 
         modelMap.addAllAttributes(serviceMessage);
@@ -46,11 +49,11 @@ public class PaymentInfoController extends ControllerExtension {
         calculateRequest.setAccountExpDt(reserveDate);
 
         DochaMap loginUser = getLoginUser(request);
-        if (loginUser.get("userRole").equals("MA") || loginUser.get("userRole").equals("MU")){
+        if (loginUser.get("userRole").equals("MA") || loginUser.get("userRole").equals("MU")) {
             calculateRequest.setRtIdx(loginUser.getString("rtIdx"));
         }
 
-        serviceMessage.addData("calculateRequest" , calculateRequest);
+        serviceMessage.addData("calculateRequest", calculateRequest);
         paymentInfoService.calculateDateReserveInfo(serviceMessage);
 
         modelMap.addAllAttributes(serviceMessage);
@@ -65,6 +68,17 @@ public class PaymentInfoController extends ControllerExtension {
         serviceMessage.addData("calculateRequest", calculateRequest);
 
         paymentInfoService.calculateDateAndRtIdxReserveInfo(serviceMessage);
+
+        return serviceMessage;
+    }
+
+    @PostMapping(value = "/payments/cancel")
+    @ResponseBody
+    public Object paymentsCancel(@RequestBody Map<String, Object> reqParam, ModelAndView mv, HttpServletRequest request, Authentication authentication) throws Exception {
+        ServiceMessage serviceMessage = createServiceMessage(request);
+        serviceMessage.addData("reqParam", reqParam);
+
+        paymentInfoService.reservationRefund(serviceMessage);
 
         return serviceMessage;
     }

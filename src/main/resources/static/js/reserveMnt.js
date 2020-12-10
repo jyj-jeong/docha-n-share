@@ -16,6 +16,10 @@ var CALCULABLE_MOTH = 'N';	// 요금계산 적용 여부
 var RESERVE_STATUS = '';	// 상세 화면 진입시 대여 상태 
 var BROWSEYN = "";			// 브라우저에 따른 대여일시, 반납일시 입력 input 타입 변경 및 변수 값 처리
 
+let refundRequestFee;			// 환불 요청 요금
+let userName;			// 환불 요청 요금
+let merchantUid;			// 환불 요청 요금
+
 var GLOBAL_LOGIN_USER_IDX;
 var GLOBAL_LOGIN_USER_ROLE;
 var GLOBAL_LOGIN_USER_RTIDX;
@@ -385,7 +389,10 @@ function initDetailInfo(seq){
         dataSet.reserveInfo = data;
         dataSet.paymentList = paymentList;
 
-        if (data.reserveStatusCode === '반납'){
+        refundRequestFee = data.refundFee;
+        merchantUid = data.merchantUid;
+
+        if (data.reserveStatusCode === '반납') {
             $('input').prop('readonly', true);
             $('option').attr('disabled', true);
             $('#btnSave').css('display','none');
@@ -2163,3 +2170,34 @@ function startReturn(){
     });
 
 }
+
+function cancelPay() {
+    if (confirm("취소 시 환불 예정 금액은 " + objectConvertToPriceFormat(refundRequestFee) + "원 입니다. 취소 하시겠습니까?")) {
+
+        var req = {
+            "merchant_uid": merchantUid, // 주문번호
+            "rmIdx": rmIdx, // 예약 idx
+            "cancel_request_amount": refundRequestFee, // 환불금액
+            "reason": "관리자에 의한 환불", // 환불사유
+        };
+
+        jQuery.ajax({
+            "url": "/payments/cancel",
+            "type": "POST",
+            "contentType": "application/json",
+            "data": JSON.stringify(req),
+            "dataType": "json",
+            success: function (res) {
+                alert("환불이 완료되었습니다.");
+                location.reload();
+            },
+            error: function (err) {
+                console.log(err);
+                alert("환불을 실패하였습니다.");
+            }
+        });
+    }
+
+
+}
+
