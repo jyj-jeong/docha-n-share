@@ -184,7 +184,7 @@ public class MenuController extends ControllerExtension {
     /* 사이트 - 공지사항 이미지 등록 */
     @PostMapping(value = "/api/v1.0/uploadNoticeImage.do")
     @ResponseBody
-    public Object uploadNoticeImage(@RequestParam("image") MultipartFile uploadImage, int ntIdx, HttpServletRequest request) {
+    public Object uploadNoticeImage(@RequestParam("image") MultipartFile uploadImage, String ntIdx, HttpServletRequest request) {
         ServiceMessage serviceMessage = createServiceMessage(request);
         serviceMessage.addData("uploadImage", uploadImage)
                 .addData("ntIdx", ntIdx);
