@@ -134,6 +134,7 @@
 			<if test="quAnswerYn      != null"><![CDATA[   QU_ANSWER_YN          = #{quAnswerYn}  ,      ]]></if>    <!-- quAnswerYn -->
 			<if test="answererId      != null"><![CDATA[   ANSWERER_ID          = #{answererId}  ,      ]]></if>    <!-- answererId -->
 			<if test="answerDt      != null"><![CDATA[   ANSWER_DT          = #{answerDt}  ,      ]]></if>    <!-- answerDt -->
+			<if test="imgIdx      != null"><![CDATA[   IMG_IDX          = #{imgIdx}  ,      ]]></if>    <!-- answerDt -->
 		</trim>
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
 			<if test="quIdx != null and quIdx != ''">

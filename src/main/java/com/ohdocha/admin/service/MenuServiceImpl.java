@@ -190,6 +190,16 @@ public class MenuServiceImpl extends ServiceExtension implements MenuService {
                 throw new BadRequestException(UNKNOWN_EXCEPTION, "파일 생성 실패");
             }
         }
+
+        DochaAdminQuestionRequest updateQuestionRequest = new DochaAdminQuestionRequest();
+
+        // 저장 할 quIdx
+        updateQuestionRequest.setQuIdx(questionRequest.getQuIdx());
+        // 새로운 파일 명
+        updateQuestionRequest.setImgIdx(saveImgName + "." + uploadImageExtension);
+
+        // 파일을 path에 저장 후, DB에 파일 명 저장
+        menuMapper.updateAnswer(updateQuestionRequest);
     }
 
     @Override
@@ -272,6 +282,16 @@ public class MenuServiceImpl extends ServiceExtension implements MenuService {
                 throw new BadRequestException(UNKNOWN_EXCEPTION, "파일 생성 실패");
             }
         }
+
+        DochaAdminNoticeRequest updateNoticeRequest = new DochaAdminNoticeRequest();
+
+        // 저장 할 ntIdx
+        updateNoticeRequest.setNtIdx(noticeRequest.getNtIdx());
+        // 새로운 파일 명
+        updateNoticeRequest.setImgIdx(saveImgName + "." + uploadImageExtension);
+
+        // 파일을 path에 저장 후, DB에 파일 명 저장
+        menuMapper.updateNotice(updateNoticeRequest);
     }
 
 }

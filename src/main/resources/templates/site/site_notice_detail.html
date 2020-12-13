@@ -128,7 +128,8 @@
         $('#ntTitle').val(noticeDetail[0].ntTitle);
         $('#ntContent').val(noticeDetail[0].ntContent);
 
-        $('#noticeImg').attr('src','https://admin.docha.co.kr/img/notice/' + imgIdx);
+        // $('#noticeImg').attr('src','https://admin.docha.co.kr/img/notice/' + noticeDetail[0].imgIdx);
+        $('#noticeImg').attr('src','https://admin-ohdocha.sharenshare.kr/' + noticeDetail[0].imgIdx);
 
     }else {
         $('#btnDelete').addClass('d-none');
