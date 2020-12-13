@@ -1,5 +1,4 @@
 /*
- * 2020-02-03 lws
  * common-api.js
  */
 

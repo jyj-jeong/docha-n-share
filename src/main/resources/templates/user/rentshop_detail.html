@@ -65,7 +65,7 @@
                                         <div class="col-lg-12 mb-3 float-l" >
                                             <label>주소</label>
                                             <div class="input-group">
-                                                <input type="text"  class="form-control" placeholder="주소"  id="companyAddress">
+                                                <input type="text"  class="form-control" placeholder="주소"  id="companyAddress" readonly>
                                                 <div th:if="${session.LOGIN_SESSION.userRole.equals('RA')}" class="input-group-append">
                                                     <button class="btn btn-primary" onclick="openDaumAddrApi('companyAddress');" >주소찾기</button>
                                                 </div>
@@ -88,6 +88,10 @@
                                             <label>예금주</label>
                                             <input type="text"  class="form-control" placeholder="예금주" value="" id="accountHolder" />
                                         </div>
+                                        <div class="col-lg-6 mb-3 float-l " >
+                                            <label>세금 계산서 이메일</label>
+                                            <input type="text"  class="form-control" placeholder="세금 계산서 이메일" value="" id="taxEmail" />
+                                        </div>
 
                                         <!--
                                         <div class="col-lg-3 mb-3 float-l " >
@@ -104,10 +108,16 @@
                                         </div>
                                         -->
 
-                                        <div class="col-lg-6 mb-3 float-l flex-1" >
+                                        <div th:if="${#session.getAttribute('LOGIN_SESSION').userRole == 'RA'}" class="col-lg-6 mb-3 float-l flex-1" >
                                             <label>접속 허용 여부</label>
                                             <select id="sel_accessYn" name="sel_accessYn" class="custom-select" >
-                                                <option value="0">선택</option>
+                                                <option value="Y">예</option>
+                                                <option value="N">아니요</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-lg-6 mb-3 float-l flex-1" >
+                                            <label>알림톡 수신 여부</label>
+                                            <select id="sel_alarmYn" name="sel_alarmYn" class="custom-select" >
                                                 <option value="Y">예</option>
                                                 <option value="N">아니요</option>
                                             </select>

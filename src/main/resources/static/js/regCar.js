@@ -595,6 +595,38 @@ function initDetailInfo(seq){
 		//
 		// }
 
+		$("#calRentStartDt").val('');
+		$("#calRentEndDt").val('');
+		$("#calRentPeriod").val('');
+		$("#selInsuranceFee").val('');
+		$("#calRentFee").val('');
+		$("#calInsuranceFee").val('');
+		$("#calRentTotAmount").val('');
+		$("#calDochaRate").val('');
+		$("#calPaymentAmount").val('');
+
+		// 보험료 select box 생성
+
+		let strOption2 = "";
+		strOption2 += "<option value = '0'>선택하세요</option>";
+
+		if(!isEmpty(carDamageCover) && !isEmpty(insuranceCopayment)){
+			strOption2 += "<option value = '"+insuranceCopayment+"'>" + "고객부담금:" + carDamageCover + "/보험금:" + insuranceCopayment + "</option>";
+		}
+		if(!isEmpty(carDamageCover2) && !isEmpty(insuranceCopayment2)){
+			strOption2 += "<option value = '"+insuranceCopayment2+"'>" + "고객부담금:" + carDamageCover2 + "/보험금:" + insuranceCopayment2 + "</option>";
+		}
+		if(!isEmpty(carDamageCover3) && !isEmpty(insuranceCopayment3)){
+			strOption2 += "<option value = '"+insuranceCopayment3+"'>" + "고객부담금:" + carDamageCover3 + "/보험금:" + insuranceCopayment3 + "</option>";
+		}
+		if(!isEmpty(carDamageCover4) && !isEmpty(insuranceCopayment4)){
+			strOption2 += "<option value = '"+insuranceCopayment4+"'>" + "고객부담금:" + carDamageCover4 + "/보험금:" + insuranceCopayment4 + "</option>";
+		}
+
+		$('#selInsuranceFee').empty();
+		$('#selInsuranceFee').append(strOption2);
+
+
 	});
 
 }
@@ -1678,10 +1710,7 @@ function initInput(){
 }
 
 function rentcal(){
-	if(calinit === 0){
-		errorAlert('요금계산', '요금 계산기 초기화를 먼저 실행하여 주세요.');
-		return;
-	}
+
 	let crIdx = $("#crIdx").val().trim();
 	let calRentStartDt = $("#calRentStartDt").val().replace('____-__-__ __:__','').replace('T',' ');
 	let calRentEndDt = $("#calRentEndDt").val().replace('____-__-__ __:__','').replace('T',' ');
@@ -1695,7 +1724,7 @@ function rentcal(){
 		errorAlert('요금계산', '반납일시를 입력해 주세요.');
 		return;
 	}
-	if(isEmpty(selInsuranceFee) || selInsuranceFee === '0'){
+	if(isEmpty(selInsuranceFee)){
 		errorAlert('요금계산', '자차보험을 선택해 주세요.');
 		return;
 	}

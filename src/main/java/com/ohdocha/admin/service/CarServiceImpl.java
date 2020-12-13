@@ -226,6 +226,15 @@ public class CarServiceImpl extends ServiceExtension implements CarService {
         message.addData("rentCompanyCarList", rentCompanyCarList);
     }
 
+    @Override
+    public void deleteCarMpdelInfo(ServiceMessage message) {
+        DochaAdminCarModelDetailRequest carModelDetailRequest = message.getObject("carModelDetailRequest", DochaAdminCarModelDetailRequest.class);
+
+        int res = carModelMapper.deleteCarModelInfo(carModelDetailRequest);
+
+        message.addData("res", res);
+    }
+
     //region [ 등록차량 옵션 선택]
     /* 회사 옵션 선택 */
     @Override
@@ -334,6 +343,12 @@ public class CarServiceImpl extends ServiceExtension implements CarService {
         File file = new File(properties.getTempFolderPath() + "car/" + saveImgName + "." + uploadImageExtension);
         FileHelper.makeFolder(file.getParentFile());
 
+        // 기존의 차량모델 조회
+        DochaAdminCarModelDetailRequest carModelDetailRequest = new DochaAdminCarModelDetailRequest();
+        carModelDetailRequest.setMdIdx(mdIdx);
+
+        List<DochaAdminCarModelDetailResponse> carModelDetailResponses = carModelMapper.selectCarModelDetail(carModelDetailRequest);
+
         // 해당 모델의 정보를 가져옴 ( 이미지 파일 체크하기 위함 )
         carModelResponse = carModelMapper.selectCarModelImg(mdIdx);
 
@@ -351,7 +366,7 @@ public class CarServiceImpl extends ServiceExtension implements CarService {
             // 현재 DB에 이미지가 있으면
             File FileList = new File(properties.getTempFolderPath() + "car/");
             String[] fileList = FileList.list();
-            for(int i = 0; i<fileList.length; i++){
+            for(int i = 0; i < fileList.length; i++){
                 // DB에서 파일 명을 가져와서 일치하는 것이 있는지 검사
                 String FileName = fileList[i];
 
@@ -370,21 +385,26 @@ public class CarServiceImpl extends ServiceExtension implements CarService {
             }
         }
 
-        DochaAdminCarModelDetailRequest carModelDetailRequest = new DochaAdminCarModelDetailRequest();
-        DochaAdminRegCarDetailRequest regCarDetailRequest = new DochaAdminRegCarDetailRequest();
-        // 저장 할 mdIdx
-        carModelDetailRequest.setMdIdx(mdIdx);
-        // 새로운 파일 명
-        carModelDetailRequest.setImgIdx(saveImgName + "." + uploadImageExtension);
 
-        // 파일을 path에 저장 후, DB에 파일 명 저장
-        carModelMapper.updateCarModelImg(carModelDetailRequest);
+        for (DochaAdminCarModelDetailResponse carModel: carModelDetailResponses){
 
-        // 미리 등록되어있던 차량들의 이미지도 수정
-        regCarDetailRequest.setImgIdx(saveImgName + "." + uploadImageExtension);
-        regCarDetailRequest.setMdIdx(carModelDetailRequest.getMdIdx());
-        regCarMapper.updateRegCarImgByMdIdx(regCarDetailRequest);
+            carModelResponse = carModel;
 
+            DochaAdminCarModelDetailRequest modelDetailRequest = new DochaAdminCarModelDetailRequest();
+            DochaAdminRegCarDetailRequest regCarDetailRequest = new DochaAdminRegCarDetailRequest();
+            // 저장 할 mdIdx
+            modelDetailRequest.setMdIdx(carModelResponse.getMdIdx());
+            // 새로운 파일 명
+            modelDetailRequest.setImgIdx(saveImgName + "." + uploadImageExtension);
+
+            // 파일을 path에 저장 후, DB에 파일 명 저장
+            carModelMapper.updateCarModelImg(modelDetailRequest);
+
+            // 미리 등록되어있던 차량들의 이미지도 수정
+            regCarDetailRequest.setImgIdx(saveImgName + "." + uploadImageExtension);
+            regCarDetailRequest.setMdIdx(modelDetailRequest.getMdIdx());
+            regCarMapper.updateRegCarImgByMdIdx(regCarDetailRequest);
+        }
     }
 
     /* 차량모델 리스트 */
@@ -413,7 +433,21 @@ public class CarServiceImpl extends ServiceExtension implements CarService {
     public void updateCarModelInfo(ServiceMessage message) {
         DochaAdminCarModelDetailRequest carModelDetailRequest = message.getObject("carModelDetailRequest", DochaAdminCarModelDetailRequest.class);
 
-        int res = carModelMapper.updateCarModelInfo(carModelDetailRequest);
+        String[] modelDetailNameList = carModelDetailRequest.getModelDetailNameList();
+
+        int res = 0;
+
+        if (modelDetailNameList.length != 0 ){
+            for(String modelDetail : modelDetailNameList){
+                carModelDetailRequest.setModelDetailName(modelDetail);
+
+                res = carModelMapper.updateCarModelInfo(carModelDetailRequest);
+
+                if (res == 0){
+                    res = carModelMapper.insertCarModelInfo(carModelDetailRequest);
+                }
+            }
+        }
 
         message.addData("res", res);
     }

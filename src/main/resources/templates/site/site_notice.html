@@ -30,11 +30,37 @@
                         <h6 class="m-0 font-weight-bold text-primary">공지사항</h6>
                     </div>
                     <div class="card-body">
-                        <div class="empty">
-                            <p class="empty-title h3">준비중</p>
-                            <p class="empty-subtitle text-muted">
-                                페이지 준비중 입니다.
-                            </p>
+                        <div class="table-responsive">
+                            <div class="mb-4 text-right">
+                                <button class="btn btn-primary" onclick="addNotice()">공지사항 등록</button>
+                                <button class="btn" id="btnExcel"></button>
+                            </div>
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                <tr>
+                                    <th>공지번호</th>
+                                    <th>제목</th>
+                                    <th>등록일시</th>
+                                    <th>작성자</th>
+                                </tr>
+                                </thead>
+                                <tfoot>
+                                <tr>
+                                    <th>공지번호</th>
+                                    <th>제목</th>
+                                    <th>등록일시</th>
+                                    <th>작성자</th>
+                                </tr>
+                                </tfoot>
+                                <tbody>
+                                <tr th:each="notice, index : ${result}" style="cursor: pointer" th:data-value="${notice.getNtIdx()}">
+                                    <td th:text="${notice.getNtIdx()}"></td>
+                                    <td th:text="${notice.getNtTitle()}"></td>
+                                    <td th:text="${notice.getRegDt()}"></td>
+                                    <td th:text="${notice.getRegId()}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -78,7 +104,30 @@
         </div>
     </div>
 </div>
-<script>
+<script th:inline="javascript">
+
+    initDataTables();
+
+    /* 공지사항 상세 페이지 이동 */
+    $('table > tbody').on('click', 'tr', function () {
+        let ntIdx = $(this).attr('data-value');
+        if (ntIdx === "") return;
+
+        var url = "/site/notice/" + ntIdx;
+        var name = "test";
+        var option = "width = 1400, height =800 ,location=no, left=500, top=50";
+
+        window.open(url, name, option);
+    });
+
+    /* 공지사항 등록 */
+    function addNotice() {
+        var url = "/site/notice/add";
+        var name = "test";
+        var option = "width = 1400, height =800 ,location=no, left=500, top=50";
+
+        window.open(url, name, option);
+    }
 
 </script>
 </body>

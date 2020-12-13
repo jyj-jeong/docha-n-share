@@ -181,6 +181,12 @@
         }else if(suspendStartDt > suspendEndDt){
             errorAlert('휴차일 등록', '휴차일 시작일이 종료일보다 클수 없습니다.');
             return;
+        }else if (parseInt((new Date(suspendStartDt).getTime() / (1000 * 60 *60 )) /24) < parseInt((new Date().getTime() / (1000 * 60 *60 )) /24)){
+            errorAlert('휴차일 등록','휴차일은 과거가 될 수 없습니다.');
+            return;
+        }else if (parseInt((new Date(suspendEndDt).getTime() / (1000 * 60 *60 )) /24) < parseInt((new Date().getTime() / (1000 * 60 *60 )) /24)){
+            errorAlert('휴차일 등록','휴차일은 과거가 될 수 없습니다.');
+            return;
         }
 
         let req = {

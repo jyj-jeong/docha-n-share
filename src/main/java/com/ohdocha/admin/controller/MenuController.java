@@ -1,16 +1,16 @@
 package com.ohdocha.admin.controller;
 
 import com.ohdocha.admin.domain.menu.DochaAdminMenuRequest;
+import com.ohdocha.admin.domain.menu.DochaAdminNoticeRequest;
+import com.ohdocha.admin.domain.menu.DochaAdminQuestionRequest;
 import com.ohdocha.admin.service.MenuService;
 import com.ohdocha.admin.util.ServiceMessage;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -94,8 +94,47 @@ public class MenuController extends ControllerExtension {
     public String siteQuestionView(HttpServletRequest request, ModelMap modelMap) {
         ServiceMessage serviceMessage = createServiceMessage(request);
 
+        menuService.getQuestionList(serviceMessage);
+
         modelMap.addAllAttributes(serviceMessage);
         return "site/site_question";
+    }
+
+    /* 사이트 - 문의 상세 화면 */
+    @GetMapping(value = "/site/question/{quIdx}")
+    public String siteQuestionDetailView(@PathVariable String quIdx, HttpServletRequest request, ModelMap modelMap) {
+        ServiceMessage serviceMessage = createServiceMessage(request);
+        serviceMessage.addData("quIdx",quIdx);
+
+        menuService.getQuestionDetail(serviceMessage);
+
+        modelMap.addAllAttributes(serviceMessage);
+        return "site/site_question_detail";
+    }
+
+    /* 사이트 - 문의 답변등록 */
+    @PostMapping(value = "/api/v1.0/updateAnswer.json")
+    @ResponseBody
+    public Object updateAnswer(@RequestBody DochaAdminQuestionRequest questionRequest, HttpServletRequest request){
+        ServiceMessage serviceMessage = createServiceMessage(request);
+        serviceMessage.addData("questionRequest", questionRequest);
+
+        menuService.updateAnswer(serviceMessage);
+
+        return serviceMessage;
+    }
+
+    /* 사이트 - 문의 답변 이미지 등록 */
+    @PostMapping(value = "/api/v1.0/uploadQuestionImage.do")
+    @ResponseBody
+    public Object uploadQuestionImage(@RequestParam("image") MultipartFile uploadImage, int quIdx, HttpServletRequest request) {
+        ServiceMessage serviceMessage = createServiceMessage(request);
+        serviceMessage.addData("uploadImage", uploadImage)
+                .addData("quIdx", quIdx);
+
+        menuService.uploadQuestionImage(serviceMessage);
+
+        return serviceMessage;
     }
 
     /* 사이트 - 공지사항 화면 */
@@ -103,8 +142,68 @@ public class MenuController extends ControllerExtension {
     public String siteNoticeView(HttpServletRequest request, ModelMap modelMap) {
         ServiceMessage serviceMessage = createServiceMessage(request);
 
+        menuService.getNoticeList(serviceMessage);
+
         modelMap.addAllAttributes(serviceMessage);
         return "site/site_notice";
+    }
+
+    /* 사이트 - 공지사항 등록 화면 */
+    @GetMapping(value = "/site/notice/add")
+    public String siteNoticeDetailView(HttpServletRequest request, ModelMap modelMap) {
+        ServiceMessage serviceMessage = createServiceMessage(request);
+
+        modelMap.addAllAttributes(serviceMessage);
+        return "site/site_notice_detail";
+    }
+
+    /* 사이트 - 공지사항 상세 화면 */
+    @GetMapping(value = "/site/notice/{ntIdx}")
+    public String siteNoticeDetailView(@PathVariable String ntIdx, HttpServletRequest request, ModelMap modelMap) {
+        ServiceMessage serviceMessage = createServiceMessage(request);
+        serviceMessage.addData("ntIdx",ntIdx);
+
+        menuService.getNoticeDetail(serviceMessage);
+
+        modelMap.addAllAttributes(serviceMessage);
+        return "site/site_notice_detail";
+    }
+
+    /* 사이트 - 공지사항 등록 */
+    @PostMapping(value = "/api/v1.0/insertNotice.json")
+    @ResponseBody
+    public Object insertNotice(@RequestBody DochaAdminNoticeRequest noticeRequest, HttpServletRequest request){
+        ServiceMessage serviceMessage = createServiceMessage(request);
+        serviceMessage.addData("noticeRequest", noticeRequest);
+
+        menuService.insertNotice(serviceMessage);
+
+        return serviceMessage;
+    }
+
+    /* 사이트 - 공지사항 이미지 등록 */
+    @PostMapping(value = "/api/v1.0/uploadNoticeImage.do")
+    @ResponseBody
+    public Object uploadNoticeImage(@RequestParam("image") MultipartFile uploadImage, int ntIdx, HttpServletRequest request) {
+        ServiceMessage serviceMessage = createServiceMessage(request);
+        serviceMessage.addData("uploadImage", uploadImage)
+                .addData("ntIdx", ntIdx);
+
+        menuService.uploadNoticeImage(serviceMessage);
+
+        return serviceMessage;
+    }
+
+    /* 사이트 - 공지사항 삭제 */
+    @PostMapping(value = "/api/v1.0/deleteNotice.json")
+    @ResponseBody
+    public Object deleteNotice(@RequestBody DochaAdminNoticeRequest noticeRequest, HttpServletRequest request){
+        ServiceMessage serviceMessage = createServiceMessage(request);
+        serviceMessage.addData("noticeRequest", noticeRequest);
+
+        menuService.deleteNotice(serviceMessage);
+
+        return serviceMessage;
     }
 
     // endregion

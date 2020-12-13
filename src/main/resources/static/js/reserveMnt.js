@@ -2,8 +2,6 @@
  * reserveMnt.js
 
  * 예약 > 예약관리
- * 
- * 2020-02-04 lws 최초생성
  *
  * */
 
@@ -447,8 +445,8 @@ function initDetailInfo(seq){
         let firstDriverBirthDay =  nullCheck(data.firstDriverBirthDay) !== '' ? data.firstDriverBirthDay : new Date();;
         let firstDriverLicenseCode = nullCheck(data.firstDriverLicenseCode);
         let firstDriverLicenseNumber = nullCheck(data.firstDriverLicenseNumber);
-        let firstDriverExpirationDate = nullCheck(data.firstDriverExpirationDate) === ''?'':dateFormatter(data.firstDriverExpirationDate);
-        let firstDriverLicenseIsDate = nullCheck(data.firstDriverLicenseIsDate) === ''?'':dateFormatter(data.firstDriverLicenseIsDate);
+        let firstDriverExpirationDate = nullCheck(data.firstDriverExpirationDate) === ''? new Date() :dateFormatter(data.firstDriverExpirationDate);
+        let firstDriverLicenseIsDate = nullCheck(data.firstDriverLicenseIsDate) === ''?  new Date() :dateFormatter(data.firstDriverLicenseIsDate);
 
         $("#ulIdx1").val(ulIdx1);
         $("#firstDriverName").val(firstDriverName);
@@ -463,11 +461,11 @@ function initDetailInfo(seq){
         let ulIdx2 = nullCheck(data.ulIdx2);
         let secondDriverName = nullCheck(data.secondDriverName);
         let secondDriverContact = nullCheck(data.secondDriverContact);
-        let secondDriverBirthDay = nullCheck(data.secondDriverBirthDay) != '' ? data.secondDriverBirthDay : new Date();
+        let secondDriverBirthDay = nullCheck(data.secondDriverBirthDay) !== '' ? data.secondDriverBirthDay : new Date();
         let secondDriverLicenseCode = nullCheck(data.secondDriverLicenseCode);
         let secondDriverLicenseNumber = nullCheck(data.secondDriverLicenseNumber);
-        let secondDriverExpirationDate = nullCheck(data.secondDriverExpirationDate) == ''?'':dateFormatter(data.secondDriverExpirationDate);
-        let secondDriverLicenseIsDate = nullCheck(data.secondDriverLicenseIsDate) == ''?'':dateFormatter(data.secondDriverLicenseIsDate);
+        let secondDriverExpirationDate = nullCheck(data.secondDriverExpirationDate) === ''?  new Date():dateFormatter(data.secondDriverExpirationDate);
+        let secondDriverLicenseIsDate = nullCheck(data.secondDriverLicenseIsDate) === ''? new Date():dateFormatter(data.secondDriverLicenseIsDate);
 
         $("#ulIdx2").val(ulIdx2);
         $("#secondDriverName").val(secondDriverName);
@@ -490,7 +488,7 @@ function initDetailInfo(seq){
         let rentStartDay = nullCheck(data.rentStartDay);
         rentStartDay = rentStartDay === '' ? '' : new Date(rentStartDay).toISOString().slice(0, -1);
         let rentEndDay = nullCheck(data.rentEndDay);
-        rentEndDay = rentEndDay === '' ? '' : rentEndDay.toISOString().slice(0, -1);
+        rentEndDay = rentEndDay === '' ? '' : new Date(rentEndDay).toISOString().slice(0, -1);
         let periodDt = nullCheck(data.periodDt);
 
         let deliveryAddr;
@@ -506,6 +504,10 @@ function initDetailInfo(seq){
         let gbn = reserveYmdt+reserveChannel+landCode;
 
         RESERVE_STATUS = reserveStatusCode;
+
+        if(RESERVE_STATUS === '취소'){
+            $('#btnRefund').css('display', 'none');
+        }
 
         $("#rmIdx").val(rmIdx);
         $("#gbn").val(gbn);

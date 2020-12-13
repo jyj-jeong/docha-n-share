@@ -1,9 +1,6 @@
 package com.ohdocha.admin.mapper;
 
-import com.ohdocha.admin.domain.menu.DochaAdminMenuRequest;
-import com.ohdocha.admin.domain.menu.DochaAdminMenuResponse;
-import com.ohdocha.admin.domain.menu.DochaAdminMenuTemplateRequest;
-import com.ohdocha.admin.domain.menu.DochaAdminMenuTemplateResponse;
+import com.ohdocha.admin.domain.menu.*;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -21,4 +18,15 @@ public interface DochaAdminMenuMapper {
 
     public List<DochaAdminMenuResponse> selectMenuInfoAll();
 
+    List<DochaAdminQuestionResponse> selectQuestionList(DochaAdminQuestionRequest questionRequest);
+
+    List<DochaAdminNoticeResponse> selectNoticeList(DochaAdminNoticeRequest noticeRequest);
+
+    int updateAnswer(DochaAdminQuestionRequest questionRequest);
+
+    int insertNotice(DochaAdminNoticeRequest noticeRequest);
+
+    int updateNotice(DochaAdminNoticeRequest noticeRequest);
+
+    int deleteNotice(DochaAdminNoticeRequest noticeRequest);
 }

@@ -78,6 +78,7 @@
 		, IFNULL(T1.ACCOUNT_BANK                	, '') AS ACCOUNT_BANK                   /*정산계좌은행*/
 		, IFNULL(T1.ACCOUNT_NUMBER              	, '') AS ACCOUNT_NUMBER                 /*정산계좌번호*/
 		, IFNULL(T1.ACCOUNT_HOLDER              	, '') AS ACCOUNT_HOLDER                 /*정산계좌예금주*/
+		, IFNULL(T1.TAX_EMAIL		              	, '') AS TAX_EMAIL              		 /*세금계산서이메일*/
 		, IFNULL(T1.ACCOUNT_IMG_IDX             	, '') AS ACCOUNT_IMG_IDX                /*정산통장이미지idx*/
 		, IFNULL(T1.LONGTERM_RENT_YN            	, '') AS LONGTERM_RENT_YN               /*장기렌트이용여부*/
 		, IFNULL(T1.SHORTTERM_RENT_YN           	, '') AS SHORTTERM_RENT_YN              /*단기렌트이용여부*/
@@ -137,6 +138,7 @@
 				<![CDATA[ T1.RT_IDX = #{rtIdx}  ]]>
 			</if>
 		</trim>
+		GROUP BY RT_IDX
 	</select>
 
 
@@ -151,6 +153,7 @@
 			<if test="accountBank  				!= null"><![CDATA[  , ACCOUNT_BANK					= #{accountBank}				]]></if>
 			<if test="accountNumber				!= null"><![CDATA[  , ACCOUNT_NUMBER				= #{accountNumber}				]]></if>
 			<if test="accountHolder				!= null"><![CDATA[  , ACCOUNT_HOLDER				= #{accountHolder}				]]></if>
+			<if test="taxEmail					!= null"><![CDATA[  , TAX_EMAIL						= #{taxEmail}				]]></if>
 			<if test="accessYn 					!= null"><![CDATA[  , ALARM_YN 						= #{alarmYn}					]]></if>
 			<if test="companyRegistrationName 	!= null"><![CDATA[  , COMPANY_REGISTRATION_NAME 	= #{companyRegistrationName}	]]></if>
 			<if test="companyContact1 			!= null"><![CDATA[  , COMPANY_CONTACT1 				= #{companyContact1}			]]></if>
@@ -181,11 +184,12 @@
 				,	ACCOUNT_BANK					
 				,	ACCOUNT_NUMBER				
 				,	ACCOUNT_HOLDER
+				,	TAX_EMAIL
 				,   CAR_COUNT
 				,   REG_CAR_COUNT
 				,	ALARM_YN 						
 				,	COMPANY_REGISTRATION_NAME 	
-				,	BRANCH_NAME 					
+				,	BRANCH_NAME
 				,	ACCESS_YN
 				,	REG_ID
 				,	REG_DT
@@ -202,6 +206,7 @@
 				,	#{accountBank}				
 				,	#{accountNumber}				
 				,	#{accountHolder}				
+				,	#{taxEmail}
 				,	#{carCount}
 				,	#{regCarCount}
 				,	#{alarmYn}
@@ -578,7 +583,6 @@
 			, 	IFNULL(REG_ID          	, '') AS REG_ID             /*등록자*/
 			, 	IFNULL(REG_DT          	, '') AS REG_DT             /*등록일*/
 			FROM DC_HOLIDAYS
-
 		  ]]>
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
 			<if test="rtIdx != null and rtIdx != ''">
@@ -594,8 +598,12 @@
 				AND <![CDATA[ HOL_IDX != #{holIdx} ]]>
 			</if>
 			<if test="holidayStartDt != null and holidayStartDt != ''">
-				AND <![CDATA[ HOLIDAY_START_DT >= #{holidayStartDt} ]]>
+				AND <![CDATA[ HOLIDAY_START_DT = #{holidayStartDt} ]]>
 			</if>
+			<if test="holidayEndDt != null and holidayEndDt != ''">
+				AND <![CDATA[ HOLIDAY_END_DT = #{holidayEndDt} ]]>
+			</if>
+			AND HOLIDAY_END_DT >= DATE_FORMAT(NOW() , '%Y-%m-%d')
 		</trim>
 		<![CDATA[ ORDER BY HOLIDAY_START_DT ]]>
 	</select>

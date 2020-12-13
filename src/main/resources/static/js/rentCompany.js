@@ -1,9 +1,6 @@
 /*
  * rentCompany.js
  * 회원 > 회원사
- * 
- * 2020-02-04 lws 최초생성
- * 
  *
  * */
 
@@ -471,6 +468,7 @@ function initDetailInfo(seq) {
 			let companyAddressDetail = data.companyAddressDetail;
 			let accountBank = data.accountBank;
 			let accountNumber = data.accountNumber;
+			let taxEmail = data.taxEmail;
 			let companyContact1 = data.companyContact1;
 			let regCarCount = data.regCarCount;
 			let carCount = data.carCount;
@@ -571,6 +569,8 @@ function initDetailInfo(seq) {
 			$('#accountHolder').val(accountHolder);
 			// 계좌번호
 			$('#accountNumber').val(accountNumber);
+			// 세금 계산서 이메일
+			$('#taxEmail').val(taxEmail);
 
 			// 알림톡 설정 여부
 			if (!isEmpty(alramYn) && alramYn != 0) {
@@ -1045,17 +1045,19 @@ function detailValidation(save_type) {
 				let companyZipcode = $('#companyZipcode').val();
 				let companyAddress = $('#companyAddress').val();
 				let companyAddressDetail = $('#companyAddressDetail').val();
+				let companyRegistrationName = $('#companyRegistrationName').val();
 				let companyRegistrationNumber = $('#companyRegistrationNumber').val();
 				let companyContact1 = $('#companyContact1').val();
 
 				let accountBank = $("#sel_bank option:selected").val();
 				let accountNumber = $('#accountNumber').val();
 				let accountHolder = $('#accountHolder').val();
-				let accessYn = $("#sel_accessYn option:selected").val();
 				let carCount = $('#carCount').val();
 				let regCarCount = $('#regCarCount').val();
+				let taxEmail = $('#taxEmail').val();
 
-				let companyRegistrationName = $('#companyRegistrationName').val();
+
+				let accessYn = $("#sel_accessYn option:selected").val();
 				let alarmYn = $("#sel_alarmYn option:selected").val();
 
 
@@ -1092,6 +1094,12 @@ function detailValidation(save_type) {
 					accountBank = '0';
 				}
 
+				if(!isValidEmail(taxEmail)) { //is not Valid
+					errorAlert('세금 계산서 이메일', '세금 계산서 이메일은 이메일 형식으로 입력해주세요.');
+					$('#taxEmail').focus();
+					return;
+				}
+
 				if (isEmpty(accessYn) || accessYn == 0 || accessYn == 'N') {
 					accessYn = 'N';
 				} else {
@@ -1119,6 +1127,7 @@ function detailValidation(save_type) {
 						accountBank: accountBank,
 						accountNumber: accountNumber,
 						accountHolder: accountHolder,
+						taxEmail : taxEmail,
 						accessYn: accessYn,
 						companyRegistrationName: companyRegistrationName,
 						branchName: branchName,
@@ -1141,6 +1150,7 @@ function detailValidation(save_type) {
 						accountBank: accountBank,
 						accountNumber: accountNumber,
 						accountHolder: accountHolder,
+						taxEmail : taxEmail,
 						accessYn: accessYn,
 						carCount: carCount,
 						regCarCount: regCarCount,
@@ -1153,7 +1163,7 @@ function detailValidation(save_type) {
 				}
 
 				title = '회원사정보 저장';
-				text = '저장하시겠습니까?'
+				text = '저장하시겠습니까?';
 				icon = 'info';
 				cancel_text = '취소하셨습니다.';
 
@@ -1520,6 +1530,12 @@ function detailValidation(save_type) {
 				let holidayEndDt = formatDate(getHolidayEndDt());				// 휴무일 종료일
 				let holidayName = $("#holidayName").val();						// 휴무일명
 
+
+				if (parseInt((new Date(holidayStartDt).getTime() / (1000 * 60 *60 )) /24) < parseInt((new Date().getTime() / (1000 * 60 *60 )) /24)){
+					errorAlert('휴무일 시작일','휴무일은 과거가 될 수 없습니다.');
+					return;
+				}
+
 				if (isEmpty(holidayStartDt) && chkValDate(holidayStartDt) == null) { // is not empty
 					errorAlert('휴무일 시작일', '시작일은 필수 입력값 입니다');
 					return;
@@ -1546,7 +1562,6 @@ function detailValidation(save_type) {
 				req = {};
 				req = {
 					rtIdx: _rtIdx,
-					tholIdx: holIdx,
 					holidayStartDt: holidayStartDt,
 					holidayEndDt: holidayEndDt
 				};

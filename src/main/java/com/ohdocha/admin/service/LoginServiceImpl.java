@@ -21,11 +21,13 @@ public class LoginServiceImpl extends ServiceExtension implements LoginService{
         DochaAdminDcUserInfoRequest userInfoRequest = message.getObject("userInfoRequest", DochaAdminDcUserInfoRequest.class);
 
         DochaAdminDcUserInfoResponse userInfoResponse = loginMapper.chkLoginUserInfo(userInfoRequest);
-        if (userInfoResponse != null){
+
+        if (userInfoResponse != null) {
 
             String userRole = userInfoResponse.getUserRole();
 
-            if (userRole.equals("RA") || userRole.equals("MA") || userRole.equals("MU")){
+            if (userRole.equals("RA")) {
+
                 DochaMap userInfo = new DochaMap();
                 userInfo.set("urIdx", userInfoResponse.getUrIdx());
                 userInfo.set("userName", userInfoResponse.getUserName());
@@ -36,12 +38,32 @@ public class LoginServiceImpl extends ServiceExtension implements LoginService{
 
                 message.addData("userInfo", userInfo);
                 message.addData("code", 200);
-            }else {
+
+            } else if (userRole.equals("MA") || userRole.equals("MU")) {
+
+                if (userInfoResponse.getAccessYn().equals("Y")){
+
+                    DochaMap userInfo = new DochaMap();
+                    userInfo.set("urIdx", userInfoResponse.getUrIdx());
+                    userInfo.set("userName", userInfoResponse.getUserName());
+                    userInfo.set("userRole", userInfoResponse.getUserRole());
+                    userInfo.set("rtIdx", userInfoResponse.getRtIdx());
+                    userInfo.set("companyName", userInfoResponse.getCompanyName());
+                    userInfo.set("branchName", userInfoResponse.getBranchName());
+
+                    message.addData("userInfo", userInfo);
+                    message.addData("code", 200);
+
+                }else {
+                    message.addData("code", 400);
+                    message.addData("errMsg", "승인된 회원사가 아닙니다.");
+                }
+
+            } else {
                 message.addData("code", 400);
                 message.addData("errMsg", "승인된 관리자 계정이 아닙니다.");
             }
-
-        }else {
+        } else {
             message.addData("code", "400");
             message.addData("errMsg", "로그인에 실패하였습니다. \n 아이디와 비밀번호를 확인해주세요.");
         }

@@ -1,20 +1,7 @@
 /*
  * calculateCustDetail.js
  * 정산 > 회원정산
- * 
- * 2020-02-04 lws 최초생성
- * 
- * 
- * 
- * update history
- * =============================================
- * |date       |comment             | author   |
- * =============================================
- * |           |                    |          |
- * 
- * 
- * 
- * 
+ *
  * */
 
 function initializingDetail2PageData(){

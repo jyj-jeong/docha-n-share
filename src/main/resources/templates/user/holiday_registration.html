@@ -39,7 +39,7 @@
                         <div id="selectedHolidayData" class="row ml-1 mb-3">
                             <div class="flex mr-2 mb-3" th:each="holiday, index : ${result}" th:data-value="${holiday.getHolIdx()}">
                                 <div class="alert alert-primary" role="alert">
-                                    <span th:text="${holiday.getHolidayStartDt() + ' (' + holiday.getHolidayName() + ' / ' + holiday.getRegId() + ')'}"></span>
+                                    <span th:text="${holiday.getHolidayStartDt()} + ' (' + ${holiday.getHolidayName() == ''? '전체휴일' : holiday.getHolidayName()}  + ' / ' + ${holiday.getRegId()} + ')'"></span>
                                     <button type="button" class="close" aria-label="Close" onclick="deleteHolidayDt(this)">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -120,9 +120,6 @@
         format: "YYYY년 MM월 DD일"
     });
 
-    function getLoginUser() {
-        return /*[[${session.LOGIN_SESSION}]]*/ '';
-    }
 
     function saveHoliday() {
         var holidayName = $('#holidayName').val().trim();
@@ -139,7 +136,7 @@
         if (isEmpty(holidayDt)){
             errorAlert('전체휴일','날짜를 선택해주세요');
             return;
-        }else if (parseInt(holiday.date.getTime()/100000) < parseInt(new Date().getTime()/100000)){
+        }else if (parseInt((holiday.date.getTime() / (1000 * 60 *60 )) /24) < parseInt((new Date().getTime() / (1000 * 60 *60 )) /24)){
             errorAlert('전체휴일','전체휴무일은 과거가 될 수 없습니다.');
             return;
         }else if (isDuplicated){
@@ -149,13 +146,15 @@
 
         holidayDt = formatDate(holidayDt);
 
+        var loginUser = /*[[${session.LOGIN_SESSION}]]*/ '';
+
         var save_type = 'insert';
         var req = {
             "holidayStartDt": holidayDt,
             "holidayEndDt" : holidayDt,
             "holidayName" : holidayName,
             "rtIdx" : "all",
-            "regID" : getLoginUser().urIdx
+            "regId" : loginUser.urIdx
         };
 
         let title = '전체휴일 저장';

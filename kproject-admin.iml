@@ -155,5 +155,6 @@
     <orderEntry type="library" name="Maven: commons-fileupload:commons-fileupload:1.2.1" level="project" />
     <orderEntry type="library" name="Maven: commons-io:commons-io:1.4" level="project" />
     <orderEntry type="library" name="bootstrap-toggle" level="application" />
+    <orderEntry type="library" name="jszip" level="application" />
   </component>
 </module>

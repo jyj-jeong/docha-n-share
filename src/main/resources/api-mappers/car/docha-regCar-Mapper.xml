@@ -45,7 +45,7 @@
                                  ELSE '대기' END AS RESERVE_STATUS       /* 상태 */
                         ,   IFNULL(T1.DAILY_YN, 'Y') AS DAILY_YN            /* 일대여 사용유무 */
                         ,   IFNULL(T1.MONTHLY_YN, 'Y') AS MONTHLY_YN         /* 월대여 사용유무 */
-                        ,   (SELECT COUNT(HOL_IDX) FROM DC_HOLIDAYS WHERE CR_IDX = T1.CR_IDX ) AS  SUSPEND_CNT      /* 휴차일 카운트 */
+                        ,   (SELECT COUNT(HOL_IDX) FROM DC_HOLIDAYS WHERE CR_IDX = T1.CR_IDX AND HOLIDAY_END_DT >= DATE_FORMAT(NOW(), '%Y-%m-%d')) AS  SUSPEND_CNT      /* 휴차일 카운트 */
                   FROM   DC_CAR_INFO T1
                   INNER JOIN DC_RENT_COMPANY T2
                                   ON T1.RT_IDX = T2.RT_IDX

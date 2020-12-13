@@ -95,4 +95,6 @@ public interface CarService {
     void insertRentAble(ServiceMessage message);
 
     void selectRentCompanyCarList(ServiceMessage message);
+
+    void deleteCarMpdelInfo(ServiceMessage serviceMessage);
 }

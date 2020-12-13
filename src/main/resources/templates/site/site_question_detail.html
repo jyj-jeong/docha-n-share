@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="header :: mainHead"></head>
+<head>
+    <title>문의 :: DoCha Admin Web</title>
+</head>
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary" style="cursor: pointer" th:text="${'문의 번호 - ' + result[0].quIdx}"></h6>
+                    </div>
+
+                    <div id="question">
+                        <div class="card-body"><h5 class="card-title mb-3"><strong>문의</strong></h5>
+                            <input type="text" class="form-control" id="quIdx" style="display: none" th:value="${result[0].getQuIdx()}"/>
+                            <div class="row">
+                                <div class=" col-lg-3 mb-3 float-l flex-1">
+                                    <label>문의자</label>
+                                    <input type="text" class="form-control" id="questionerId"  th:value="${result[0].questionerId}" />
+                                </div>
+                                <div class="col-lg-3 mb-3 float-l">
+                                    <label>문의일시</label>
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" id="questionDt" th:value="${result[0].questionDt}"/>
+                                    </div>
+                                </div>
+                                <div class=" col-lg-3 mb-3 float-l flex-1">
+                                    <label>답변자</label>
+                                    <input type="text" class="form-control" id="answererId" th:value="${result[0].answererId}"/>
+                                </div>
+                                <div class=" col-lg-3 mb-3 float-l flex-1">
+                                    <label>답변일시</label>
+                                    <a id="answerDt" name="answerDt" class="" th:value="${result[0].answerDt}"></a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class=" col-lg-12 mb-3 float-l flex-1">
+                                    <label>문의제목</label>
+                                    <input type="text" class="form-control" id="questionTitle" th:value="${result[0].quTitle}"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class=" col-lg-12 mb-3 float-l flex-1">
+                                    <label>문의내용</label>
+                                    <textarea type="text" class="form-control" id="quContents" rows="5" th:text="${result[0].quContents}" ></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="card shadow mb-4">
+                    <div>
+                        <div class="card-body"><h5 class="card-title mb-3"><strong>답변</strong></h5>
+                            <div class="row">
+                                <div class=" col-lg-3 mb-3 float-l flex-1">
+                                    <label>답변자</label>
+                                    <input type="text" class="form-control" id="answererId2" th:value="${result[0].answererId}"/>
+                                </div>
+                                <div class="col-lg-3 mb-3 float-l">
+                                    <label>답변일시</label>
+                                    <a id="answerDt2" name="answerDt" class="" th:value="${result[0].answerDt}"></a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class=" col-lg-12 mb-3 float-l flex-1">
+                                    <label>답변내용</label>
+                                    <textarea type="text" class="form-control" id="quAnswer" rows="5" th:text="${result[0].quAnswer}" ></textarea>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 mb-3">
+                                    <label class="form-label" for="questionImg">이미지 첨부</label>
+                                    <div class="input-group">
+                                        <div class="custom-file">
+                                            <input type="file" accept="image/*" class="custom-file-input" id="questionImg" aria-describedby="carImg">
+                                            <label class="custom-file-label" for="questionImg">파일을 선택하세요</label>
+                                        </div>
+                                    </div>
+                                    <p> 이미지의 크기는 500x300을 권장합니다. ( 지원형식 : jpg, jpeg, png, 20MB 이내 )</p>
+                                </div>
+                            </div>
+                            <script th:inline="javascript">
+                                var inputFile = document.querySelector("#questionImg");
+
+                                $("#questionImg").change(function (file) {
+                                    if(this.files && this.files[0]) {
+                                        let reader = new FileReader;
+                                        reader.onload = function (date) {
+                                            $(".select_img img").attr("src", date.target.result).width(500);
+                                        };
+                                        reader.readAsDataURL(this.files[0]);
+                                    }
+                                });
+
+                            </script>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="select_img">
+                                        <img class="d-block mx-auto bg-gray-200 mb-4" src="" th:src="${'https://admin.docha.co.kr/img/question/' + result[0].imgIdx}" width="500" height="300" alt="IMG" id="car_img">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-footer">
+                        <div class="text-right">
+                            <button id="btnReturn" class="btn btn-primary" type="button" onclick="answer('answer')">답변</button>
+                            <button id="btnSave" class="btn btn-primary" type="button" onclick="answer('save')">저장</button>
+                            <button id="btnClose" class="btn btn-primary" type="button" onclick="self.close()">창 닫기</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <div th:replace="main_footer :: mainFooter"></div>
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+<!-- Logout Modal-->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">알림</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">로그아웃을 하시겠습니까?</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-primary" href="/api/v1.0/docha.logout">Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:inline="javascript">
+
+    function getLoginUser() {
+        return /*[[${session.LOGIN_SESSION}]]*/ '';
+    }
+
+    var answerDt = /*[[${result[0].answerDt}]]*/ '';
+
+    if (answerDt === ''){
+        answerDt = new Date();
+    }else {
+        answerDt = new Date(answerDt)
+    }
+
+    var answerDtCalendar = new WinkelCalendar({
+        container: 'answerDt',
+        bigBanner: true,
+        defaultDate: new Date(),
+        format: "YYYY년 MM월 DD일"
+    });
+
+    var answerDtCalendar2 = new WinkelCalendar({
+        container: 'answerDt2',
+        bigBanner: true,
+        defaultDate: new Date(),
+        format: "YYYY년 MM월 DD일"
+    });
+
+    answerDtCalendar.setDate(answerDt);
+    answerDtCalendar2.setDate(answerDt);
+
+    function answer(type) {
+
+        var quIdx = $('#quIdx').val().trim();
+        var answererId = $('#answererId2').val().trim();
+        var answerDt = formatDate(answerDtCalendar2.date);
+        var quAnswer = $('#quAnswer').val();
+
+        if (isEmpty(answererId)){
+            errorAlert("답변", "답변자를 입력해주세요");
+        }else if (isEmpty(answerDt)){
+            errorAlert("답변", "답변일시를 입력해주세요");
+        }else if (isEmpty(quAnswer)){
+            errorAlert("답변", "답변내용을 입력해주세요");
+        }
+
+        var url = '/api/v1.0/updateAnswer.json';
+        var req = {};
+        if (type === 'answer'){          //  답변 완료
+            req = {
+                quIdx : quIdx,
+                answererId : answererId,
+                answerDt : answerDt,
+                quAnswer : quAnswer,
+                quAnswerYn : 1
+            };
+        }else if (type === 'save'){         // 임시 저장
+            req = {
+                quIdx : quIdx,
+                answererId : answererId,
+                answerDt : answerDt,
+                quAnswer : quAnswer,
+                quAnswerYn : 0
+            };
+        }
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            dataType: 'json',
+            data: JSON.stringify(req),
+            contentType: 'application/json;charset=UTF-8',
+            cache: false,
+            async: false
+        }).done(function (data, textStatus, jqXHR) {
+
+            if (data.res === 1){
+                if (type === 'answer'){
+                    swal("답변 성공", { icon: "success"});
+                }else if (type === 'save'){
+                    swal("임시저장 성공", { icon: "success"});
+                }
+            }else {
+                swal("저장 실패", { icon: "warning"});
+            }
+
+        });
+
+
+        /* 이미지 저장 */
+        if(isEmpty(quIdx)) {
+            errorAlert('문의', '문의사항이 존재하지 않습니다.');
+            return;
+        }
+
+        var formData = new FormData();
+
+        formData.append("image", inputFile.files[0]);
+        formData.append("quIdx", quIdx);
+
+        for (var pair of formData.entries()) {
+            console.log(pair[0]+ ', ' + pair[1]);
+        }
+
+        var oReq = new XMLHttpRequest();
+        oReq.addEventListener("load", function() {
+
+            if(oReq.status === 200){
+                location.href = "";
+                alert(err.responseJSON.message);
+            }else if (oReq.status === 400){
+                errorAlert('저장 실패', '관리자에게 문의하세요.');
+            }else if (oReq.status === 500){
+                swal("저장 성공", {icon : "success"});
+                console.log(oReq.response);
+            }
+
+        });
+        oReq.open("POST", "/api/v1.0/uploadQuestionImage.do",true);
+        oReq.send(formData);
+
+
+        var editor;
+        var path;
+        editor = $("#questionImg").val();
+        path = ($("#depth_container").text()).replace("/" + "");
+        var type = "html";
+
+    }
+
+</script>
+</body>
+</html>

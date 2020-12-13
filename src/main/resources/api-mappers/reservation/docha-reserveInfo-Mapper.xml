@@ -113,14 +113,14 @@
                 ELSE 'T' END AS RESERVE_YMDT /* 시간구분 */
               , IFNULL(A.RESERVE_CHANNEL, 'CS') AS RESERVE_CHANNEL /* 저장 채널 구분 */
               , CASE WHEN INSTR(D.COMPANY_ADDRESS||D.COMPANY_ADDRESS_DETAIL, '제주') > 0 THEN 'JJ' ELSE 'IL' END AS LAND_CODE /* 내륙/제주 구분 [JJ:제주,IL:내륙,IS:제주 제외한 섬] */
-              , DATE_FORMAT(A.RESERVE_DATE, '%Y-%m-%d %H:%i:%s:SS') AS RESERVE_DATE /* 예약일시 */
+              , DATE_FORMAT(A.RESERVE_DATE, '%Y-%m-%d %H:%i:%s') AS RESERVE_DATE /* 예약일시 */
               , CASE WHEN IFNULL(A.RESERVE_STATUS_CODE, 'RS') = 'RS' AND NOW() > STR_TO_DATE(CONCAT(A.RENT_END_DAY ,' ', A.RENT_END_TIME), '%Y-%m-%d %H:%i:%s') THEN 'RW'
                      WHEN IFNULL(A.RESERVE_STATUS_CODE, 'RS') = 'RS' AND NOW() BETWEEN STR_TO_DATE(CONCAT(A.RENT_START_DAY ,' ', A.RENT_START_TIME), '%Y-%m-%d %H:%i:%s') AND STR_TO_DATE(CONCAT(A.RENT_END_DAY ,' ', A.RENT_END_TIME), '%Y-%m-%d %H:%i:%s') THEN 'RO'
                 ELSE IFNULL(A.RESERVE_STATUS_CODE, 'RS') END AS RESERVE_STATUS_CODE /* 예약상태 */
               , IFNULL(A.RESERVE_TYPE_CODE, '') AS RESERVE_TYPE_CODE /*예약종류code*/
               , IFNULL(A.DELIVERY_TYPE_CODE, '') AS DELIVERY_TYPE_CODE /* 배달방법 */
-              , STR_TO_DATE(CONCAT(RENT_START_DAY,' ', RENT_START_TIME), '%Y%m%d %H%i')  AS RENT_START_DAY /* 대여 시작 일시 */
-              , STR_TO_DATE(CONCAT(RENT_END_DAY,' ', RENT_END_TIME), '%Y%m%d %H%i')  AS RENT_END_DAY /* 대여 종료 일시 */
+              , STR_TO_DATE(CONCAT(RENT_START_DAY,' ', RENT_START_TIME), '%Y-%m-%d %H:%i:%s')  AS RENT_START_DAY /* 대여 시작 일시 */
+              , STR_TO_DATE(CONCAT(RENT_END_DAY,' ', RENT_END_TIME), '%Y-%m-%d %H:%i:%s')  AS RENT_END_DAY /* 대여 종료 일시 */
               , IFNULL(A.PERIOD_DT, '') AS PERIOD_DT /* 사용기간 */
               , IFNULL(A.DELIVERY_ADDR, '') AS DELIVERY_ADDR /* 대여위치 */
               , IFNULL(A.RETURN_ADDR, '') AS RETURN_ADDR /* 반납위치 */
@@ -144,10 +144,10 @@
               , IFNULL(A.ADD_FEE, '0') AS ADD_FEE /* 추가수수료 */
               , IFNULL(A.PAYMENT_TOTAL_AMOUNT, '0') AS PAYMENT_TOTAL_AMOUNT /* 총 대여금액 */
               , IFNULL(A.MERCHANT_UID, '0') AS MERCHANT_UID /* MERCHANCT_UID */
-              , CASE WHEN LONGTERM_YN = 'LT' THEN C.MONTHLY_STANDARD_PAY ELSE IFNULL(A.PAYMENT_TOTAL_AMOUNT, '0') END AS PAYMENT_AMOUNT /* 결제금액 */
+              , IFNULL(A.SUM_PAYMENT_AMOUNT, '0') AS PAYMENT_AMOUNT /* 결제금액 */
               , IFNULL(A.CANCEL_FEE, '0') AS CANCEL_FEE /* 환불금액 */
               , IFNULL(A.REFUND_FEE, '0') AS REFUND_FEE /* 환불요청금액 */
-              , IFNULL(A.PAYMENT_TOTAL_AMOUNT, '0') - (SELECT SUM(PAYMENT_AMOUNT) FROM DC_PAYMENT_DETAIL WHERE RM_IDX = A.RM_IDX) AS MISU /* 미납금 */
+              , IFNULL(A.BALANCE, '0') AS MISU /* 미납금 */
               FROM DC_RESERVE_MASTER A LEFT JOIN DC_USER_INFO B ON A.UR_IDX = B.UR_IDX
                                         INNER JOIN DC_CAR_INFO C ON A.CR_IDX = C.CR_IDX
                                         INNER JOIN DC_RENT_COMPANY D ON A.RT_IDX = D.RT_IDX

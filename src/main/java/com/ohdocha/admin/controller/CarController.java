@@ -336,6 +336,19 @@ public class CarController extends ControllerExtension {
 
         return serviceMessage;
     }
+
+    /* 차량모델 삭제 */
+    @PostMapping(value = "/api/v1.0/deleteCarModelInfo.do")
+    @ResponseBody
+    public Object deleteCarModelInfo(@RequestBody DochaAdminCarModelDetailRequest carModelDetailRequest, HttpServletRequest request) {
+        ServiceMessage serviceMessage = createServiceMessage(request);
+        serviceMessage.addData("carModelDetailRequest", carModelDetailRequest);
+
+        carService.deleteCarMpdelInfo(serviceMessage);
+
+        return serviceMessage;
+    }
+
     //endregion
 
     //region [ 차량 속성 ]

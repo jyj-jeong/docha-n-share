@@ -3,7 +3,6 @@
  
 <mapper namespace="com.ohdocha.admin.mapper.DochaAdminMenuMapper">
 
-
     <select id="selectMenuInfoList" parameterType="menuRequest"	resultType="menuResponse">
 	    <![CDATA[
 	    	SELECT
@@ -35,8 +34,7 @@
 			</if>
 	    </trim>
     </select>
-   
-   
+
     <select id="selectMenuTemplateList" parameterType="menuRequest"	resultType="menuResponse">
 		<![CDATA[
 				SELECT 
@@ -60,7 +58,7 @@
 		</trim>			
     </select>
     
-     <select id="selectMenuInfoAll" parameterType="menuRequest"	resultType="menuResponse">
+	<select id="selectMenuInfoAll" parameterType="menuRequest"	resultType="menuResponse">
 		<![CDATA[
 				SELECT 
 						  IFNULL(A.MENU_CD, '')  AS MENU_CD   											/* 메뉴코드 */
@@ -89,6 +87,94 @@
 			]]>
 		</trim>			
     </select>
+
+	<select id="selectQuestionList" parameterType="questionRequest"	resultType="questionResponse">
+		<![CDATA[
+				SELECT
+						  IFNULL(QU_IDX, '') AS QU_IDX
+						 ,IFNULL(QU_TITLE, '') AS QU_TITLE
+						 ,IFNULL(QU_CONTENTS, '') AS QU_CONTENTS
+						 ,IFNULL(QUESTIONER_ID, '') AS QUESTIONER_ID
+						 ,IFNULL(QUESTION_DT, '') AS QUESTION_DT
+						 ,IFNULL(QU_ANSWER, '') AS QU_ANSWER
+						 ,IFNULL(QU_ANSWER_YN, '') AS QU_ANSWER_YN
+						 ,IFNULL(ANSWERER_ID, '') AS ANSWERER_ID
+						 ,IFNULL(ANSWER_DT, '') AS ANSWER_DT
+				  FROM DC_QUESTION  ]]>
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="quIdx != null and quIdx != ''">
+				<![CDATA[ AND QU_IDX = #{quIdx} ]]>
+			</if>
+		</trim>
+	</select>
+
+	<select id="selectNoticeList" parameterType="noticeRequest"	resultType="noticeResponse">
+		<![CDATA[
+				SELECT
+						  IFNULL(NT_IDX, '') AS NT_IDX
+						 ,IFNULL(NT_TITLE, '') AS NT_TITLE
+						 ,IFNULL(NT_CONTENT, '') AS NT_CONTENT
+						 ,IFNULL(IMG_IDX, '') AS IMG_IDX
+						 ,IFNULL(REG_ID, '') AS REG_ID
+						 ,IFNULL(REG_DT, '') AS REG_DT
+						 ,IFNULL(MOD_ID, '') AS MOD_ID
+						 ,IFNULL(MOD_DT, '') AS MOD_DT
+				  FROM DC_NOTICE  ]]>
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="ntIdx != null and ntIdx != ''">
+				<![CDATA[ AND NT_IDX = #{ntIdx} ]]>
+			</if>
+		</trim>
+	</select>
+
+	<update id="updateAnswer" parameterType="questionRequest">
+		<![CDATA[ UPDATE DC_QUESTION ]]>
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="quAnswer      != null"><![CDATA[   QU_ANSWER          = #{quAnswer}  ,      ]]></if>    <!-- quAnswer -->
+			<if test="quAnswerYn      != null"><![CDATA[   QU_ANSWER_YN          = #{quAnswerYn}  ,      ]]></if>    <!-- quAnswerYn -->
+			<if test="answererId      != null"><![CDATA[   ANSWERER_ID          = #{answererId}  ,      ]]></if>    <!-- answererId -->
+			<if test="answerDt      != null"><![CDATA[   ANSWER_DT          = #{answerDt}  ,      ]]></if>    <!-- answerDt -->
+		</trim>
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="quIdx != null and quIdx != ''">
+				<![CDATA[ QU_IDX = #{quIdx} ]]>
+			</if>
+		</trim>
+	</update>
+
+	<insert id="insertNotice" parameterType="noticeRequest">
+       INSERT INTO DC_NOTICE(
+           NT_TITLE
+         , NT_CONTENT
+         , REG_ID
+         , REG_DT
+       )VALUES (
+          #{ntTitle}
+          , #{ntContent}
+          , #{regId}
+          , NOW()
+      )
+    </insert>
+
+	<update id="updateNotice" parameterType="noticeRequest">
+		<![CDATA[ UPDATE DC_NOTICE ]]>
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="ntTitle      != null"><![CDATA[   NT_TITLE          = #{ntTitle}  ,      ]]></if>    <!-- ntTitle -->
+			<if test="ntContent      != null"><![CDATA[   NT_CONTENT          = #{ntContent}  ,      ]]></if>    <!-- ntContent -->
+			<if test="modId      != null"><![CDATA[   MOD_ID          = #{modId}  ,      ]]></if>    <!-- modId -->
+			MOD_DT = NOW()
+		</trim>
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="ntIdx != null and ntIdx != ''">
+				<![CDATA[ NT_IDX = #{ntIdx} ]]>
+			</if>
+		</trim>
+	</update>
+
+	<delete id="deleteNotice" parameterType="noticeRequest">
+           <![CDATA[ DELETE FROM DC_NOTICE WHERE NT_IDX = #{ntIdx} ]]>
+    </delete>
+
 </mapper>
 
     

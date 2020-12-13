@@ -32,4 +32,5 @@ public interface DochaAdminCarModelMapper {
     //차량-차량모델  신규
     public int insertCarModelInfo(DochaAdminCarModelDetailRequest reqParam);
 
+    public int deleteCarModelInfo(DochaAdminCarModelDetailRequest carModelDetailRequest);
 }
