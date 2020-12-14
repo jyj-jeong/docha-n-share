@@ -172,7 +172,7 @@ public class UserServiceImpl extends ServiceExtension implements UserService {
     public void addUserLicenseInfo(ServiceMessage message) {
         DochaAdminUserInfoUserLicenseInfoRequest userLicenseInfo = message.getObject("insertUserLicenseInfo", DochaAdminUserInfoUserLicenseInfoRequest.class);
         int res = 0;
-        if (userLicenseInfo.getUlIdx() != null){
+        if (userLicenseInfo.getUlIdx() != null && !userLicenseInfo.getUlIdx().equals("")){
             res = userInfoMntMapper.updateUserLicenseInfo(userLicenseInfo);
         }else {
             String ulIdx = TextUtils.getKeyDefault("UL");

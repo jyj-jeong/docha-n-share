@@ -44,10 +44,10 @@
                     <a class="collapse-item" th:if="${#session.getAttribute('LOGIN_SESSION').userRole == 'RA'}" href="" th:href="${#request.getContextPath() + '/mem'}">통합 회원</a>
                     <a class="collapse-item" href="" th:href="${#request.getContextPath() + '/mem/rentshop'}">회원사</a>
                     <a class="collapse-item collapsed" th:if="${#session.getAttribute('LOGIN_SESSION').userRole == 'RA'}" href="#" data-toggle="collapse" data-target="#collapseAdmin" aria-expanded="true" aria-controls="collapseAdmin">관리자</a>
-                    <div id="collapseAdmin"  class="collapse" aria-labelledby="collapseAdmin" data-parent="#collapseAdmin">
-                        <div><a class="collapse-item" href="#" th:href="${#request.getContextPath() + '/mem/admin'}">관리자 관리</a></div>
-                        <div><a class="collapse-item" href="#" th:href="${#request.getContextPath() + '/mem/template'}">권한 템플릿</a></div>
-                    </div>
+<!--                    <div id="collapseAdmin"  class="collapse" aria-labelledby="collapseAdmin" data-parent="#collapseAdmin">-->
+<!--                        <div><a class="collapse-item" href="#" th:href="${#request.getContextPath() + '/mem/admin'}">관리자 관리</a></div>-->
+<!--                        <div><a class="collapse-item" href="#" th:href="${#request.getContextPath() + '/mem/template'}">권한 템플릿</a></div>-->
+<!--                    </div>-->
                 </div>
             </div>
         </li>

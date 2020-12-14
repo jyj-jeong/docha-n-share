@@ -11,4 +11,6 @@ public interface MainService {
     void selectAddressDivisionInfo(ServiceMessage message);
 
     void selectAddressDetailDivisionInfo(ServiceMessage message);
+
+    void insertComment(ServiceMessage serviceMessage);
 }

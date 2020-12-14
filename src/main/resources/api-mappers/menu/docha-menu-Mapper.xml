@@ -164,6 +164,7 @@
 			<if test="ntTitle      != null"><![CDATA[   NT_TITLE          = #{ntTitle}  ,      ]]></if>    <!-- ntTitle -->
 			<if test="ntContent      != null"><![CDATA[   NT_CONTENT          = #{ntContent}  ,      ]]></if>    <!-- ntContent -->
 			<if test="modId      != null"><![CDATA[   MOD_ID          = #{modId}  ,      ]]></if>    <!-- modId -->
+			<if test="imgIdx      != null"><![CDATA[   IMG_IDX          = #{imgIdx}  ,      ]]></if>    <!-- modId -->
 			MOD_DT = NOW()
 		</trim>
 		<trim prefix="WHERE" prefixOverrides="AND|OR">

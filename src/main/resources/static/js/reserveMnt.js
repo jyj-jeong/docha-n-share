@@ -299,8 +299,16 @@ function drawData(paymentList){
                 return displayText;
             }, "breakpoints": "xs"},
 
-        { "name": "nextPaymentDay", "title": "정산예정일", "breakpoints": "xs"},
-        { "name": "", "title": "정산완료일시", "breakpoints": "xs"}
+        { "name": "nextPaymentDay", "title": "정산예정일","formatter" : function(value, options, rowData){
+                if (isEmpty(value)){
+                    return "정산 완료";
+                }else return value;
+            }, "breakpoints": "xs"},
+        { "name": "paymentDate", "title": "정산완료일시","formatter" : function(value, options, rowData){
+                if (isEmpty(value)){
+                    return "정산 완료";
+                }else return value;
+            }, "breakpoints": "xs"}
     ];
 
     $('#paymentList').empty();
@@ -1398,10 +1406,6 @@ function settingInputStatus(){
  * 예약저장 값 체크
  */
 function detailValidation(){
-//	swal("예약 저장 작업중...", { icon: "warning", });
-//	if(true){
-//		return;
-//	}
 
     var loginUser = getLoginUser();
     GLOBAL_LOGIN_USER_IDX = loginUser.urIdx;
@@ -1599,10 +1603,6 @@ function detailValidation(){
         return;
     }
 
-    // else if (isEmpty(insuranceCopayment) && reserveTypeCode != 'QT') { // is not empty
-    //     errorAlert('차량', '자차 고객부담금은 필수 선택값 입니다.');
-    //     return;
-    // }
     let rtIdxSplit = $('#companyName option:selected').text().split('(');
     let companyName = rtIdxSplit[0];
 
@@ -1670,9 +1670,7 @@ function detailValidation(){
         ,	'modId' : GLOBAL_LOGIN_USER_IDX
         ,	'regId' : GLOBAL_LOGIN_USER_IDX
     }
-//	var pp = JSON.stringify(req);
-//	console.log(pp);
-//	alert(pp);
+
     title = '예약정보 저장';
     text = '저장하시겠습니까?';
     icon = 'info';
@@ -2201,5 +2199,40 @@ function cancelPay() {
     }
 
 
+}
+
+// 댓글 등록
+function comment() {
+
+    var commentMsg = $('#commentMsg').val().trim();
+
+    if (isEmpty(commentMsg)){
+        errorAlert('댓글', '댓글을 입력해주세요.');
+        $('#commentMsg').focus();
+    }
+
+    var url = '/api/v1.0/insertComment.json';
+
+    var req = {
+        rtIdx : getLoginUser().rtIdx,
+        commentMsg : commentMsg,
+        commentPath : 'reserveInfo',
+        regId : getLoginUser().urIdx
+    };
+
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: JSON.stringify(req),
+        contentType: 'application/json',
+        cache: false,
+        async : false,
+        timeout: 10000
+    }).done(function (data, textStatus, jqXHR) {
+
+        if (data.res === 1){
+            swal("댓글 등록 성공", {icon : "success"});
+        }
+    })
 }
 

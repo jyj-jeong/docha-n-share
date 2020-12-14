@@ -128,8 +128,7 @@
         $('#ntTitle').val(noticeDetail[0].ntTitle);
         $('#ntContent').val(noticeDetail[0].ntContent);
 
-        // $('#noticeImg').attr('src','https://admin.docha.co.kr/img/notice/' + noticeDetail[0].imgIdx);
-        $('#noticeImg').attr('src','https://admin-ohdocha.sharenshare.kr/' + noticeDetail[0].imgIdx);
+        $('#noticeImg').attr('src','https://admin.docha.co.kr/img/notice/' + noticeDetail[0].imgIdx);
 
     }else {
         $('#btnDelete').addClass('d-none');
@@ -160,51 +159,45 @@
         }).done(function (data, textStatus, jqXHR) {
 
             if (data.res === 1){
-                swal("저장 성공", {icon : "success"});
+                /* 이미지 저장 */
+                var formData = new FormData();
+
+                formData.append("image", inputFile.files[0]);
+                formData.append("ntIdx", ntIdx);
+
+                for (var pair of formData.entries()) {
+                    console.log(pair[0]+ ', ' + pair[1]);
+                }
+
+                var oReq = new XMLHttpRequest();
+                oReq.addEventListener("load", function() {
+
+                    if(oReq.status === 200){
+                        location.href = "";
+                        alert(err.responseJSON.message);
+                    }else if (oReq.status === 400){
+                        errorAlert('저장 실패', '관리자에게 문의하세요.');
+                    }else if (oReq.status === 500){
+                        swal("저장 성공", {icon : "success"});
+                        console.log(oReq.response);
+                    }
+
+                });
+                oReq.open("POST", "/api/v1.0/uploadNoticeImage.do",true);
+                oReq.send(formData);
+
+
+                var editor;
+                var path;
+                editor = $("#noticeImg").val();
+                path = ($("#depth_container").text()).replace("/" + "");
+                var type = "html";
             }else {
                 errorAlert("저장 실패", "저장에 실패하였습니다.")
             }
 
         });
 
-        /* 이미지 저장 */
-        if(isEmpty(ntIdx)) {
-            errorAlert('공지사항', '공지사항이 존재하지 않습니다.');
-            return;
-        }
-
-        var formData = new FormData();
-
-        formData.append("image", inputFile.files[0]);
-        formData.append("ntIdx", ntIdx);
-
-        for (var pair of formData.entries()) {
-            console.log(pair[0]+ ', ' + pair[1]);
-        }
-
-        var oReq = new XMLHttpRequest();
-        oReq.addEventListener("load", function() {
-
-            if(oReq.status === 200){
-                location.href = "";
-                alert(err.responseJSON.message);
-            }else if (oReq.status === 400){
-                errorAlert('저장 실패', '관리자에게 문의하세요.');
-            }else if (oReq.status === 500){
-                swal("저장 성공", {icon : "success"});
-                console.log(oReq.response);
-            }
-
-        });
-        oReq.open("POST", "/api/v1.0/uploadNoticeImage.do",true);
-        oReq.send(formData);
-
-
-        var editor;
-        var path;
-        editor = $("#noticeImg").val();
-        path = ($("#depth_container").text()).replace("/" + "");
-        var type = "html";
 
     }
 

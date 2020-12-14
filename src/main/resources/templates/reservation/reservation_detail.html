@@ -53,14 +53,6 @@
                     <div class="card-body">
                         <h5 class="card-title">제1 운전자</h5>
                         <input type="hidden" id="ulIdx1" />
-                        <span class="top-right">
-                                    <div class="position-relative form-check mb-3">
-                                        <label th:if="${session.LOGIN_SESSION.userRole.equals('RA')}"
-                                               class="form-check-label">
-                                            <input type="checkbox" class="form-check-input" id="DriverSettingchk" onchange="firstDriverSetting('DriverSettingchk');" />예약자와 동일
-                                        </label>
-                                    </div>
-                                </span>
                         <div class="row">
                             <div class="col-lg-4 mb-3 float-l flex-1" >
                                 <label>이름</label>
@@ -343,6 +335,18 @@
                         <button id="btnSave" class="btn btn-primary" type="button" onclick="detailValidation()">저장</button>
                         <button id="btnClose" class="btn btn-primary" type="button" onclick="self.close()">창 닫기</button>
                         <button id="btnReturn" class="btn btn-primary" type="button" onclick="startReturn()">반납</button>
+                    </div>
+                </div>
+
+                <div class="card shadow mb-4">
+                    <div class="card-body">
+                        <div class="col-12 mb-2">
+                            <label class="form-label" for="commentMsg">댓글</label>
+                            <input type="text" class="form-control underline-text" name="commentMsg" id="commentMsg" />
+                        </div>
+                        <div class="flex-1 text-right p-b-10">
+                            <button class="btn" type="button" onclick="comment()" >댓글 등록</button>
+                        </div>
                     </div>
                 </div>
             </div>

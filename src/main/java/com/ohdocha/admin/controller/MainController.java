@@ -2,21 +2,18 @@ package com.ohdocha.admin.controller;
 
 import com.ohdocha.admin.config.Properties;
 import com.ohdocha.admin.domain.common.DochaAdminAddressInfoRequest;
+import com.ohdocha.admin.domain.common.DochaAdminCommentRequest;
 import com.ohdocha.admin.domain.common.code.DochaAdminCommonCodeRequest;
-import com.ohdocha.admin.domain.user.DochaAdminDcUserInfoRequest;
 import com.ohdocha.admin.service.MainService;
 import com.ohdocha.admin.util.DochaMap;
 import com.ohdocha.admin.util.ServiceMessage;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 @Slf4j
 @AllArgsConstructor
@@ -76,4 +73,17 @@ public class MainController extends ControllerExtension {
 
         return serviceMessage.get("result");
     }
+
+    /* 댓글 등록 */
+    @PostMapping(value = "/api/v1.0/insertComment.json")
+    @ResponseBody
+    public Object insertComment(@RequestBody DochaAdminCommentRequest commentRequest, HttpServletRequest request) {
+        ServiceMessage serviceMessage = createServiceMessage(request);
+        serviceMessage.addData("commentRequest", commentRequest);
+
+        mainService.insertComment(serviceMessage);
+
+        return serviceMessage;
+    }
+
 }

@@ -2337,4 +2337,38 @@ function companyRegistrationAutoHyphen() {
 	autoHyphenFromNumber('companyRegistration', 'companyRegistrationNumber', num);
 }
 
+// 댓글 등록
+function comment() {
+
+	var commentMsg = $('#commentMsg').val().trim();
+
+	if (isEmpty(commentMsg)){
+		errorAlert('댓글', '댓글을 입력해주세요.');
+		$('#commentMsg').focus();
+	}
+
+	var url = '/api/v1.0/insertComment.json';
+
+	var req = {
+		rtIdx : getLoginUser().rtIdx,
+		commentMsg : commentMsg,
+		commentPath : 'rentCompany',
+		regId : getLoginUser().urIdx
+	};
+
+	$.ajax({
+		url: url,
+		type: 'POST',
+		data: JSON.stringify(req),
+		contentType: 'application/json',
+		cache: false,
+		async : false,
+		timeout: 10000
+	}).done(function (data, textStatus, jqXHR) {
+
+		if (data.res === 1){
+			swal("댓글 등록 성공", {icon : "success"});
+		}
+	})
+}
 /* =========================== detail function end ====================================== */

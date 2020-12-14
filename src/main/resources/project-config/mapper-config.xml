@@ -133,6 +133,9 @@
 		<typeAlias type="com.ohdocha.admin.domain.common.DochaAdminAddressInfoRequest"  alias="addressInfoRequest"/>
 		<typeAlias type="com.ohdocha.admin.domain.common.DochaAdminAddressInfoResponse" alias="addressInfoResponse"/>
 
+		<typeAlias type="com.ohdocha.admin.domain.common.DochaAdminCommentRequest" alias="commentRequest"/>
+		<typeAlias type="com.ohdocha.admin.domain.common.DochaAdminCommentResponse" alias="commentResponse"/>
+
 		<typeAlias type="com.ohdocha.admin.domain.user.DochaAdminUserInfoUserLicenseInfoRequest" alias="userLicenseInfoRequest" />
 		<typeAlias type="com.ohdocha.admin.domain.user.DochaAdminUserInfoUserLicenseInfoResponse" alias="userLicenseInfoResponse" />
 

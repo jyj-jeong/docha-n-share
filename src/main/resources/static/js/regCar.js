@@ -1729,6 +1729,10 @@ function rentcal(){
 		return;
 	}
 
+
+
+
+	/*
 	let req = {
 		crIdx : crIdx,
 		calRentStartDt : calRentStartDt,
@@ -1737,6 +1741,7 @@ function rentcal(){
 	};
 
 	let target = 'selectReserveAmt';
+
 	let method = 'select';
 
 	fn_callApi(method,target,req,function(response) {
@@ -1811,6 +1816,7 @@ function rentcal(){
 
 		// }
 	});// end fn_callApi
+	*/
 
 }
 
@@ -2129,18 +2135,40 @@ function convertTimeFormat12MIS(_time) {
 
 	return hh + ':' + mm;
 }
-//$("#calRentStartDt").keyup(function(e) {
-//	let num = $("#calRentStartDt").val();
-//	num = getOnlyNumber(num);
-//
-//	$("#calRentStartDt").val(num);
-//});
-//$("#calRentEndDt").keyup(function(e) {
-//	let num = $("#calRentEndDt").val();
-//	num = getOnlyNumber(num);
-//
-//	$("#calRentEndDt").val(num);
-//});
 
+// 댓글 등록
+function comment() {
+
+	var commentMsg = $('#commentMsg').val().trim();
+
+	if (isEmpty(commentMsg)){
+		errorAlert('댓글', '댓글을 입력해주세요.');
+		$('#commentMsg').focus();
+	}
+
+	var url = '/api/v1.0/insertComment.json';
+
+	var req = {
+		rtIdx : getLoginUser().rtIdx,
+		commentMsg : commentMsg,
+		commentPath : 'regCar',
+		regId : getLoginUser().urIdx
+	};
+
+	$.ajax({
+		url: url,
+		type: 'POST',
+		data: JSON.stringify(req),
+		contentType: 'application/json',
+		cache: false,
+		async : false,
+		timeout: 10000
+	}).done(function (data, textStatus, jqXHR) {
+
+		if (data.res === 1){
+			swal("댓글 등록 성공", {icon : "success"});
+		}
+	})
+}
 
 /* =========================== detail function end ======================================*/

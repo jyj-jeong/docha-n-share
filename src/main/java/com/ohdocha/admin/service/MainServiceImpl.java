@@ -2,6 +2,7 @@ package com.ohdocha.admin.service;
 
 import com.ohdocha.admin.domain.common.DochaAdminAddressInfoRequest;
 import com.ohdocha.admin.domain.common.DochaAdminAddressInfoResponse;
+import com.ohdocha.admin.domain.common.DochaAdminCommentRequest;
 import com.ohdocha.admin.domain.common.code.DochaAdminCommonCodeRequest;
 import com.ohdocha.admin.domain.common.code.DochaAdminCommonCodeResponse;
 import com.ohdocha.admin.mapper.DochaAdminCommonCodeMapper;
@@ -237,5 +238,14 @@ public class MainServiceImpl extends ServiceExtension implements MainService {
         List<DochaAdminAddressInfoResponse> addressInfoResponseList = commonCodeMapper.selectAddressDetailInfo(addressInfoRequest);
 
         message.addData("result", addressInfoResponseList);
+    }
+
+    @Override
+    public void insertComment(ServiceMessage message) {
+        DochaAdminCommentRequest commentRequest = message.getObject("commentRequest", DochaAdminCommentRequest.class);
+
+        int res = commonCodeMapper.insertComment(commentRequest);
+
+        message.addData("res", res);
     }
 }

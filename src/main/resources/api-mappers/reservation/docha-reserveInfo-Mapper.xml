@@ -175,6 +175,7 @@
                  ,      IFNULL(PD.PAYMENT_DATE        , '' ) AS PAYMENT_DATE
                  ,      IFNULL(PD.ETC                 , '' ) AS ETC
                  ,      IFNULL(PD.UR_IDX              , '' ) AS UR_IDX
+                 ,      PD.PAYMENT_DATE
                  ,      RM.MOD_DT
                  ,      RM.SUM_PAYMENT_AMOUNT
                  ,      RM.NEXT_PAYMENT_DAY

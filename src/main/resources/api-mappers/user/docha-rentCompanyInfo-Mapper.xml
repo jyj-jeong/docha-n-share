@@ -254,9 +254,6 @@
 			<if test="rtIdx != null and rtIdx != ''">
 				<![CDATA[ AND RT_IDX = #{rtIdx} ]]>
 			</if>
-			<if test="urIdx != null and urIdx != ''">
-				<![CDATA[ AND UR_IDX = #{urIdx} ]]>
-			</if>
 			<if test="rsIdx != null and rsIdx != ''">
 				<![CDATA[ AND RS_IDX = #{rsIdx} ]]>
 			</if>

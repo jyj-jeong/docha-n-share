@@ -106,5 +106,24 @@
 		)
 	]]>
     </insert>
+
+	<!-- 댓글 등록 -->
+	<insert  id="insertComment" parameterType="commentRequest">
+	<![CDATA[
+	     INSERT INTO DC_COMMENT (
+	     	   COMMENT_MSG
+			,  COMMENT_PATH
+			,  RT_IDX
+			,  REG_ID
+			,  REG_DT
+		) VALUES (
+				#{commentMsg}
+			,	#{commentPath}
+			,	#{rtIdx}
+			,  	#{regId}
+			,   NOW()
+		)
+	]]>
+    </insert>
 	
 </mapper>

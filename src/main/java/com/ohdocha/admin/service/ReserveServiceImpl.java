@@ -46,10 +46,11 @@ public class ReserveServiceImpl extends ServiceExtension implements ReserveServi
 
         int res;
 
-//        List<DochaAdminReserveInfoDetailResponse> resDto = reserveInfoMapper.reserveInfoCheck(reserveInfoDetailRequest);
-//        if (resDto == null && resDto.size() == 0){
+        // 예약 체크
+        List<DochaAdminReserveInfoDetailResponse> chkReserveInfo = reserveInfoMapper.reserveInfoCheck(reserveInfoDetailRequest);
+
         res = reserveInfoMapper.insertReserveInfo(reserveInfoDetailRequest);
-//        }else res = 0;
+
 
         if (res == 1){
             message.addData("code", 200);
