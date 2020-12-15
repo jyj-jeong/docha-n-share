@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.ParseException;
 import java.util.List;
 
 @Slf4j
@@ -121,7 +122,7 @@ public class CarController extends ControllerExtension {
     /* 등록차량 요금 계산  */
     @PostMapping(value = "/api/v1.0/selectReserveAmt.json")
     @ResponseBody
-    public Object selectReserveAmt(@RequestBody DochaAdminRegCarDetailRequest regCarDetailRequest, HttpServletRequest request) {
+    public Object selectReserveAmt(@RequestBody DochaAdminRegCarDetailRequest regCarDetailRequest, HttpServletRequest request) throws ParseException {
         ServiceMessage serviceMessage = createServiceMessage(request);
         serviceMessage.addData("regCarDetailRequest", regCarDetailRequest);
 

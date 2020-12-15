@@ -67,10 +67,10 @@
                      FROM DC_RESERVE_MASTER A INNER JOIN DC_CAR_INFO C ON A.CR_IDX = C.CR_IDX
                                          INNER JOIN DC_RENT_COMPANY D ON A.RT_IDX = D.RT_IDX ]]>
                                          <if test="rtIdx != null and rtIdx != '' ">
-                                             <![CDATA[ AND RT_IDX = #{rtIdx} ]]>
+                                             <![CDATA[ AND D.RT_IDX = #{rtIdx} ]]>
                                          </if>
                                          <if test="rtPIdx != null and rtPIdx != '' ">
-                                             <![CDATA[  AND RT_P_IDX = #{rtPIdx} ]]>
+                                             <![CDATA[  AND D.RT_P_IDX = #{rtPIdx} ]]>
                                          </if>
                   ) X ) X2 ORDER BY RESERVE_DATE DESC
     </select>

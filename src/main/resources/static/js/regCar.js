@@ -16,6 +16,8 @@ var carmodeldetaildata = [];	// 차량상세모델 select box 배열
 var CRUD_METHOD = '';			// 저장 구분자
 var calinit = 0;
 
+var distance;
+
 function initializingPageData(){
 	loadApi(drawTable, null, null);
 	initSelectBox();
@@ -1714,6 +1716,17 @@ function rentcal(){
 	let crIdx = $("#crIdx").val().trim();
 	let calRentStartDt = $("#calRentStartDt").val().replace('____-__-__ __:__','').replace('T',' ');
 	let calRentEndDt = $("#calRentEndDt").val().replace('____-__-__ __:__','').replace('T',' ');
+	let calRentPeriod = $("#calRentPeriod").val();
+	let dailyStandardPay = getPureText($("#dailyStandardPay").val());
+	let dailyMaxRate = $("#dailyMaxRate").val().trim();
+	let monthlyStandardPay = getPureText($("#monthlyStandardPay").val());
+	let monthlyMaxRate = $("#monthlyMaxRate").val().trim();
+	let month3Deposit = getPureText($("#month3Deposit").val());
+	let month6Deposit = getPureText($("#month6Deposit").val());
+	let month9Deposit = getPureText($("#month9Deposit").val());
+	let month12Deposit =getPureText($("#month12Deposit").val());
+	let deliveryStandardPay = getPureText($("#deliveryStandardPay").val());
+	let deliveryAddPay = getPureText($("#deliveryAddPay").val());
 	let selInsuranceFee = $("#selInsuranceFee").val().trim();
 
 	if(isEmpty(calRentStartDt)){
@@ -1731,12 +1744,21 @@ function rentcal(){
 
 
 
-
-	/*
 	let req = {
 		crIdx : crIdx,
 		calRentStartDt : calRentStartDt,
 		calRentEndDt : calRentEndDt,
+		calRentPeriod : calRentPeriod,
+		dailyMaxRate : dailyMaxRate,
+		dailyStandardPay  : dailyStandardPay ,
+		monthlyStandardPay  : monthlyStandardPay ,
+		monthlyMaxRate  : 	monthlyMaxRate ,
+		month3Deposit  : month3Deposit ,
+		month6Deposit  : month6Deposit ,
+		month9Deposit  : month9Deposit ,
+		month12Deposit : month12Deposit,
+		deliveryStandardPay : deliveryStandardPay,
+		deliveryAddPay  : deliveryAddPay ,
 		insuranceCopayment : selInsuranceFee
 	};
 
@@ -1745,78 +1767,101 @@ function rentcal(){
 	let method = 'select';
 
 	fn_callApi(method,target,req,function(response) {
-		// let res = response;
 
-		// 200이라면 페이징을 구한다.
-
-		// TODO response 200
-		// if (res.code == 200) {
-		let data = response[0];
+		let data = response;
 
 		let rentFee			= data.rentFee; 		//대여금
 		let disRentFee		= data.disRentFee; 		//할인 후 대여금 -->
 		let insuranceFee	= data.insuranceFee; 	//보험료 -->
-//			let insuranceFee2	= data.insuranceFee2; 	//보험료2 -->
-//			let insuranceFee3	= data.insuranceFee3; 	//보험료3 -->
-//			let insuranceFee4	= data.insuranceFee4; 	//보험료4 -->
-		let mmRentAmt		= data.mmRentAmt; 		//장기 월 대여요금 -->
-		let mmLastRentAmt	= data.mmLastRentAmt; 	//장기 마지막월 대여요금 -->
+		let mmRentFee		= data.mmRentFee; 		//장기 월 대여요금 -->
+		let mmLastRentFee	= data.mmLastRentFee; 	//장기 마지막월 대여요금 -->
 		let commissionPer	= data.commissionPer; 	//회원사 수수료 -->
 		let calcPeriodDt	= data.calcPeriodDt; 	//대여일수
+		let totalPaymentAmount	= data.totalPaymentAmount; 	//총금액
 
 		if(rentFee === '0' && insuranceFee === '0'){
 			errorAlert('요금계산', '보험료정보 또는 기본요금 정보를 확인하세요.');
 			return;
 		}
-		$("#calRentPeriod").val(calcPeriodDt);
 
-		let calRentFee = '0';
-		let calInsuranceFee = '0';
-		let calRentTotAmount = '0';
-		let calDochaRate = '0';
-		let calPaymentAmount = '0';
+		var period = calRentPeriod.split(" ");
 
-		if(mmRentAmt === 0){
-			calRentFee = disRentFee;
-			calInsuranceFee = insuranceFee;
-//				if(selInsuranceFee == '1'){
-//					calInsuranceFee = insuranceFee;
-//				}else if(selInsuranceFee == '2'){
-//					calInsuranceFee = insuranceFee2;
-//				}else if(selInsuranceFee == '3'){
-//					calInsuranceFee = insuranceFee3;
-//				}else if(selInsuranceFee == '4'){
-//					calInsuranceFee = insuranceFee4;
-//				}
-			calRentTotAmountEtc = '';
-		}else{
-			calRentFee = mmRentAmt;
-			calInsuranceFee = '0';
-			calRentTotAmountEtc = '월장기 총금액 : ' + objectConvertToPriceFormat(rentFee) + '원<br>';
-			calRentTotAmountEtc += '월별 대여요금 : ' + objectConvertToPriceFormat(mmRentAmt) + '원 * 개월수';
-			if(mmLastRentAmt >= 0){
-				calRentTotAmountEtc += '<br>남은 일수의 대여요금 : ' + objectConvertToPriceFormat(mmLastRentAmt) + '원';
-			}
+		if (mmRentFee !== "0"){
+			var monthlyRentFee = objectConvertToPriceFormat(mmRentFee) + ' X ' + period[0] + ' + 마지막 월 '  + objectConvertToPriceFormat(mmLastRentFee);
+
+			$("#calRentFee").val(monthlyRentFee);
+		}else {
+			$("#calRentFee").val(objectConvertToPriceFormat(disRentFee));
 		}
 
-		calRentTotAmount = Number(calRentFee) + Number(calInsuranceFee);
-		calDochaRate = calRentTotAmount*(Number(commissionPer)/100);
-		calPaymentAmount = calRentTotAmount - calDochaRate;
-
-		$("#calRentFee").val(objectConvertToPriceFormat(calRentFee));
-		$("#calInsuranceFee").val(objectConvertToPriceFormat(calInsuranceFee));
-
-		$("#calRentTotAmount").val(objectConvertToPriceFormat(calRentTotAmount));
-		$("#calDochaRate").val(objectConvertToPriceFormat(calDochaRate));
-		$("#calPaymentAmount").val(objectConvertToPriceFormat(calPaymentAmount));
-
-		$("#calRentTotAmountEtc").empty();
-		$("#calRentTotAmountEtc").append(calRentTotAmountEtc);
+		$("#calInsuranceFee").val(objectConvertToPriceFormat(insuranceFee));
+		$("#cardeposit").val(0);
+		$("#licenseIssueDt").val(0);
 
 
-		// }
+		var geocoder = new kakao.maps.services.Geocoder();
+		var rentlocation = $("#rentlocation").val();
+		var returnAddr = $("#returnAddr").val();
+		var deliveryFee;
+
+		var deliveryTypeCode = $("input[name='customRadioInline1']:checked").val();
+
+		if (deliveryTypeCode === 'OF') {
+			deliveryFee = 0;
+			$("#deliveryFee").val(deliveryFee);
+
+			$("#calRentTotAmount").val(objectConvertToPriceFormat(rentFee));
+			$("#calPaymentAmount").val(objectConvertToPriceFormat(rentFee));
+		} else {
+			geocoder.addressSearch(rentlocation, function (result, status) {
+				if (status === kakao.maps.services.Status.OK) {
+					myLocationCoords = new kakao.maps.LatLng(result[0].x, result[0].y);
+
+					geocoder.addressSearch(returnAddr, function (result, status) {
+						if (status === kakao.maps.services.Status.OK) {
+							companyCoords = new kakao.maps.LatLng(result[0].x, result[0].y);
+							var positions = [ {
+								latlng : companyCoords
+							}, {
+								latlng : myLocationCoords
+							}];
+							var linePath;
+							var lineLine = new daum.maps.Polyline();
+
+
+							for (var i = 0; i < positions.length; i++) {
+								if (i !== 0) {
+									linePath = [ positions[i - 1].latlng, positions[i].latlng ]
+								}
+								lineLine.setPath(linePath);
+							}
+							distance = Math.round(lineLine.getLength() / 1000);
+							console.log(distance);
+
+							// 10km 초과 시 추가 금액
+							if (distance > 10) {
+								console.log(distance);
+								var addDistance = Math.ceil((distance - 10) / 10);
+								deliveryAddPay = parseInt(addDistance) * parseInt(deliveryAddPay);
+								deliveryFee = parseInt(deliveryStandardPay) + parseInt(deliveryAddPay);
+
+							}
+							$("#deliveryFee").val(deliveryFee);
+
+							var totalFee = parseInt(insuranceFee) + parseInt(deliveryFee) + parseInt(disRentFee);
+							$("#calRentTotAmount").val(objectConvertToPriceFormat(totalFee));
+							$("#calPaymentAmount").val(objectConvertToPriceFormat(totalFee));
+						}
+					});
+				}
+			});
+		}
+
+
+
+
 	});// end fn_callApi
-	*/
+
 
 }
 

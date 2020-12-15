@@ -135,7 +135,7 @@
     /* 회원사 상세 페이지 이동 */
     $('table > tbody').on('click', 'tr', function () {
         let rtIdx = $(this).attr('data-value');
-        if (rtIdx === "") return;
+        if (rtIdx === "" || rtIdx === undefined) return;
 
         var url = "/mem/rentshop/" + rtIdx;
         var name = "test";

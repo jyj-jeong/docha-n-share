@@ -27,9 +27,7 @@ public class ReserveServiceImpl extends ServiceExtension implements ReserveServi
 
         if (userRole.equals("RA")){
 
-        }else if (userRole.equals("MA")){
-            reserveInfoRequest.setRtPIdx(rtIdx);
-        }else if (userRole.equals("MU")){
+        }else if (userRole.equals("MA") || userRole.equals("MU")){
             reserveInfoRequest.setRtIdx(rtIdx);
         }
 

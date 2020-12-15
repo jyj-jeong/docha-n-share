@@ -143,7 +143,7 @@ public class ReserveController extends ControllerExtension{
     // region [ 정기결제 ]
 
     /* 정기결제 리스트 화면 */
-    @GetMapping(value = "/payment")
+    @GetMapping(value = "/reserve/payment")
     public String regularPayment(HttpServletRequest request, ModelMap modelMap) {
         ServiceMessage serviceMessage = createServiceMessage(request);
         serviceMessage.addData("reqParam", new DochaAdminPaymentInfoRequest());

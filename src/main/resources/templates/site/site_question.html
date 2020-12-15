@@ -116,7 +116,7 @@
     /* 문의 상세 페이지 이동 */
     $('table > tbody').on('click', 'tr', function () {
         let quIdx = $(this).attr('data-value');
-        if (quIdx === "") return;
+        if (quIdx === "" || quIdx === undefined) return;
 
         var url = "/site/question/" + quIdx;
         var name = "test";

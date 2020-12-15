@@ -122,7 +122,7 @@
     /* 회원 상세 페이지 이동 */
     $('table > tbody').on('click', 'tr', function () {
         let urIdx = $(this).attr('data-value');
-        if (urIdx === "") return;
+        if (urIdx === ""|| urIdx === undefined) return;
 
         var url = "/mem/detail/" + urIdx;
         var name = "test";

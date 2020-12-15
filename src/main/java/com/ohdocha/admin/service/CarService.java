@@ -2,6 +2,8 @@ package com.ohdocha.admin.service;
 
 import com.ohdocha.admin.util.ServiceMessage;
 
+import java.text.ParseException;
+
 public interface CarService {
 
     void regCarList(ServiceMessage message);
@@ -82,7 +84,7 @@ public interface CarService {
 
     void updateInsuranceTemplate(ServiceMessage message);
 
-    void selectReserveAmt(ServiceMessage message);
+    void selectReserveAmt(ServiceMessage message) throws ParseException;
 
     void insertRegCarPayment(ServiceMessage message);
 
