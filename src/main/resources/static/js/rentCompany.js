@@ -767,13 +767,22 @@ function staffListGrid(_rtIdx) {
 			function deleteStaff(){
 				var tr = $(this).closest('tr').children();
 				var rsIdx = tr[0].textContent;
+				var staffName = tr[1].textContent;
+				var staffContact1 = tr[2].textContent;
+				var staffEmail = tr[3].textContent;
+
 				var deleteYn = confirm("해당 담당자를 삭제하시겠습니까?");
+
 				if (deleteYn){
 
 					var url = '/api/v1.0/deleteDcRentCompanyStaff.do';
 					var req = {
-						rsIdx : rsIdx
+						rsIdx : rsIdx,
+						staffName : staffName,
+						staffContact1 : staffContact1,
+						staffEmail : staffEmail
 					};
+
 
 					$.ajax({
 						url: url,
@@ -793,6 +802,7 @@ function staffListGrid(_rtIdx) {
 						}
 
 					});
+
 
 				}
 			}

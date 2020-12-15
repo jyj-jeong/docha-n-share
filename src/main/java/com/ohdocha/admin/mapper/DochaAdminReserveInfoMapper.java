@@ -1,6 +1,7 @@
 package com.ohdocha.admin.mapper;
 
 import com.ohdocha.admin.domain.reserve.reserveInfoMnt.*;
+import com.ohdocha.admin.util.DochaMap;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -22,7 +23,7 @@ public interface DochaAdminReserveInfoMapper {
 
     public int insertReserveInfo(DochaAdminReserveInfoDetailRequest reqParam);
 
-    public List<DochaAdminReserveInfoDetailResponse> reserveInfoCheck(DochaAdminReserveInfoDetailRequest reqParam);
+    public List<DochaMap> reserveInfoCheck(DochaAdminReserveInfoDetailRequest reqParam);
 
     public DochaAdminReserveInfoResponse selectUserInfo(DochaAdminReserveInfoRequest reqParam);
 

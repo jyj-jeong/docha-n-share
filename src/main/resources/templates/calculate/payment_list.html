@@ -130,10 +130,9 @@
 <script th:inline="javascript">
     initDataTables();
 
-    /* 예약 관리 페이지 이동 */
+    /* 정산 관리 페이지 이동 */
     $('table > tbody').on('click', 'tr', function () {
         let reserveDate = $(this).children()[0].textContent;
-        if(reserveDate === null || reserveDate === undefined) break;
 
         var url = "/settlement/" + reserveDate;
         var name = "test";

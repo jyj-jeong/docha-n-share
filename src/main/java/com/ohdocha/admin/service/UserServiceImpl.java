@@ -339,10 +339,8 @@ public class UserServiceImpl extends ServiceExtension implements UserService {
     public void getRentShopList(ServiceMessage message) {
         DochaMap loginUser = message.getObject("loginUser", DochaMap.class);
         DochaAdminRentCompanyInfoRequest rentCompanyInfoRequest = new DochaAdminRentCompanyInfoRequest();
-        if (loginUser.get("userRole").equals("MA")){
-            rentCompanyInfoRequest.setRtPIdx(loginUser.getString("rtIdx"));
-        }else if (loginUser.get("userRole").equals("MU")){
-            rentCompanyInfoRequest.setRtPIdx(loginUser.getString("rtIdx"));
+        if (loginUser.get("userRole").equals("MA") || loginUser.get("userRole").equals("MU")){
+            rentCompanyInfoRequest.setRtIdx(loginUser.getString("rtIdx"));
         }
 
         List<DochaAdminRentCompanyInfoResponse> rentCompanyInfoList = rentCompanyInfoMapper.selectRentCompanyInfo(rentCompanyInfoRequest);
@@ -496,6 +494,9 @@ public class UserServiceImpl extends ServiceExtension implements UserService {
         DochaAdminDcRentCompanyStaffRequest rentCompanyStaffRequest = message.getObject("rentCompanyStaffRequest", DochaAdminDcRentCompanyStaffRequest.class);
 
         int res = rentCompanyInfoMapper.deleteDcRentStaff(rentCompanyStaffRequest);
+
+        rentCompanyStaffRequest.setRtIdx("");
+        int res2 = rentCompanyInfoMapper.updateDcRentStaffUserinfo(rentCompanyStaffRequest);
 
         if (res == 1){
             message.addData("code", 200);

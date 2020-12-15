@@ -304,6 +304,12 @@
 			<if test="urIdx != null and urIdx != ''">
 				AND <![CDATA[ UR_IDX = #{urIdx} ]]>
 			</if>
+			<if test="staffEmail != null and staffEmail != ''">
+				AND <![CDATA[ USER_ID = #{staffEmail} ]]>
+			</if>
+			<if test="staffName != null and staffName != ''">
+				AND <![CDATA[ USER_NAME = #{staffName} ]]>
+			</if>
 		</trim>
 	</update>
 
