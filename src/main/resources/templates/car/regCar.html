@@ -20,8 +20,8 @@
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4 mt-4">
                     <div class="card-header py-3">
-                        <h6 th:if="${CRUD == 'insert'}" class="m-0 font-weight-bold text-primary" style="cursor: pointer" onclick="changeCardView('regCarDetail')">차량등록 - 신규등록</h6>
-                        <h6 th:if="${CRUD == 'modify'}" id="regCarTitle" class="m-0 font-weight-bold text-primary" style="cursor: pointer" onclick="changeCardView('regCarDetail')"></h6>
+                        <h6 th:if="${CRUD == 'insert'}" class="m-0 font-weight-bold text-primary" style="cursor: pointer">차량등록 - 신규등록</h6>
+                        <h6 th:if="${CRUD == 'modify'}" id="regCarTitle" class="m-0 font-weight-bold text-primary" style="cursor: pointer" ></h6>
                     </div>
 
                     <!--region 차량정보 카드  -->
@@ -37,7 +37,7 @@
                             </div>
                             <div class="col-3 mb-3">
                                 <label class="form-label" for="year">차량연식</label>
-                                <select class="form-control" name="year" id="year" >
+                                <select class="form-control" name="year" id="year" onchange="modelNamechange();" >
 
                                 </select>
                                 <!--                                <input type="text" class="form-control" name="year" id="year" placeholder="년도" maxlength="4"/>-->

@@ -1,20 +1,7 @@
 /*
  * rentCompany.js
  * 회원 > 회원사
- * 
- * 2020-02-04 lws 최초생성
- * 
- * 
- * 
- * update history
- * =============================================
- * |date       |comment             | author   |
- * =============================================
- * |2020-02-05 |ready 함수 제거             | pws      |
- * 
- * 
- * 
- * 
+ *
  * */
 
 var MODAL_NAME = 'rentCompanyDetail';
@@ -481,13 +468,14 @@ function initDetailInfo(seq) {
 			let companyAddressDetail = data.companyAddressDetail;
 			let accountBank = data.accountBank;
 			let accountNumber = data.accountNumber;
+			let taxEmail = data.taxEmail;
 			let companyContact1 = data.companyContact1;
 			let regCarCount = data.regCarCount;
 			let carCount = data.carCount;
 			let accountHolder = data.accountHolder;
 			let alramYn = data.alarmYn;
 //			let taxInvoiceCode = data.taxInvoiceCode;
-			let commissionPer = data.commissionPer;
+			let commissionPer = isEmpty(data.commissionPer) ? 15.0 : data.commissionPer;
 			let accessYn = data.accessYn;
 
 			let ownerYn = data.ownerYn;
@@ -581,6 +569,8 @@ function initDetailInfo(seq) {
 			$('#accountHolder').val(accountHolder);
 			// 계좌번호
 			$('#accountNumber').val(accountNumber);
+			// 세금 계산서 이메일
+			$('#taxEmail').val(taxEmail);
 
 			// 알림톡 설정 여부
 			if (!isEmpty(alramYn) && alramYn != 0) {
@@ -712,7 +702,8 @@ function staffListGrid(_rtIdx) {
 					"staffEmail" : data.staffEmail,
 					"staffTitle" : data.staffTitle,
 					"ownerYn" : data.ownerYn,
-					"urIdx" : data.urIdx
+					"urIdx" : data.urIdx,
+					"deleteStaff" : '삭제'
 				};
 
 				rows.push(staff);
@@ -759,9 +750,62 @@ function staffListGrid(_rtIdx) {
 						return setText;
 					}
 				},
-				{"name": "urIdx", "id": "urIdx", "title": "회원순번", "visible": false}
+				{"name": "urIdx", "id": "urIdx", "title": "회원순번", "visible": false},
+				{"name": "deleteStaff", "id":"deleteStaff", "title": "삭제", "type": "text", "formatter" : function () {
+						var actions = $('<div/>');
+
+						var btnDeleteStaff = ($('<button/>', {'class':'btn btn-outline-danger'})
+							.append('<span/>','삭제')
+							.on("click", this, deleteStaff))
+							.appendTo(actions);
+
+						return actions;
+				}}
 			];
 
+
+			function deleteStaff(){
+				var tr = $(this).closest('tr').children();
+				var rsIdx = tr[0].textContent;
+				var staffName = tr[1].textContent;
+				var staffContact1 = tr[2].textContent;
+				var staffEmail = tr[3].textContent;
+
+				var deleteYn = confirm("해당 담당자를 삭제하시겠습니까?");
+
+				if (deleteYn){
+
+					var url = '/api/v1.0/deleteDcRentCompanyStaff.do';
+					var req = {
+						rsIdx : rsIdx,
+						staffName : staffName,
+						staffContact1 : staffContact1,
+						staffEmail : staffEmail
+					};
+
+
+					$.ajax({
+						url: url,
+						type: 'POST',
+						data: JSON.stringify(req),
+						contentType: 'application/json',
+						cache: false,
+						acync : false,
+						timeout: 10000
+					}).done(function (data, textStatus, jqXHR) {
+
+						if( data.code == 400 ){
+							alert(data.errMsg);
+						}
+						if( data.code == 200 ){
+							location.reload();
+						}
+
+					});
+
+
+				}
+			}
 
 			$('#rentStaffList').empty();
 			$('#rentStaffList').footable({
@@ -792,17 +836,23 @@ function rentReserveMinListGrid(_rtIdx) {
 
 	fn_callApi(method, target, req, function (response) {
 		let res = response;
+		let rows = [];
 
 		if (res.code == 200) {
 
-			let data = res.result[0];
+			for (var i = 0; i< res.result.length; i++){
+				var data = res.result[i];
 
-			rows = [{
-				"minIdx": data.minIdx,
-				"minimumStartDt": data.minimumStartDt,
-				"minimumEndDt": data.minimumEndDt,
-				"minimumTime": data.minimumTime,
-			}];
+				var min = {
+					"minIdx": data.minIdx,
+					"minimumStartDt": data.minimumStartDt,
+					"minimumEndDt": data.minimumEndDt,
+					"minimumTime": data.minimumTime,
+					"deleteStaff" : '삭제'
+				};
+
+				rows.push(min);
+			}
 
 			let columns;
 			columns = [
@@ -810,7 +860,51 @@ function rentReserveMinListGrid(_rtIdx) {
 				{"name": "minimumStartDt", "title": "최소예약시간시작일", "breakpoints": "xs"},
 				{"name": "minimumEndDt", "title": "최소예약시간종료일", "breakpoints": "xs"},
 				{"name": "minimumTime", "title": "최소시간", "breakpoints": "xs"},
+				{"name": "deleteStaff", "id":"deleteStaff", "title": "삭제", "type": "text", "formatter" : function () {
+						var actions = $('<div/>');
+
+						var btnDeleteMin = ($('<button/>', {'class':'btn btn-outline-danger'})
+							.append('<span/>','삭제')
+							.on("click", this, deleteReserveMin))
+							.appendTo(actions);
+
+						return actions;
+					}}
 			];
+
+
+			function deleteReserveMin(){
+				var tr = $(this).closest('tr').children();
+				var minIdx = tr[0].textContent;
+				var deleteYn = confirm("해당 최소예약시간을 삭제하시겠습니까?");
+				if (deleteYn){
+
+					var url = '/api/v1.0/deleteDcRentCompanyReserveMin.do';
+					var req = {
+						minIdx : minIdx
+					};
+
+					$.ajax({
+						url: url,
+						type: 'POST',
+						data: JSON.stringify(req),
+						contentType: 'application/json',
+						cache: false,
+						acync : false,
+						timeout: 10000
+					}).done(function (data, textStatus, jqXHR) {
+
+						if( data.code == 400 ){
+							alert(data.errMsg);
+						}
+						if( data.code == 200 ){
+							location.reload();
+						}
+
+					});
+
+				}
+			}
 
 			$('#rentReserveMinList').empty();
 			$('#rentReserveMinList').footable({
@@ -841,20 +935,75 @@ function holidayListGrid(_rtIdx) {
 
 	fn_callApi(method, target, req, function (response) {
 		let res = response;
+		let rows = [];
 
 		if (res.code == 200) {
 
-			let data = res.result;
+			for (var i = 0; i < res.result.length; i++){
+				let data = res.result[i];
+
+				var holiday = {
+					"holIdx": data.holIdx,
+					"holidayStartDt": data.holidayStartDt,
+					"holidayEndDt": data.holidayEndDt,
+					"holidayName": data.holidayName,
+					"deleteStaff" : '삭제'
+				};
+
+				rows.push(holiday);
+			}
 
 			let columns;
 			columns = [
-				{"name": "rowNumber", "id": "rowNum", "title": "No", "visible": false},
-				{"name": "holIdx", "id": "minIdx", "title": "휴무일번호"},
+				{"name": "holIdx", "id": "holIdx", "title": "휴무일번호"},
 				{"name": "holidayStartDt", "title": "휴무일시작일", "breakpoints": "xs"},
 				{"name": "holidayEndDt", "title": "휴무일종료일", "breakpoints": "xs"},
 				{"name": "holidayName", "title": "휴무일명", "breakpoints": "xs"},
+				{"name": "deleteStaff", "id":"deleteStaff", "title": "삭제", "type": "text", "formatter" : function () {
+						var actions = $('<div/>');
+
+						var btnDeleteHoliday = ($('<button/>', {'class':'btn btn-outline-danger'})
+							.append('<span/>','삭제')
+							.on("click", this, deleteReserveHoliday))
+							.appendTo(actions);
+
+						return actions;
+					}}
 			];
 
+
+			function deleteReserveHoliday(){
+				var tr = $(this).closest('tr').children();
+				var holIdx = tr[0].textContent;
+				var deleteYn = confirm("해당 휴무일을 삭제하시겠습니까?");
+				if (deleteYn){
+
+					var url = '/api/v1.0/deleteRentCompanyHoliday.do';
+					var req = {
+						holIdx : holIdx
+					};
+
+					$.ajax({
+						url: url,
+						type: 'POST',
+						data: JSON.stringify(req),
+						contentType: 'application/json',
+						cache: false,
+						acync : false,
+						timeout: 10000
+					}).done(function (data, textStatus, jqXHR) {
+
+						if( data.code == 400 ){
+							alert(data.errMsg);
+						}
+						if( data.code == 200 ){
+							location.reload();
+						}
+
+					});
+
+				}
+			}
 			$('#holidayList').empty();
 			$('#holidayList').footable({
 				'calculateWidthOverride': function () {
@@ -865,7 +1014,7 @@ function holidayListGrid(_rtIdx) {
 					}
 				},
 				"columns": columns,
-				"rows": data
+				"rows": rows
 			});
 
 		}// end 200 check
@@ -906,17 +1055,19 @@ function detailValidation(save_type) {
 				let companyZipcode = $('#companyZipcode').val();
 				let companyAddress = $('#companyAddress').val();
 				let companyAddressDetail = $('#companyAddressDetail').val();
+				let companyRegistrationName = $('#companyRegistrationName').val();
 				let companyRegistrationNumber = $('#companyRegistrationNumber').val();
 				let companyContact1 = $('#companyContact1').val();
 
 				let accountBank = $("#sel_bank option:selected").val();
 				let accountNumber = $('#accountNumber').val();
 				let accountHolder = $('#accountHolder').val();
-				let accessYn = $("#sel_accessYn option:selected").val();
 				let carCount = $('#carCount').val();
 				let regCarCount = $('#regCarCount').val();
+				let taxEmail = $('#taxEmail').val();
 
-				let companyRegistrationName = $('#companyRegistrationName').val();
+
+				let accessYn = $("#sel_accessYn option:selected").val();
 				let alarmYn = $("#sel_alarmYn option:selected").val();
 
 
@@ -953,10 +1104,16 @@ function detailValidation(save_type) {
 					accountBank = '0';
 				}
 
+				if(!isValidEmail(taxEmail)) { //is not Valid
+					errorAlert('세금 계산서 이메일', '세금 계산서 이메일은 이메일 형식으로 입력해주세요.');
+					$('#taxEmail').focus();
+					return;
+				}
+
 				if (isEmpty(accessYn) || accessYn == 0 || accessYn == 'N') {
-					accessYn = 'N';
-				} else {
 					accessYn = 'Y';
+				} else {
+					accessYn = 'N';
 				}
 
 				if (isEmpty(alarmYn) || alarmYn == 0 || alarmYn == 'N') {
@@ -980,6 +1137,7 @@ function detailValidation(save_type) {
 						accountBank: accountBank,
 						accountNumber: accountNumber,
 						accountHolder: accountHolder,
+						taxEmail : taxEmail,
 						accessYn: accessYn,
 						companyRegistrationName: companyRegistrationName,
 						branchName: branchName,
@@ -1002,6 +1160,7 @@ function detailValidation(save_type) {
 						accountBank: accountBank,
 						accountNumber: accountNumber,
 						accountHolder: accountHolder,
+						taxEmail : taxEmail,
 						accessYn: accessYn,
 						carCount: carCount,
 						regCarCount: regCarCount,
@@ -1014,7 +1173,7 @@ function detailValidation(save_type) {
 				}
 
 				title = '회원사정보 저장';
-				text = '저장하시겠습니까?'
+				text = '저장하시겠습니까?';
 				icon = 'info';
 				cancel_text = '취소하셨습니다.';
 
@@ -1381,6 +1540,12 @@ function detailValidation(save_type) {
 				let holidayEndDt = formatDate(getHolidayEndDt());				// 휴무일 종료일
 				let holidayName = $("#holidayName").val();						// 휴무일명
 
+
+				if (parseInt((new Date(holidayStartDt).getTime() / (1000 * 60 *60 )) /24) < parseInt((new Date().getTime() / (1000 * 60 *60 )) /24)){
+					errorAlert('휴무일 시작일','휴무일은 과거가 될 수 없습니다.');
+					return;
+				}
+
 				if (isEmpty(holidayStartDt) && chkValDate(holidayStartDt) == null) { // is not empty
 					errorAlert('휴무일 시작일', '시작일은 필수 입력값 입니다');
 					return;
@@ -1396,11 +1561,6 @@ function detailValidation(save_type) {
 					return;
 				}
 
-				if (isEmpty(holidayName)) { // is not empty
-					errorAlert('휴무일명', '휴무일명은 필수 입력값 입니다.');
-					return;
-				}
-
 				if (holIdx === "") {
 					HCRUD = 'insert';
 				}else HCRUD = 'modify';
@@ -1412,7 +1572,6 @@ function detailValidation(save_type) {
 				req = {};
 				req = {
 					rtIdx: _rtIdx,
-					tholIdx: holIdx,
 					holidayStartDt: holidayStartDt,
 					holidayEndDt: holidayEndDt
 				};
@@ -2188,4 +2347,38 @@ function companyRegistrationAutoHyphen() {
 	autoHyphenFromNumber('companyRegistration', 'companyRegistrationNumber', num);
 }
 
+// 댓글 등록
+function comment() {
+
+	var commentMsg = $('#commentMsg').val().trim();
+
+	if (isEmpty(commentMsg)){
+		errorAlert('댓글', '댓글을 입력해주세요.');
+		$('#commentMsg').focus();
+	}
+
+	var url = '/api/v1.0/insertComment.json';
+
+	var req = {
+		rtIdx : getLoginUser().rtIdx,
+		commentMsg : commentMsg,
+		commentPath : 'rentCompany',
+		regId : getLoginUser().urIdx
+	};
+
+	$.ajax({
+		url: url,
+		type: 'POST',
+		data: JSON.stringify(req),
+		contentType: 'application/json',
+		cache: false,
+		async : false,
+		timeout: 10000
+	}).done(function (data, textStatus, jqXHR) {
+
+		if (data.res === 1){
+			swal("댓글 등록 성공", {icon : "success"});
+		}
+	})
+}
 /* =========================== detail function end ====================================== */

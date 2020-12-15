@@ -10,7 +10,7 @@
         <!-- Sidebar - Brand -->
         <a class="sidebar-brand d-flex align-items-center justify-content-center" href=""
            th:href="${#request.getContextPath() + '/'}">
-            <img class="docha_logo" src="/img/logo_white.png" width="100"/>
+            <img class="docha_logo" id="docha_logo" src="https://admin.docha.co.kr/img/mainImg/docha_white_logo.png" width="100"/>
         </a>
 
         <!-- Divider -->
@@ -38,7 +38,7 @@
                 <i class="fas fa-fw fa-user"></i>
                 <span>회원</span>
             </a>
-            <div id="collapseOne" class="collapse" aria-labelledby="collapseOne" data-parent="#accordionSidebar">
+            <div id="collapseOne" class="collapse" aria-labelledby="collapseOne" data-parent="#accordionSidebar" th:classappend="${#request.getRequestURI().startsWith('/mem')} ? 'show' : ''">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">회원관리</h6>
                     <a class="collapse-item" th:if="${#session.getAttribute('LOGIN_SESSION').userRole == 'RA'}" href="" th:href="${#request.getContextPath() + '/mem'}">통합 회원</a>
@@ -47,7 +47,7 @@
                     <div id="collapseAdmin"  class="collapse" aria-labelledby="collapseAdmin" data-parent="#collapseAdmin">
                         <div><a class="collapse-item" href="#" th:href="${#request.getContextPath() + '/mem/admin'}">관리자 관리</a></div>
                         <div><a class="collapse-item" href="#" th:href="${#request.getContextPath() + '/mem/template'}">권한 템플릿</a></div>
-                    </div>
+<!--                    </div>-->
                 </div>
             </div>
         </li>
@@ -58,12 +58,12 @@
                 <i class="fas fa-fw fa-calendar-alt"></i>
                 <span>예약</span>
             </a>
-            <div id="collapseTwo" class="collapse" aria-labelledby="collapseTwo" data-parent="#accordionSidebar">
+            <div id="collapseTwo" class="collapse" aria-labelledby="collapseTwo" data-parent="#accordionSidebar" th:classappend="${#request.getRequestURI().startsWith('/reserve')} ? 'show' : ''">>
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">예약</h6>
                     <a class="collapse-item" href="#" th:href="${#request.getContextPath() + '/reserve'}">예약 관리</a>
                     <a class="collapse-item" href="#" th:if="${#session.getAttribute('LOGIN_SESSION').userRole == 'RA'}" th:href="${#request.getContextPath() + '/reverse'}">역경매</a>
-                    <a class="collapse-item" href="#" th:if="${#session.getAttribute('LOGIN_SESSION').userRole == 'RA'}" th:href="${#request.getContextPath() + '/payment'}">정기 결제</a>
+                    <a class="collapse-item" href="#" th:if="${#session.getAttribute('LOGIN_SESSION').userRole == 'RA'}" th:href="${#request.getContextPath() + '/reserve/payment'}">정기 결제</a>
                 </div>
             </div>
         </li>
@@ -75,7 +75,7 @@
             <i class="fas fa-fw fa-car-side"></i>
             <span>차량</span>
         </a>
-        <div id="collapseThree" class="collapse" aria-labelledby="collapseThree" data-parent="#accordionSidebar">
+        <div id="collapseThree" class="collapse" aria-labelledby="collapseThree" data-parent="#accordionSidebar" th:classappend="${#request.getRequestURI().startsWith('/car')} ? 'show' : ''">>
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">차량</h6>
                 <a class="collapse-item" href="" th:href="${#request.getContextPath() + '/car'}">등록 차량</a>
@@ -110,7 +110,7 @@
             <i class="fas fa-fw fa-tasks"></i>
             <span>정산</span>
         </a>
-        <div id="collapseFour" class="collapse" aria-labelledby="collapseFour" data-parent="#accordionSidebar">
+        <div id="collapseFour" class="collapse" aria-labelledby="collapseFour" data-parent="#accordionSidebar" th:classappend="${#request.getRequestURI().startsWith('/settlement')} ? 'show' : ''">
             <div class="bg-white py-2 collapse-inner rounded">
                 <h6 class="collapse-header">정산</h6>
                 <a class="collapse-item" href="" th:href="${#request.getContextPath() + '/settlement'}">정산</a>
@@ -125,21 +125,21 @@
                 <i class="fas fa-fw fa-globe"></i>
                 <span>사이트</span>
             </a>
-            <div id="collapseFive" class="collapse" aria-labelledby="collapseFive" data-parent="#accordionSidebar">
+            <div id="collapseFive" class="collapse" aria-labelledby="collapseFive" data-parent="#accordionSidebar" th:classappend="${#request.getRequestURI().startsWith('/site')} ? 'show' : ''">
                 <div class="bg-white py-2 collapse-inner rounded">
                     <h6 class="collapse-header">사이트</h6>
                     <a class="collapse-item" href="/site/main">메인</a>
 <!--                    <a class="collapse-item" href="/site/coupon">쿠폰</a>-->
-                    <a class="collapse-item" style="cursor: pointer" onclick="preparingPage()">쿠폰</a>
+<!--                    <a class="collapse-item" style="cursor: pointer" onclick="preparingPage()">쿠폰</a>-->
 <!--                    <a class="collapse-item" href="/site/point">포인트</a>-->
-                    <a class="collapse-item" style="cursor: pointer" onclick="preparingPage()">포인트</a>
+<!--                    <a class="collapse-item" style="cursor: pointer" onclick="preparingPage()">포인트</a>-->
 <!--                    <a class="collapse-item collapsed" href="#" data-toggle="collapse" data-target="#collapseReview" aria-expanded="true" aria-controls="collapseReview">후기</a>-->
-                    <a class="collapse-item collapsed" style="cursor: pointer" onclick="preparingPage()">후기</a>
-                    <div id="collapseReview" class="collapse" aria-labelledby="collapseReview" data-parent="#collapseReview">
-                        <div><a class="collapse-item" href="#" th:href="${#request.getContextPath() + '/site/review'}">이용후기</a></div>
-                        <div><a class="collapse-item" href="#" th:href="${#request.getContextPath() + '/site/rating'}">고객평점</a></div>
-                    </div>
-                    <a class="collapse-item" href="/site/event">이벤트</a>
+<!--                    <a class="collapse-item collapsed" style="cursor: pointer" onclick="preparingPage()">후기</a>-->
+<!--                    <div id="collapseReview" class="collapse" aria-labelledby="collapseReview" data-parent="#collapseReview">-->
+<!--                        <div><a class="collapse-item" href="#" th:href="${#request.getContextPath() + '/site/review'}">이용후기</a></div>-->
+<!--                        <div><a class="collapse-item" href="#" th:href="${#request.getContextPath() + '/site/rating'}">고객평점</a></div>-->
+<!--                    </div>-->
+<!--                    <a class="collapse-item" href="/site/event">이벤트</a>-->
                     <a class="collapse-item" href="/site/question">문의</a>
                     <a class="collapse-item" href="/site/notice">공지사항</a>
                 </div>

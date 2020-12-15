@@ -32,7 +32,9 @@ function initDataTables() {
         orderMulti: true,
         dom: '<\'row\'<\'col-md-6\'l><\'col-md-6\'f>><\'row\'<\'col-md-6\'B>><\'row\'<\'col-md-12\'t>><\'row\'<\'col-md-6\'i><\'col-md-6\'p>>',
         buttons: [{
-            extend: 'csvHtml5',
+            extend: 'excelHtml5',
+            charset: 'UTF-8',
+            bon : true,
             text: '엑셀 다운로드',
             footer: true,
             className: 'exportBtn btn btn-primary'
@@ -624,6 +626,7 @@ function objectConvertToPriceFormat(obj) {
     return resValue;
 }
 
+
 //regDt
 //parameter YYYYMMDD24MISS
 //return yyyy.mm.dd hh:min:sec
@@ -970,7 +973,11 @@ function openDaumAddrApi(target){
             jibunAddress = data.jibunAddress;
             jibunAddressEnglish = data.jibunAddressEnglish;
 
-            $(id).val(jibunAddress);
+            if (jibunAddress === ''){
+                $(id).val(roadAddress);
+            }else {
+                $(id).val(jibunAddress);
+            }
         }
     }).open();
 
@@ -1177,7 +1184,7 @@ function getOnlyNumber(number){
 function fn_ExcelReport(id, title, sheetName) {
 
     var tab_text = '<html xmlns:x="urn:schemas-microsoft-com:office:excel">';
-    tab_text = tab_text + '<head><meta http-equiv="content-type" content="application/vnd.ms-excel; charset=UTF-8">';
+    tab_text = tab_text + '<head><meta http-equiv="content-type" content="application/vnd.ms-excel; charset=UTF-8">\n';
     tab_text = tab_text + '<xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet>'
     tab_text = tab_text + '<x:Name>'+ sheetName +'</x:Name>';
     tab_text = tab_text + '<x:WorksheetOptions><x:Panes></x:Panes></x:WorksheetOptions></x:ExcelWorksheet>';

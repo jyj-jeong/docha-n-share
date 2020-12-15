@@ -23,7 +23,7 @@ public interface DochaAdminReserveInfoMapper {
 
     public int insertReserveInfo(DochaAdminReserveInfoDetailRequest reqParam);
 
-    public List<DochaMap> reserveInfoCheck(DochaAdminReserveInfoDetailRequest reqParam);
+    public List<DochaMap> reserveInfoCheck(DochaMap reqParam);
 
     public DochaAdminReserveInfoResponse selectUserInfo(DochaAdminReserveInfoRequest reqParam);
 

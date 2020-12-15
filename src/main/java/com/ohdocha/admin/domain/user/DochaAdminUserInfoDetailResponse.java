@@ -70,7 +70,7 @@ public class DochaAdminUserInfoDetailResponse extends CommonResponseDto {
     private String useYn;						//사용여부
 
     private int reserveCnt;
-    
+
 	public String getUrIdx() {
 		return urIdx;
 	}

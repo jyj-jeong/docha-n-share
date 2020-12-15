@@ -14,7 +14,7 @@ import java.util.List;
 @Slf4j
 @AllArgsConstructor
 @Service
-public class ReserveServiceImpl extends ServiceExtension implements ReserveService{
+public class ReserveServiceImpl extends ServiceExtension implements ReserveService {
 
     private final DochaAdminReserveInfoMapper reserveInfoMapper;
 
@@ -25,9 +25,9 @@ public class ReserveServiceImpl extends ServiceExtension implements ReserveServi
         String userRole = loginUser.getString("userRole");
         String rtIdx = loginUser.getString("rtIdx");
 
-        if (userRole.equals("RA")){
+        if (userRole.equals("RA")) {
 
-        }else if (userRole.equals("MA") || userRole.equals("MU")){
+        } else if (userRole.equals("MA") || userRole.equals("MU")) {
             reserveInfoRequest.setRtIdx(rtIdx);
         }
 
@@ -41,20 +41,51 @@ public class ReserveServiceImpl extends ServiceExtension implements ReserveServi
         DochaAdminReserveInfoDetailRequest reserveInfoDetailRequest = message.getObject("reserveInfoDetailRequest", DochaAdminReserveInfoDetailRequest.class);
         String rmIdx = KeyMaker.getInsetance().getKeyDeafult("RM");
         reserveInfoDetailRequest.setRmIdx(rmIdx);
+        String addr1;
+        String addr2;
+        String addr3;
+        String addr4;
 
-        int res;
+        String setAddr[] = (reserveInfoDetailRequest.getDeliveryAddr()).split(" ");
+        if (setAddr.length < 5) {
+            addr1 = setAddr[0];
+            addr2 = setAddr[0];
+            addr3 = setAddr[0];
+            addr4 = setAddr[0];
+        } else {
+            addr1 = setAddr[0];
+            addr2 = setAddr[1];
+            addr3 = setAddr[2];
+            addr4 = setAddr[3];
+        }
 
+        int res = 0;
 
         // 예약 체크
-        List<DochaMap> chkReserveInfo = reserveInfoMapper.reserveInfoCheck(reserveInfoDetailRequest);
+        DochaMap param = new DochaMap();
+        param.put("addr1", addr1);
+        param.put("addr2", addr2);
+        param.put("addr3", addr3);
+        param.put("addr4", addr4);
+        param.put("crIdx", reserveInfoDetailRequest.getCrIdx());
+        param.put("rentStartDay", reserveInfoDetailRequest.getRentStartDay());
+        param.put("rentStartTime", reserveInfoDetailRequest.getRentStartTime().substring(0, 2) + reserveInfoDetailRequest.getRentStartTime().substring(3, 5));
+        param.put("rentEndDay", reserveInfoDetailRequest.getRentEndDay());
+        param.put("rentEndTime", reserveInfoDetailRequest.getRentEndTime().substring(0, 2) + reserveInfoDetailRequest.getRentEndTime().substring(3, 5));
 
-        res = reserveInfoMapper.insertReserveInfo(reserveInfoDetailRequest);
+        List<DochaMap> chkReserveInfo = reserveInfoMapper.reserveInfoCheck(param);
 
+        if (chkReserveInfo.size() > 0) {
+            if (reserveInfoDetailRequest.getDeliveryTypeCode().equals("OF") || chkReserveInfo.get(0).get("VISIT_ABLE").toString().equals("1"))
+                res = reserveInfoMapper.insertReserveInfo(reserveInfoDetailRequest);
+            else if (reserveInfoDetailRequest.getDeliveryTypeCode().equals("DL") || chkReserveInfo.get(0).get("DELIVERY_ABLE").toString().equals("1"))
+                res = reserveInfoMapper.insertReserveInfo(reserveInfoDetailRequest);
+        }
 
-        if (res == 1){
+        if (res == 1) {
             message.addData("code", 200);
             message.addData("result", res);
-        }else {
+        } else {
             message.addData("code", 400);
             message.addData("result", res);
         }
@@ -67,10 +98,10 @@ public class ReserveServiceImpl extends ServiceExtension implements ReserveServi
 
         int res = reserveInfoMapper.updateReserveInfo(reserveInfoDetailRequest);
 
-        if (res == 1){
+        if (res == 1) {
             message.addData("code", 200);
             message.addData("result", res);
-        }else {
+        } else {
             message.addData("code", 400);
             message.addData("result", res);
         }

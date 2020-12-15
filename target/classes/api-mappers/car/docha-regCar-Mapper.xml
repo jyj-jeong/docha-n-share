@@ -33,19 +33,19 @@
                                           WHERE CR_IDX = T1.CR_IDX
                                           AND RESERVE_STATUS_CODE = '예약'
                                           AND DATE_FORMAT(IFNULL(NOW(), ''), '%Y-%m-%d %H:%i:%s') >= DATE_FORMAT(RESERVE_DATE-(IFNULL(T3.RETURN_INSPECTION_TIME, 0)/24), '%Y-%m-%d %H:%i:%s')
-                                          AND DATE_FORMAT(IFNULL(NOW(), ''), '%Y-%m-%d %H:%i:%s') < DATE_FORMAT(DATE_FORMAT(RENT_START_DAY||RENT_START_TIME, 'YYYY-MM-DD HH24:mi'), 'YYYY-MM-DD HH24:mi')
+                                          AND DATE_FORMAT(IFNULL(NOW(), ''), '%Y-%m-%d %H:%i:%s') < DATE_FORMAT(DATE_FORMAT(RENT_START_DAY||RENT_START_TIME, '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d %H:%i:%s')
                                         ) > 0 THEN '예약중'
                                        WHEN ( SELECT COUNT(CR_IDX)
                                           FROM DC_RESERVE_MASTER
                                           WHERE CR_IDX = T1.CR_IDX
                                           AND RESERVE_STATUS_CODE = '예약'
-                                          AND DATE_FORMAT(IFNULL(NOW(), ''), 'YYYY-MM-DD HH24:mi') >= DATE_FORMAT(DATE_FORMAT(RENT_END_DAY||RENT_END_TIME, 'YYYY-MM-DD HH24:mi')+(IFNULL(T3.RETURN_INSPECTION_TIME, 0)/24), 'YYYY-MM-DD HH24:mi')
-                                          AND DATE_FORMAT(IFNULL(NOW(), ''), 'YYYY-MM-DD HH24:mi') < DATE_FORMAT(DATE_FORMAT(RENT_END_DAY||RENT_END_TIME, 'YYYY-MM-DD HH24:mi'), 'YYYY-MM-DD HH24:mi')
+                                          AND DATE_FORMAT(IFNULL(NOW(), ''), '%Y-%m-%d %H:%i:%s') >= DATE_FORMAT(DATE_FORMAT(RENT_END_DAY||RENT_END_TIME, '%Y-%m-%d %H:%i:%s')+(IFNULL(T3.RETURN_INSPECTION_TIME, 0)/24), '%Y-%m-%d %H:%i:%s')
+                                          AND DATE_FORMAT(IFNULL(NOW(), ''), '%Y-%m-%d %H:%i:%s') < DATE_FORMAT(DATE_FORMAT(RENT_END_DAY||RENT_END_TIME, '%Y-%m-%d %H:%i:%s'), '%Y-%m-%d %H:%i:%s')
                                         ) > 0 THEN '대기'
                                  ELSE '대기' END AS RESERVE_STATUS       /* 상태 */
                         ,   IFNULL(T1.DAILY_YN, 'Y') AS DAILY_YN            /* 일대여 사용유무 */
                         ,   IFNULL(T1.MONTHLY_YN, 'Y') AS MONTHLY_YN         /* 월대여 사용유무 */
---                         ,   (SELECT COUNT(SU_IDX) FROM DC_CAR_INFO_SUSPEND WHERE CR_IDX = T1.CR_IDX AND DEL_YN != 'Y') AS  SUSPEND_CNT      /* 휴차일 카운트 */
+                        ,   (SELECT COUNT(HOL_IDX) FROM DC_HOLIDAYS WHERE CR_IDX = T1.CR_IDX AND HOLIDAY_END_DT >= DATE_FORMAT(NOW(), '%Y-%m-%d')) AS  SUSPEND_CNT      /* 휴차일 카운트 */
                   FROM   DC_CAR_INFO T1
                   INNER JOIN DC_RENT_COMPANY T2
                                   ON T1.RT_IDX = T2.RT_IDX
@@ -59,24 +59,6 @@
 			1=1
 			<if test=" rtIdx != null and rtIdx != '' ">
 			      AND   T1.RT_IDX    = #{rtIdx}
-			</if>
-			<if test="searchType != null and searchType != '' ">
-				<choose>
-					<when test =' searchType == "companyName" ' >
-						AND <![CDATA[ A.COMPANY_NAME  LIKE '%' ||  #{searchKeyWord} || '%'  ]]>
-					</when>
-					<when test =' searchType == "branchName" ' >
-						AND <![CDATA[ A.BRANCH_NAME  LIKE '%' ||  #{searchKeyWord} || '%'  ]]>
-					</when>
-					<when test =' searchType == "modelName" ' >
-						AND <![CDATA[ A.MODEL_NAME  LIKE '%' ||  #{searchKeyWord} || '%'  ]]>
-					</when>
-					<when test =' searchType == "carNumber" ' >
-						AND <![CDATA[ A.CAR_NUMBER  LIKE '%' ||  #{searchKeyWord} || '%'  ]]>
-					</when>
-					<otherwise>
-					</otherwise>
-				</choose>
 			</if>
 			<if test="reserveStatus != null and reserveStatus != '' ">
 				<![CDATA[
@@ -120,7 +102,6 @@
 		</trim>
 	</update>
 
-
 	<!-- 등록차량 상세 -->
 	<select id="selectRegCarDetail" parameterType="regCarDetailRequest"
 			resultType="regCarDetailResponse">
@@ -162,13 +143,13 @@
                         ,   IFNULL(T3.PROPERTY_DAMAGE_COVER  , '' ) AS    PROPERTY_DAMAGE_COVER /*대물보상금액*/
                         ,   IFNULL(T3.ONSELF_DAMAGE_COVER    , '' ) AS    ONSELF_DAMAGE_COVER   /*자손보상금액*/
                         ,   IFNULL(T3.INSURANCE_COPAYMENT    , '' ) AS    INSURANCE_COPAYMENT   /*고객부담금(보험료)*/
-                        ,   IFNULL(T3.CAR_DAMAGE_COVER       , '' ) AS    CAR_DAMAGE_COVER      /*자차보상금액(면책금)*/
+                        ,   IFNULL(T3.CAR_DAMAGE_COVER       , '' ) AS    CAR_DAMAGE_COVER      /*자차보상금액(고객부담금)*/
                         ,   IFNULL(T3.INSURANCE_COPAYMENT2   , '' ) AS    INSURANCE_COPAYMENT2  /*고객부담금2(보험료)*/
-                        ,   IFNULL(T3.CAR_DAMAGE_COVER2      , '' ) AS    CAR_DAMAGE_COVER2     /*자차보상금액2(면책금)*/
+                        ,   IFNULL(T3.CAR_DAMAGE_COVER2      , '' ) AS    CAR_DAMAGE_COVER2     /*자차보상금액2(고객부담금)*/
                         ,   IFNULL(T3.INSURANCE_COPAYMENT3   , '' ) AS    INSURANCE_COPAYMENT3  /*고객부담금3(보험료)*/
-                        ,   IFNULL(T3.CAR_DAMAGE_COVER3      , '' ) AS    CAR_DAMAGE_COVER3     /*자차보상금액3(면책금)*/
+                        ,   IFNULL(T3.CAR_DAMAGE_COVER3      , '' ) AS    CAR_DAMAGE_COVER3     /*자차보상금액3(고객부담금)*/
                         ,   IFNULL(T3.INSURANCE_COPAYMENT4   , '' ) AS    INSURANCE_COPAYMENT4  /*고객부담금4(보험료)*/
-                        ,   IFNULL(T3.CAR_DAMAGE_COVER4      , '' ) AS    CAR_DAMAGE_COVER4     /*자차보상금액4(면책금)*/
+                        ,   IFNULL(T3.CAR_DAMAGE_COVER4      , '' ) AS    CAR_DAMAGE_COVER4     /*자차보상금액4(고객부담금)*/
                         ,   IFNULL(T3.CAR_DAMAGE1_YN         , 'Y') AS    CAR_DAMAGE1_YN        /*자차1사용유무*/
                         ,   IFNULL(T3.CAR_DAMAGE2_YN         , 'Y') AS    CAR_DAMAGE2_YN        /*자차2사용유무*/
                         ,   IFNULL(T3.CAR_DAMAGE3_YN         , 'Y') AS    CAR_DAMAGE3_YN        /*자차3사용유무*/
@@ -213,31 +194,60 @@
 		</trim>
 	</select>
 
-	<select id="selectRegCarDetailOption" parameterType="regCarDetailRequest"
+	<!-- 기간요금제 회원사 차량 리스트 -->
+	<select id="selectRentCompanyCarList" parameterType="regCarDetailRequest"
 			resultType="regCarDetailResponse">
 		<![CDATA[
+                  SELECT
+                            IFNULL(T1.CR_IDX                 , '' ) AS    CR_IDX                /*차량idx*/
+                        ,   IFNULL(T1.RT_IDX                 , '' ) AS    RT_IDX                /*제휴사idx*/
+                        ,   IFNULL(T2.COMPANY_NAME           , '' ) AS    COMPANY_NAME          /*회사명*/
+                        ,   IFNULL(T2.BRANCH_NAME            , '' ) AS    BRANCH_NAME           /*지점명*/
+                        ,   IFNULL(T1.MD_IDX                 , '' ) AS    MD_IDX                /*모델idx*/
+                        ,   IFNULL(T1.MODEL_NAME              , '' ) AS    MODEL_NAME            /*모델명*/
+                        ,   IFNULL(T1.MODEL_DETAIL_NAME      , '' ) AS    MODEL_DETAIL_NAME     /*모델상세명*/
+                        ,   IFNULL(T1.CARTYPE_CODE      , '' ) AS    CAR_TYPE_CODE        /*차종*/
+                  FROM DC_CAR_INFO T1
+         INNER JOIN DC_RENT_COMPANY T2
+                    ON T1.RT_IDX = T2.RT_IDX
+         ]]>
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			 <![CDATA[   T1.DEL_YN='N' ]]>
+			<if test="rtIdx != null and rtIdx != ''">
+				<![CDATA[ AND T1.RT_IDX = #{rtIdx} ]]>
+			</if>
+			<if test="cartypeCode != null and cartypeCode != ''">
+				<![CDATA[ AND T1.CARTYPE_CODE = #{cartypeCode} ]]>
+			</if>
+		</trim>
+	</select>
+
+	<select id="selectRegCarDetailOption" parameterType="regCarDetailRequest"
+			resultType="dcCarInfoOption">
+		<![CDATA[
             SELECT
-                     IFNULL(T1.CO_IDX              , '' ) AS CO_IDX               /*차량옵션idx*/
+                   IFNULL(T1.CO_IDX              , '' ) AS CO_IDX               /*차량옵션idx*/
                ,   IFNULL(T1.CR_IDX              , '' ) AS CR_IDX               /*차량idx*/
                ,   IFNULL(T1.OPTION_DETAIL_CODE  , '' ) AS OPTION_DETAIL_CODE   /*옵션상세code*/
                ,   IFNULL(T1.DEL_YN              , '' ) AS DEL_YN               /*삭제여부*/
             FROM   DC_CAR_INFO_OPTION T1
-
+            WHERE IFNULL(T1.DEL_YN, 'N') = 'N'
      ]]>
-		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			<if test="crIdx != null and crIdx != ''">
-				<![CDATA[   T1.CR_IDX = #{crIdx} ]]>
-			</if>
-			<![CDATA[   T1.DEL_YN='N' ]]>
-		</trim>
+	<if test="crIdx != null and crIdx != ''">
+		<![CDATA[ AND T1.CR_IDX = #{crIdx} ]]>
+	</if>
 	</select>
+
+    <delete id="deleteRegCarDetailOption" parameterType="regCarDetailRequest">
+           <![CDATA[ DELETE FROM DC_CAR_INFO_OPTION WHERE CR_IDX = #{crIdx} ]]>
+    </delete>
 
 	<!-- 차량정보 UPDATE ( 차량 부분 ) -->
 	<update  id="updateDcCarInfo" parameterType="regCarDetailRequest">
 		<![CDATA[ UPDATE DC_CAR_INFO ]]>
-		<trim prefix="SET" suffixOverrides=",">
+		<trim prefix="SET" prefixOverrides=",">
 			<!-- 차량 기본정보 -->
-			<if test="rtIdx != null"><![CDATA[  RT_IDX            = #{rtIdx}            ]]></if>   <!-- 회원사순번 -->
+			<if test="rtIdx != null"><![CDATA[  ,RT_IDX            = #{rtIdx}            ]]></if>   <!-- 회원사순번 -->
 			<if test="carNumber       != null"><![CDATA[  , CAR_NUMBER         = #{carNumber}        ]]></if>   <!-- 차량번호 -->
 			<if test="year             != null"><![CDATA[  , YEAR               = #{year}              ]]></if>   <!-- 연식 -->
 			<if test="carRegDt          != null"><![CDATA[  , CAR_REG_DT         = #{carRegDt}           ]]></if>   <!-- 차량등록일 -->
@@ -248,6 +258,10 @@
 			<if test="colorName       != null"><![CDATA[  , COLOR_NAME          = #{colorName}        ]]></if>    <!-- 색상 -->
 			<if test="mileage         != null"><![CDATA[  , MILEAGE             = #{mileage}           ]]></if>    <!-- 주행거리 -->
 			<if test="ageLimit         != null"><![CDATA[  , AGE_LIMIT          = #{ageLimit}           ]]></if>    <!-- 대여연령제한(장기,단기) -->
+			<if test="dailyYn         != null"><![CDATA[  , DAILY_YN          = #{dailyYn}           ]]></if>    <!-- 일대여 -->
+			<if test="monthlyYn         != null"><![CDATA[  , MONTHLY_YN          = #{monthlyYn}           ]]></if>    <!-- 월대여 -->
+			<if test="modId         != null"><![CDATA[  , MOD_ID          = #{modId}        ]]></if>    <!-- 월대여 -->
+			<if test="modDt         != null"><![CDATA[  , MOD_DT          = NOW()          ]]></if>    <!-- 월대여 -->
 
 		</trim>
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
@@ -276,18 +290,22 @@
 		<![CDATA[ UPDATE DC_CAR_INFO_INSURANCE ]]>
 		<trim prefix="SET" suffixOverrides=",">
 			<!-- 차량 기본정보 -->
-			<if test="rtIdx != null"><![CDATA[  RT_IDX            = #{rtIdx}            ]]></if>   <!-- 회원사순번 -->
-			<if test="onselfDamageCover       != null"><![CDATA[  , ONSELF_DAMAGE_COVER         = #{onselfDamageCover}        ]]></if>   <!-- 차량번호 -->
-			<if test="personalCover             != null"><![CDATA[  , PERSONAL_COVER               = #{personalCover}              ]]></if>   <!-- 연식 -->
-			<if test="propertyDamageCover          != null"><![CDATA[  , PROPERTY_DAMAGE_COVER         = #{propertyDamageCover}           ]]></if>   <!-- 차량등록일 -->
-			<if test="carDamageCover       != null"><![CDATA[  , CAR_DAMAGE_COVER         = #{carDamageCover}        ]]></if>   <!-- 차종명 -->
-			<if test="insuranceCopayment   != null"><![CDATA[  , INSURANCE_COPAYMENT      = #{insuranceCopayment}     ]]></if>   <!-- 차종상세명 -->
-			<if test="carDamageCover2          != null"><![CDATA[  , CAR_DAMAGE_COVER2            = #{carDamageCover2}             ]]></if>   <!-- 차종순번 -->
-			<if test="insuranceCopayment2         != null"><![CDATA[  , INSURANCE_COPAYMENT2          = #{insuranceCopayment2}           ]]></if>    <!-- 연료code -->
-			<if test="carDamageCover3       != null"><![CDATA[  , CAR_DAMAGE_COVER3          = #{carDamageCover3}        ]]></if>    <!-- 색상 -->
-			<if test="insuranceCopayment3         != null"><![CDATA[  , INSURANCE_COPAYMENT3             = #{insuranceCopayment3}           ]]></if>    <!-- 주행거리 -->
-			<if test="carDamageCover4         != null"><![CDATA[  , CAR_DAMAGE_COVER4          = #{carDamageCover4}           ]]></if>    <!-- 대여연령제한(장기,단기) -->
-			<if test="insuranceCopayment4         != null"><![CDATA[  , INSURANCE_COPAYMENT4             = #{insuranceCopayment4}           ]]></if>    <!-- 주행거리 -->
+			<if test="rtIdx                       != null"><![CDATA[    RT_IDX                   = #{rtIdx}                 ]]></if>   <!-- 회원사순번 -->
+			<if test="onselfDamageCover           != null"><![CDATA[  , ONSELF_DAMAGE_COVER      = #{onselfDamageCover}        ]]></if>   <!-- 차량번호 -->
+			<if test="personalCover               != null"><![CDATA[  , PERSONAL_COVER           = #{personalCover}              ]]></if>   <!-- 연식 -->
+			<if test="propertyDamageCover         != null"><![CDATA[  , PROPERTY_DAMAGE_COVER    = #{propertyDamageCover}           ]]></if>   <!-- 차량등록일 -->
+			<if test="carDamageCover              != null"><![CDATA[  , CAR_DAMAGE_COVER         = #{carDamageCover}        ]]></if>   <!-- 차종명 -->
+			<if test="insuranceCopayment          != null"><![CDATA[  , INSURANCE_COPAYMENT      = #{insuranceCopayment}     ]]></if>   <!-- 차종상세명 -->
+			<if test="carDamageCover2             != null"><![CDATA[  , CAR_DAMAGE_COVER2        = #{carDamageCover2}             ]]></if>   <!-- 차종순번 -->
+			<if test="insuranceCopayment2         != null"><![CDATA[  , INSURANCE_COPAYMENT2     = #{insuranceCopayment2}           ]]></if>    <!-- 연료code -->
+			<if test="carDamageCover3             != null"><![CDATA[  , CAR_DAMAGE_COVER3        = #{carDamageCover3}        ]]></if>    <!-- 색상 -->
+			<if test="insuranceCopayment3         != null"><![CDATA[  , INSURANCE_COPAYMENT3     = #{insuranceCopayment3}           ]]></if>    <!-- 주행거리 -->
+			<if test="carDamageCover4             != null"><![CDATA[  , CAR_DAMAGE_COVER4        = #{carDamageCover4}           ]]></if>    <!-- 대여연령제한(장기,단기) -->
+			<if test="insuranceCopayment4         != null"><![CDATA[  , INSURANCE_COPAYMENT4     = #{insuranceCopayment4}           ]]></if>    <!-- 주행거리 -->
+			<if test="carDamage1Yn                != null"><![CDATA[  , CAR_DAMAGE1_YN    		 = #{carDamage1Yn}           ]]></if>    <!-- 주행거리 -->
+			<if test="carDamage2Yn        		  != null"><![CDATA[  , CAR_DAMAGE2_YN    		 = #{carDamage2Yn}           ]]></if>    <!-- 주행거리 -->
+			<if test="carDamage3Yn        		  != null"><![CDATA[  , CAR_DAMAGE3_YN    		 = #{carDamage3Yn}           ]]></if>    <!-- 주행거리 -->
+			<if test="carDamage4Yn        		  != null"><![CDATA[  , CAR_DAMAGE4_YN    		 = #{carDamage4Yn}           ]]></if>    <!-- 주행거리 -->
 
 		</trim>
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
@@ -328,6 +346,8 @@
 			<if test="deliveryStandardPay         != null"><![CDATA[  , DELIVERY_STANDARD_PAY             = #{deliveryStandardPay}           ]]></if>    <!-- 주행거리 -->
 			<if test="deliveryAddPay         != null"><![CDATA[  , DELIVERY_ADD_PAY          = #{deliveryAddPay}           ]]></if>    <!-- 대여연령제한(장기,단기) -->
 			<if test="deliveryMaxRate         != null"><![CDATA[  , DELIVERY_MAX_RATE             = #{deliveryMaxRate}           ]]></if>    <!-- 주행거리 -->
+			<if test="modId         != null"><![CDATA[  , MOD_ID             = #{modId}           ]]></if>    <!-- 변경자 Idx -->
+			, MOD_DT = NOW()
 
 		</trim>
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
@@ -388,6 +408,21 @@
          ,   'N'
          ,     #{regId}
          ,   NOW()
+      )
+   ]]>
+    </insert>
+
+	<!-- 차량 옵션정보 INSERT -->
+	<insert  id="insertRegCarInfoOption" parameterType="dcCarInfoOption">
+   <![CDATA[
+        INSERT INTO DC_CAR_INFO_OPTION (
+		  CR_IDX
+		 , OPTION_DETAIL_CODE
+		 , DEL_YN
+      ) VALUES (
+             #{crIdx}
+         ,   #{optionDetailCode}
+         ,   'N'
       )
    ]]>
     </insert>
@@ -479,7 +514,6 @@
       )
    ]]>
     </insert>
-
 
 	<select id="selectReserveAmt" parameterType="regCarDetailRequest"
 			resultType="regCarDetailResponse">

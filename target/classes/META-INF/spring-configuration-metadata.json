@@ -131,6 +131,16 @@
       "sourceType": "com.ohdocha.admin.config.CustomDataSourceProperties"
     },
     {
+      "name": "com.ohdocha.admin.imp-key",
+      "type": "java.lang.String",
+      "sourceType": "com.ohdocha.admin.config.Properties"
+    },
+    {
+      "name": "com.ohdocha.admin.imp-secret",
+      "type": "java.lang.String",
+      "sourceType": "com.ohdocha.admin.config.Properties"
+    },
+    {
       "name": "com.ohdocha.admin.server-host",
       "type": "java.lang.String",
       "sourceType": "com.ohdocha.admin.config.Properties"
@@ -152,6 +162,11 @@
     },
     {
       "name": "com.ohdocha.admin.temp-folder-path",
+      "type": "java.lang.String",
+      "sourceType": "com.ohdocha.admin.config.Properties"
+    },
+    {
+      "name": "com.ohdocha.admin.token-url",
       "type": "java.lang.String",
       "sourceType": "com.ohdocha.admin.config.Properties"
     },

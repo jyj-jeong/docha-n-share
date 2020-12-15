@@ -552,7 +552,8 @@ function detailValidation(save_type){
                 let userRole 			= $("#sel_userRole option:selected").val();			//권한
                 let sel_userStatusCode 	= $("#sel_userStatusCode option:selected").val();	//회원상태코드
                 let userGender 			= $("#sel_userGender option:selected").val();		//성별
-                let useYn 	        = $('inpu:checkbox[id="useYn"]').is(":checked"); 	   //사용여부
+                let useYn 	        = $('input:checkbox[id="useYn"]').is(":checked"); 	   //사용여부
+                useYn = useYn === true ? 1 : 0;
 
                 if(isEmpty(userId)) { //is not empty
                     errorAlert('아이디', '아이디는 필수 입력값 입니다.');

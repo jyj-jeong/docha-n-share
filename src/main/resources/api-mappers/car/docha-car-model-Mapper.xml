@@ -151,7 +151,10 @@
          ]]>
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
 			<if test="modelName != null and modelName != '' ">
-				<![CDATA[   T1.MODEL_NAME = #{modelName}   ]]>
+				<![CDATA[  AND  T1.MODEL_NAME = #{modelName}   ]]>
+			</if>
+			<if test="year != null and year != '' ">
+				<![CDATA[  AND T1.YEAR = #{year}   ]]>
 			</if>
 		</trim>
 

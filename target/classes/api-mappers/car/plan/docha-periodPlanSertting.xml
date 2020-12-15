@@ -22,15 +22,14 @@
 						,	IFNULL(T1.REG_DT                    , '') AS REG_DT                     					/*등록일시*/
 						,	IFNULL(T1.MOD_ID                    , '') AS MOD_ID                     					/*수정자*/
 						,	IFNULL(T1.MOD_DT                    , '') AS MOD_DT                     					/*수정일시*/
-						,	IFNULL(T1.DEL_YN				     , '') AS DEL_YN				     					/*삭제여부*/
+						,	IFNULL(T1.DEL_YN				     , 'N') AS DEL_YN				     					/*삭제여부*/
 				     	,	(SELECT COUNT(CR_IDX) FROM DC_CAR_INFO WHERE PER_IDX = T1.PER_IDX) AS SETTING_CAR_CNT 	/* 설정차량대수 */
 				     FROM DC_PAYMENT_PERIOD T1
 				     INNER JOIN DC_RENT_COMPANY T2
-				     		 ON T1.RT_IDX = T2.RT_IDX
-
-         ]]>
-
-
+				     		 ON T1.RT_IDX = T2.RT_IDX ]]>
+			<if test=" rtIdx != null and rtIdx != '' ">
+				<![CDATA[  AND   T1.RT_IDX    = #{rtIdx} ]]>
+			</if>
 	</select>    
 	
 	
@@ -77,6 +76,7 @@
     	<trim prefix="SET" suffixOverrides=",">
     		<if test="perIdx                 	!= null"><![CDATA[    PER_IDX					= #{perIdx}  				]]></if>	<!--기간요금idx -->
 			<if test="rtIdx                  	!= null"><![CDATA[  , RT_IDX					= #{rtIdx}  				]]></if>	<!--회원사idx -->
+			<if test="crIdx                  	!= null"><![CDATA[  , CR_IDX					= #{crIdx}  				]]></if>	<!--차량 -->
 			<if test="periodStartDt          	!= null"><![CDATA[  , PERIOD_START_DT			= #{periodStartDt}  		]]></if>	<!--기간시작일 -->
 			<if test="periodEndDt            	!= null"><![CDATA[  , PERIOD_END_DT				= #{periodEndDt}  			]]></if>	<!--기간종료일 -->
 			<if test="discountExtrachargeCode	!= null"><![CDATA[  , DISCOUNT_EXTRACHARGE_CODE	= #{discountExtrachargeCode}]]></if>	<!--할인할증구분 -->
@@ -98,6 +98,7 @@
 	<![CDATA[ 
 	     INSERT INTO DC_PAYMENT_PERIOD (
 	     	   RT_IDX
+	     	,  CR_IDX
 			,  PERIOD_ETC
 			,  PERIOD_START_DT
 			,  PERIOD_END_DT
@@ -108,7 +109,8 @@
 			,  REG_DT
 		) VALUES (
 				#{rtIdx}
-			,	#{periodEtc}              
+			,	#{crIdx}
+			,	#{periodEtc}
 			,  	#{periodStartDt}    
 			,  	#{periodEndDt}
 			,  	#{discountExtrachargeCode}

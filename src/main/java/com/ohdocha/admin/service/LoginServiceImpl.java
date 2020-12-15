@@ -39,9 +39,9 @@ public class LoginServiceImpl extends ServiceExtension implements LoginService{
                 message.addData("userInfo", userInfo);
                 message.addData("code", 200);
 
-            } else if (userRole.equals("MA") || userRole.equals("MU")) {
+            } else if (userRole.equals("MA") || userRole.equals("MU") || userRole.equals("RU")) {
 
-                if (userInfoResponse.getAccessYn().equals("Y")){
+                if (userInfoResponse.getAccessYn().equals("Y") && userInfoResponse.getUseYn() == 1){
 
                     DochaMap userInfo = new DochaMap();
                     userInfo.set("urIdx", userInfoResponse.getUrIdx());

@@ -768,8 +768,9 @@ function initDetailSelectBox(_data){
 
 		if(!isEmpty(_data)){
 			let modelName = _data.modelName; //모델명
+			let year = _data.year; //연식
 			$("#sel_modelName").val(modelName).prop("selected", true);
-			selectCarModelDetail(modelName, _data);
+			selectCarModelDetail(modelName, year, _data);
 		}
 
 		// }
@@ -880,14 +881,15 @@ function initDetailSelectBox(_data){
 /*
  * 차종상세 정보 가져오기
  */
-function selectCarModelDetail(modelName, _data){
+function selectCarModelDetail(modelName, year, _data){
 
 	// 차종상세  select box
 	let target = 'selectCarModelDetailForSelectBox';
 	let method = 'select';
 	//연료
 	let req = {
-		modelName:modelName
+		modelName:modelName,
+        year : year
 	};
 
 	fn_callApi(method, target, req, function (response) {
@@ -930,7 +932,8 @@ function selectCarModelDetail(modelName, _data){
  */
 function modelNamechange() {
 	let modelName = $("#sel_modelName option:selected").val(); //모델명
-	selectCarModelDetail(modelName, null);
+    let year = $("#year option:selected").val();
+	selectCarModelDetail(modelName, year,  null);
 }
 
 /*
@@ -1177,11 +1180,11 @@ function detailValidation(save_type){
 				let carChassisNumber 	= $("#carChassisNumber").val();
 				let year 				= $("#year option:selected").val();
 				let carRegDt 			= $("#carRegDt option:selected").val();
-				let modelName 			= $("#sel_modelName").val().trim();
+				let modelName 			= $("#sel_modelName").val();
 				let modelDetailName 	= $("#sel_modelDetailName option:selected").val();
-				let mdIdx 				= $("#sel_modelDetailName").val().trim();
-				let fuelCode			= $("#sel_fuel").val().trim();
-				let colorName 			= $("#sel_colorName").val().trim();
+				let mdIdx 				= $("#sel_modelDetailName").val();
+				let fuelCode			= $("#sel_fuel").val();
+				let colorName 			= $("#sel_colorName").val();
 				let mileage 			= getPureText($("#mileage").val());
 
 				let ageLimit 				= $("#sel_ageLimit option:selected").val();
@@ -1420,9 +1423,9 @@ function detailValidation(save_type){
 			case 'savePaymentinfo':	// 기본요금정보
 				let pyTIdx 				= $("#sel_pyTIdx option:selected").val();
 				let dailyStandardPay 	= getPureText($('#dailyStandardPay').val().trim());
-				let dailyMaxRate 		= getPureText($('#dailyMaxRate').val().trim());
+				let dailyMaxRate 		= getPureText($('#dailyMaxRate').val().trim()).trim();
 				let monthlyStandardPay 	= getPureText($('#monthlyStandardPay').val().trim());
-				let monthlyMaxRate 		= getPureText($('#monthlyMaxRate').val().trim());
+				let monthlyMaxRate 		= getPureText($('#monthlyMaxRate').val().trim()).trim();
 				let month3Deposit 		= getPureText($('#month3Deposit').val().trim());
 				let month6Deposit 		= getPureText($('#month6Deposit').val().trim());
 				let month9Deposit 		= getPureText($('#month9Deposit').val().trim());

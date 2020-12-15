@@ -1111,9 +1111,9 @@ function detailValidation(save_type) {
 				}
 
 				if (isEmpty(accessYn) || accessYn == 0 || accessYn == 'N') {
-					accessYn = 'N';
-				} else {
 					accessYn = 'Y';
+				} else {
+					accessYn = 'N';
 				}
 
 				if (isEmpty(alarmYn) || alarmYn == 0 || alarmYn == 'N') {

@@ -75,13 +75,13 @@
                                     <td th:text="${calculateInfo.getAccountExpDt()}"></td>
                                     <td th:text="${calculateInfo.getCompanyCount()}"></td>
                                     <td th:text="${calculateInfo.getRmCount()}"></td>
-                                    <td th:text="${#numbers.formatInteger(calculateInfo.getPaymentAmount(), 3, 'COMMA')}"></td>
-                                    <td th:text="${#numbers.formatInteger(calculateInfo.getDisCountFee(), 3 , 'COMMA')}"></td>
-                                    <td th:text="${#numbers.formatInteger(calculateInfo.getTotalFee(), 3 , 'COMMA')}"></td>
-                                    <td th:text="${#numbers.formatInteger(calculateInfo.getDochaDisFee(), 3 , 'COMMA')}"></td>
-                                    <td th:text="${#numbers.formatInteger(calculateInfo.getOnMissFee(), 3, 'COMMA')}"></td>
-                                    <td th:text="${#numbers.formatInteger(calculateInfo.getSuccessFee(), 3 , 'COMMA')}"></td>
-                                    <td th:text="${#numbers.formatInteger(calculateInfo.getOnMissFee(), 3 , 'COMMA')}"></td>
+                                    <td th:text="${calculateInfo.getPaymentAmount() == '0'? '0': #numbers.formatInteger(calculateInfo.getPaymentAmount(), 3, 'COMMA')}"></td>
+                                    <td th:text="${calculateInfo.getDisCountFee() == '0'? '0': #numbers.formatInteger(calculateInfo.getDisCountFee(), 3 , 'COMMA')}"></td>
+                                    <td th:text="${calculateInfo.getTotalFee() == '0'? '0': #numbers.formatInteger(calculateInfo.getTotalFee(), 3 , 'COMMA')}"></td>
+                                    <td th:text="${calculateInfo.getDochaDisFee() == '0'? '0': #numbers.formatInteger(calculateInfo.getDochaDisFee(), 3 , 'COMMA')}"></td>
+                                    <td th:text="${calculateInfo.getOnMissFee() == '0'? '0': #numbers.formatInteger(calculateInfo.getOnMissFee(), 3, 'COMMA')}"></td>
+                                    <td th:text="${calculateInfo.getSuccessFee() == '0'? '0': #numbers.formatInteger(calculateInfo.getSuccessFee(), 3 , 'COMMA')}"></td>
+                                    <td th:text="${calculateInfo.getOnMissFee() == '0'? '0': #numbers.formatInteger(calculateInfo.getOnMissFee(), 3 , 'COMMA')}"></td>
                                 </tr>
                                 </tbody>
                             </table>

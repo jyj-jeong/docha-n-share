@@ -173,7 +173,7 @@
       ,IFNULL(D.ONSELF_DAMAGE_COVER , '' ) AS    ONSELF_DAMAGE_COVER   /*자손보상금액*/
       ,A.INSURANCE_FEE /* 보험금 */
       --,D.INSURANCE_COPAYMENT
-      ,D.CAR_DAMAGE_COVER /* 면책금 */
+      ,D.CAR_DAMAGE_COVER /* 고객부담금 */
       ,A.RENT_FEE /* 대여금 */
       ,'0' AS DELIVERY_STANDARD_PAY /* 배달료 */
       ,A.PAYMENT_AMOUNT

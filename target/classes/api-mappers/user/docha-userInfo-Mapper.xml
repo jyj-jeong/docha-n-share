@@ -352,7 +352,7 @@
 				,  #{socialLoginEmail}
 				,  #{userWithdrawDate}
 				,  #{loginFailCount}
-				,  #{useYn}
+				,  IFNULL(#{useYn}, 1)
 				,  NOW()
 				,  #{regId}
 				,  NOW()

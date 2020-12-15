@@ -30,12 +30,6 @@ public class LoginController extends ControllerExtension{
     public String getLoginView(HttpServletRequest request, HttpServletResponse response, ModelMap modelMap) {
         Object adminObj = request.getSession().getAttribute("LOGIN_SESSION");
 
-//        if (adminObj instanceof AdminInfoDto) {
-//            String redirectUrl = getRequestParam(request, "redirectUrl");
-//            if (!TextUtils.isEmpty(redirectUrl)) sendRedirect(response, redirectUrl);
-//            else sendRedirect(response, request.getContextPath() + "/");
-//        }
-
         modelMap.addAttribute("serverVersion", properties.getServerVersion());
         modelMap.addAttribute("serverName", properties.getServerName());
 

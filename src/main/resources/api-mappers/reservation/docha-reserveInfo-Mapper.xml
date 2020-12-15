@@ -451,7 +451,7 @@
 
 
     <!-- 예약체크 -->
-    <select id="reserveInfoCheck" parameterType="reserveInfoDetailRequest" resultType="DochaMap">
+    <select id="reserveInfoCheck" parameterType="DochaMap" resultType="DochaMap">
    		<![CDATA[
         SELECT *
         FROM (
@@ -528,10 +528,10 @@
                     FROM (
                              SELECT RT_IDX
                              FROM DC_RENT_COMPANY_RESERVE_MIN
-                             WHERE ((MINIMUM_START_DT <= #{startDate}
-                                 AND MINIMUM_END_DT >= #{startDate})
-                                 OR (MINIMUM_START_DT <= #{endDate}
-                                     AND MINIMUM_END_DT >= #{endDate}))
+                             WHERE ((MINIMUM_START_DT <= #{rentStartDay}
+                                 AND MINIMUM_END_DT >= #{rentStartDay})
+                                 OR (MINIMUM_START_DT <= #{rentEndDay}
+                                     AND MINIMUM_END_DT >= #{rentEndDay}))
                                AND 3 < MINIMUM_TIME
                          ) S2
                     WHERE B1.RT_IDX = S2.RT_IDX
@@ -542,10 +542,10 @@
                     FROM (
                              SELECT RT_IDX
                              FROM DC_HOLIDAYS
-                             WHERE ((HOLIDAY_START_DT <= #{startDate}
-                                 AND HOLIDAY_END_DT >= #{startDate})
-                                 OR (HOLIDAY_START_DT <= #{endDate}
-                                     AND HOLIDAY_END_DT >= #{endDate}))
+                             WHERE ((HOLIDAY_START_DT <= #{rentStartDay}
+                                 AND HOLIDAY_END_DT >= #{rentStartDay})
+                                 OR (HOLIDAY_START_DT <= #{rentEndDay}
+                                     AND HOLIDAY_END_DT >= #{rentEndDay}))
                                AND CR_IDX IS NULL
                              GROUP BY RT_IDX
                          ) S3
@@ -556,10 +556,10 @@
                     FROM (
                              SELECT RT_IDX
                              FROM DC_HOLIDAYS
-                             WHERE ((HOLIDAY_START_DT <= #{startDate}
-                                 AND HOLIDAY_END_DT >= #{startDate})
-                                 OR (HOLIDAY_START_DT <= #{endDate}
-                                     AND HOLIDAY_END_DT >= #{endDate}))
+                             WHERE ((HOLIDAY_START_DT <= #{rentStartDay}
+                                 AND HOLIDAY_END_DT >= #{rentStartDay})
+                                 OR (HOLIDAY_START_DT <= #{rentEndDay}
+                                     AND HOLIDAY_END_DT >= #{rentEndDay}))
                                AND RT_IDX = 'all'
                              GROUP BY RT_IDX
                          ) S4
@@ -580,17 +580,17 @@
 
             WHERE (
                               (CASE
-                                   WHEN DAYOFWEEK(#{startDate}) = 1 OR 7 THEN B2.WEEKEND_DELIVERY_START
-                                   ELSE B2.WEEKDAY_DELIVERY_START END) <= #{startTime} AND
+                                   WHEN DAYOFWEEK(#{rentStartDay}) = 1 OR 7 THEN B2.WEEKEND_DELIVERY_START
+                                   ELSE B2.WEEKDAY_DELIVERY_START END) <= #{rentStartTime} AND
                               (CASE
-                                   WHEN DAYOFWEEK(#{startDate}) = 1 OR 7 THEN B2.WEEKDAY_DELIVERY_END
-                                   ELSE B2.WEEKEND_DELIVERY_END END) >= #{startTime} AND
+                                   WHEN DAYOFWEEK(#{rentStartDay}) = 1 OR 7 THEN B2.WEEKDAY_DELIVERY_END
+                                   ELSE B2.WEEKEND_DELIVERY_END END) >= #{rentStartTime} AND
                               (CASE
-                                   WHEN DAYOFWEEK(#{endDate}) = 1 OR 7 THEN B2.WEEKEND_DELIVERY_START
-                                   ELSE B2.WEEKDAY_DELIVERY_START END) <= #{endTime}
+                                   WHEN DAYOFWEEK(#{rentEndDay}) = 1 OR 7 THEN B2.WEEKEND_DELIVERY_START
+                                   ELSE B2.WEEKDAY_DELIVERY_START END) <= #{rentEndTime}
                           AND (CASE
-                                   WHEN DAYOFWEEK(#{endDate}) = 1 OR 7 THEN B2.WEEKDAY_DELIVERY_END
-                                   ELSE B2.WEEKEND_DELIVERY_END END) >= #{endTime})
+                                   WHEN DAYOFWEEK(#{rentEndDay}) = 1 OR 7 THEN B2.WEEKDAY_DELIVERY_END
+                                   ELSE B2.WEEKEND_DELIVERY_END END) >= #{rentEndTime})
                         AND (
 
                     (B3.ADDR_DEPTH1 LIKE   '%' #{addr1} '%' AND B3.ADDR_DEPTH2 LIKE    ''
@@ -618,15 +618,15 @@
                  ON B1.RT_IDX = B2.RT_IDX
             WHERE (
                               (CASE
-                                   WHEN DAYOFWEEK(#{startDate}) = 1 OR 7 THEN B2.WEEKEND_OPEN_START
-                                   ELSE B2.WEEKDAY_OPEN_START END) <= #{startTime} AND
-                              (CASE WHEN DAYOFWEEK(#{startDate}) = 1 OR 7 THEN B2.WEEKDAY_OPEN_END ELSE B2.WEEKEND_OPEN_END END) >=
-                              #{startTime} AND
+                                   WHEN DAYOFWEEK(#{rentStartDay}) = 1 OR 7 THEN B2.WEEKEND_OPEN_START
+                                   ELSE B2.WEEKDAY_OPEN_START END) <= #{rentStartTime} AND
+                              (CASE WHEN DAYOFWEEK(#{rentStartDay}) = 1 OR 7 THEN B2.WEEKDAY_OPEN_END ELSE B2.WEEKEND_OPEN_END END) >=
+                              #{rentStartTime} AND
                               (CASE
-                                   WHEN DAYOFWEEK(#{endDate}) = 1 OR 7 THEN B2.WEEKEND_OPEN_START
-                                   ELSE B2.WEEKDAY_OPEN_START END) <= #{endTime}
-                          AND (CASE WHEN DAYOFWEEK(#{endDate}) = 1 OR 7 THEN B2.WEEKDAY_OPEN_END ELSE B2.WEEKEND_OPEN_END END) >=
-                              #{endTime})
+                                   WHEN DAYOFWEEK(#{rentEndDay}) = 1 OR 7 THEN B2.WEEKEND_OPEN_START
+                                   ELSE B2.WEEKDAY_OPEN_START END) <= #{rentEndTime}
+                          AND (CASE WHEN DAYOFWEEK(#{rentEndDay}) = 1 OR 7 THEN B2.WEEKDAY_OPEN_END ELSE B2.WEEKEND_OPEN_END END) >=
+                              #{rentEndTime})
         ) T5 ON T1.RT_IDX = T5.RT_IDX
 
         WHERE NOT EXISTS(
@@ -634,10 +634,10 @@
                 FROM (
                          SELECT CR_IDX
                          FROM DC_HOLIDAYS
-                         WHERE ((HOLIDAY_START_DT <= #{startDate}
-                             AND HOLIDAY_END_DT >= #{startDate})
-                             OR (HOLIDAY_START_DT <= #{endDate}
-                                 AND HOLIDAY_END_DT >= #{endDate}))
+                         WHERE ((HOLIDAY_START_DT <= #{rentStartDay}
+                             AND HOLIDAY_END_DT >= #{rentStartDay})
+                             OR (HOLIDAY_START_DT <= #{rentEndDay}
+                                 AND HOLIDAY_END_DT >= #{rentEndDay}))
                          GROUP BY CR_IDX
                      ) S1
                 WHERE S1.CR_IDX = T1.CR_IDX
@@ -669,10 +669,10 @@
                                   LEFT OUTER JOIN DC_RENT_COMPANY_TIME C2
                                                   ON C1.RT_IDX = C2.RT_IDX
                      ) S3
-                WHERE ((S3.START_DT <= #{startTimestamp}
-                    AND S3.END_DT >= #{startTimestamp})
-                    OR (S3.START_DT <= #{endTimestamp}
-                        AND S3.END_DT >= #{endTimestamp}))
+                WHERE ((S3.START_DT <= FROM_UNIXTIME(CONCAT(#{rentStartDay}, ' ', #{rentStartTime}, '%Y-%m-%d %H:%i'), '%Y-%m-%d %H:%i')
+                    AND S3.END_DT >= FROM_UNIXTIME(CONCAT(#{rentStartDay}, ' ', #{rentStartTime}, '%Y-%m-%d %H:%i'), '%Y-%m-%d %H:%i'))
+                    OR (S3.START_DT <= FROM_UNIXTIME(CONCAT(#{rentEndDay}, ' ', #{rentEndTime}, '%Y-%m-%d %H:%i'), '%Y-%m-%d %H:%i')
+                        AND S3.END_DT >= FROM_UNIXTIME(CONCAT(#{rentEndDay}, ' ', #{rentEndTime}, '%Y-%m-%d %H:%i'), '%Y-%m-%d %H:%i')))
                         AND S3.CR_IDX = T1.CR_IDX
             )
                         GROUP BY CR_IDX

@@ -3,69 +3,6 @@
 
 <mapper namespace="com.ohdocha.admin.mapper.DochaAdminDashboardMapper">
 
-	<select id="selectDochaDashboardList" parameterType="DochaMap" resultType="DochaMap">
-
-		<!-- 시스템관리자 AD -->
-		<if test =" userRole != null and userRole != '' and userRole.equals('RA') ">
-			SELECT IFNULL(COUNT(UR_IDX) , '0') AS CNT                              /* 매출 SUM */
-			FROM   DC_USER_INFO
-			WHERE  USER_ROLE IN('RU')
-
-			UNION ALL
-			SELECT IFNULL(COUNT(RT_IDX) , '0')
-			FROM   DC_RENT_COMPANY                                          /* 예약 SUM */
-
-			UNION ALL
-			SELECT IFNULL(COUNT(QU_IDX) , '0')
-			FROM   DC_QUOTE_USER
-			WHERE DATE_FORMAT(REG_DT , '%Y%m%d') = DATE_FORMAT(NOW() , '%Y%m%d')         /* 누적월차 SUM */
-
-			UNION ALL
-			SELECT COUNT(RM_IDX)
-			FROM   DC_RESERVE_MASTER
-			WHERE DATE_FORMAT(REG_DT , '%Y%m%d') = DATE_FORMAT(NOW() , '%Y%m%d')        /* 취소 건수 SUM */
-
-			UNION ALL
-			SELECT IFNULL(COUNT(QU_IDX)  , '0') as QnA
-			FROM   DC_QUESTION                                                          /* QnA SUM */
-
-		</if>
-
-
-
-		<!-- 회원사 CA -->
-		<if test =" userRole != null and userRole != '' and userRole.equals('CA') and rtIdx != null and rtIdx != '' ">
-
-			SELECT COUNT(RM_IDX) AS CNT
-			FROM   DC_RESERVE_MASTER
-			WHERE  RT_IDX = #{rtIdx}                                    /* 회원사 총 계약건수 */
-
-			UNION ALL
-			SELECT COUNT(QR_IDX)
-			FROM   DC_QUOTE_RENT_COMPANY
-			WHERE  RT_IDX = #{rtIdx}                                    /* 회원사가보낸 총 견적건수 */
-
-			UNION ALL
-			SELECT COUNT(QR_IDX)
-			FROM   DC_QUOTE_RENT_COMPANY
-			WHERE  RT_IDX = #{rtIdx}
-			AND    DATE_FORMAT(REG_DT , '%Y%m%d') = DATE_FORMAT(NOW() , '%Y%m%d')    /* 회원사가 금일 보낸 총 견적건수 */
-
-			UNION ALL
-			SELECT COUNT(CR_IDX)
-			FROM   DC_CAR_INFO
-			WHERE  RT_IDX = #{rtIdx}                                    /* 회원사가 등록할 총 차량 수*/
-
-			UNION ALL
-			SELECT COUNT(RM_IDX) AS CNT
-			FROM   DC_RESERVE_MASTER
-			WHERE  RT_IDX = #{rtIdx}
-			AND    DATE_FORMAT(REG_DT , '%Y%m%d') = DATE_FORMAT(NOW() , '%Y%m%d')      /* 회원사 금일 계약건수 */
-		</if>
-
-
-	</select>
-
 	<!-- 메인 화면 카운트 -->
 	<select id="calcDailySales" resultType="int" parameterType="DochaMap">
 		<![CDATA[
@@ -74,13 +11,10 @@
 			FROM DC_PAYMENT_LOG AS PL
 				JOIN DC_RESERVE_MASTER RM
 				ON PL.RM_IDX = RM.RM_IDX
-			WHERE PL.APPROVAL_YN = 'Y'
+			WHERE IFNULL(PL.APPROVAL_YN, 'Y') = 'Y'
 			AND DATE_FORMAT(PL.PAYMENT_DATE, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d')
 		]]>
 		<if test="rtIdx != null and rtIdx != '' ">
-			AND <![CDATA[ RM.RT_IDX = #{rtIdx}  ]]>
-		</if>
-		<if test="rtPIdx != null and rtPIdx != '' ">
 			AND <![CDATA[ RM.RT_IDX = #{rtIdx}  ]]>
 		</if>
 	</select>
@@ -92,13 +26,10 @@
 			 FROM DC_PAYMENT_LOG PL
 			  JOIN DC_RESERVE_MASTER RM
 			  ON PL.RM_IDX = RM.RM_IDX
-			WHERE PL.APPROVAL_YN = 'Y'
+			WHERE IFNULL(PL.APPROVAL_YN,'Y') = 'Y'
 			AND DATE_FORMAT(PL.PAYMENT_DATE, '%m') = DATE_FORMAT(NOW(), '%m')
 		]]>
 		<if test="rtIdx != null and rtIdx != '' ">
-			AND <![CDATA[ RM.RT_IDX = #{rtIdx}  ]]>
-		</if>
-		<if test="rtPIdx != null and rtPIdx != '' ">
 			AND <![CDATA[ RM.RT_IDX = #{rtIdx}  ]]>
 		</if>
 	</select>
@@ -113,12 +44,9 @@
 		<if test="rtIdx != null and rtIdx != '' ">
 			AND <![CDATA[ RM.RT_IDX = #{rtIdx}  ]]>
 		</if>
-		<if test="rtPIdx != null and rtPIdx != '' ">
-			AND <![CDATA[ RM.RT_IDX = #{rtIdx}  ]]>
-		</if>
 	</select>
 
-	<select id="cntMontlyyReserve" resultType="int" parameterType="DochaMap">
+	<select id="cntMonthlyReserve" resultType="int" parameterType="DochaMap">
 		<![CDATA[
 			SELECT COUNT(RM_IDX)
 			FROM DC_RESERVE_MASTER RM
@@ -128,9 +56,44 @@
 		<if test="rtIdx != null and rtIdx != '' ">
 			AND <![CDATA[ RM.RT_IDX = #{rtIdx}  ]]>
 		</if>
-		<if test="rtPIdx != null and rtPIdx != '' ">
-			AND <![CDATA[ RM.RT_IDX = #{rtIdx}  ]]>
-		</if>
+	</select>
+
+	<select id="cntDailyRegularRent" resultType="int" parameterType="DochaMap">
+		<![CDATA[ SELECT COUNT(*)
+		FROM (
+				SELECT PS_IDX,PL.RM_IDX, RT_IDX
+				FROM(
+					SELECT PS_IDX, RM_IDX
+					FROM DC_PAYMENT_SCHEDULE
+					WHERE PAYMENT_STATUS_CODE IN ('paid', 'ready')
+					GROUP BY RM_IDX
+					) PS
+					LEFT OUTER JOIN DC_PAYMENT_LOG PL ON PS.RM_IDX = PL.RM_IDX
+						AND DATE_FORMAT(PL.PAYMENT_DATE, '%Y-%m') = DATE_FORMAT(NOW(), '%Y-%m')
+					JOIN DC_RESERVE_MASTER RM ON PS.RM_IDX = RM.RM_IDX ]]>
+					<if test="rtIdx != null and rtIdx != '' ">
+						<![CDATA[ AND RT_IDX like #{rtIdx} ]]>
+					</if>
+		<![CDATA[ GROUP BY PL.RM_IDX ) M ]]>
+	</select>
+
+	<select id="cntMonthlyRegularRent" resultType="int" parameterType="DochaMap">
+		<![CDATA[
+		SELECT SUM(M.PAYMENT_AMOUNT)
+		FROM (
+			SELECT PL.PAYMENT_AMOUNT
+			FROM (
+              SELECT PS_IDX, RM_IDX, PAYMENT_AMOUNT
+              FROM DC_PAYMENT_SCHEDULE
+              WHERE PAYMENT_STATUS_CODE IN ('paid', 'ready')
+              GROUP BY RM_IDX
+      		 	) PS LEFT OUTER JOIN DC_PAYMENT_LOG PL ON PS.RM_IDX = PL.RM_IDX
+       			AND DATE_FORMAT(PL.PAYMENT_DATE, '%Y-%m') = DATE_FORMAT(NOW(), '%Y-%m')
+       			 JOIN DC_RESERVE_MASTER RM ON PS.RM_IDX = RM.RM_IDX  ]]>
+       			 <if test="rtIdx != null and rtIdx != '' ">
+					 <![CDATA[ AND RM.RT_IDX = #{rtIdx}  ]]>
+				</if>
+		<![CDATA[ GROUP BY PL.RM_IDX ) M ]]>
 	</select>
 
 	<select id="cntDailyCancel" resultType="int" parameterType="DochaMap">
@@ -141,10 +104,7 @@
 			AND DATE_FORMAT(MOD_DT, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d')
 		]]>
 		<if test="rtIdx != null and rtIdx != '' ">
-			AND <![CDATA[ RM.RT_IDX = #{rtIdx}  ]]>
-		</if>
-		<if test="rtPIdx != null and rtPIdx != '' ">
-			AND <![CDATA[ RM.RT_IDX = #{rtIdx}  ]]>
+			<![CDATA[ AND RT_IDX = #{rtIdx}  ]]>
 		</if>
 	</select>
 
@@ -152,8 +112,10 @@
 		<![CDATA[
 			SELECT COUNT(RM_IDX) FROM DC_RESERVE_MASTER
 			WHERE RESERVE_STATUS_CODE = '취소'
-			AND DATE_FORMAT(MOD_DT, '%m') = DATE_FORMAT(NOW(), '%m')
-		]]>
+			AND DATE_FORMAT(MOD_DT, '%m') = DATE_FORMAT(NOW(), '%m') ]]>
+			<if test="rtIdx != null and rtIdx != '' ">
+				<![CDATA[ AND RT_IDX = #{rtIdx}  ]]>
+			</if>
 	</select>
 
 	<select id="cntQnA" resultType="int" parameterType="DochaMap">
@@ -166,27 +128,38 @@
 	<select id="salesGraph" resultType="map" parameterType="DochaMap">
 		<![CDATA[
 			SELECT
-				IFNULL(SUM(PAYMENT_AMOUNT), 0) as amount,
-			    IFNULL(COUNT(PL_IDX), 0) as salesCount
-				FROM DC_PAYMENT_LOG
-				WHERE DATE_FORMAT(PAYMENT_DATE, '%Y-%m-%d') = #{startTime}
-				GROUP BY DATE_FORMAT(PAYMENT_DATE, '%Y-%m-%d')
-				ORDER BY DATE_FORMAT(PAYMENT_DATE, '%Y-%m-%d')
-		]]>
+			IFNULL(SUM(PL.PAYMENT_AMOUNT),0) as amount,
+			IFNULL(COUNT(PL.PL_IDX), 0) as salesCount
+			FROM (
+			    SELECT RM_IDX, PAYMENT_AMOUNT,PL_IDX
+			    FROM DC_PAYMENT_LOG
+			    WHERE DATE_FORMAT(PAYMENT_DATE, '%Y-%m-%d') = #{startTime}
+			    	AND IFNULL(APPROVAL_YN, 'Y') = 'Y'
+			    GROUP BY RM_IDX
+			    ) PL
+			        JOIN DC_RESERVE_MASTER RM ON PL.RM_IDX = RM.RM_IDX  ]]>
+			    <if test="rtIdx != null and rtIdx != '' ">
+				<![CDATA[ AND RM.RT_IDX = #{rtIdx}  ]]>
+				</if>
 	</select>
 
 	<!-- 메인 화면 그래프 (월매출) -->
 	<select id="monthlySalesGraph" resultType="map" parameterType="DochaMap">
 		<![CDATA[
 			SELECT
-				DATE_FORMAT(PAYMENT_DATE, '%Y-%m') AS date,
-				IFNULL(SUM(PAYMENT_AMOUNT), 0) as amount,
-			    IFNULL(COUNT(PL_IDX), 0) as salesCount
-				FROM DC_PAYMENT_LOG
-				WHERE DATE_FORMAT(PAYMENT_DATE, '%Y-%m') = #{startTime}
-				GROUP BY DATE_FORMAT(PAYMENT_DATE, '%Y-%m')
-				ORDER BY DATE_FORMAT(PAYMENT_DATE, '%Y-%m')
-		]]>
+			IFNULL(SUM(PL.PAYMENT_AMOUNT),0) as amount,
+			IFNULL(COUNT(PL.PL_IDX), 0) as salesCount
+			FROM (
+			    SELECT RM_IDX, PAYMENT_AMOUNT,PL_IDX
+			    FROM DC_PAYMENT_LOG
+			    WHERE DATE_FORMAT(PAYMENT_DATE, '%Y-%m') = #{startTime}
+			    AND IFNULL(APPROVAL_YN, 'Y') = 'Y'
+			    GROUP BY RM_IDX
+			    ) PL
+			        JOIN DC_RESERVE_MASTER RM ON PL.RM_IDX = RM.RM_IDX  ]]>
+		<if test="rtIdx != null and rtIdx != '' ">
+			<![CDATA[ AND RM.RT_IDX = #{rtIdx}  ]]>
+		</if>
 	</select>
 
 	<!-- 메인 화면 그래프 (신규유저) -->
@@ -205,8 +178,10 @@
 			SELECT IFNULL(COUNT(RM_IDX)  , 0) as cancelCount
 			FROM   DC_RESERVE_MASTER
 			WHERE  RESERVE_STATUS_CODE = '취소'
-			AND    DATE_FORMAT(REG_DT , '%Y-%m-%d') = #{startTime}
-		]]>
+			AND    DATE_FORMAT(REG_DT , '%Y-%m-%d') = #{startTime} ]]>
+			<if test="rtIdx != null and rtIdx != '' ">
+				<![CDATA[ AND RT_IDX = #{rtIdx}  ]]>
+			</if>
 	</select>
 
 </mapper>

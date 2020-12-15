@@ -17,7 +17,6 @@
       					,	IFNULL(T1.PY_ETC				, '') AS PY_ETC 				/* 제목(비고) */
       					,	IFNULL(T1.DAILY_STANDARD_PAY	, '0') AS DAILY_STANDARD_PAY 	/* 일기본요금 */
       					,	IFNULL(T1.MONTHLY_STANDARD_PAY	, '0') AS MONTHLY_STANDARD_PAY 	/* 월기본요금 */
-      					,	(SELECT COUNT(CR_IDX) FROM DC_CAR_INFO WHERE PY_T_IDX = T1.PY_T_IDX) AS SETTING_CAR_CNT /* 설정차량대수 */
       				FROM DC_PAYMENT_TEMPLATE T1
       				INNER JOIN DC_RENT_COMPANY T2
       					    ON T1.RT_IDX = T2.RT_IDX 
@@ -27,7 +26,7 @@
 				1=1 
         </trim>
      	<if test="rtIdx != null  and rtIdx != '' ">
-	    	AND <![CDATA[    A.RT_IDX = #{rtIdx} ]]>
+	    	AND <![CDATA[  T1.RT_IDX = #{rtIdx} ]]>
 		</if>
 		<if test="searchType != null and searchType != '' ">
 		    <choose>
@@ -61,11 +60,10 @@
     				SELECT
     						T1.PY_T_IDX 													/* 기본요금순번 */
      					,	IFNULL(T1.RT_IDX				, '') AS RT_IDX 				/* 회원사순번 */
+     					,	IFNULL(T1.CR_IDX			    , '') AS CR_IDX 		     	/* 차량 리스트 */
      					,	IFNULL(T2.COMPANY_NAME			, '') AS COMPANY_NAME 			/* 회원사명 */
      					,	IFNULL(T2.BRANCH_NAME			, '') AS BRANCH_NAME 			/* 지점명 */
      					,	IFNULL(T1.PY_ETC				, '') AS PY_ETC 				/* 제목(비고) */
-     					,	IFNULL(T1.DAILY_STANDARD_PAY	, '0') AS DAILY_STANDARD_PAY 	/* 일기본요금 */
-     					,	IFNULL(T1.MONTHLY_STANDARD_PAY, '0') AS MONTHLY_STANDARD_PAY 	/* 월기본요금 */
 						,	IFNULL(T1.PY_T_IDX                , '') AS PY_T_IDX                /*요금idx*/
 						,	IFNULL(T1.RT_IDX                , '') AS RT_IDX                /*회원사idx*/
 						,	IFNULL(T1.MD_IDX                , '') AS MD_IDX                /*모델상세idx*/
@@ -81,7 +79,6 @@
 						,	IFNULL(T1.DELIVERY_ADD_PAY      , '') AS DELIVERY_ADD_PAY      /*배달10KM단위추가요금*/
 						,	IFNULL(T1.DELIVERY_MAX_RATE     , '') AS DELIVERY_MAX_RATE     /*배달최대할인율*/
 						,	IFNULL(T1.PY_ETC     			 , '') AS PY_ETC     			/*비고(제목)*/
-     					,	(SELECT COUNT(CR_IDX) FROM DC_CAR_INFO WHERE PY_T_IDX = T1.PY_T_IDX) AS SETTING_CAR_CNT /* 설정차량대수 */
      				FROM DC_PAYMENT_TEMPLATE T1
      				INNER JOIN DC_RENT_COMPANY T2
      					    ON T1.RT_IDX = T2.RT_IDX 
@@ -99,7 +96,8 @@
     <update  id="updateBasicPlanInfo" parameterType="basicPlanDetailRequest">
     	<![CDATA[ UPDATE DC_PAYMENT_TEMPLATE ]]>
     	<trim prefix="SET" suffixOverrides=",">
-    		<if test="dailyStandardPay		!= null"><![CDATA[    DAILY_STANDARD_PAY	= #{dailyStandardPay}  		]]></if>	<!-- 일 기본요금 -->
+    		<if test="crIdx		            != null"><![CDATA[    CR_IDX	= #{crIdx}  		]]></if>	<!--차량 -->
+    		<if test="dailyStandardPay		!= null"><![CDATA[  , DAILY_STANDARD_PAY	= #{dailyStandardPay}  		]]></if>	<!-- 일 기본요금 -->
 			<if test="dailyMaxRate			!= null"><![CDATA[  , DAILY_MAX_RATE		= #{dailyMaxRate}  			]]></if>	<!-- 일대여 최대 할인율 -->
 			<if test="monthlyStandardPay	!= null"><![CDATA[  , MONTHLY_STANDARD_PAY	= #{monthlyStandardPay}  	]]></if>	<!-- 월 기본 요금 -->
 			<if test="monthlyMaxRate 		!= null"><![CDATA[  , MONTHLY_MAX_RATE		= #{monthlyMaxRate}  		]]></if>	<!-- 월대여 최대 할인율 -->
@@ -126,6 +124,7 @@
 	<![CDATA[ 
 	     INSERT INTO DC_PAYMENT_TEMPLATE (
 	     	   RT_IDX
+	     	,  CR_IDX
 			,  PY_ETC
 			,  DAILY_STANDARD_PAY
 			,  DAILY_MAX_RATE
@@ -142,7 +141,8 @@
 			,  REG_DT
 		) VALUES (
 				#{rtIdx}
-			,	#{pyEtc}              
+			,	#{crIdx}
+			,	#{pyEtc}
 			,  	#{dailyStandardPay}    
 			,  	#{dailyMaxRate}
 			,  	#{monthlyStandardPay}

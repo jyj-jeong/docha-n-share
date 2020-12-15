@@ -158,7 +158,7 @@
 			<if test="companyRegistrationName 	!= null"><![CDATA[  , COMPANY_REGISTRATION_NAME 	= #{companyRegistrationName}	]]></if>
 			<if test="companyContact1 			!= null"><![CDATA[  , COMPANY_CONTACT1 				= #{companyContact1}			]]></if>
 			<if test="branchName 				!= null"><![CDATA[  , BRANCH_NAME 					= #{branchName}					]]></if>
-			<if test="alarmYn 					!= null"><![CDATA[  , ACCESS_YN 					= #{accessYn}					]]></if>
+			<if test="alarmYn 					!= null"><![CDATA[  , ACCESS_YN 					= IFNULL(#{accessYn}, 'Y')					]]></if>
 			<if test="carCount 					!= null"><![CDATA[  , CAR_COUNT 					= #{carCount}  					]]></if> 	<!-- 총 차량수 -->
 			<if test="modId 					!= null"><![CDATA[  , MOD_ID 						= #{modId}  					]]></if> 	<!-- 수정자 -->
 			, MOD_DT = NOW()
@@ -212,7 +212,7 @@
 				,	#{alarmYn}
 				,	#{companyRegistrationName}
 				,	#{branchName}					
-				,	#{accessYn}
+				,	IFNULL(#{accessYn}, 'Y')
 				,   #{regId}
 				,   NOW()
 				,   'N'

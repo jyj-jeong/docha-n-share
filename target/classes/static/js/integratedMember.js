@@ -1,20 +1,7 @@
 /*
  * integratedMember.js
  * 회원 > 통합회원
- * 
- * 2020-02-04 lws 최초생성
- * 
- * 
- * 
- * update history
- * =============================================
- * |date       |comment             | author   |
- * =============================================
- * |2020-02-05 |ready 함수 제거             | pws      |
- * 
- * 
- * 
- * 
+ *
  * */
 
 
@@ -472,7 +459,7 @@ function initDetailInfo(urIdx) {
                 // var imgPath = 'C:/ohdocha/data/temp/license/' + licenseImgName;
 
                 //product
-                var imgPath = 'https://admin-ohdocha.sharenshare.kr/img/license/' + licenseImgName;
+                var imgPath = 'https://admin.docha.co.kr/img/license/' + licenseImgName;
 
                 $('#licenseImg').attr('src', imgPath);
 
@@ -565,7 +552,8 @@ function detailValidation(save_type){
                 let userRole 			= $("#sel_userRole option:selected").val();			//권한
                 let sel_userStatusCode 	= $("#sel_userStatusCode option:selected").val();	//회원상태코드
                 let userGender 			= $("#sel_userGender option:selected").val();		//성별
-                let useYn 	        = $('inpu:checkbox[id="useYn"]').is(":checked"); 	   //사용여부
+                let useYn 	        = $('input:checkbox[id="useYn"]').is(":checked"); 	   //사용여부
+                useYn = useYn === true ? 1 : 0;
 
                 if(isEmpty(userId)) { //is not empty
                     errorAlert('아이디', '아이디는 필수 입력값 입니다.');
@@ -1073,4 +1061,39 @@ function changeCardView(cardViewName) {
         default:
             break;
     }
+}
+
+// 댓글 등록
+function comment() {
+
+    var commentMsg = $('#commentMsg').val().trim();
+
+    if (isEmpty(commentMsg)){
+        errorAlert('댓글', '댓글을 입력해주세요.');
+        $('#commentMsg').focus();
+    }
+
+    var url = '/api/v1.0/insertComment.json';
+
+    var req = {
+        rtIdx : getLoginUser().rtIdx,
+        commentMsg : commentMsg,
+        commentPath : 'userDetail',
+        regId : getLoginUser().urIdx
+    };
+
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: JSON.stringify(req),
+        contentType: 'application/json',
+        cache: false,
+        async : false,
+        timeout: 10000
+    }).done(function (data, textStatus, jqXHR) {
+
+        if (data.res === 1){
+            swal("댓글 등록 성공", {icon : "success"});
+        }
+    })
 }

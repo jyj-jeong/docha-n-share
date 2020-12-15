@@ -1540,7 +1540,10 @@ function detailValidation(){
         deliveryTypeCode = getPureText($('#sel_deliveryTypeCode option:selected').val());
     }
 
-    if((deliveryTypeCode === 'OF' || deliveryTypeCode === '지점방문')&& isEmpty(returnAddr)){
+    if((deliveryTypeCode === 'OF' || deliveryTypeCode === '지점방문') && isEmpty(returnAddr)){
+        if(deliveryAddr === ""){
+            deliveryAddr = '지점방문';
+        }
         returnAddr = deliveryAddr;
     }
 
@@ -1557,16 +1560,12 @@ function detailValidation(){
         errorAlert('예약', '대여일시가 반납일시 보다 크거나 같을 수 없습니다.');
         return;
     }
-
-    var isVisit = $('input:radio[id="radioVisitCompany"]').is('checked');
-    if (!isVisit){
-        if (isEmpty(deliveryAddr)) { // is not empty
-            errorAlert('예약', '대여위치는 필수 입력값 입니다.');
-            return;
-        }else if (isEmpty(returnAddr)) { // is not empty
-            errorAlert('예약', '반납위치는 필수 입력값 입니다.');
-            return;
-        }
+    else if (isEmpty(deliveryAddr)) { // is not empty
+        errorAlert('예약', '대여위치는 필수 입력값 입니다.');
+        return;
+    }else if (isEmpty(returnAddr)) { // is not empty
+        errorAlert('예약', '반납위치는 필수 입력값 입니다.');
+        return;
     }
 
     let sdt = rentStartDay.split(' ');

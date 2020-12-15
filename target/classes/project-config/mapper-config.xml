@@ -73,6 +73,12 @@
 		<typeAlias type="com.ohdocha.admin.domain.menu.DochaAdminMenuRequest" alias="menuRequest" />
 		<typeAlias type="com.ohdocha.admin.domain.menu.DochaAdminMenuResponse" alias="menuResponse" />
 
+		<typeAlias type="com.ohdocha.admin.domain.menu.DochaAdminQuestionRequest" alias="questionRequest" />
+		<typeAlias type="com.ohdocha.admin.domain.menu.DochaAdminQuestionResponse" alias="questionResponse" />
+
+		<typeAlias type="com.ohdocha.admin.domain.menu.DochaAdminNoticeRequest" alias="noticeRequest" />
+		<typeAlias type="com.ohdocha.admin.domain.menu.DochaAdminNoticeResponse" alias="noticeResponse" />
+
 		<!--  로그인 alias 등록 -->
 		<typeAlias type="com.ohdocha.admin.domain.user.DochaAdminDcUserInfoRequest" alias="dcUserInfoRequest" />
 		<typeAlias type="com.ohdocha.admin.domain.user.DochaAdminDcUserInfoResponse" alias="dcUserInfoResponse" />
@@ -84,7 +90,7 @@
 		<typeAlias type="com.ohdocha.admin.domain.reserve.reserveInfoMnt.DochaAdminReserveInfoDetailRequest" alias="reserveInfoDetailRequest" />
 		<typeAlias type="com.ohdocha.admin.domain.reserve.reserveInfoMnt.DochaAdminReserveInfoDetailResponse" alias="reserveInfoDetailResponse" />
 		<typeAlias type="com.ohdocha.admin.domain.reserve.reserveInfoMnt.DochaReserveInfoDto" alias="DocahReserveInfoDto" />
-		<typeAlias type="com.ohdocha.admin.domain.reserve.reserveInfoMnt.DochaRentCompanyDto" alias="DocahRentCompanyDto" />
+		<typeAlias type="com.ohdocha.admin.domain.reserve.reserveInfoMnt.DochaRentCompanyDto" alias="DochaRentCompanyDto" />
 		<typeAlias type="com.ohdocha.admin.domain.reserve.reserveInfoMnt.DochaCarDto" alias="DocahCarDto" />
 
 		<!-- 매칭서비스 alias 등록 -->
@@ -98,6 +104,7 @@
 		<!-- payment alias 등록 -->
 		<typeAlias type="com.ohdocha.admin.domain.reserve.payment.DochaAdminPaymentInfoRequest" alias="paymentInfoRequest" />
 		<typeAlias type="com.ohdocha.admin.domain.reserve.payment.DochaAdminPaymentInfoResponse" alias="paymentInfoResponse" />
+		<typeAlias type="com.ohdocha.admin.domain.reserve.payment.DochaScheduledDto" alias="DochaScheduledDto" />
 
 
 		<!--  등록 차량 alias 등록 -->
@@ -125,6 +132,9 @@
 
 		<typeAlias type="com.ohdocha.admin.domain.common.DochaAdminAddressInfoRequest"  alias="addressInfoRequest"/>
 		<typeAlias type="com.ohdocha.admin.domain.common.DochaAdminAddressInfoResponse" alias="addressInfoResponse"/>
+
+		<typeAlias type="com.ohdocha.admin.domain.common.DochaAdminCommentRequest" alias="commentRequest"/>
+		<typeAlias type="com.ohdocha.admin.domain.common.DochaAdminCommentResponse" alias="commentResponse"/>
 
 		<typeAlias type="com.ohdocha.admin.domain.user.DochaAdminUserInfoUserLicenseInfoRequest" alias="userLicenseInfoRequest" />
 		<typeAlias type="com.ohdocha.admin.domain.user.DochaAdminUserInfoUserLicenseInfoResponse" alias="userLicenseInfoResponse" />

@@ -11,6 +11,8 @@
 			    ,       IFNULL(T1.RT_IDX      			, '' )  AS RT_IDX 	 				/* 	회원이 속해있는 회원사 IDX 	*/
           		,       IFNULL(T2.COMPANY_NAME  , '' ) AS COMPANY_NAME						/* 	회원이 속해있는 회원사 명 	*/
 				,       IFNULL(T2.BRANCH_NAME , '' ) AS BRANCH_NAME						/* 	회원이 속해있는 회원사의 지점명  	*/
+				,       IFNULL(T2.ACCESS_YN , '' ) AS ACCESS_YN						  /* 	회원사 접속 YN  	*/
+				,       IFNULL(T1.USE_YN , 1) AS USE_YN						         /* 	회원 접속 YN  	*/
 				FROM    DC_USER_INFO T1
 				LEFT JOIN DC_RENT_COMPANY  T2
         			   ON T1.RT_IDX IS NOT NULL

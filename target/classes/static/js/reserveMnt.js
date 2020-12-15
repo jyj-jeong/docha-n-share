@@ -2,20 +2,7 @@
  * reserveMnt.js
 
  * 예약 > 예약관리
- * 
- * 2020-02-04 lws 최초생성
- * 
- * 
- * 
- * update history
- * =============================================
- * |date       |comment             | author   |
- * =============================================
- * |2020-02-05 |ready 함수 제거             | pws      |
- * 
- * 
- * 
- * 
+ *
  * */
 
 // 검색 SELECT BOX LIST
@@ -26,6 +13,10 @@ var CRUD = '';		// 저장 구분자
 var CALCULABLE_MOTH = 'N';	// 요금계산 적용 여부
 var RESERVE_STATUS = '';	// 상세 화면 진입시 대여 상태 
 var BROWSEYN = "";			// 브라우저에 따른 대여일시, 반납일시 입력 input 타입 변경 및 변수 값 처리
+
+let refundRequestFee;			// 환불 요청 요금
+let userName;			// 환불 요청 요금
+let merchantUid;			// 환불 요청 요금
 
 var GLOBAL_LOGIN_USER_IDX;
 var GLOBAL_LOGIN_USER_ROLE;
@@ -296,7 +287,6 @@ function drawData(paymentList){
     columns = [
 
         { "name": "paymentTypeName", "title": "결제수단" },
-        { "name": "paymentKindName", "title": "결제구분" },
         { "name": "modDt",  "title": "결제일시" },
         { "name": "paymentAmount", "title": "결제금액" ,
             "formatter" : function(value, options, rowData){
@@ -309,8 +299,16 @@ function drawData(paymentList){
                 return displayText;
             }, "breakpoints": "xs"},
 
-        { "name": "", "title": "정산예정일", "breakpoints": "xs"},
-        { "name": "", "title": "정산완료일시", "breakpoints": "xs"}
+        { "name": "nextPaymentDay", "title": "정산예정일","formatter" : function(value, options, rowData){
+                if (isEmpty(value)){
+                    return "정산 완료";
+                }else return value;
+            }, "breakpoints": "xs"},
+        { "name": "paymentDate", "title": "정산완료일시","formatter" : function(value, options, rowData){
+                if (isEmpty(value)){
+                    return "정산 완료";
+                }else return value;
+            }, "breakpoints": "xs"}
     ];
 
     $('#paymentList').empty();
@@ -397,7 +395,10 @@ function initDetailInfo(seq){
         dataSet.reserveInfo = data;
         dataSet.paymentList = paymentList;
 
-        if (data.reserveStatusCode === '반납'){
+        refundRequestFee = data.refundFee;
+        merchantUid = data.merchantUid;
+
+        if (data.reserveStatusCode === '반납') {
             $('input').prop('readonly', true);
             $('option').attr('disabled', true);
             $('#btnSave').css('display','none');
@@ -449,11 +450,11 @@ function initDetailInfo(seq){
         let ulIdx1 = nullCheck(data.ulIdx1);
         let firstDriverName = nullCheck(data.firstDriverName);
         let firstDriverContact = nullCheck(data.firstDriverContact);
-        let firstDriverBirthDay =  nullCheck(data.firstDriverBirthDay) != '' ? data.firstDriverBirthDay : new Date();;
+        let firstDriverBirthDay =  nullCheck(data.firstDriverBirthDay) !== '' ? data.firstDriverBirthDay : new Date();;
         let firstDriverLicenseCode = nullCheck(data.firstDriverLicenseCode);
         let firstDriverLicenseNumber = nullCheck(data.firstDriverLicenseNumber);
-        let firstDriverExpirationDate = nullCheck(data.firstDriverExpirationDate) == ''?'':dateFormatter(data.firstDriverExpirationDate);
-        let firstDriverLicenseIsDate = nullCheck(data.firstDriverLicenseIsDate) == ''?'':dateFormatter(data.firstDriverLicenseIsDate);
+        let firstDriverExpirationDate = nullCheck(data.firstDriverExpirationDate) === ''? new Date() :dateFormatter(data.firstDriverExpirationDate);
+        let firstDriverLicenseIsDate = nullCheck(data.firstDriverLicenseIsDate) === ''?  new Date() :dateFormatter(data.firstDriverLicenseIsDate);
 
         $("#ulIdx1").val(ulIdx1);
         $("#firstDriverName").val(firstDriverName);
@@ -468,11 +469,11 @@ function initDetailInfo(seq){
         let ulIdx2 = nullCheck(data.ulIdx2);
         let secondDriverName = nullCheck(data.secondDriverName);
         let secondDriverContact = nullCheck(data.secondDriverContact);
-        let secondDriverBirthDay = nullCheck(data.secondDriverBirthDay) != '' ? data.secondDriverBirthDay : new Date();
+        let secondDriverBirthDay = nullCheck(data.secondDriverBirthDay) !== '' ? data.secondDriverBirthDay : new Date();
         let secondDriverLicenseCode = nullCheck(data.secondDriverLicenseCode);
         let secondDriverLicenseNumber = nullCheck(data.secondDriverLicenseNumber);
-        let secondDriverExpirationDate = nullCheck(data.secondDriverExpirationDate) == ''?'':dateFormatter(data.secondDriverExpirationDate);
-        let secondDriverLicenseIsDate = nullCheck(data.secondDriverLicenseIsDate) == ''?'':dateFormatter(data.secondDriverLicenseIsDate);
+        let secondDriverExpirationDate = nullCheck(data.secondDriverExpirationDate) === ''?  new Date():dateFormatter(data.secondDriverExpirationDate);
+        let secondDriverLicenseIsDate = nullCheck(data.secondDriverLicenseIsDate) === ''? new Date():dateFormatter(data.secondDriverLicenseIsDate);
 
         $("#ulIdx2").val(ulIdx2);
         $("#secondDriverName").val(secondDriverName);
@@ -495,14 +496,26 @@ function initDetailInfo(seq){
         let rentStartDay = nullCheck(data.rentStartDay);
         rentStartDay = rentStartDay === '' ? '' : new Date(rentStartDay).toISOString().slice(0, -1);
         let rentEndDay = nullCheck(data.rentEndDay);
-        rentEndDay = rentEndDay === '' ? '' : rentEndDay.toISOString().slice(0, -1);
+        rentEndDay = rentEndDay === '' ? '' : new Date(rentEndDay).toISOString().slice(0, -1);
         let periodDt = nullCheck(data.periodDt);
-        let deliveryAddr = nullCheck(data.deliveryAddr);
-        let returnAddr = nullCheck(data.returnAddr);
+
+        let deliveryAddr;
+        let returnAddr;
+        if (deliveryTypeCode === 'OF'){
+            deliveryAddr = '지점방문';
+            returnAddr = '지점방문';
+        }else if (deliveryTypeCode === 'DL'){
+            deliveryAddr = nullCheck(data.deliveryAddr);
+            returnAddr = nullCheck(data.returnAddr);
+        }
 
         let gbn = reserveYmdt+reserveChannel+landCode;
 
         RESERVE_STATUS = reserveStatusCode;
+
+        if(RESERVE_STATUS === '취소'){
+            $('#btnRefund').css('display', 'none');
+        }
 
         $("#rmIdx").val(rmIdx);
         $("#gbn").val(gbn);
@@ -550,7 +563,7 @@ function initDetailInfo(seq){
         $("#personalCover").val(personalCover);
         $("#propertyDamageCover").val(propertyDamageCover);
 
-        $("#carDamageCover").val(carDamageCover); // 예약시 면책금
+        $("#carDamageCover").val(carDamageCover); // 예약시 고객부담금
         $("#insuranceCopayment").val(insuranceCopayment); // 예약시 보험료
 
         $("#sel_fuel").val(fuelCode).prop("selected", true);
@@ -571,6 +584,8 @@ function initDetailInfo(seq){
         $("#addFee").val(addFee);
         $("#paymentTotalAmount").val(paymentTotalAmount);
         $("#paymentAmount").val(paymentAmount);
+
+        totalFee = data.paymentAmount;
 
         $("#reserveUserName").val(reserveUserName);
         $("#reserveUserEmail").val(reserveUserEmail);
@@ -931,54 +946,81 @@ function selectCarInfo(crIdx){
     $('#carTypeCode').val(carTypeCode);
     $('#optionCodeValue').val(optionCodeValue);
 
-    let carDamageCover = nullCheck(carListData[crIdxIndex].carDamageCover) == ''?'':objectConvertToPriceFormat(carListData[crIdxIndex].carDamageCover);
-    let insuranceCopayment = nullCheck(carListData[crIdxIndex].insuranceCopayment) == ''?'':objectConvertToPriceFormat(carListData[crIdxIndex].insuranceCopayment);
-    let carDamageCover2 = nullCheck(carListData[crIdxIndex].carDamageCover2) == ''?'':objectConvertToPriceFormat(carListData[crIdxIndex].carDamageCover2);
-    let insuranceCopayment2 = nullCheck(carListData[crIdxIndex].insuranceCopayment2) == ''?'':objectConvertToPriceFormat(carListData[crIdxIndex].insuranceCopayment2);
-    let carDamageCover3 = nullCheck(carListData[crIdxIndex].carDamageCover3) == ''?'':objectConvertToPriceFormat(carListData[crIdxIndex].carDamageCover3);
-    let insuranceCopayment3 = nullCheck(carListData[crIdxIndex].insuranceCopayment3) == ''?'':objectConvertToPriceFormat(carListData[crIdxIndex].insuranceCopayment3);
-    let carDamageCover4 = nullCheck(carListData[crIdxIndex].carDamageCover4) == ''?'':objectConvertToPriceFormat(carListData[crIdxIndex].carDamageCover4);
-    let insuranceCopayment4 = nullCheck(carListData[crIdxIndex].insuranceCopayment4) == ''?'':objectConvertToPriceFormat(carListData[crIdxIndex].insuranceCopayment4);
+    var url = ' /api/v1.0/regCarDetail.json';
+    var req = {
+        crIdx : crIdx
+    };
 
-    let strOption = "";
-    strOption += "<option value = ''>선택하세요</option>";
+    var carDamageCover = 0;
+    var insuranceCopayment = 0;
+    var carDamageCover2 = 0;
+    var insuranceCopayment2 = 0;
+    var carDamageCover3  = 0;
+    var insuranceCopayment3 = 0;
+    var carDamageCover4  = 0;
+    var insuranceCopayment4 = 0;
 
-    if(!isEmpty(carDamageCover) && !isEmpty(insuranceCopayment)){
-        strOption += "<option value = '"+insuranceCopayment+"'>" + "면책금:" + carDamageCover + "/보험금:" + insuranceCopayment + "</option>";
-    }
-    if(!isEmpty(carDamageCover2) && !isEmpty(insuranceCopayment2)){
-        strOption += "<option value = '"+insuranceCopayment2+"'>" + "면책금:" + carDamageCover2 + "/보험금:" + insuranceCopayment2 + "</option>";
-    }
-    if(!isEmpty(carDamageCover3) && !isEmpty(insuranceCopayment3)){
-        strOption += "<option value = '"+insuranceCopayment3+"'>" + "면책금:" + carDamageCover3 + "/보험금:" + insuranceCopayment3 + "</option>";
-    }
-    if(!isEmpty(carDamageCover4) && !isEmpty(insuranceCopayment4)){
-        strOption += "<option value = '"+insuranceCopayment4+"'>" + "면책금:" + carDamageCover4 + "/보험금:" + insuranceCopayment4 + "</option>";
-    }
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: JSON.stringify(req),
+        contentType: 'application/json',
+        cache: false,
+        acync : false,
+        timeout: 10000
+    }).done(function (data, textStatus, jqXHR) {
+        var response = data.result[0];
 
-    $('#sel_ciIdx').empty();
-    $('#sel_ciIdx').append(strOption);
+        carDamageCover = nullCheck(response.carDamageCover) === ''?'':objectConvertToPriceFormat(response.carDamageCover);
+        insuranceCopayment = nullCheck(response.insuranceCopayment) === ''?'':objectConvertToPriceFormat(response.insuranceCopayment);
+        carDamageCover2 = nullCheck(response.carDamageCover2) === ''?'':objectConvertToPriceFormat(response.carDamageCover2);
+        insuranceCopayment2 = nullCheck(response.insuranceCopayment2) === ''?'':objectConvertToPriceFormat(response.insuranceCopayment2);
+        carDamageCover3 = nullCheck(response.carDamageCover3) === ''?'':objectConvertToPriceFormat(response.carDamageCover3);
+        insuranceCopayment3 = nullCheck(response.insuranceCopayment3) === ''?'':objectConvertToPriceFormat(response.insuranceCopayment3);
+        carDamageCover4 = nullCheck(response.carDamageCover4) === ''?'':objectConvertToPriceFormat(response.carDamageCover4);
+        insuranceCopayment4 = nullCheck(response.insuranceCopayment4) === ''?'':objectConvertToPriceFormat(response.insuranceCopayment4);
 
-    let revinsuranceCopayment = $("#insuranceCopayment").val();
-    let revcarDamageCover = $("#carDamageCover").val();
 
-    if((isEmpty(revinsuranceCopayment) || revinsuranceCopayment == '0') && !isEmpty(revcarDamageCover) && revcarDamageCover > '0'){
-        if (carDamageCover == revcarDamageCover){
-            revinsuranceCopayment = insuranceCopayment;
-        }else if (carDamageCover2 == revcarDamageCover){
-            revinsuranceCopayment = insuranceCopayment2;
-        }else if (carDamageCover3 == revcarDamageCover){
-            revinsuranceCopayment = insuranceCopayment3;
-        }else if (carDamageCover4 == revcarDamageCover){
-            revinsuranceCopayment = insuranceCopayment4;
+        let strOption = "";
+        strOption += "<option value = ''>선택하세요</option>";
+
+        if(!isEmpty(carDamageCover) && !isEmpty(insuranceCopayment)){
+            strOption += "<option value = '"+insuranceCopayment+"'>" + "고객부담금:" + carDamageCover + "/보험금:" + insuranceCopayment + "</option>";
         }
-    }
+        if(!isEmpty(carDamageCover2) && !isEmpty(insuranceCopayment2)){
+            strOption += "<option value = '"+insuranceCopayment2+"'>" + "고객부담금:" + carDamageCover2 + "/보험금:" + insuranceCopayment2 + "</option>";
+        }
+        if(!isEmpty(carDamageCover3) && !isEmpty(insuranceCopayment3)){
+            strOption += "<option value = '"+insuranceCopayment3+"'>" + "고객부담금:" + carDamageCover3 + "/보험금:" + insuranceCopayment3 + "</option>";
+        }
+        if(!isEmpty(carDamageCover4) && !isEmpty(insuranceCopayment4)){
+            strOption += "<option value = '"+insuranceCopayment4+"'>" + "고객부담금:" + carDamageCover4 + "/보험금:" + insuranceCopayment4 + "</option>";
+        }
 
-    if(!isEmpty(revinsuranceCopayment) && revinsuranceCopayment != '0' && !isEmpty(crIdx) ){
-        $("#sel_ciIdx").val(revinsuranceCopayment).prop("selected", true);
-    }else{
-        $("#sel_ciIdx").val('').prop("selected", true);
-    }
+        $('#sel_ciIdx').empty();
+        $('#sel_ciIdx').append(strOption);
+
+        let revinsuranceCopayment = $("#insuranceFee").val();
+        let revcarDamageCover = $("#carDamageCover").val();
+
+        if((isEmpty(revinsuranceCopayment) || revinsuranceCopayment == '0') && !isEmpty(revcarDamageCover) && revcarDamageCover > '0'){
+            if (carDamageCover == revcarDamageCover){
+                revinsuranceCopayment = insuranceCopayment;
+            }else if (carDamageCover2 == revcarDamageCover){
+                revinsuranceCopayment = insuranceCopayment2;
+            }else if (carDamageCover3 == revcarDamageCover){
+                revinsuranceCopayment = insuranceCopayment3;
+            }else if (carDamageCover4 == revcarDamageCover){
+                revinsuranceCopayment = insuranceCopayment4;
+            }
+        }
+
+        if(!isEmpty(revinsuranceCopayment) && revinsuranceCopayment != '0' && !isEmpty(crIdx) ){
+            $("#sel_ciIdx").val(revinsuranceCopayment).prop("selected", true);
+        }else{
+            $("#sel_ciIdx").val('').prop("selected", true);
+        }
+    });
 
 }
 
@@ -1268,7 +1310,6 @@ function rentcal(){
 
         $("#calRentTotAmountEtc").empty();
         $("#calRentTotAmountEtc").append(calRentTotAmountEtc);
-
 //			$("#deliveryFee").val('0');
         CALCULABLE_MOTH = 'Y';
         // }
@@ -1365,10 +1406,6 @@ function settingInputStatus(){
  * 예약저장 값 체크
  */
 function detailValidation(){
-//	swal("예약 저장 작업중...", { icon: "warning", });
-//	if(true){
-//		return;
-//	}
 
     var loginUser = getLoginUser();
     GLOBAL_LOGIN_USER_IDX = loginUser.urIdx;
@@ -1503,7 +1540,10 @@ function detailValidation(){
         deliveryTypeCode = getPureText($('#sel_deliveryTypeCode option:selected').val());
     }
 
-    if((deliveryTypeCode === 'OF' || deliveryTypeCode === '지점방문')&& isEmpty(returnAddr)){
+    if((deliveryTypeCode === 'OF' || deliveryTypeCode === '지점방문') && isEmpty(returnAddr)){
+        if(deliveryAddr === ""){
+            deliveryAddr = '지점방문';
+        }
         returnAddr = deliveryAddr;
     }
 
@@ -1520,16 +1560,12 @@ function detailValidation(){
         errorAlert('예약', '대여일시가 반납일시 보다 크거나 같을 수 없습니다.');
         return;
     }
-
-    var isVisit = $('input:radio[id="radioVisitCompany"]').is('checked');
-    if (!isVisit){
-        if (isEmpty(deliveryAddr)) { // is not empty
-            errorAlert('예약', '대여위치는 필수 입력값 입니다.');
-            return;
-        }else if (isEmpty(returnAddr)) { // is not empty
-            errorAlert('예약', '반납위치는 필수 입력값 입니다.');
-            return;
-        }
+    else if (isEmpty(deliveryAddr)) { // is not empty
+        errorAlert('예약', '대여위치는 필수 입력값 입니다.');
+        return;
+    }else if (isEmpty(returnAddr)) { // is not empty
+        errorAlert('예약', '반납위치는 필수 입력값 입니다.');
+        return;
     }
 
     let sdt = rentStartDay.split(' ');
@@ -1565,13 +1601,10 @@ function detailValidation(){
         errorAlert('차량', '모델(번호)는 필수 선택값 입니다.');
         return;
     }
-    // todo 자차 고객부담금
-    // else if (isEmpty(insuranceCopayment) && reserveTypeCode != 'QT') { // is not empty
-    //     errorAlert('차량', '자차 고객부담금은 필수 선택값 입니다.');
-    //     return;
-    // }
+
     let rtIdxSplit = $('#companyName option:selected').text().split('(');
     let companyName = rtIdxSplit[0];
+
 
     let rentFee = getPureText($('#rentFee').val());
     let insuranceFee = getPureText($('#insuranceFee').val());
@@ -1582,11 +1615,7 @@ function detailValidation(){
     let paymentAmount = getPureText($('#paymentAmount').val());
     let carDeposit = getPureText($('#carDeposit').val());
 
-//	alert(rentFee+'\n'+insuranceFee+'\n'+discountFee+'\n'+deliveryFee+'\n'+addFee+'\n'+paymentTotalAmount+'\n'+paymentAmount);
-    if ((isEmpty(rentFee) || rentFee == '0' || CALCULABLE_MOTH == 'N') && reserveStatusCode == 'RS') { // is not empty
-        errorAlert('결제', '요금계산을 먼저 실행하여 주세요.');
-        return;
-    }
+    paymentTotalAmount = parseInt(paymentTotalAmount) + parseInt(addFee);
 
     var req = {
         'rmIdx' : rmIdx
@@ -1617,6 +1646,7 @@ function detailValidation(){
         ,	'deliveryFee' : deliveryFee
         ,	'addFee' : addFee
         ,	'paymentTotalAmount' : paymentTotalAmount
+        ,	'paymentAmount' : paymentAmount
         ,	'reserveChannel' : 'CA'
         ,	'ulIdx1' : ulIdx1
         ,	'firstDriverName' : firstDriverName
@@ -1639,11 +1669,9 @@ function detailValidation(){
         ,	'modId' : GLOBAL_LOGIN_USER_IDX
         ,	'regId' : GLOBAL_LOGIN_USER_IDX
     }
-//	var pp = JSON.stringify(req);
-//	console.log(pp);
-//	alert(pp);
+
     title = '예약정보 저장';
-    text = '저장하시겠습니까?'
+    text = '저장하시겠습니까?';
     icon = 'info';
     cancel_text = '취소하셨습니다.';
     save_type = CRUD;
@@ -1748,50 +1776,6 @@ function calDate(pStartDate, pEndDate) {
 }
 /* =========================== detail function start ======================================*/
 
-
-$("#reserveMasterInfo").iziModal({
-    radius: 5,
-    padding: 20,
-    closeButton: false,
-    overlayClose: false,
-    width: 1000,
-    height :'auto',
-    overflow : 'scroll',
-    title: '예약상세',
-    headerColor: '#002e5b',
-    backdrop: 'static',
-    keyboard: false,
-    subtitle : ' ',
-    group:'groupA',
-    loop : true,
-    navigateCaption: false,
-    navigateArrows: false,
-    onClosing: function(){
-        closeDetail();
-    }
-});
-
-$("#reserveMasterInfo2").iziModal({
-    radius: 5,
-    padding: 20,
-    closeButton: true,
-    overlayClose: false,
-    width: 1000,
-    height :'auto',
-    overflow : 'scroll',
-    title: '예약금액수정',
-    subtitle : ' ',
-    headerColor: '#002e5b',
-    backdrop: 'static',
-    keyboard: false,
-    group:'groupA',
-    loop : true,
-    navigateCaption: false,
-    navigateArrows: false,
-    onClosing: function(){
-        closeDetail();
-    }
-});
 
 //모달창 닫기  전 상태 변경시 확인 창 출력
 function closeDetail(){
@@ -1986,46 +1970,6 @@ function repatmentSubmit(){
 
 }
 //취소요청 모달창 end =========================================================================================================================================================================
-
-//날짜 마스킹 처리
-Array.prototype.forEach.call(document.body.querySelectorAll("*[data-mask]"), applyDataMask);
-function applyDataMask(field) {
-    var mask = field.dataset.mask.split('');
-
-    // For now, this just strips everything that's not a number
-    function stripMask(maskedData) {
-        function isDigit(char) {
-            return /\d/.test(char);
-        }
-        return maskedData.split('').filter(isDigit);
-    }
-
-    // Replace `_` characters with characters from `data`
-    function applyMask(data) {
-        return mask.map(function(char) {
-            if (char != '_') return char;
-            if (data.length == 0) return char;
-            return data.shift();
-        }).join('')
-    }
-
-    function reapplyMask(data) {
-        return applyMask(stripMask(data));
-    }
-
-    function changed() {
-        var oldStart = field.selectionStart;
-        var oldEnd = field.selectionEnd;
-
-        field.value = reapplyMask(field.value);
-        CALCULABLE_MOTH = 'N';
-        field.selectionStart = oldStart;
-        field.selectionEnd = oldEnd;
-    }
-
-    field.addEventListener('click', changed)
-    field.addEventListener('keyup', changed)
-};
 
 //input box auto hypen
 function userContactAutoHyphen(id){
@@ -2225,3 +2169,69 @@ function startReturn(){
     });
 
 }
+
+function cancelPay() {
+    if (confirm("취소 시 환불 예정 금액은 " + objectConvertToPriceFormat(refundRequestFee) + "원 입니다. 취소 하시겠습니까?")) {
+
+        var req = {
+            "merchant_uid": merchantUid, // 주문번호
+            "rmIdx": rmIdx, // 예약 idx
+            "cancel_request_amount": refundRequestFee, // 환불금액
+            "reason": "관리자에 의한 환불" // 환불사유
+        };
+
+        $.ajax({
+            "url": "/payments/cancel",
+            "type": "POST",
+            "contentType": "application/json",
+            "data": JSON.stringify(req),
+            "dataType": "json",
+            success: function (res) {
+                alert("환불이 완료되었습니다.");
+                location.reload();
+            },
+            error: function (err) {
+                console.log(err);
+                alert("환불을 실패하였습니다.");
+            }
+        });
+    }
+
+
+}
+
+// 댓글 등록
+function comment() {
+
+    var commentMsg = $('#commentMsg').val().trim();
+
+    if (isEmpty(commentMsg)){
+        errorAlert('댓글', '댓글을 입력해주세요.');
+        $('#commentMsg').focus();
+    }
+
+    var url = '/api/v1.0/insertComment.json';
+
+    var req = {
+        rtIdx : getLoginUser().rtIdx,
+        commentMsg : commentMsg,
+        commentPath : 'reserveInfo',
+        regId : getLoginUser().urIdx
+    };
+
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: JSON.stringify(req),
+        contentType: 'application/json',
+        cache: false,
+        async : false,
+        timeout: 10000
+    }).done(function (data, textStatus, jqXHR) {
+
+        if (data.res === 1){
+            swal("댓글 등록 성공", {icon : "success"});
+        }
+    })
+}
+

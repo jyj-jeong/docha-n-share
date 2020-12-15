@@ -48,7 +48,8 @@ public class DochaAdminDcUserInfoResponse {
     private String regId;						// 등록자
     private String modDt;						// 수정일시
     private String modId;						// 수정자
-    private String accessYn;				    // 접속허용 여부
+    private String accessYn;				    // 회원사 접속허용 여부
+    private int useYn;				        // 회원 접속허용 여부
 
     private String companyName;					//회원사이름
     private String branchName;					//지점명

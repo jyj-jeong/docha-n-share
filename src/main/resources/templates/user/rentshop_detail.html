@@ -321,7 +321,8 @@
                                 </div>
                                 <div class="col-lg-3 mb-3 float-l flex-1" >
                                     <label>주말/공휴일 할증율</label>
-                                    <input type="text" placeholder="15%" id="weekendReserveMinimumRate"  class="form-control">
+                                    <input th:if="${#session.getAttribute('LOGIN_SESSION').userRole == 'RA'}" type="text" placeholder="15%" id="weekendReserveMinimumRate"  class="form-control">
+                                    <input th:if="${#session.getAttribute('LOGIN_SESSION').userRole != 'RA'}" type="text" placeholder="15%" id="weekendReserveMinimumRate"  class="form-control" readonly>
                                 </div>
                                 <div class="col-lg-12 mb-3 float-l text-right">
                                     <div class="p-t-20 p-b-20 text-right">
