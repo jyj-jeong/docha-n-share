@@ -286,7 +286,7 @@ function initDetailInfo(seq){
         $("#modelName").val(modelName);
         $("#modelDetailName").val('');
 
-        $('select[name="year"]').val(year);
+        $('select[name="year"]').val(year.trim());
 
         $("#sel_countryCode").val(country).prop("sel_countryCode", true);
 

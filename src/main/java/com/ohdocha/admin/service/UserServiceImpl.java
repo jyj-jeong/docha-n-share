@@ -464,6 +464,7 @@ public class UserServiceImpl extends ServiceExtension implements UserService {
     @Override
     public void insertRentCompanyStaff(ServiceMessage message) {
         DochaAdminDcRentCompanyStaffRequest rentCompanyStaffRequest = message.getObject("rentCompanyStaffRequest", DochaAdminDcRentCompanyStaffRequest.class);
+        rentCompanyStaffRequest.setUserRole("MA");
 
         int res = rentCompanyInfoMapper.insertDcRentCompanyStaff(rentCompanyStaffRequest);
         int res2 = rentCompanyInfoMapper.updateDcRentStaffUserinfo(rentCompanyStaffRequest);
