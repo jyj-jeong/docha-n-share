@@ -258,36 +258,40 @@
 
         var formData = new FormData();
 
-        formData.append("image", inputFile.files[0]);
-        formData.append("quIdx", quIdx);
+        if (inputFile.files.length > 0) {
+            formData.append("image", inputFile.files[0]);
+            formData.append("quIdx", quIdx);
 
-        for (var pair of formData.entries()) {
-            console.log(pair[0]+ ', ' + pair[1]);
-        }
-
-        var oReq = new XMLHttpRequest();
-        oReq.addEventListener("load", function() {
-
-            if(oReq.status === 200){
-                location.href = "";
-                alert(err.responseJSON.message);
-            }else if (oReq.status === 400){
-                errorAlert('저장 실패', '관리자에게 문의하세요.');
-            }else if (oReq.status === 500){
-                swal("저장 성공", {icon : "success"});
-                console.log(oReq.response);
+            for (var pair of formData.entries()) {
+                console.log(pair[0]+ ', ' + pair[1]);
             }
 
-        });
-        oReq.open("POST", "/api/v1.0/uploadQuestionImage.do",true);
-        oReq.send(formData);
+            var oReq = new XMLHttpRequest();
+            oReq.addEventListener("load", function() {
+
+                if(oReq.status === 200){
+                    location.href = "";
+                    alert(err.responseJSON.message);
+                }else if (oReq.status === 400){
+                    errorAlert('저장 실패', '관리자에게 문의하세요.');
+                }else if (oReq.status === 500){
+                    swal("저장 성공", {icon : "success"});
+                    console.log(oReq.response);
+                }
+
+            });
+            oReq.open("POST", "/api/v1.0/uploadQuestionImage.do",true);
+            oReq.send(formData);
 
 
-        var editor;
-        var path;
-        editor = $("#questionImg").val();
-        path = ($("#depth_container").text()).replace("/" + "");
-        var type = "html";
+            var editor;
+            var path;
+            editor = $("#questionImg").val();
+            path = ($("#depth_container").text()).replace("/" + "");
+            var type = "html";
+        }
+
+
 
     }
 

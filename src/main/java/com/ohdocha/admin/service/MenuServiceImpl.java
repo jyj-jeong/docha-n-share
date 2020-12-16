@@ -1,16 +1,21 @@
 package com.ohdocha.admin.service;
 
 import com.ohdocha.admin.config.Properties;
-import com.ohdocha.admin.domain.car.model.DochaAdminCarModelDetailRequest;
-import com.ohdocha.admin.domain.car.model.DochaAdminCarModelDetailResponse;
-import com.ohdocha.admin.domain.car.regcar.DochaAdminRegCarDetailRequest;
 import com.ohdocha.admin.domain.menu.*;
+import com.ohdocha.admin.domain.reserve.matchingService.DochaAlarmTalkDto;
 import com.ohdocha.admin.exception.BadRequestException;
 import com.ohdocha.admin.mapper.DochaAdminMenuMapper;
+import com.ohdocha.admin.util.DochaAlarmTalkMsgUtil;
+import com.ohdocha.admin.util.DochaTemplateCodeProvider;
 import com.ohdocha.admin.util.FileHelper;
 import com.ohdocha.admin.util.ServiceMessage;
+import kong.unirest.HttpResponse;
+import kong.unirest.JsonNode;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,8 +28,11 @@ import java.util.UUID;
 @Service
 public class MenuServiceImpl extends ServiceExtension implements MenuService {
 
+    @Autowired
+    private final DochaAlarmTalkMsgUtil alarmTalk;
     private final Properties properties;
     private final DochaAdminMenuMapper menuMapper;
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Override
     public void getMenuList(ServiceMessage message) {
@@ -82,6 +90,29 @@ public class MenuServiceImpl extends ServiceExtension implements MenuService {
         DochaAdminQuestionRequest questionRequest = message.getObject("questionRequest", DochaAdminQuestionRequest.class);
 
         int res = menuMapper.updateAnswer(questionRequest);
+
+        List<DochaAdminQuestionResponse> questionResponseList = menuMapper.selectQuestionList(questionRequest);
+
+        if (res > 0 && questionRequest.getQuAnswerYn().equals("1")) {
+            try {
+                // 문의 알림톡발송
+                DochaAlarmTalkDto dto = new DochaAlarmTalkDto();
+                dto.setPhone(questionResponseList.get(0).getQuestionerPhone());//알림톡 전송할 번호
+                dto.setTemplateCode(DochaTemplateCodeProvider.A000008.getCode());
+
+                HttpResponse<JsonNode> response = alarmTalk.sendAlramTalk(dto);
+                if (response.getStatus() == 200) {
+                    logger.info("AlarmTalk Send Compelite");
+                    logger.info(response.getBody().toPrettyString());
+                } else {
+                    logger.info("AlarmTalk Send Fail");
+                    logger.error(response.getBody().toPrettyString());
+                }
+            } catch (Exception ex) {
+                //알림톡 발송을 실패하더라도 오류발생시키지 않고 결제처리 완료를 위해 오류는 catch에서 로깅처리만 함
+                logger.error("Error", ex);
+            }
+        }
 
         message.addData("res", res);
     }

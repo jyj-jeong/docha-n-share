@@ -1110,11 +1110,6 @@ function detailValidation(save_type) {
 					return;
 				}
 
-				if (isEmpty(accessYn) || accessYn == 0 || accessYn == 'N') {
-					accessYn = 'Y';
-				} else {
-					accessYn = 'N';
-				}
 
 				if (isEmpty(alarmYn) || alarmYn == 0 || alarmYn == 'N') {
 					alarmYn = 'N';

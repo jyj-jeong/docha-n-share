@@ -84,6 +84,12 @@ public class DochaAlarmTalkMsgUtil {
             msg = cancelCompeliteAlarmTalkForAdmin(dto);
 
         }
+        //A000008	[고객] 문의 답변 완료
+        if (DochaTemplateCodeProvider.A000008 == template) {
+            failed_subject = "[문의]";
+            msg = questionAnswerAlarmTalk(dto);
+
+        }
 
 
         //application.properties 에서 받아온 정보로 처리할 경우 유니코드 관련 오류발생하여 일단 소스에 key및 app id, callback number을 넣어서 처리
@@ -147,6 +153,14 @@ public class DochaAlarmTalkMsgUtil {
                 , dto.getCarNumber()//차량명
                 , dto.getPayAmount()//결제금액
                 , dto.getCancelAmount());//환불금액
+
+    }
+
+    // 0008 취소 요청
+    private String questionAnswerAlarmTalk(DochaAlarmTalkDto dto) {
+
+        return String.format(DochaTemplateCodeProvider.A000008.getMsg()
+                ,dto.getUserContact());
 
     }
 

@@ -379,7 +379,7 @@ function initDetailInfo(urIdx) {
             let userBirthday 	= data.userBirthday != null ? data.userBirthday : new Date();
             let userContact1 	= phoneFomatter(data.userContact1);
             let regDt 			= dateFormatter(data.regDt , "-") != null ? dateFormatter(data.regDt , "-") : new Date();
-            let useYn 			= data.useYn == 1? true : false ;
+            let useYn 			= data.useYn === "1"? true : false ;
 
 
             $("#urIdx").val(urIdx);
@@ -518,7 +518,6 @@ function initDetailInfo(urIdx) {
     });// end fn_callApi
     //START 면허종류============================================================
 
-    // openIziModal(MODEL_NAME);
 
 }//end initDetailInfo
 
@@ -889,7 +888,6 @@ function detailSubmit(save_type, req){
                     case 'INSERTuserLicenseInfo'://운전면허
                         if( CRUD === 'insert') {
                             $('#ulIdx').val(res.ulIdx);
-                            // $("#"+MODAL_NAME).iziModal('close');
                         }
                         break;
                 }//end switch
@@ -908,18 +906,6 @@ $('#licenseExpiration input').click(function(event) {
     // $('#datetimepicker1 ').data("DateTimePicker").show();
 });
 
-$("#" + MODEL_NAME).iziModal({
-    radius: 5,
-    padding: 20,
-    closeButton: true,
-    overlayClose: false,
-    width: MODEL_WIDTH,
-    height:1500,
-    title: MODEL_TITLE,
-    headerColor: '#002e5b',
-    backdrop: 'static',
-    keyboard: false
-});
 
 function openCreateMember(){
     CRUD = 'insert';

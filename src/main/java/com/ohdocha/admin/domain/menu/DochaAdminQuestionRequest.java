@@ -15,6 +15,7 @@ public class DochaAdminQuestionRequest {
 	private String quTitle;
 	private String quContents;
 	private String questionerId;
+	private String questionerPhone;
 	private String questionDt;
 	private String quAnswer;
 	private String quAnswerYn;

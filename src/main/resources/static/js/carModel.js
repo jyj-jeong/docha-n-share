@@ -261,7 +261,7 @@ function initDetailInfo(seq){
         let mdIdx 				= data.mdIdx            ; //모델idx
         let modelName 			= data.modelName        ; //모델명
         let country 	        = data.countryCode  	; //국가
-        let year 	            = data.year 		    ; //연식
+        let year 	            = data.year.trim() 		    ; //연식
         let delYn 				= data.delYn     		; //삭제여부
         let imgIdx 				= data.imgIdx     		; //차량 이미지
 
@@ -286,7 +286,7 @@ function initDetailInfo(seq){
         $("#modelName").val(modelName);
         $("#modelDetailName").val('');
 
-        $('select[name="year"]').val(year.trim());
+        $('select[name="year"]').val(year);
 
         $("#sel_countryCode").val(country).prop("sel_countryCode", true);
 
