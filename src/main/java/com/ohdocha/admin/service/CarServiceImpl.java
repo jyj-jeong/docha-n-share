@@ -979,7 +979,28 @@ public class CarServiceImpl extends ServiceExtension implements CarService {
 
         int res = insuranceTemplateMapper.insertInsuranceTemplate(insuranceTemplateDetailRequest);
 
-        message.addData("res", res);
+        if (res == 1){
+            String[] crIdxList = insuranceTemplateDetailRequest.getCrIdx().split(" ");
+
+            for (String crIdx : crIdxList){
+                insuranceTemplateDetailRequest.setCrIdx(crIdx);
+
+                // 선택한 차량의 보험 정보 update
+                res = regCarMapper.updateRegCarInsuranceInfo(insuranceTemplateDetailRequest);
+
+                // 차량의 요금정보가 기존에 없는 경우 insert
+                if (res == 0){
+                    regCarMapper.insertRegCarInsurance(insuranceTemplateDetailRequest);
+                }
+
+            }
+
+            message.addData("res", res);
+        }else {
+            message.addData("res", res);
+
+        }
+
     }
 
     /* 보험템플릿 리스트 */
@@ -1013,6 +1034,20 @@ public class CarServiceImpl extends ServiceExtension implements CarService {
         DochaAdminInsuranceTemplateDetailRequest insuranceTemplateDetailRequest = message.getObject("insuranceTemplateDetailRequest", DochaAdminInsuranceTemplateDetailRequest.class);
 
         int res = insuranceTemplateMapper.updateInsuranceTemplate(insuranceTemplateDetailRequest);
+
+        if (res == 1){
+            String[] crIdxList = insuranceTemplateDetailRequest.getCrIdx().split(" ");
+
+            for (String crIdx : crIdxList){
+                insuranceTemplateDetailRequest.setCrIdx(crIdx);
+
+                res = regCarMapper.updateRegCarInsuranceInfo(insuranceTemplateDetailRequest);
+
+                if(res == 0){
+                    regCarMapper.insertRegCarInsurance(insuranceTemplateDetailRequest);
+                }
+            }
+        }
 
         message.addData("res", res);
     }

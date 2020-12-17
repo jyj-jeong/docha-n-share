@@ -669,10 +669,11 @@
                                   LEFT OUTER JOIN DC_RENT_COMPANY_TIME C2
                                                   ON C1.RT_IDX = C2.RT_IDX
                      ) S3
-                WHERE ((S3.START_DT <= FROM_UNIXTIME(CONCAT(#{rentStartDay}, ' ', #{rentStartTime}, '%Y-%m-%d %H:%i'), '%Y-%m-%d %H:%i')
-                    AND S3.END_DT >= FROM_UNIXTIME(CONCAT(#{rentStartDay}, ' ', #{rentStartTime}, '%Y-%m-%d %H:%i'), '%Y-%m-%d %H:%i'))
-                    OR (S3.START_DT <= FROM_UNIXTIME(CONCAT(#{rentEndDay}, ' ', #{rentEndTime}, '%Y-%m-%d %H:%i'), '%Y-%m-%d %H:%i')
-                        AND S3.END_DT >= FROM_UNIXTIME(CONCAT(#{rentEndDay}, ' ', #{rentEndTime}, '%Y-%m-%d %H:%i'), '%Y-%m-%d %H:%i')))
+                WHERE
+                (S3.START_DT BETWEEN CONCAT(#{rentStartDay}, ' ', #{rentStartTime} AND CONCAT(#{rentEndDay}, ' ', #{rentEndTime})
+                OR (S3.END_DT BETWEEN CONCAT(#{rentStartDay}, ' ', #{rentStartTime} AND CONCAT(#{rentEndDay}, ' ', #{rentEndTime})
+                OR (S3.START_DT <= CONCAT(#{rentStartDay}, ' ', #{rentStartTime} AND S3.END_DT >= CONCAT(#{rentEndDay}, ' ', #{rentEndTime})
+
                         AND S3.CR_IDX = T1.CR_IDX
             )
                         GROUP BY CR_IDX

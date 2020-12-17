@@ -30,7 +30,8 @@
                             <input type="text" class="form-control d-none" name="ciTIdx" id="ciTIdx"/>
                             <div class="col-3 mb-3">
                                 <label class="form-label" for="companyName">회사명(지점)</label>
-                                <select class="custom-select" name="companyName" id="companyName"></select>
+                                <select class="custom-select" name="companyName" id="companyName" onchange="companyChanged()"></select>
+                                <input type="text" class="form-control d-none" name="rtIdx" id="rtIdx"/>
                             </div>
                             <div class="col-3 mb-3">
                                 <label class="form-label" for="ciEtc">제목</label>
@@ -209,6 +210,37 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- 차량 -->
+                <div class="card shadow mb-4">
+                    <div class="card-body">
+                        <div class="row mt-2">
+                            <label class="form-label mb-3" for="companyName">
+                                <b class="-bold col-1">차량</b></label>
+
+                            <label class="form-label col-12">경차</label>
+                            <div id="subCompactCarList" class="col-12 mb-3"></div>
+
+                            <label class="form-label col-12">소형</label>
+                            <div id="compactCarList" class="col-12 mb-3"></div>
+
+                            <label class="form-label col-12">중형</label>
+                            <div id="mediumCarList" class="col-12 mb-3"></div>
+
+                            <label class="form-label col-12">대형</label>
+                            <div id="largeCarList" class="col-12 mb-3"></div>
+
+                            <label class="form-label col-12">SUV</label>
+                            <div id="suvCarList" class="col-12 mb-3"></div>
+
+                            <label class="form-label col-12">승합</label>
+                            <div id="vanList" class="col-12 mb-3"></div>
                         </div>
                     </div>
                 </div>

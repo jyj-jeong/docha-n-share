@@ -382,12 +382,10 @@
         return /*[[${session.LOGIN_SESSION}]]*/ '';
     }
 
-    $( document ).ready(function() {
-        if(CRUD === "insert"){
-            openCreateMember();
-        }else if (CRUD === "modify"){
-            initDetailInfo(urIdx)
-        }
+    if(CRUD === "insert"){
+        openCreateMember();
+    }else if (CRUD === "modify"){
+        initDetailInfo(urIdx)
     }
 
     var userBirthday = new WinkelCalendar({
