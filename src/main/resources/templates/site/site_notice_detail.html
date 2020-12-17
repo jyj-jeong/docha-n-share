@@ -128,7 +128,7 @@
         $('#ntTitle').val(noticeDetail[0].ntTitle);
         $('#ntContent').val(noticeDetail[0].ntContent);
 
-        $('#noticeImg').attr('src','https://admin.docha.co.kr/img/notice/' + noticeDetail[0].imgIdx);
+        $('#car_img').attr('src','https://admin.docha.co.kr/img/notice/' + noticeDetail[0].imgIdx);
 
     }else {
         $('#btnDelete').addClass('d-none');
@@ -159,8 +159,12 @@
         }).done(function (data, textStatus, jqXHR) {
 
             if (data.res === 1){
+                if (inputFile.files.length === 0) {
+                    swal("저장 성공", { icon: "success"});
+                } else {
                 /* 이미지 저장 */
                 var formData = new FormData();
+                ntIdx = data.noticeRequest.ntIdx;
 
                 formData.append("image", inputFile.files[0]);
                 formData.append("ntIdx", ntIdx);
@@ -192,6 +196,7 @@
                 editor = $("#noticeImg").val();
                 path = ($("#depth_container").text()).replace("/" + "");
                 var type = "html";
+                }
             }else {
                 errorAlert("저장 실패", "저장에 실패하였습니다.")
             }

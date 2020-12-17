@@ -11,7 +11,7 @@ import org.apache.ibatis.type.Alias;
 @Alias("noticeRequest")
 public class DochaAdminNoticeRequest {
 
-	private String ntIdx;
+	private int ntIdx;
 	private String ntTitle;
 	private String ntContent;
 	private String imgIdx;

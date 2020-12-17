@@ -146,6 +146,7 @@
 	</update>
 
 	<insert id="insertNotice" parameterType="noticeRequest">
+		<![CDATA[
        INSERT INTO DC_NOTICE(
            NT_TITLE
          , NT_CONTENT
@@ -157,6 +158,11 @@
           , #{regId}
           , NOW()
       )
+      ]]>
+		<selectKey keyProperty="ntIdx" resultType="Integer" order="AFTER">
+			SELECT LAST_INSERT_ID();
+		</selectKey>
+
     </insert>
 
 	<update id="updateNotice" parameterType="noticeRequest">

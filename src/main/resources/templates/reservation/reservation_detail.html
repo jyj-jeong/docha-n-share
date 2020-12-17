@@ -398,7 +398,9 @@
     rmIdx = /*[[${rmIdx}]]*/'';
     CRUD = 'update';
 
-    initDetailInfo(rmIdx);
+    $(document).ready(function () {
+        initDetailInfo(rmIdx);
+    });
 
     function reverse() {
         swal("상세화면은 순차적으로 오픈할 예정입니다.", { icon: "warning", });

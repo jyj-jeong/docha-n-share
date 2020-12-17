@@ -130,9 +130,9 @@
               , IFNULL(E.STAFF_CONTACT1, D.COMPANY_CONTACT1) AS STAFF_CONTACT1 /* 관리자 전화번호 */
               , A.CR_IDX /* 차량 순번 */
               , C.MD_IDX /* 차량 순번 */
-              , IFNULL(C.ONSELF_DAMAGE_COVER, '0') AS ONSELF_DAMAGE_COVER /* 자손보상금액 */
-              , IFNULL(C.PERSONAL_COVER, '0') AS PERSONAL_COVER /* 대인보상금액 */
-              , IFNULL(C.PROPERTY_DAMAGE_COVER, '0') AS PROPERTY_DAMAGE_COVER   /* 대물보상금액 */
+              , IFNULL(F.ONSELF_DAMAGE_COVER, '0') AS ONSELF_DAMAGE_COVER /* 자손보상금액 */
+              , IFNULL(F.PERSONAL_COVER, '0') AS PERSONAL_COVER /* 대인보상금액 */
+              , IFNULL(F.PROPERTY_DAMAGE_COVER, '0') AS PROPERTY_DAMAGE_COVER   /* 대물보상금액 */
               , IFNULL(A.CAR_DAMAGE_COVER, '') AS CAR_DAMAGE_COVER /* 예약시 자차보상금(고객부담금)*/
               , IFNULL(A.INSURANCE_COPAYMENT, '') AS INSURANCE_COPAYMENT /* 예약시 고객부담금(보험료)*/
               , IFNULL(C.FUEL_CODE, '') AS FUEL_CODE /* 연료코드 */
@@ -151,6 +151,7 @@
               FROM DC_RESERVE_MASTER A LEFT JOIN DC_USER_INFO B ON A.UR_IDX = B.UR_IDX
                                         INNER JOIN DC_CAR_INFO C ON A.CR_IDX = C.CR_IDX
                                         INNER JOIN DC_RENT_COMPANY D ON A.RT_IDX = D.RT_IDX
+                                        INNER JOIN DC_CAR_INFO_INSURANCE F ON A.CR_IDX = F.CR_IDX
                                         LEFT JOIN DC_RENT_COMPANY_STAFF E ON A.RT_IDX = E.RT_IDX AND E.OWNER_YN = 'Y'
               WHERE A.RM_IDX = #{rmIdx}
         ]]>

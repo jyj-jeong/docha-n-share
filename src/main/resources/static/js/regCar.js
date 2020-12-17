@@ -1074,9 +1074,11 @@ function setData(set_type, _data){
 			break;
 		case 'saveInsurance':	// 보험정보
 			let ciTIdx                		= nullCheck(_data.ciTIdx);
+
 			let onselfDamageCover           = nullCheck(_data.onselfDamageCover) === '' ? '' : objectConvertToPriceFormat(nullCheck(_data.onselfDamageCover));;
 			let personalCover               = nullCheck(_data.personalCover) === '' ? '' : objectConvertToPriceFormat(nullCheck(_data.personalCover));;
 			let propertyDamageCover     	= nullCheck(_data.propertyDamageCover) === '' ? '' : objectConvertToPriceFormat(nullCheck(_data.propertyDamageCover));;
+
 			let carDamageCover              = nullCheck(_data.carDamageCover) === '' ? '' : objectConvertToPriceFormat(nullCheck(_data.carDamageCover));
 			let insuranceCopayment          = nullCheck(_data.insuranceCopayment) === '' ? '' : objectConvertToPriceFormat(nullCheck(_data.insuranceCopayment));
 			let carDamageCover2             = nullCheck(_data.carDamageCover2) === '' ? '' : objectConvertToPriceFormat(nullCheck(_data.carDamageCover2));
@@ -1085,6 +1087,7 @@ function setData(set_type, _data){
 			let insuranceCopayment3         = nullCheck(_data.insuranceCopayment3) === '' ? '' : objectConvertToPriceFormat(nullCheck(_data.insuranceCopayment3));
 			let carDamageCover4             = nullCheck(_data.carDamageCover4) === '' ? '' : objectConvertToPriceFormat(nullCheck(_data.carDamageCover4));
 			let insuranceCopayment4         = nullCheck(_data.insuranceCopayment4) === '' ? '' : objectConvertToPriceFormat(nullCheck(_data.insuranceCopayment4));
+
 			let carDamage1Yn                = nullCheck(_data.carDamage1Yn) === '' ? 'N' : nullCheck(_data.carDamage1Yn);
 			let carDamage2Yn                = nullCheck(_data.carDamage2Yn) === '' ? 'N' : nullCheck(_data.carDamage2Yn);
 			let carDamage3Yn                = nullCheck(_data.carDamage3Yn) === '' ? 'N' : nullCheck(_data.carDamage3Yn);
@@ -1325,26 +1328,16 @@ function detailValidation(save_type){
 				if(isEmpty(personalCover)){
 					errorAlert('책임보험', '대인은 필수 입력값 입니다.');
 					return;
-				}else if(!isEmpty(personalCover) && !$.isNumeric(personalCover)){
-					errorAlert('책임보험', '대인은 숫자만 입력 가능합니다.');
-					return;
 				}
 				else if(isEmpty(propertyDamageCover)){
 					errorAlert('책임보험', '대물은 필수 입력값 입니다.');
-					return;
-				}
-				else if(!isEmpty(propertyDamageCover) && !$.isNumeric(propertyDamageCover)){
-					errorAlert('책임보험', '대물은 숫자만 입력 가능합니다.');
 					return;
 				}
 				else if(isEmpty(onselfDamageCover)){
 					errorAlert('책임보험', '자손은 필수 입력값 입니다.');
 					return;
 				}
-				else if(!isEmpty(onselfDamageCover) && !$.isNumeric(onselfDamageCover)){
-					errorAlert('책임보험', '자손은 숫자만 입력 가능합니다.');
-					return;
-				}
+
 				else if(isEmpty(insuranceCopayment)){
 					errorAlert('자차보험1', '자차 보험 요금/일은 필수 입력값 입니다.');
 					return;

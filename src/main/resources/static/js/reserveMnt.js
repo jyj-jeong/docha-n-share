@@ -929,9 +929,6 @@ function selectCarInfo(crIdx){
     let year = nullCheck(carListData[crIdxIndex].year);
     let colorName = nullCheck(carListData[crIdxIndex].colorName);
     let mileage = nullCheck(carListData[crIdxIndex].mileage) == ''?'0':objectConvertToPriceFormat(carListData[crIdxIndex].mileage);
-    let onselfDamageCover = nullCheck(carListData[crIdxIndex].onselfDamageCover) == ''?'':objectConvertToPriceFormat(carListData[crIdxIndex].onselfDamageCover);
-    let personalCover = nullCheck(carListData[crIdxIndex].personalCover) == ''?'':objectConvertToPriceFormat(carListData[crIdxIndex].personalCover);
-    let propertyDamageCover = nullCheck(carListData[crIdxIndex].propertyDamageCover) == ''?'':objectConvertToPriceFormat(carListData[crIdxIndex].propertyDamageCover);
     let carTypeCode = nullCheck(carListData[crIdxIndex].carTypeCode);
     let optionCodeValue  = nullCheck(carListData[crIdxIndex].optionCodeValue);
 
@@ -940,9 +937,6 @@ function selectCarInfo(crIdx){
     $('#year').val(year);
     $('#colorName').val(colorName);
     $('#mileage').val(mileage);
-    $('#onselfDamageCover').val(onselfDamageCover);
-    $('#personalCover').val(personalCover);
-    $('#propertyDamageCover').val(propertyDamageCover);
     $('#carTypeCode').val(carTypeCode);
     $('#optionCodeValue').val(optionCodeValue);
 

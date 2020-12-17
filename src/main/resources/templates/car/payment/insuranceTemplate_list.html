@@ -72,11 +72,12 @@
                                     <td th:text="${insurance.getCiTIdx()}"></td>
                                     <td th:text="${insurance.getCompanyName() + '(' + insurance.getBranchName() + ')'}"></td>
                                     <td th:text="${insurance.getCiEtc()}"></td>
-                                    <td th:text="${#numbers.formatInteger(insurance.getPersonalCover() , 3, 'COMMA')}"></td>
-                                    <td th:text="${#numbers.formatInteger(insurance.getPropertyDamageCover() , 3, 'COMMA')}"></td>
-                                    <td th:text="${#numbers.formatInteger(insurance.getOnselfDamageCover() , 3, 'COMMA')}"></td>
+                                    <td th:text="${insurance.numberCheck(insurance.getPersonalCover()) ? #numbers.formatInteger(insurance.getPersonalCover(), 0, 'COMMA') : insurance.getPersonalCover()}"></td>
+                                    <td th:text="${insurance.numberCheck(insurance.getPropertyDamageCover()) ? #numbers.formatInteger(insurance.getPropertyDamageCover(), 0, 'COMMA') : insurance.getPropertyDamageCover()}"></td>
+                                    <td th:text="${insurance.numberCheck(insurance.getOnselfDamageCover()) ? #numbers.formatInteger(insurance.getOnselfDamageCover(), 0, 'COMMA') : insurance.getOnselfDamageCover()}"></td>
                                 </tr>
                                 <script th:inline="javascript">
+
                                     // 상세보기 이동
                                     $('#dataTable > tbody > tr >').click(function () {
                                         var ciTIdx = $(this).parent().attr('data-value');

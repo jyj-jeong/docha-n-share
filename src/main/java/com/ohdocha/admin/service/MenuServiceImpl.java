@@ -77,7 +77,7 @@ public class MenuServiceImpl extends ServiceExtension implements MenuService {
     public void getNoticeDetail(ServiceMessage message) {
         DochaAdminNoticeRequest noticeRequest = new DochaAdminNoticeRequest();
 
-        String ntIdx = message.getString("ntIdx");
+        int ntIdx = message.getInt("ntIdx", 0);
         noticeRequest.setNtIdx(ntIdx);
 
         List<DochaAdminNoticeResponse> noticeResponseList = menuMapper.selectNoticeList(noticeRequest);
@@ -93,24 +93,26 @@ public class MenuServiceImpl extends ServiceExtension implements MenuService {
 
         List<DochaAdminQuestionResponse> questionResponseList = menuMapper.selectQuestionList(questionRequest);
 
-        if (res > 0 && questionRequest.getQuAnswerYn().equals("1")) {
-            try {
-                // 문의 알림톡발송
-                DochaAlarmTalkDto dto = new DochaAlarmTalkDto();
-                dto.setPhone(questionResponseList.get(0).getQuestionerPhone());//알림톡 전송할 번호
-                dto.setTemplateCode(DochaTemplateCodeProvider.A000008.getCode());
+        if (questionRequest.getQuAnswerYn() != null) {
+            if (res > 0 && questionRequest.getQuAnswerYn().equals("1")) {
+                try {
+                    // 문의 알림톡발송
+                    DochaAlarmTalkDto dto = new DochaAlarmTalkDto();
+                    dto.setPhone(questionResponseList.get(0).getQuestionerPhone());//알림톡 전송할 번호
+                    dto.setTemplateCode(DochaTemplateCodeProvider.A000008.getCode());
 
-                HttpResponse<JsonNode> response = alarmTalk.sendAlramTalk(dto);
-                if (response.getStatus() == 200) {
-                    logger.info("AlarmTalk Send Compelite");
-                    logger.info(response.getBody().toPrettyString());
-                } else {
-                    logger.info("AlarmTalk Send Fail");
-                    logger.error(response.getBody().toPrettyString());
+                    HttpResponse<JsonNode> response = alarmTalk.sendAlramTalk(dto);
+                    if (response.getStatus() == 200) {
+                        logger.info("AlarmTalk Send Compelite");
+                        logger.info(response.getBody().toPrettyString());
+                    } else {
+                        logger.info("AlarmTalk Send Fail");
+                        logger.error(response.getBody().toPrettyString());
+                    }
+                } catch (Exception ex) {
+                    //알림톡 발송을 실패하더라도 오류발생시키지 않고 결제처리 완료를 위해 오류는 catch에서 로깅처리만 함
+                    logger.error("Error", ex);
                 }
-            } catch (Exception ex) {
-                //알림톡 발송을 실패하더라도 오류발생시키지 않고 결제처리 완료를 위해 오류는 catch에서 로깅처리만 함
-                logger.error("Error", ex);
             }
         }
 
@@ -123,7 +125,8 @@ public class MenuServiceImpl extends ServiceExtension implements MenuService {
 
         int res = 0;
 
-        if (noticeRequest.getNtIdx().equals("")){
+//        if (Integer.toString(noticeRequest.getNtIdx()).equals("")){
+        if (noticeRequest.getNtIdx() == 0){
             res = menuMapper.insertNotice(noticeRequest);
         }else {
             res = menuMapper.updateNotice(noticeRequest);
@@ -235,7 +238,7 @@ public class MenuServiceImpl extends ServiceExtension implements MenuService {
 
     @Override
     public void uploadNoticeImage(ServiceMessage message) {
-        String ntIdx = message.getString("ntIdx", "0");
+        String ntIdx = message.getString("ntIdx");
         DochaAdminNoticeResponse noticeResponse;
 
         Object uploadImageObj = message.get("uploadImage");
@@ -274,7 +277,7 @@ public class MenuServiceImpl extends ServiceExtension implements MenuService {
 
         // 기존의 공지사항 조회
         DochaAdminNoticeRequest noticeRequest = new DochaAdminNoticeRequest();
-        noticeRequest.setNtIdx(ntIdx);
+        noticeRequest.setNtIdx(Integer.parseInt(ntIdx));
 
         List<DochaAdminNoticeResponse> noticeResponseList = menuMapper.selectNoticeList(noticeRequest);
 

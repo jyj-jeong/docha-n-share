@@ -159,7 +159,7 @@ public class MenuController extends ControllerExtension {
 
     /* 사이트 - 공지사항 상세 화면 */
     @GetMapping(value = "/site/notice/{ntIdx}")
-    public String siteNoticeDetailView(@PathVariable String ntIdx, HttpServletRequest request, ModelMap modelMap) {
+    public String siteNoticeDetailView(@PathVariable int ntIdx, HttpServletRequest request, ModelMap modelMap) {
         ServiceMessage serviceMessage = createServiceMessage(request);
         serviceMessage.addData("ntIdx",ntIdx);
 

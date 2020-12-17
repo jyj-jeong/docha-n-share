@@ -615,26 +615,14 @@ function detailValidation(){
 		$('#personalCover').focus();
 		return;
 	}
-	else if(!isEmpty(personalCover) && !$.isNumeric(personalCover)){
-		errorAlert('대인', '대인은 숫자만 입력 가능합니다.');
-		return;
-	}
 	else if(isEmpty(propertyDamageCover)){
 		errorAlert('대물', '대물은 필수 입력값 입니다.');
 		$('#propertyDamageCover').focus();
 		return;
 	}
-	else if(!isEmpty(propertyDamageCover) && !$.isNumeric(propertyDamageCover)){
-		errorAlert('대물', '대물은 숫자만 입력 가능합니다.');
-		return;
-	}
 	else if(isEmpty(onselfDamageCover)){
 		errorAlert('자손', '자손은 필수 입력값 입니다.');
 		$('#onselfDamageCover').focus();
-		return;
-	}
-	else if(!isEmpty(onselfDamageCover) && !$.isNumeric(onselfDamageCover)){
-		errorAlert('자손', '자손은 숫자만 입력 가능합니다.');
 		return;
 	}
 	else if(!isEmpty(insuranceCopayment2) && !$.isNumeric(insuranceCopayment2)){
