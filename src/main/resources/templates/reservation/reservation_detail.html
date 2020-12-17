@@ -263,7 +263,7 @@
                                 <input type="hidden" id="insuranceCopayment">
                                 <select th:if="${#session.getAttribute('LOGIN_SESSION').userRole == 'RA'}" id="sel_ciIdx" class="custom-select" onchange="selectInsuranceInfo();">
                                 </select>
-                                <select th:if="${#session.getAttribute('LOGIN_SESSION').userRole != 'RA'}" id="sel_ciIdx" class="custom-select" onchange="selectInsuranceInfo();"disabled>
+                                <select th:if="${#session.getAttribute('LOGIN_SESSION').userRole != 'RA'}" id="sel_ciIdx" class="custom-select" onchange="selectInsuranceInfo();" disabled>
                                 </select>
                             </div>
                         </div>

@@ -37,7 +37,7 @@
                     </div>
                     <div class="card-body">
                         <div class="mb-4 text-right">
-                            <button class="btn btn-primary" onclick="">이미지 등록</button>
+                            <button class="btn btn-primary" onclick="addMainImg()">이미지 등록</button>
                             <button class="btn" id="btnExcel"></button>
                         </div>
 
@@ -119,30 +119,11 @@
     initializingPageData();
     initDataTables();
 
-    /* 회원 상세 페이지 이동 */
-    $('table > tbody').on('click', 'tr', function () {
-        let urIdx = $(this).attr('data-value');
-        if (urIdx === ""|| urIdx === undefined) return;
-
-        var url = "/mem/detail/" + urIdx;
+    /* 메인 이미지 등록 */
+    function addMainImg() {
+        var url = "/site/notice/add";
         var name = "test";
-        var option = "width = 1000, height =800 ,location=no, left=500, top=50";
-
-        window.open(url, name, option);
-    });
-
-    /* 회원 등록 */
-    function registerUser() {
-        var url = 'mem/register';
-        var name = "_blank";
-        var width = (parseInt(window.innerWidth) * 0.8);
-        var height = (parseInt(window.innerHeight) * 0.9);
-        var left =  (window.screen.width / 2) - (width / 2);
-        var top = (window.screen.height / 2) - (height / 2);
-
-
-        var option = "width=" + width +", height=" + height + " ,location=no, left=" + left + ", top=" + top;
-
+        var option = "width = 1400, height =800 ,location=no, left=500, top=50";
 
         window.open(url, name, option);
     }

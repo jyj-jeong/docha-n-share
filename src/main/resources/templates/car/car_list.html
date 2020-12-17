@@ -66,6 +66,7 @@
                                 <thead>
                                 <tr>
                                     <th style="display: none"></th>
+                                    <th style="display: none"></th>
                                     <th>등록차량번호</th>
                                     <th>회원사<br/>(지점)</th>
                                     <th>모델<br/>(차량번호)</th>
@@ -81,6 +82,7 @@
                                 <tfoot>
                                 <tr>
                                     <th style="display: none"></th>
+                                    <th style="display: none"></th>
                                     <th>등록차량번호</th>
                                     <th>회원사<br/>(지점)</th>
                                     <th>모델<br/>(차량번호)</th>
@@ -95,6 +97,7 @@
                                 </tfoot>
                                 <tbody>
                                 <tr th:each="car, index : ${carRegList}" style="cursor: pointer" th:data-value="${car.getCrIdx()}">
+                                    <td style="display: none" th:text="${car.getRegDt()}"></td>
                                     <td style="display: none" th:text="${car.getRtIdx()}"></td>
                                     <td th:text="${car.getCrIdx()}"></td>
                                     <td th:text="${car.getCompanyName() + '(' + car.getBranchName() + ')'}"></td>
@@ -261,7 +264,37 @@
     </div>
 </div>
 <script th:inline="javascript">
-    initDataTables();
+
+    var table = $('#dataTable').DataTable( {
+        language: {
+            emptyTable: "데이터가 존재하지 않습니다.",
+            lengthMenu: "페이지당 _MENU_ 개씩 보기",
+            info: "현재 _START_ - _END_ / _TOTAL_건",
+            infoEmpty: "0 건",
+            infoFiltered: "( _MAX_건의 데이터에서 필터링됨 )",
+            search: "검색: ",
+            zeroRecords: "일치하는 데이터가 존재하지 않습니다.",
+            loadingRecords: "로딩중...",
+            processing:     "잠시만 기다려 주세요...",
+            paginate: {
+                next: "다음",
+                previous: "이전"
+            }
+        },
+        order : [0, 'desc'],
+        orderMulti: true,
+        dom: '<\'row\'<\'col-md-6\'l><\'col-md-6\'f>><\'row\'<\'col-md-6\'B>><\'row\'<\'col-md-12\'t>><\'row\'<\'col-md-6\'i><\'col-md-6\'p>>',
+        buttons: [{
+            extend: 'excelHtml5',
+            charset: 'UTF-8',
+            bon : true,
+            text: '엑셀 다운로드',
+            footer: true,
+            className: 'exportBtn btn btn-primary'
+        }]
+    } );
+
+    table.buttons().container().appendTo($('#btnExcel'));
 
     function getLoginUser() {
         return /*[[${session.LOGIN_SESSION}]]*/ '';

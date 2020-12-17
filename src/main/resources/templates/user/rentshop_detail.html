@@ -660,11 +660,11 @@
 
 <script th:inline="javascript">
 
-    rtIdx = /*[[${rtIdx}]]*/'';
-    CRUD = /*[[${CRUD}]]*/'';
+    var rtIdx = /*[[${rtIdx}]]*/'';
+    var CRUD = /*[[${CRUD}]]*/'';
 
-    req = {
-        rtIdx : rtIdx === null ? '등록' : $('#rtIdx').val(),
+    var req = {
+        rtIdx : isEmpty(rtIdx) ? '등록' : rtIdx,
         raGbnCode : 'S'
     };
 
@@ -727,7 +727,7 @@
     } );
 
     var ltReq = {
-        rtIdx : rtIdx === null ? '등록' : $('#rtIdx').val(),
+        rtIdx : rtIdx === null ? '등록' : rtIdx,
         raGbnCode : 'L'
     };
 

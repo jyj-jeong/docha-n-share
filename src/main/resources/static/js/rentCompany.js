@@ -450,6 +450,7 @@ function initDetailInfo(seq) {
 				$('#companyAddress').attr('readonly', true);
 				$('#companyAddressDetail').attr('readonly', true);
 				$('#commissionPer').attr('readonly', true);
+				$('#regCarCount').attr('readonly', true);
 			}
 
 //			CRUD = 'modify';
@@ -2108,8 +2109,10 @@ function saveDeliveryLocation(type){
 
 			if (type === 'S'){
 				$('#selectLocationModal').modal('hide');
+				$('#stDataTable').DataTable().ajax.reload();
 			}else if(type === 'L'){
 				$('#selectLocationModal2').modal('hide');
+				$('#ltDataTable').DataTable().ajax.reload();
 			}
 
 		}else {

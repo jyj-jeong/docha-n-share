@@ -44,6 +44,15 @@ public class MenuController extends ControllerExtension {
         return "site/site_main";
     }
 
+    /* 사이트 - 메인 이미지 등록 화면 */
+    @GetMapping(value = "/site/main/add")
+    public String siteNoticeDetailView(HttpServletRequest request, ModelMap modelMap) {
+        ServiceMessage serviceMessage = createServiceMessage(request);
+
+        modelMap.addAllAttributes(serviceMessage);
+        return "site/site_notice_detail";
+    }
+
     /* 사이트 - 쿠폰 화면 */
     @GetMapping(value = "/site/coupon")
     public String siteCouponView(HttpServletRequest request, ModelMap modelMap) {
@@ -150,11 +159,11 @@ public class MenuController extends ControllerExtension {
 
     /* 사이트 - 공지사항 등록 화면 */
     @GetMapping(value = "/site/notice/add")
-    public String siteNoticeDetailView(HttpServletRequest request, ModelMap modelMap) {
+    public String siteMainDetailView(HttpServletRequest request, ModelMap modelMap) {
         ServiceMessage serviceMessage = createServiceMessage(request);
 
         modelMap.addAllAttributes(serviceMessage);
-        return "site/site_notice_detail";
+        return "site/site_main_detail";
     }
 
     /* 사이트 - 공지사항 상세 화면 */

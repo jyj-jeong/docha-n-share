@@ -9,6 +9,7 @@
                   SELECT
                               IFNULL(T1.CR_IDX, '')                  AS CR_IDX                     /*차량IDX */
                           ,   IFNULL(T1.RT_IDX, '')                  AS RT_IDX                     /*회사IDX */
+                          ,   IFNULL(T1.REG_DT, '')                  AS REG_DT                     /*등록날짜 */
                           ,   IFNULL(T2.COMPANY_NAME, '')            AS COMPANY_NAME               /*회원사 이름 */
                           ,   IFNULL(T2.BRANCH_NAME, '')               AS BRANCH_NAME                /*지점 */
                           ,   IFNULL(T1.MODEL_NAME , '')               AS MODEL_NAME                 /*모델명 */

@@ -117,9 +117,10 @@
 
                     <div class="card-footer">
                         <div class="text-right">
+                            <button id="btnAnswerCancel" class="btn btn-warning" type="button" onclick="answerCancel()">답변취소</button>
                             <button id="btnReturn" class="btn btn-primary" type="button" onclick="answer('answer')">답변</button>
                             <button id="btnSave" class="btn btn-primary" type="button" onclick="answer('save')">저장</button>
-                            <button id="btnClose" class="btn btn-primary" type="button" onclick="self.close()">창 닫기</button>
+                            <button id="btnClose" class="btn btn-secondary" type="button" onclick="self.close()">창 닫기</button>
                         </div>
                     </div>
                 </div>
@@ -291,8 +292,40 @@
             var type = "html";
         }
 
+    }
 
 
+    function answerCancel() {
+
+        var quIdx = $('#quIdx').val().trim();
+
+
+        var url = '/api/v1.0/updateAnswer.json';
+        var req = {};
+
+        req = {
+            quIdx : quIdx,
+            quAnswerYn : 0
+        };
+
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            dataType: 'json',
+            data: JSON.stringify(req),
+            contentType: 'application/json;charset=UTF-8',
+            cache: false,
+            async: false
+        }).done(function (data, textStatus, jqXHR) {
+
+            if (data.res === 1){
+                swal("답변 취소", { icon: "success"});
+            }else {
+                swal("답변 취소 실패", { icon: "warning"});
+            }
+
+        });
     }
 
 </script>
