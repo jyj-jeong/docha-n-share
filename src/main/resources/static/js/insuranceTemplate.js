@@ -611,18 +611,33 @@ function detailValidation(){
 		return;
 	}
 	else if(isEmpty(personalCover)){
-		errorAlert('대인', '대인 입력 하여주세요.');
+		errorAlert('대인', '대인은 필수 입력값 입니다.');
 		$('#personalCover').focus();
 		return;
-	}else if(isEmpty(propertyDamageCover)){
-		errorAlert('대물', '대물 입력 하여주세요.');
+	}
+	else if(!isEmpty(personalCover) && !$.isNumeric(personalCover)){
+		errorAlert('대인', '대인은 숫자만 입력 가능합니다.');
+		return;
+	}
+	else if(isEmpty(propertyDamageCover)){
+		errorAlert('대물', '대물은 필수 입력값 입니다.');
 		$('#propertyDamageCover').focus();
 		return;
-	}else if(isEmpty(onselfDamageCover)){
-		errorAlert('자손', '자손 입력 하여주세요.');
+	}
+	else if(!isEmpty(propertyDamageCover) && !$.isNumeric(propertyDamageCover)){
+		errorAlert('대물', '대물은 숫자만 입력 가능합니다.');
+		return;
+	}
+	else if(isEmpty(onselfDamageCover)){
+		errorAlert('자손', '자손은 필수 입력값 입니다.');
 		$('#onselfDamageCover').focus();
 		return;
-	}else if(!isEmpty(insuranceCopayment2) && !$.isNumeric(insuranceCopayment2)){
+	}
+	else if(!isEmpty(onselfDamageCover) && !$.isNumeric(onselfDamageCover)){
+		errorAlert('자손', '자손은 숫자만 입력 가능합니다.');
+		return;
+	}
+	else if(!isEmpty(insuranceCopayment2) && !$.isNumeric(insuranceCopayment2)){
 		errorAlert('자차보험 2', '자차 보험 요금/일 숫자만 입력 가능합니다.');
 		$('#insuranceCopayment2').focus();
 		return;

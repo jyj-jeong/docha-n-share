@@ -1249,6 +1249,11 @@ function detailValidation(save_type){
 					ageLimit = '21';
 				}
 
+				else if(!$.isNumeric(mileage)){
+					errorAlert('차량정보', '주행 거리는 숫자만 입력 가능합니다.');
+					return;
+				}
+
 				if (CRUD_METHOD === 'modify') {
 					if(isEmpty(crIdx)) {
 						errorAlert('저장실패', '관리자에게 문의해주세요.');
@@ -1316,16 +1321,31 @@ function detailValidation(save_type){
 					errorAlert('차량정보', '차량정보를 먼저 저장해 주세요.');
 					return;
 				}
+
 				if(isEmpty(personalCover)){
 					errorAlert('책임보험', '대인은 필수 입력값 입니다.');
 					return;
-				}else if(isEmpty(propertyDamageCover)){
+				}else if(!isEmpty(personalCover) && !$.isNumeric(personalCover)){
+					errorAlert('책임보험', '대인은 숫자만 입력 가능합니다.');
+					return;
+				}
+				else if(isEmpty(propertyDamageCover)){
 					errorAlert('책임보험', '대물은 필수 입력값 입니다.');
 					return;
-				}else if(isEmpty(onselfDamageCover)){
+				}
+				else if(!isEmpty(propertyDamageCover) && !$.isNumeric(propertyDamageCover)){
+					errorAlert('책임보험', '대물은 숫자만 입력 가능합니다.');
+					return;
+				}
+				else if(isEmpty(onselfDamageCover)){
 					errorAlert('책임보험', '자손은 필수 입력값 입니다.');
 					return;
-				}else if(isEmpty(insuranceCopayment)){
+				}
+				else if(!isEmpty(onselfDamageCover) && !$.isNumeric(onselfDamageCover)){
+					errorAlert('책임보험', '자손은 숫자만 입력 가능합니다.');
+					return;
+				}
+				else if(isEmpty(insuranceCopayment)){
 					errorAlert('자차보험1', '자차 보험 요금/일은 필수 입력값 입니다.');
 					return;
 				}else if(isEmpty(carDamageCover)){
