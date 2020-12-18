@@ -2093,7 +2093,7 @@ function saveDeliveryLocation(type) {
         return;
     }
 
-    
+
     var req = [];
     var size = $('#selectedLocationTable > tbody')[0].children.length;
     var deliveryLocation = $('#selectedLocationTable tbody tr');
