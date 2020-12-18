@@ -863,7 +863,7 @@
             dataType: 'json',
             data: function () {
                 return JSON.stringify({
-                    rtIdx: rtIdx === null ? '등록' : rtIdx,
+                    rtIdx: $('#rtIdx').val() === '' ? '등록' : $('#rtIdx').val(),
                     raGbnCode: 'L'
                 });
             },

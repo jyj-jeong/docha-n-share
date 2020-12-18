@@ -73,6 +73,9 @@
 		<typeAlias type="com.ohdocha.admin.domain.menu.DochaAdminMenuRequest" alias="menuRequest" />
 		<typeAlias type="com.ohdocha.admin.domain.menu.DochaAdminMenuResponse" alias="menuResponse" />
 
+		<typeAlias type="com.ohdocha.admin.domain.menu.DochaAdminMainImgRequest" alias="mainImgRequest" />
+		<typeAlias type="com.ohdocha.admin.domain.menu.DochaAdminMainImgResponse" alias="mainImgResponse" />
+
 		<typeAlias type="com.ohdocha.admin.domain.menu.DochaAdminQuestionRequest" alias="questionRequest" />
 		<typeAlias type="com.ohdocha.admin.domain.menu.DochaAdminQuestionResponse" alias="questionResponse" />
 

@@ -6,6 +6,16 @@ public interface MenuService {
 
     void getMenuList(ServiceMessage serviceMessage);
 
+    void getMainList(ServiceMessage serviceMessage);
+
+    void getMainImg(ServiceMessage serviceMessage);
+
+    void insertMain(ServiceMessage serviceMessage);
+
+    void uploadMainImage(ServiceMessage serviceMessage);
+
+    void deleteMainImg(ServiceMessage serviceMessage);
+
     void getQuestionList(ServiceMessage serviceMessage);
 
     void getQuestionDetail(ServiceMessage serviceMessage);
@@ -23,4 +33,5 @@ public interface MenuService {
     void uploadQuestionImage(ServiceMessage serviceMessage);
 
     void uploadNoticeImage(ServiceMessage serviceMessage);
+
 }

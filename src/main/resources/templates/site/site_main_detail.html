@@ -131,14 +131,14 @@
     var mainImgDetail = /*[[${result}]]*/ '';
     var loginUser = /*[[${session.LOGIN_SESSION}]]*/'';
 
-    var miStartDt = new WinkelCalendar({
+    var miStartCalendar = new WinkelCalendar({
         container: 'miStartDt',
         bigBanner: true,
         defaultDate: new Date(),
         format: "YYYY년 MM월 DD일"
     });
 
-    var miEndDt = new WinkelCalendar({
+    var miEndCalendar = new WinkelCalendar({
         container: 'miEndDt',
         bigBanner: true,
         defaultDate: new Date(),
@@ -150,9 +150,10 @@
         $('#miIdx').val(mainImgDetail[0].miIdx);
         $('#miTitle').val(mainImgDetail[0].miTitle);
 
-        // todo 시작일시, 종료일시 데이터 넣기
+        miStartCalendar.setDate(new Date(mainImgDetail[0].miStartDt));
+        miEndCalendar.setDate(new Date(mainImgDetail[0].miEndDt));
 
-        $('#mi_Img').attr('src','https://admin.docha.co.kr/img/notice/' + noticeDetail[0].miImgIdx);
+        $('#mi_Img').attr('src','https://admin.docha.co.kr/img/main/' + mainImgDetail[0].miImgIdx);
 
     }else {
         $('#btnDelete').addClass('d-none');
@@ -161,17 +162,19 @@
     function saveMainImg() {
         var miIdx = $('#miIdx').val();
         var miTitle = $('#miTitle').val();
+        var miStartDt = miStartCalendar.date;
+        var miEndDt = miEndCalendar.date;
+        var regId = loginUser.urIdx;
+        var modId = loginUser.urIdx;
 
-        // todo 시작일시, 종료일시 데이터 넣기
-
-        var url = '/api/v1.0/insertMainImg.json';
+        var url = '/api/v1.0/insertMain.json';
         var req = {
             miIdx : miIdx,
             miTitle : miTitle,
             miStartDt : miStartDt,
             miEndDt : miEndDt,
-            regId : loginUser.urIdx,
-            modId : loginUser.urIdx
+            regId : regId,
+            modId : modId
         };
 
         $.ajax({
@@ -185,39 +188,44 @@
         }).done(function (data, textStatus, jqXHR) {
 
             if (data.res === 1){
-                /* 이미지 저장 */
-                var formData = new FormData();
+                if (inputFile.files.length === 0) {
+                    swal("저장 성공", { icon: "success"});
+                } else {
+                    /* 이미지 저장 */
+                    var formData = new FormData();
+                    miIdx = data.mainImgRequest.miIdx;
 
-                formData.append("image", inputFile.files[0]);
-                formData.append("ntIdx", ntIdx);
+                    formData.append("image", inputFile.files[0]);
+                    formData.append("miIdx", miIdx);
 
-                for (var pair of formData.entries()) {
-                    console.log(pair[0]+ ', ' + pair[1]);
-                }
-
-                var oReq = new XMLHttpRequest();
-                oReq.addEventListener("load", function() {
-
-                    if(oReq.status === 200){
-                        location.href = "";
-                        alert(err.responseJSON.message);
-                    }else if (oReq.status === 400){
-                        errorAlert('저장 실패', '관리자에게 문의하세요.');
-                    }else if (oReq.status === 500){
-                        swal("저장 성공", {icon : "success"});
-                        console.log(oReq.response);
+                    for (var pair of formData.entries()) {
+                        console.log(pair[0] + ', ' + pair[1]);
                     }
 
-                });
-                oReq.open("POST", "/api/v1.0/uploadNoticeImage.do",true);
-                oReq.send(formData);
+                    var oReq = new XMLHttpRequest();
+                    oReq.addEventListener("load", function () {
+
+                        if (oReq.status === 200) {
+                            location.href = "";
+                            alert(err.responseJSON.message);
+                        } else if (oReq.status === 400) {
+                            errorAlert('저장 실패', '관리자에게 문의하세요.');
+                        } else if (oReq.status === 500) {
+                            swal("저장 성공", {icon: "success"});
+                            console.log(oReq.response);
+                        }
+
+                    });
+                    oReq.open("POST", "/api/v1.0/uploadMainImage.do", true);
+                    oReq.send(formData);
 
 
-                var editor;
-                var path;
-                editor = $("#noticeImg").val();
-                path = ($("#depth_container").text()).replace("/" + "");
-                var type = "html";
+                    var editor;
+                    var path;
+                    editor = $("#mi_Img").val();
+                    path = ($("#depth_container").text()).replace("/" + "");
+                    var type = "html";
+                }
             }else {
                 errorAlert("저장 실패", "저장에 실패하였습니다.")
             }
@@ -227,12 +235,12 @@
 
     }
 
-    function deleteNotice() {
-        var ntIdx = $('#ntIdx').val();
+    function deleteMainImg() {
+        var miIdx = $('#miIdx').val();
 
-        var url = '/api/v1.0/deleteNotice.json';
+        var url = '/api/v1.0/deleteMainImg.json';
         var req = {
-            ntIdx : ntIdx
+            miIdx : miIdx
         };
 
         $.ajax({
