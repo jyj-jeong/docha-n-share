@@ -12,11 +12,18 @@ public interface DochaAdminMenuMapper {
 
     public int insertMenuTemplate(DochaAdminMenuTemplateRequest reqParam);
 
-
     public List<DochaAdminMenuTemplateResponse> selectMenuTemplateList(DochaAdminMenuTemplateRequest reqParam);
 
-
     public List<DochaAdminMenuResponse> selectMenuInfoAll();
+
+
+    List<DochaAdminMainImgResponse> selectMainImgList(DochaAdminMainImgRequest mainImgRequest);
+
+    int insertMainImg(DochaAdminMainImgRequest mainImgRequest);
+
+    int updateMainImg(DochaAdminMainImgRequest mainImgRequest);
+
+    int deleteMainImg(DochaAdminMainImgRequest mainImgRequest);
 
     List<DochaAdminQuestionResponse> selectQuestionList(DochaAdminQuestionRequest questionRequest);
 

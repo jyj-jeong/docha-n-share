@@ -88,6 +88,69 @@
 		</trim>			
     </select>
 
+	<select id="selectMainImgList" parameterType="mainImgRequest"	resultType="mainImgResponse">
+		<![CDATA[
+				SELECT
+						  IFNULL(MI_IDX, '') AS MI_IDX
+						 ,IFNULL(MI_IMG_IDX, '') AS MI_IMG_IDX
+						 ,IFNULL(DATE_FORMAT(MI_START_DT, '%Y-%m-%d'), '') AS MI_START_DT
+						 ,IFNULL(DATE_FORMAT(MI_END_DT, '%Y-%m-%d'), '') AS MI_END_DT
+						 ,IFNULL(MI_TITLE, '') AS MI_TITLE
+						 ,IFNULL(REG_ID, '') AS REG_ID
+						 ,IFNULL(DATE_FORMAT(REG_DT , '%Y-%m-%d'), '') AS REG_DT
+						 ,IFNULL(MOD_ID, '') AS MOD_ID
+						 ,IFNULL(MOD_DT, '') AS MOD_DT
+				  FROM DC_MAIN_IMG  ]]>
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="miIdx != null and miIdx != ''">
+				<![CDATA[ AND MI_IDX = #{miIdx} ]]>
+			</if>
+		</trim>
+	</select>
+
+	<insert id="insertMainImg" parameterType="mainImgRequest">
+		<![CDATA[
+       INSERT INTO DC_MAIN_IMG(
+           MI_TITLE
+         , MI_START_DT
+         , MI_END_DT
+         , REG_ID
+         , REG_DT
+       )VALUES (
+          #{miTitle}
+          , #{miStartDt}
+          , #{miEndDt}
+          , #{regId}
+          , NOW()
+      )
+      ]]>
+		<selectKey keyProperty="miIdx" resultType="Integer" order="AFTER">
+			SELECT LAST_INSERT_ID();
+		</selectKey>
+
+	</insert>
+
+	<update id="updateMainImg" parameterType="mainImgRequest">
+		<![CDATA[ UPDATE DC_MAIN_IMG ]]>
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="miTitle      != null"><![CDATA[   MI_TITLE          = #{miTitle}  ,      ]]></if>    <!-- miTitle -->
+			<if test="miStartDt    != null"><![CDATA[   MI_START_DT       = #{miStartDt}  ,      ]]></if>    <!-- miStartDt -->
+			<if test="miEndDt      != null"><![CDATA[   MI_END_DT         = #{miEndDt}  ,      ]]></if>    <!-- miEndDt -->
+			<if test="miImgIdx      != null"><![CDATA[   MI_IMG_IDX         = #{miImgIdx}  ,      ]]></if>    <!-- miImgIdx -->
+			<if test="modId        != null"><![CDATA[   MOD_ID            = #{modId}  ,      ]]></if>    <!-- modId -->
+			MOD_DT = NOW()
+		</trim>
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="miIdx != null and miIdx != ''">
+				<![CDATA[ MI_IDX = #{miIdx} ]]>
+			</if>
+		</trim>
+	</update>
+
+	<delete id="deleteMainImg" parameterType="mainImgRequest">
+           <![CDATA[ DELETE FROM DC_MAIN_IMG WHERE MI_IDX = #{miIdx} ]]>
+    </delete>
+
 	<select id="selectQuestionList" parameterType="questionRequest"	resultType="questionResponse">
 		<![CDATA[
 				SELECT

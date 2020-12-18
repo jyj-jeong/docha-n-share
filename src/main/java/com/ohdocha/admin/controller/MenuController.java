@@ -1,5 +1,6 @@
 package com.ohdocha.admin.controller;
 
+import com.ohdocha.admin.domain.menu.DochaAdminMainImgRequest;
 import com.ohdocha.admin.domain.menu.DochaAdminMenuRequest;
 import com.ohdocha.admin.domain.menu.DochaAdminNoticeRequest;
 import com.ohdocha.admin.domain.menu.DochaAdminQuestionRequest;
@@ -40,17 +41,68 @@ public class MenuController extends ControllerExtension {
     public String siteMainView(HttpServletRequest request, ModelMap modelMap) {
         ServiceMessage serviceMessage = createServiceMessage(request);
 
+        menuService.getMainList(serviceMessage);
+
         modelMap.addAllAttributes(serviceMessage);
         return "site/site_main";
     }
 
     /* 사이트 - 메인 이미지 등록 화면 */
     @GetMapping(value = "/site/main/add")
-    public String siteNoticeDetailView(HttpServletRequest request, ModelMap modelMap) {
+    public String siteMainAddView(HttpServletRequest request, ModelMap modelMap) {
         ServiceMessage serviceMessage = createServiceMessage(request);
 
         modelMap.addAllAttributes(serviceMessage);
-        return "site/site_notice_detail";
+        return "site/site_main_detail";
+    }
+
+    /* 사이트 - 메인 이미지 상세 화면 */
+    @GetMapping(value = "/site/main/{miIdx}")
+    public String siteMainDetailView(@PathVariable int miIdx, HttpServletRequest request, ModelMap modelMap) {
+        ServiceMessage serviceMessage = createServiceMessage(request);
+        serviceMessage.addData("miIdx",miIdx);
+
+        menuService.getMainImg(serviceMessage);
+
+        modelMap.addAllAttributes(serviceMessage);
+        return "site/site_main_detail";
+    }
+
+    /* 사이트 - 메인 이미지 내용 등록 */
+    @PostMapping(value = "/api/v1.0/insertMain.json")
+    @ResponseBody
+    public Object insertMain(@RequestBody DochaAdminMainImgRequest mainImgRequest, HttpServletRequest request){
+        ServiceMessage serviceMessage = createServiceMessage(request);
+        serviceMessage.addData("mainImgRequest", mainImgRequest);
+
+        menuService.insertMain(serviceMessage);
+
+        return serviceMessage;
+    }
+
+    /* 사이트 - 메인 이미지 등록 */
+    @PostMapping(value = "/api/v1.0/uploadMainImage.do")
+    @ResponseBody
+    public Object uploadMainImage(@RequestParam("image") MultipartFile uploadImage, String miIdx, HttpServletRequest request) {
+        ServiceMessage serviceMessage = createServiceMessage(request);
+        serviceMessage.addData("uploadImage", uploadImage)
+                .addData("miIdx", miIdx);
+
+        menuService.uploadMainImage(serviceMessage);
+
+        return serviceMessage;
+    }
+
+    /* 사이트 - 메인 이미지 삭제 */
+    @PostMapping(value = "/api/v1.0/deleteMainImg.json")
+    @ResponseBody
+    public Object deleteMainImg(@RequestBody DochaAdminMainImgRequest mainImgRequest, HttpServletRequest request){
+        ServiceMessage serviceMessage = createServiceMessage(request);
+        serviceMessage.addData("mainImgRequest", mainImgRequest);
+
+        menuService.deleteMainImg(serviceMessage);
+
+        return serviceMessage;
     }
 
     /* 사이트 - 쿠폰 화면 */
@@ -159,11 +211,11 @@ public class MenuController extends ControllerExtension {
 
     /* 사이트 - 공지사항 등록 화면 */
     @GetMapping(value = "/site/notice/add")
-    public String siteMainDetailView(HttpServletRequest request, ModelMap modelMap) {
+    public String siteNoticeAddView(HttpServletRequest request, ModelMap modelMap) {
         ServiceMessage serviceMessage = createServiceMessage(request);
 
         modelMap.addAllAttributes(serviceMessage);
-        return "site/site_main_detail";
+        return "site/site_notice_detail";
     }
 
     /* 사이트 - 공지사항 상세 화면 */

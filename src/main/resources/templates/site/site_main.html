@@ -62,12 +62,12 @@
                                 </tr>
                                 </tfoot>
                                 <tbody>
-                                <tr th:each="user, index : ${result}" style="cursor: pointer" th:data-value="${user.getUrIdx()}">
-                                    <td th:text="${index.count}"></td>
-                                    <td th:text="${user.getUrIdx()}"></td>
-                                    <td th:text="${user.getUserId()}"></td>
-                                    <td>0</td>
-                                    <td></td>
+                                <tr th:each="main, index : ${result}" style="cursor: pointer" th:data-value="${main.getMiIdx()}">
+                                    <td th:text="${main.getMiIdx()}"></td>
+                                    <td th:text="${main.getMiTitle()}"></td>
+                                    <td th:text="${main.getRegDt()}"></td>
+                                    <td th:text="${main.getMiStartDt()}"></td>
+                                    <td th:text="${main.getMiEndDt()}"></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -121,12 +121,24 @@
 
     /* 메인 이미지 등록 */
     function addMainImg() {
-        var url = "/site/notice/add";
+        var url = "/site/main/add";
         var name = "test";
         var option = "width = 1400, height =800 ,location=no, left=500, top=50";
 
         window.open(url, name, option);
     }
+
+    /* 메인 이미지 상세 페이지 이동 */
+    $('table > tbody').on('click', 'tr', function () {
+        let miIdx = $(this).attr('data-value');
+        if (miIdx === "" || miIdx === undefined) return;
+
+        var url = "/site/main/" + miIdx;
+        var name = "test";
+        var option = "width = 1400, height =800 ,location=no, left=500, top=50";
+
+        window.open(url, name, option);
+    });
 
 </script>
 </body>
