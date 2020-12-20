@@ -568,4 +568,79 @@
    ]]>
     </insert>
 
+
+
+	<!-- 공휴일 가져오기-->
+	<select id="selectHolidayList" resultType="DochaHolidayDto" parameterType="DochaMap" >
+   		<![CDATA[
+
+                     SELECT
+                               IFNULL(HOL_IDX                 , '' ) AS HOL_IDX
+                        ,      IFNULL(RT_IDX                  , '' ) AS RT_IDX
+                        ,      IFNULL(HOLIDAY_START_DT        , '' ) AS HOLIDAY_START_DT
+                        ,      IFNULL(HOLIDAY_END_DT          , '' ) AS HOLIDAY_END_DT
+                        ,      IFNULL(HOLIDAY_NAME            , '' ) AS HOLIDAY_NAME
+                        ,      IFNULL(REG_ID                  , '' ) AS REG_ID
+                        ,      IFNULL(MOD_ID                  , '' ) AS MOD_ID
+                        ,      IFNULL(DEL_YN                  , '' ) AS DEL_YN
+                        ,      IFNULL(THOL_IDX                , '' ) AS THOL_IDX
+                     FROM DC_HOLIDAYS
+                     WHERE RT_IDX = 'all'
+                     AND (DEL_YN NOT IN ('Y') OR DEL_YN IS NULL)
+                     AND ((HOLIDAY_START_DT <= #{holidayTime}
+                    AND HOLIDAY_END_DT >= #{holidayTime})
+                    OR (HOLIDAY_START_DT <= #{holidayTime}
+                        AND HOLIDAY_END_DT >= #{holidayTime}))
+
+
+
+        ]]>
+   </select>
+
+	<!-- 기간요금제 가져오기-->
+	<select id="selectPeriodPaymentList" resultType="DochaPaymentPeriodDto" parameterType="DochaMap" >
+   		<![CDATA[
+                     SELECT
+              IFNULL(PER_IDX, '')                        AS PER_IDX
+             , IFNULL(PERIOD_START_DT, '')                 AS PERIOD_START_DT
+             , IFNULL(PERIOD_END_DT, '')                         AS PERIOD_END_DT
+             , IFNULL(DISCOUNT_EXTRACHARGE_CODE, '')                 AS DISCOUNT_EXTRACHARGE_CODE
+             , IFNULL(PERIOD_PAY, '')                   AS PERIOD_PAY
+             , IFNULL(CR_IDX, '')                   AS CR_IDX
+             , IFNULL(DEL_YN, '')                   AS DEL_YN
+                FROM DC_PAYMENT_PERIOD
+                WHERE CR_IDX LIKE '%' #{crIdx} '%'
+                AND (DEL_YN NOT IN ('Y') OR DEL_YN IS NULL)
+                AND ((PERIOD_START_DT <= #{rentStartDay}
+                    AND PERIOD_END_DT >= #{rentStartDay})
+                    OR (PERIOD_START_DT <= #{rentEndDay}
+                        AND PERIOD_END_DT >= #{rentEndDay}))
+
+
+        ]]>
+   </select>
+
+	<!-- 기간요금제 가져오기-->
+	<select id="selectPeriodPaymentListOnDaily" resultType="DochaPaymentPeriodDto" parameterType="DochaMap" >
+   		<![CDATA[
+                     SELECT
+              IFNULL(PER_IDX, '')                        AS PER_IDX
+             , IFNULL(PERIOD_START_DT, '')                 AS PERIOD_START_DT
+             , IFNULL(PERIOD_END_DT, '')                         AS PERIOD_END_DT
+             , IFNULL(DISCOUNT_EXTRACHARGE_CODE, '')                 AS DISCOUNT_EXTRACHARGE_CODE
+             , IFNULL(PERIOD_PAY, '')                   AS PERIOD_PAY
+             , IFNULL(CR_IDX, '')                   AS CR_IDX
+             , IFNULL(DEL_YN, '')                   AS DEL_YN
+                FROM DC_PAYMENT_PERIOD
+                WHERE CR_IDX LIKE '%' #{crIdx} '%'
+                AND (DEL_YN NOT IN ('Y') OR DEL_YN IS NULL)
+                AND ((PERIOD_START_DT <= #{periodRentStartDay}
+                    AND PERIOD_END_DT >= #{periodRentStartDay})
+                    OR (PERIOD_START_DT <= #{periodRentStartDay}
+                        AND PERIOD_END_DT >= #{periodRentStartDay}))
+
+
+        ]]>
+   </select>
+
 </mapper>

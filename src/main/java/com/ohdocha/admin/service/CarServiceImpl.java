@@ -19,6 +19,8 @@ import com.ohdocha.admin.domain.car.plan.periodplansetting.DochaAdminPeriodPlanS
 import com.ohdocha.admin.domain.car.property.DochaAdminCarPropertyRequest;
 import com.ohdocha.admin.domain.car.property.DochaAdminCarPropertyResponse;
 import com.ohdocha.admin.domain.car.regcar.*;
+import com.ohdocha.admin.domain.rentCompany.DochaHolidayDto;
+import com.ohdocha.admin.domain.reserve.payment.DochaPaymentPeriodDto;
 import com.ohdocha.admin.domain.reserve.reserveInfoMnt.DochaAdminReserveInfoRequest;
 import com.ohdocha.admin.domain.reserve.reserveInfoMnt.DochaRentCompanyDto;
 import com.ohdocha.admin.exception.BadRequestException;
@@ -34,6 +36,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Slf4j
@@ -134,6 +139,7 @@ public class CarServiceImpl extends ServiceExtension implements CarService {
     public void selectReserveAmt(ServiceMessage message) throws ParseException {
         DochaAdminRegCarDetailRequest regCarDetailRequest = message.getObject("regCarDetailRequest", DochaAdminRegCarDetailRequest.class);
 
+        DochaMap reqParam = new DochaMap();
         long calDateDays = 0;
         long calMinute = 0;
         long calDays = 0;
@@ -147,6 +153,9 @@ public class CarServiceImpl extends ServiceExtension implements CarService {
 
         String rentStartDay = regCarDetailRequest.getCalRentStartDt();
         String rentEndDay = regCarDetailRequest.getCalRentEndDt();
+        reqParam.set("rentStartDay", rentStartDay.substring(0,10));
+        reqParam.set("rentEndDay", rentEndDay.substring(0,10));
+        reqParam.set("crIdx", regCarDetailRequest.getCrIdx());
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         Date firstDate = format.parse(rentStartDay);
@@ -309,11 +318,11 @@ public class CarServiceImpl extends ServiceExtension implements CarService {
             double insuranceCopayment = Integer.parseInt(regCarDetailRequest.getInsuranceCopayment());
 
             // 중간 분 요금 ( 30분 당 하루 요금의 1/10 요금을 적용 )
-            calculateMinute = remainMinute / 30 * (calculateDay / 10);
+            calculateMinute = remainMinute / 30 * (calculateDay / 20);
 
             // 1~29분 사이의 잔여 분이 있으면 무조건 30분의 요금을 한번 추가.
             if (remainMinute % 30 > 0) {
-                calculateMinute = calculateMinute + (calculateDay / 10);
+                calculateMinute = calculateMinute + (calculateDay / 20);
             }
 
             // 남은 분 요금이 일 요금을 넘으면 일 요금으로.
@@ -325,10 +334,144 @@ public class CarServiceImpl extends ServiceExtension implements CarService {
             calculateDay = calculateDay * totalDay;
             calculateDay = Math.ceil(calculateDay / 100) * 100;
 
+            DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+            LocalDateTime startTime = LocalDateTime.parse(rentStartDay, dateTimeFormatter);
+            LocalDateTime startPlusDayOnTime = LocalDateTime.parse(rentStartDay.substring(0, 10) + " 00:00", dateTimeFormatter);
+            startPlusDayOnTime = startPlusDayOnTime.plusDays(1);
+            LocalDateTime endDayOnTime = LocalDateTime.parse(rentEndDay.substring(0, 10) + " 00:00", dateTimeFormatter);
+            LocalDateTime endTime = LocalDateTime.parse(rentEndDay, dateTimeFormatter);
+            String startDateString = null;
+
+            double addPay = 0.0;    // 계산용 총요금
+            long startDayCount = 0;    // 시작 날 사이클
+            long endDayCount = 0;    // 종료 날 사이클
+            long middleCycleCount = 0;    // 중간 날 사이클 ( 30분 당 +1 )
+            long middleDayCount = 0;    // 중간 날 사이클 ( 30분 당 +1 )
+            long totalAddCount = 0;    // 중간 날 사이클 ( 30분 당 +1 )
+            int addCheck = 0;       // 공휴일, 주말 중복 체크
+
+            while (startPlusDayOnTime.isAfter(startTime)) {
+                DayOfWeek dayOfWeek = startTime.getDayOfWeek();
+                if ((dayOfWeek == DayOfWeek.FRIDAY && startTime.getHour() >= 12) || dayOfWeek == DayOfWeek.SATURDAY || (dayOfWeek == DayOfWeek.SUNDAY && startTime.getHour() <= 12)) {
+                    startDayCount++;
+                } else {
+                    startDateString = startTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                    reqParam.put("holidayTime", startDateString);
+                    List<DochaHolidayDto> holydayList = regCarMapper.selectHolidayList(reqParam);
+                    if (holydayList.size() > 0) {
+                        startDayCount++;
+                    }
+                }
+                startTime = startTime.plusMinutes(30);
+            }
+
+            while (endDayOnTime.isAfter(startTime)) {
+                DayOfWeek dayOfWeek = startTime.getDayOfWeek();
+                if ((dayOfWeek == DayOfWeek.FRIDAY && startTime.getHour() >= 12) || dayOfWeek == DayOfWeek.SATURDAY || (dayOfWeek == DayOfWeek.SUNDAY && startTime.getHour() <= 12)) {
+                    middleCycleCount++;
+                } else {
+                    startDateString = startTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                    reqParam.put("holidayTime", startDateString);
+                    List<DochaHolidayDto> holydayList = regCarMapper.selectHolidayList(reqParam);
+                    if (holydayList.size() > 0) {
+                        middleCycleCount++;
+                    }
+                }
+                startTime = startTime.plusMinutes(30);
+            }
+
+            while (endTime.isAfter(startTime)) {
+                DayOfWeek dayOfWeek = startTime.getDayOfWeek();
+                if ((dayOfWeek == DayOfWeek.FRIDAY && startTime.getHour() >= 12) || dayOfWeek == DayOfWeek.SATURDAY || (dayOfWeek == DayOfWeek.SUNDAY && startTime.getHour() <= 12)) {
+                    endDayCount++;
+                } else {
+                    startDateString = startTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                    reqParam.put("holidayTime", startDateString);
+                    List<DochaHolidayDto> holydayList = regCarMapper.selectHolidayList(reqParam);
+                    if (holydayList.size() > 0) {
+                        endDayCount++;
+                    }
+                }
+                startTime = startTime.plusMinutes(30);
+            }
+
+            while (endDayOnTime.isAfter(startPlusDayOnTime)) {
+                DayOfWeek dayOfWeek = startPlusDayOnTime.getDayOfWeek();
+                if ((dayOfWeek == DayOfWeek.FRIDAY && startPlusDayOnTime.getHour() >= 12) || dayOfWeek == DayOfWeek.SATURDAY || (dayOfWeek == DayOfWeek.SUNDAY && startPlusDayOnTime.getHour() <= 12)) {
+                    middleDayCount++;
+                } else {
+                    startDateString = startPlusDayOnTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                    reqParam.put("holidayTime", startDateString);
+                    List<DochaHolidayDto> holydayList = regCarMapper.selectHolidayList(reqParam);
+                    if (holydayList.size() > 0) {
+                        middleDayCount++;
+                    }
+                }
+                startPlusDayOnTime = startPlusDayOnTime.plusDays(1);
+            }
+
+            if (startDayCount >= 20)
+                startDayCount = 20;
+
+            if (middleCycleCount >= middleDayCount * 20)
+                middleCycleCount = middleDayCount * 20;
+
+            if (calDays > 2 && startDayCount > 0 && endDayCount > 0 || calDays <=2 && startDayCount > 0 && endDayCount > 0) {
+                middleCycleCount = (middleDayCount - 1) * 20;
+            }
+
+            if (middleCycleCount < 0)
+                middleCycleCount = 0;
+
+            if (endDayCount >= 20)
+                endDayCount = 20;
+
+            totalAddCount = startDayCount + middleCycleCount + endDayCount;
+
+            if (totalAddCount > calDays * 20) {
+                totalAddCount = calDays * 20;
+            }
+
+            // 할증 요금 = addPay
+            addPay = totalAddCount * Integer.parseInt(dailyStandardPay) * 0.15 * 0.05;
+            if (addPay < 0) {
+                addPay = 0;
+            }
+
+
+            // 기간 요금제에 따른 할증 / 할인 계산
+            double periodPay = 0.0;    // 기간 요금제 요금
+            List<DochaPaymentPeriodDto> periodPaymentList = regCarMapper.selectPeriodPaymentList(reqParam);
+            // 해당 차량에 대한 기간 요금제 정보가 있으면
+            if (periodPaymentList.size() > 0) {
+                // 1일 씩 더하면서 비교 할 때 시간 차이로 포함이 안 되는 경우를 방지.
+                String periodRentStartDay = rentStartDay.substring(0, 8) + "0000";
+                String periodRentEndDay = rentEndDay.substring(0, 8) + "2359";
+                LocalDateTime periodStartTime = LocalDateTime.parse(periodRentStartDay, dateTimeFormatter);
+                LocalDateTime periodEndTime = LocalDateTime.parse(periodRentEndDay, dateTimeFormatter);
+
+                // 시작 날짜 ~ 종료 날짜 사이를 하루씩 늘리면서 해당되는 값이 있는지 가져옴
+                while (periodEndTime.isAfter(periodStartTime)) {
+                    reqParam.put("periodRentStartDay", periodStartTime);
+                    List<DochaPaymentPeriodDto> periodPaymentListOnDaily = regCarMapper.selectPeriodPaymentListOnDaily(reqParam);
+                    if (periodPaymentListOnDaily.size() > 0) {
+                        for (int i = 0; i < periodPaymentListOnDaily.size(); i++) {
+                            if (periodPaymentListOnDaily.get(i).getDiscountExtrachargeCode().equals("할증"))
+                                // 할증이면 금액 추가
+                                periodPay += Integer.parseInt(periodPaymentListOnDaily.get(i).getPeriodPay());
+                            else
+                                // 할인 일 시 요금을 뺀다
+                                periodPay -= Integer.parseInt(periodPaymentListOnDaily.get(i).getPeriodPay());
+                        }
+                    }
+                    periodStartTime = periodStartTime.plusDays(1);
+                }
+            }
+
 
             // 총 요금 = 일요금 + 분요금 * 할인율
-            calculTotal = calculateDay * (100 - disPer) / 100 + calculateMinute;
-            calculRentFee = calculateDay + calculateMinute;
+            calculTotal = calculateDay * (100 - disPer) / 100 + calculateMinute + addPay + periodPay;
+            calculRentFee = calculateDay + calculateMinute + addPay + periodPay;
             calculRentFee = Math.ceil(calculRentFee / 100) * 100.0;
             if (calculRentFee >= calculateMonth) {
                 calculRentFee = calculateMonth;
@@ -359,6 +502,7 @@ public class CarServiceImpl extends ServiceExtension implements CarService {
             dochaMap.set("disRentFee", disRentFee);
             dochaMap.set("insuranceFee", insuranceFee);
             dochaMap.set("mmRentAmt", "0");
+            dochaMap.set("addPay", addPay);
 
             message.addData("result", dochaMap);
         }

@@ -52,6 +52,7 @@
 		<!-- DC_RENT_COMPANY_TIME -->
 		<typeAlias type="com.ohdocha.admin.domain.rentCompany.DochaAdminDcRentCompanyTimeRequest" alias="dcRentCompanyTimeRequest" />
 		<typeAlias type="com.ohdocha.admin.domain.rentCompany.DochaAdminDcRentCompanyTimeResponse" alias="dcRentCompanyTimeResponse" />
+		<typeAlias type="com.ohdocha.admin.domain.rentCompany.DochaHolidayDto" alias="DochaHolidayDto" />
 
 		<!-- DC_RENT_COMPANY_RESERVE_MIN -->
 		<typeAlias type="com.ohdocha.admin.domain.rentCompany.DochaAdminDcRentCompanyReserveMinRequest" alias="dcRentCompanyReserveMinRequest" />
@@ -108,6 +109,7 @@
 		<typeAlias type="com.ohdocha.admin.domain.reserve.payment.DochaAdminPaymentInfoRequest" alias="paymentInfoRequest" />
 		<typeAlias type="com.ohdocha.admin.domain.reserve.payment.DochaAdminPaymentInfoResponse" alias="paymentInfoResponse" />
 		<typeAlias type="com.ohdocha.admin.domain.reserve.payment.DochaScheduledDto" alias="DochaScheduledDto" />
+		<typeAlias type="com.ohdocha.admin.domain.reserve.payment.DochaPaymentPeriodDto" alias="DochaPaymentPeriodDto" />
 
 
 		<!--  등록 차량 alias 등록 -->
