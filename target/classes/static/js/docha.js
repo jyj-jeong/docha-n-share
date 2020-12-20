@@ -973,7 +973,7 @@ function openDaumAddrApi(target){
             jibunAddress = data.jibunAddress;
             jibunAddressEnglish = data.jibunAddressEnglish;
 
-            if (jibunAddress === ''){
+            if (data.userSelectedType === 'R') {  //사용자가 도로명 주소를 선택했을 경우
                 $(id).val(roadAddress);
             }else {
                 $(id).val(jibunAddress);

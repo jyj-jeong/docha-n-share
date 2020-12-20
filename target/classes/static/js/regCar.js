@@ -1074,9 +1074,11 @@ function setData(set_type, _data){
 			break;
 		case 'saveInsurance':	// 보험정보
 			let ciTIdx                		= nullCheck(_data.ciTIdx);
+
 			let onselfDamageCover           = nullCheck(_data.onselfDamageCover) === '' ? '' : objectConvertToPriceFormat(nullCheck(_data.onselfDamageCover));;
 			let personalCover               = nullCheck(_data.personalCover) === '' ? '' : objectConvertToPriceFormat(nullCheck(_data.personalCover));;
 			let propertyDamageCover     	= nullCheck(_data.propertyDamageCover) === '' ? '' : objectConvertToPriceFormat(nullCheck(_data.propertyDamageCover));;
+
 			let carDamageCover              = nullCheck(_data.carDamageCover) === '' ? '' : objectConvertToPriceFormat(nullCheck(_data.carDamageCover));
 			let insuranceCopayment          = nullCheck(_data.insuranceCopayment) === '' ? '' : objectConvertToPriceFormat(nullCheck(_data.insuranceCopayment));
 			let carDamageCover2             = nullCheck(_data.carDamageCover2) === '' ? '' : objectConvertToPriceFormat(nullCheck(_data.carDamageCover2));
@@ -1085,6 +1087,7 @@ function setData(set_type, _data){
 			let insuranceCopayment3         = nullCheck(_data.insuranceCopayment3) === '' ? '' : objectConvertToPriceFormat(nullCheck(_data.insuranceCopayment3));
 			let carDamageCover4             = nullCheck(_data.carDamageCover4) === '' ? '' : objectConvertToPriceFormat(nullCheck(_data.carDamageCover4));
 			let insuranceCopayment4         = nullCheck(_data.insuranceCopayment4) === '' ? '' : objectConvertToPriceFormat(nullCheck(_data.insuranceCopayment4));
+
 			let carDamage1Yn                = nullCheck(_data.carDamage1Yn) === '' ? 'N' : nullCheck(_data.carDamage1Yn);
 			let carDamage2Yn                = nullCheck(_data.carDamage2Yn) === '' ? 'N' : nullCheck(_data.carDamage2Yn);
 			let carDamage3Yn                = nullCheck(_data.carDamage3Yn) === '' ? 'N' : nullCheck(_data.carDamage3Yn);
@@ -1249,6 +1252,11 @@ function detailValidation(save_type){
 					ageLimit = '21';
 				}
 
+				else if(!$.isNumeric(mileage)){
+					errorAlert('차량정보', '주행 거리는 숫자만 입력 가능합니다.');
+					return;
+				}
+
 				if (CRUD_METHOD === 'modify') {
 					if(isEmpty(crIdx)) {
 						errorAlert('저장실패', '관리자에게 문의해주세요.');
@@ -1316,16 +1324,21 @@ function detailValidation(save_type){
 					errorAlert('차량정보', '차량정보를 먼저 저장해 주세요.');
 					return;
 				}
+
 				if(isEmpty(personalCover)){
 					errorAlert('책임보험', '대인은 필수 입력값 입니다.');
 					return;
-				}else if(isEmpty(propertyDamageCover)){
+				}
+				else if(isEmpty(propertyDamageCover)){
 					errorAlert('책임보험', '대물은 필수 입력값 입니다.');
 					return;
-				}else if(isEmpty(onselfDamageCover)){
+				}
+				else if(isEmpty(onselfDamageCover)){
 					errorAlert('책임보험', '자손은 필수 입력값 입니다.');
 					return;
-				}else if(isEmpty(insuranceCopayment)){
+				}
+
+				else if(isEmpty(insuranceCopayment)){
 					errorAlert('자차보험1', '자차 보험 요금/일은 필수 입력값 입니다.');
 					return;
 				}else if(isEmpty(carDamageCover)){
@@ -1423,9 +1436,9 @@ function detailValidation(save_type){
 			case 'savePaymentinfo':	// 기본요금정보
 				let pyTIdx 				= $("#sel_pyTIdx option:selected").val();
 				let dailyStandardPay 	= getPureText($('#dailyStandardPay').val().trim());
-				let dailyMaxRate 		= getPureText($('#dailyMaxRate').val().trim());
+				let dailyMaxRate 		= getPureText($('#dailyMaxRate').val().trim()).trim();
 				let monthlyStandardPay 	= getPureText($('#monthlyStandardPay').val().trim());
-				let monthlyMaxRate 		= getPureText($('#monthlyMaxRate').val().trim());
+				let monthlyMaxRate 		= getPureText($('#monthlyMaxRate').val().trim()).trim();
 				let month3Deposit 		= getPureText($('#month3Deposit').val().trim());
 				let month6Deposit 		= getPureText($('#month6Deposit').val().trim());
 				let month9Deposit 		= getPureText($('#month9Deposit').val().trim());

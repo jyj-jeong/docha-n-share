@@ -450,6 +450,7 @@ function initDetailInfo(seq) {
 				$('#companyAddress').attr('readonly', true);
 				$('#companyAddressDetail').attr('readonly', true);
 				$('#commissionPer').attr('readonly', true);
+				$('#regCarCount').attr('readonly', true);
 			}
 
 //			CRUD = 'modify';
@@ -1110,11 +1111,6 @@ function detailValidation(save_type) {
 					return;
 				}
 
-				if (isEmpty(accessYn) || accessYn == 0 || accessYn == 'N') {
-					accessYn = 'Y';
-				} else {
-					accessYn = 'N';
-				}
 
 				if (isEmpty(alarmYn) || alarmYn == 0 || alarmYn == 'N') {
 					alarmYn = 'N';
@@ -2070,6 +2066,13 @@ function selectLocationDetail(type) {
 }
 
 function saveDeliveryLocation(type){
+	if (!($('#rtIdx').val().trim())) {
+		errorAlert('회원사', '회원사를 먼저 등록해 주세요\n');
+		$('#rtIdx').focus();
+		return;
+	}
+
+
 	var req = [];
 	var size = $('#selectedLocationTable > tbody')[0].children.length;
 	var deliveryLocation = $('#selectedLocationTable tbody tr');
@@ -2113,8 +2116,10 @@ function saveDeliveryLocation(type){
 
 			if (type === 'S'){
 				$('#selectLocationModal').modal('hide');
+				$('#stDataTable').DataTable().ajax.reload();
 			}else if(type === 'L'){
 				$('#selectLocationModal2').modal('hide');
+				$('#ltDataTable').DataTable().ajax.reload();
 			}
 
 		}else {

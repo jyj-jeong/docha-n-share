@@ -1,19 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="@192.168.35.123" uuid="ee1600b5-4258-49c3-8042-3909ac94d70c">
+    <data-source source="LOCAL" name="ohdocha@192.168.35.123" uuid="ac552668-2262-4905-b822-32ca6b78c08c">
       <driver-ref>mariadb</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.mariadb.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mariadb://192.168.35.123:3306/</jdbc-url>
-      <driver-properties>
-        <property name="autoReconnect" value="true" />
-        <property name="zeroDateTimeBehavior" value="convertToNull" />
-        <property name="tinyInt1isBit" value="false" />
-        <property name="characterEncoding" value="utf8" />
-        <property name="characterSetResults" value="utf8" />
-        <property name="yearIsDateType" value="false" />
-      </driver-properties>
+      <jdbc-url>jdbc:mariadb://192.168.35.123:3306/ohdocha</jdbc-url>
+    </data-source>
+    <data-source source="LOCAL" name="실서버 DB (두차꺼)" uuid="d33efa5f-1eeb-413a-862b-f771a4f2295f">
+      <driver-ref>mariadb</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.mariadb.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mariadb://139.150.79.210:3306/ohdocha</jdbc-url>
     </data-source>
   </component>
 </project>

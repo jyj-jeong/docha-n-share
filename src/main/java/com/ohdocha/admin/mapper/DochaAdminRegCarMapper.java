@@ -2,8 +2,10 @@ package com.ohdocha.admin.mapper;
 
 import com.ohdocha.admin.domain.car.plan.basicplan.DochaAdminBaiscPlanDetailRequest;
 import com.ohdocha.admin.domain.car.plan.insuranceTemplate.DochaAdminInsuranceTemplateDetailRequest;
-import com.ohdocha.admin.domain.car.property.DochaAdminCarPropertyRequest;
 import com.ohdocha.admin.domain.car.regcar.*;
+import com.ohdocha.admin.domain.rentCompany.DochaHolidayDto;
+import com.ohdocha.admin.domain.reserve.payment.DochaPaymentPeriodDto;
+import com.ohdocha.admin.util.DochaMap;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -63,6 +65,15 @@ public interface DochaAdminRegCarMapper {
 
     //등록차량 휴차일등록
     public int insertDcCarInfoSuspend(DochaAdminRegCarDetailRequest reqParam);
+
+    // 기간 요금제 검색
+    public List<DochaPaymentPeriodDto> selectPeriodPaymentList(DochaMap paramMap);
+
+    // 기간 요금제 요금 검색
+    public List<DochaPaymentPeriodDto> selectPeriodPaymentListOnDaily(DochaMap paramMap);
+
+    // 요금 계산에 필요한 휴무일 가져옴
+    public List<DochaHolidayDto> selectHolidayList(DochaMap paramMap);
 
 }
 

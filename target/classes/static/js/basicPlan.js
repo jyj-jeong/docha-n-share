@@ -374,6 +374,10 @@ function initDetailSelectBox(_data){
 		if (CRUD_METHOD === 'insert' && getLoginUser().userRole !== 'RA'){
 			$('select[id=companyName]').val(getLoginUser().rtIdx).prop("selected",true);
 			$('#companyName').attr('disabled', true);
+
+			// 회원사별 차량 리스트
+			$('#rtIdx').val(getLoginUser().rtIdx);
+			getCompanyCarList();
 		}else {
 			$('#companyName').attr('disabled', false);
 		}

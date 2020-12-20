@@ -154,11 +154,11 @@
 			<if test="accountNumber				!= null"><![CDATA[  , ACCOUNT_NUMBER				= #{accountNumber}				]]></if>
 			<if test="accountHolder				!= null"><![CDATA[  , ACCOUNT_HOLDER				= #{accountHolder}				]]></if>
 			<if test="taxEmail					!= null"><![CDATA[  , TAX_EMAIL						= #{taxEmail}				]]></if>
-			<if test="accessYn 					!= null"><![CDATA[  , ALARM_YN 						= #{alarmYn}					]]></if>
+			<if test="alarmYn 					!= null"><![CDATA[  , ALARM_YN 						= #{alarmYn}					]]></if>
 			<if test="companyRegistrationName 	!= null"><![CDATA[  , COMPANY_REGISTRATION_NAME 	= #{companyRegistrationName}	]]></if>
 			<if test="companyContact1 			!= null"><![CDATA[  , COMPANY_CONTACT1 				= #{companyContact1}			]]></if>
 			<if test="branchName 				!= null"><![CDATA[  , BRANCH_NAME 					= #{branchName}					]]></if>
-			<if test="alarmYn 					!= null"><![CDATA[  , ACCESS_YN 					= IFNULL(#{accessYn}, 'Y')					]]></if>
+			<if test="accessYn 					!= null"><![CDATA[  , ACCESS_YN 					= IFNULL(#{accessYn}, 'Y')					]]></if>
 			<if test="carCount 					!= null"><![CDATA[  , CAR_COUNT 					= #{carCount}  					]]></if> 	<!-- 총 차량수 -->
 			<if test="modId 					!= null"><![CDATA[  , MOD_ID 						= #{modId}  					]]></if> 	<!-- 수정자 -->
 			, MOD_DT = NOW()

@@ -79,7 +79,7 @@
 							,  IFNULL(C.LICENSE_EXPIRATION , '' )  AS LICENSE_EXPIRATION              /*   갱신기간                     */
 							,  IFNULL(C.LICENSE_ISSUE_DT   , '' )  AS LICENSE_ISSUE_DT                /*   발급일                        */
 							,  IFNULL(C.LICENSE_OWNER_NAME , '' )  AS LICENSE_OWNER_NAME              /*   면허소유자명                 */
-							,  IFNULL(C.USE_YN             , '' )  AS USE_YN                          /*   DC_USER_LICENSE_INFO 사용여부   */
+							,  IFNULL(A.USE_YN             , 1)  AS USE_YN                          /*   접속허용여부   */
 			        		, (SELECT COUNT(*) reserveCnt FROM DC_RESERVE_MASTER
 			        					        		 WHERE UR_IDX = A.UR_IDX
 					        							   AND RESERVE_STATUS_CODE in ('RS', 'RO', 'RW', 'RS')
