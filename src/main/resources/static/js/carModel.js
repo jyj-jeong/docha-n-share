@@ -294,7 +294,7 @@ function initDetailInfo(seq){
         // $('#car_img').attr('src','C:/ohdocha/data/temp/' + imgIdx);
 
         //product
-        $('#car_img').attr('src','https://admin.docha.co.kr/img/car/' + imgIdx);
+        $('#car_img').attr('src','https://admin-ohdocha.sharenshare.kr/img/car/' + imgIdx);
 
         if(!isEmpty(delYn)){
             $("#delYn").val(delYn).prop("delYn", true);

@@ -459,7 +459,7 @@ function initDetailInfo(urIdx) {
                 // var imgPath = 'C:/ohdocha/data/temp/license/' + licenseImgName;
 
                 //product
-                var imgPath = 'https://admin.docha.co.kr/img/license/' + licenseImgName;
+                var imgPath = 'https://admin-ohdocha.sharenshare.kr/img/license/' + licenseImgName;
 
                 $('#licenseImg').attr('src', imgPath);
 
