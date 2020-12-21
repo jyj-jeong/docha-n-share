@@ -215,6 +215,19 @@ public class CarController extends ControllerExtension {
     }
     //endregion
 
+    /* 연식 선택 후 차종 불러오기 */
+    @PostMapping(value = "/api/v1.0/selectYearForCarModelSelectBox.json")
+    @ResponseBody
+    public Object selectYearForCarModelSelectBox(@RequestBody DochaAdminCarModelDetailRequest carModelDetailRequest, HttpServletRequest request) {
+        ServiceMessage serviceMessage = createServiceMessage(request);
+        serviceMessage.addData("carModelDetailRequest", carModelDetailRequest);
+
+        carService.selectYearForCarModelSelectBox(serviceMessage);
+
+        return serviceMessage.get("result");
+
+    }
+
 
     /* 차종 옵션 선택 */
     @PostMapping(value = "/api/v1.0/selectCarModelForSelectBox.json")

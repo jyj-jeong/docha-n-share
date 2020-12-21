@@ -99,4 +99,6 @@ public interface CarService {
     void selectRentCompanyCarList(ServiceMessage message);
 
     void deleteCarMpdelInfo(ServiceMessage serviceMessage);
+
+    void selectYearForCarModelSelectBox(ServiceMessage message);
 }

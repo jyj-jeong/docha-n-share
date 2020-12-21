@@ -125,8 +125,8 @@
 				                LEFT JOIN (
 				                SELECT 
 				                RT_IDX
-				                ,SUM(CASE WHEN RA_GBN_CODE = 'LT' THEN 1 ELSE 0 END) AS RA_GBN_LT
-				                ,SUM(CASE WHEN RA_GBN_CODE = 'ST' THEN 1 ELSE 0 END) AS RA_GBN_ST
+				                ,SUM(CASE WHEN RA_GBN_CODE = 'L' THEN 1 ELSE 0 END) AS RA_GBN_LT
+				                ,SUM(CASE WHEN RA_GBN_CODE = 'S' THEN 1 ELSE 0 END) AS RA_GBN_ST
 				                FROM DC_RENT_COMPANY_ABLEAREA
 				                GROUP BY RT_IDX
 				                ) T4 ON T1.RT_IDX = T4.RT_IDX

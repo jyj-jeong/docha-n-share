@@ -928,11 +928,56 @@ function selectCarModelDetail(modelName, year, _data){
 }
 
 /*
+ * 연식에 따른 차종 호출
+ */
+function yearchange() {
+    let year = $("#year option:selected").val();
+	selectYear(year,  null);
+}
+
+/*
+ * 차종상세 정보 가져오기
+ */
+function selectYear(year, _data){
+
+	// 차종상세  select box
+	let target = 'selectYearForCarModelSelectBox';
+	let method = 'select';
+	//연료
+	let req = {
+		year : year
+	};
+
+	fn_callApi(method, target, req, function (response) {
+		let data = response;
+
+		//200이라면 페이징을 구한다.
+		// if(res.code == 200) {
+		// 	let data = res.data.result;
+		carmodeldetaildata = data;
+
+		let strOption = "";
+		strOption += "<option value = '0'>선택하세요</option>";
+
+		for ( var i in data) {
+			if (data[i].modelName) {
+				strOption += "<option>" + nullCheck(data[i].modelName) + "</option>";
+			}
+		}
+		$('#sel_modelName').empty();
+		$('#sel_modelName').append(strOption);
+		$('#sel_modelDetailName').empty();
+		// }
+
+	});//end fn_callApi
+}
+
+/*
  * 차종 변경에 따른 차종 상세 호출
  */
 function modelNamechange() {
 	let modelName = $("#sel_modelName option:selected").val(); //모델명
-    let year = $("#year option:selected").val();
+	let year = $("#year option:selected").val();
 	selectCarModelDetail(modelName, year,  null);
 }
 
@@ -1658,6 +1703,7 @@ function initDetailData(data){
 
 	var currentYear = new Date().getFullYear();
 	var str = '';
+	str += '<option>선택하세요</option>';
 	for(var i = 7; i >= 0; i--){
 		str += "<option value = '" + (currentYear-i) + "'>" + (currentYear-i) + "</option>";
 	}
