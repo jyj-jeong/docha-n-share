@@ -24,6 +24,8 @@ public interface DochaAdminCarModelMapper {
 
     public List<DochaAdminCarModelDetailResponse> selectCarModelForSelectBox(DochaAdminCarModelDetailRequest reqParam);
 
+    public List<DochaAdminCarModelDetailResponse> selectYearForCarModelSelectBox(DochaAdminCarModelDetailRequest reqParam);
+
     public List<DochaAdminCarModelDetailResponse> selectCarModelDetailForSelectBox(DochaAdminCarModelDetailRequest reqParam);
 
     //차량-차량모델  수정

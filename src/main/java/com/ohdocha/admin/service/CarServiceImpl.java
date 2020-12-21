@@ -616,6 +616,17 @@ public class CarServiceImpl extends ServiceExtension implements CarService {
 
     }
 
+    /* 연식에 따른 차종 불러오기 */
+    @Override
+    public void selectYearForCarModelSelectBox(ServiceMessage message) {
+        DochaAdminCarModelDetailRequest carModelDetailRequest = message.getObject("carModelDetailRequest", DochaAdminCarModelDetailRequest.class);
+
+        List<DochaAdminCarModelDetailResponse> carModelDetailResponseList = carModelMapper.selectYearForCarModelSelectBox(carModelDetailRequest);
+
+        message.addData("result", carModelDetailResponseList);
+
+    }
+
     /* 차종 옵션 선택 */
     @Override
     public void selectCarModelForSelectBox(ServiceMessage message) {

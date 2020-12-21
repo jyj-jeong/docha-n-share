@@ -278,7 +278,7 @@ function Polygonsave() {
 	var latlng = $("#latlng").text();
 	var sel_NewYn = $("#sel_NewYn option:selected").val();
 
-	if (ragbncode == 'LT' || ragbncode == 'ST'){
+	if (ragbncode == 'L' || ragbncode == 'S'){
 
 		let response = {};
 		let reqParam = {};
@@ -304,9 +304,9 @@ function Polygonsave() {
 		    timeout: 1000
 		 	}).done(function (data, textStatus, jqXHR) {
 		 		// 세션 삭제
-		 		if(ragbncode == 'LT'){
+		 		if(ragbncode == 'L'){
 		 			$("#raGbnLt", parent.opener.document).attr("placeholder", "설정완료");
-		 		}else if (ragbncode == 'ST'){
+		 		}else if (ragbncode == 'S'){
 		 			$("#raGbnSt", parent.opener.document).attr("placeholder", "설정완료");
 		 		}
 		 		window.close();

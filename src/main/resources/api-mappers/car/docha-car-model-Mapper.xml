@@ -130,6 +130,24 @@
 		</trim>
 	</select>
 
+	<!-- 차량 연식에 따른 차량모델 selectBox -->
+	<select id="selectYearForCarModelSelectBox"  parameterType="carModelDetailRequest"
+			resultType="CarModelDetailResponse">
+		<![CDATA[
+               SELECT
+                     DISTINCT
+                       IFNULL(T1.MODEL_NAME          , '') AS MODEL_NAME /*모델명*/
+               FROM
+                     DC_CAR_MODEL T1
+         ]]>
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="year != null and year != '' ">
+				<![CDATA[   T1.YEAR = #{year}   ]]>
+			</if>
+			<![CDATA[ AND T1.MODEL_NAME IS NOT NULL ]]>
+		</trim>
+	</select>
+
 
 	<!-- 차량모델 Detail -->
 	<select id="selectCarModelDetailForSelectBox"  parameterType="carModelDetailRequest"
