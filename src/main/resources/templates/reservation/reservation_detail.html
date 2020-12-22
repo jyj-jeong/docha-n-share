@@ -261,6 +261,7 @@
                                 <label>자차 고객부담금</label>
                                 <input type="hidden" id="carDamageCover">
                                 <input type="hidden" id="insuranceCopayment">
+                                <input type="hidden" id="carDamageNumber">
                                 <select th:if="${#session.getAttribute('LOGIN_SESSION').userRole == 'RA'}" id="sel_ciIdx" class="custom-select" onchange="selectInsuranceInfo();">
                                 </select>
                                 <select th:if="${#session.getAttribute('LOGIN_SESSION').userRole != 'RA'}" id="sel_ciIdx" class="custom-select" onchange="selectInsuranceInfo();" disabled>

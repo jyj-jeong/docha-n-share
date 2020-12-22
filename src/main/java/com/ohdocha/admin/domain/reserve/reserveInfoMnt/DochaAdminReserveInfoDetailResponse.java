@@ -72,7 +72,8 @@ public class DochaAdminReserveInfoDetailResponse extends CommonResponseDto {
 	private String carDamageCover;
 	private String insuranceCopayment;
 	private String fuelCode;
-	
+	private String carDamageNumber;
+
 	// 대여금액 정보
 	private String rentFee;
 	private String insuranceFee;
