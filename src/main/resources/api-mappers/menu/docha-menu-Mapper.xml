@@ -248,6 +248,78 @@
            <![CDATA[ DELETE FROM DC_NOTICE WHERE NT_IDX = #{ntIdx} ]]>
     </delete>
 
+	<!-- 이벤트 가져오기 -->
+	<select id="selectEventList" parameterType="eventRequest"	resultType="eventResponse">
+		<![CDATA[
+				SELECT
+						  IFNULL(EV_IDX, '') AS EV_IDX
+						 ,IFNULL(EV_TITLE, '') AS EV_TITLE
+						 ,IFNULL(EV_CONTENT, '') AS EV_CONTENT
+						 ,IFNULL(EV_IMG_IDX, '') AS EV_IMG_IDX
+						 ,IFNULL(DATE_FORMAT(EV_START_DT, '%Y-%m-%d'), '') AS EV_START_DT
+						 ,IFNULL(DATE_FORMAT(EV_END_DT, '%Y-%m-%d'), '') AS EV_END_DT
+						 ,IFNULL(REG_ID, '') AS REG_ID
+						 ,IFNULL(MOD_ID, '') AS MOD_ID
+						 ,IFNULL(DATE_FORMAT(REG_DT , '%Y-%m-%d'), '') AS REG_DT
+						 ,IFNULL(DATE_FORMAT(MOD_DT , '%Y-%m-%d'), '') AS MOD_DT
+				  FROM DC_EVENT  ]]>
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="evIdx != null and evIdx != ''">
+				<![CDATA[ AND EV_IDX = #{evIdx} ]]>
+			</if>
+		</trim>
+	</select>
+
+	<!-- 이벤트 생성 -->
+	<insert id="insertEvent" parameterType="eventRequest">
+		<![CDATA[
+       INSERT INTO DC_EVENT(
+           EV_IMG_IDX
+         , EV_START_DT
+         , EV_END_DT
+         , EV_TITLE
+         , EV_CONTENT
+         , REG_ID
+         , REG_DT
+       )VALUES (
+          #{evImgIdx}
+          , #{evStartDt}
+          , #{evEndDt}
+          , #{evTitle}
+          , #{evContent}
+          , #{regId}
+          , NOW()
+      )
+      ]]>
+		<selectKey keyProperty="evIdx" resultType="Integer" order="AFTER">
+			SELECT LAST_INSERT_ID();
+		</selectKey>
+	</insert>
+
+	<!-- 이벤트 업데이트 -->
+	<update id="updateEvent" parameterType="EventRequest">
+		<![CDATA[ UPDATE DC_EVENT ]]>
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="evTitle      != null"><![CDATA[   EV_TITLE          = #{evTitle}  ,      ]]></if>    <!-- miTitle -->
+			<if test="evContent      != null"><![CDATA[   EV_CONTENT          = #{evContent}  ,      ]]></if>    <!-- evContent -->
+			<if test="evStartDt    != null"><![CDATA[   EV_START_DT       = #{evStartDt}  ,      ]]></if>    <!-- evStartDt -->
+			<if test="evEndDt      != null"><![CDATA[   EV_END_DT         = #{evEndDt}  ,      ]]></if>    <!-- evEndDt -->
+			<if test="evImgIdx     != null"><![CDATA[   EV_IMG_IDX         = #{evImgIdx}  ,      ]]></if>    <!-- evImgIdx -->
+			<if test="modId        != null"><![CDATA[   MOD_ID            = #{modId}  ,      ]]></if>    <!-- modId -->
+			MOD_DT = NOW()
+		</trim>
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="evIdx != null and evIdx != ''">
+				<![CDATA[ EV_IDX = #{evIdx} ]]>
+			</if>
+		</trim>
+	</update>
+
+	<!-- 이벤트 삭제 -->
+	<delete id="deleteEvent" parameterType="eventRequest">
+           <![CDATA[ DELETE FROM DC_EVENT WHERE EV_IDX = #{evIdx} ]]>
+    </delete>
+
 </mapper>
 
     

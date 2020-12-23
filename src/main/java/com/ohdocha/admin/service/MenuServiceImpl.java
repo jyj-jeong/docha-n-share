@@ -70,13 +70,13 @@ public class MenuServiceImpl extends ServiceExtension implements MenuService {
 
         int res = 0;
 
-        if (mainImgRequest.getMiIdx() == 0){
+        if (mainImgRequest.getMiIdx() == 0) {
             res = menuMapper.insertMainImg(mainImgRequest);
-        }else {
+        } else {
             res = menuMapper.updateMainImg(mainImgRequest);
         }
 
-        message.addData("res",res);
+        message.addData("res", res);
     }
 
     @Override
@@ -177,8 +177,146 @@ public class MenuServiceImpl extends ServiceExtension implements MenuService {
 
         int res = menuMapper.deleteMainImg(mainImgRequest);
 
-        message.addData("res",res);
+        message.addData("res", res);
     }
+
+    @Override
+    public void getEventList(ServiceMessage message) {
+        DochaAdminEventRequest eventRequest = new DochaAdminEventRequest();
+
+        List<DochaAdminEventResponse> questionResponseList = menuMapper.selectEventList(eventRequest);
+
+        message.addData("result", questionResponseList);
+    }
+
+    @Override
+    public void insertEvent(ServiceMessage message) {
+        DochaAdminEventRequest eventRequest = message.getObject("eventRequest", DochaAdminEventRequest.class);
+
+        int res = 0;
+
+        if (eventRequest.getEvIdx() == 0) {
+            res = menuMapper.insertEvent(eventRequest);
+        } else {
+            res = menuMapper.updateEvent(eventRequest);
+        }
+
+        message.addData("res", res);
+    }
+
+    @Override
+    public void uploadEventImage(ServiceMessage message) {
+        int evIdx = message.getInt("evIdx", 0);
+        DochaAdminEventResponse eventResponse;
+
+        Object uploadImageObj = message.get("uploadImage");
+        if (!(uploadImageObj instanceof MultipartFile))
+            throw new BadRequestException(IMAGE_NOT_MULTIPART_FILE, IMAGE_NOT_MULTIPART_FILE_MSG);
+
+        MultipartFile uploadImage = (MultipartFile) uploadImageObj;
+
+        if (uploadImage.isEmpty())
+            throw new BadRequestException(IMAGE_IS_EMPTY, IMAGE_IS_EMPTY_MSG);
+
+        String uploadImageName = uploadImage.getOriginalFilename();
+        if (uploadImageName == null || uploadImageName.isEmpty())
+            throw new BadRequestException(IMAGE_PARSING_ERROR, IMAGE_PARSING_ERROR_MSG + "(이미지 파일이름이 없습니다.)");
+
+        String uploadImageMime = uploadImage.getContentType();
+        if (uploadImageMime == null || uploadImageMime.isEmpty() || !uploadImageMime.contains("image/"))
+            throw new BadRequestException(IMAGE_PARSING_ERROR, IMAGE_PARSING_ERROR_MSG + "(이미지 MIME 이 올바르지 않습니다.)");
+
+        int extensionIndexOf = uploadImageName.lastIndexOf('.');
+        if (extensionIndexOf == -1)
+            throw new BadRequestException(IMAGE_PARSING_ERROR, IMAGE_PARSING_ERROR_MSG + "(확장자가 존재하지 않습니다.)");
+
+        String uploadImageExtension = uploadImageName.substring(extensionIndexOf).replaceAll("\\.", "").toLowerCase();
+        if (!properties.getSupportImageExtension().contains(uploadImageExtension))
+            throw new BadRequestException(IMAGE_PARSING_ERROR, IMAGE_PARSING_ERROR_MSG + "(지원하지 않는 이미지 확장자 입니다.)");
+
+        long uploadImageSize = uploadImage.getSize();
+        if (uploadImageSize > properties.getUploadImageSize())
+            throw new BadRequestException(IMAGE_PARSING_ERROR, IMAGE_PARSING_ERROR_MSG + "(이미지 크기가 20MB를 초과 합니다.)");
+
+        // 파일 랜덤 UUID 생성 (파일 명 중복시 파일 생성 안됌)
+        String saveImgName = UUID.randomUUID().toString();
+        File file = new File(properties.getTempFolderPath() + "question/" + saveImgName + "." + uploadImageExtension);
+        FileHelper.makeFolder(file.getParentFile());
+
+        // 기존의 문의 조회
+        DochaAdminEventRequest eventRequest = new DochaAdminEventRequest();
+        eventRequest.setEvIdx(evIdx);
+
+        List<DochaAdminEventResponse> eventResponseList = menuMapper.selectEventList(eventRequest);
+
+        // 해당 모델의 정보를 가져옴 ( 이미지 파일 체크하기 위함 )
+        eventResponse = eventResponseList.get(0);
+
+        // 이미 DB에 img 정보가 있는지 여부
+        if (eventResponse.getEvImgIdx() == null || eventResponse.getEvImgIdx().equals("")) {
+            // 저장된 이미지가 없을 경우
+            try {
+                // 바로 이미지 생성
+                file.createNewFile();
+                uploadImage.transferTo(file);
+            } catch (Exception e) {
+                throw new BadRequestException(UNKNOWN_EXCEPTION, "파일 생성 실패");
+            }
+        } else {
+            // 현재 DB에 이미지가 있으면
+            File FileList = new File(properties.getTempFolderPath() + "question/");
+            String[] fileList = FileList.list();
+            for (int i = 0; i < fileList.length; i++) {
+                // DB에서 파일 명을 가져와서 일치하는 것이 있는지 검사
+                String FileName = fileList[i];
+
+                if (FileName.contains(eventResponse.getEvImgIdx())) {
+                    File deleteFile = new File(properties.getTempFolderPath() + "event/" + eventResponse.getEvImgIdx());
+                    // path에서 이미 있는 파일을 제거 후
+                    deleteFile.delete();
+                }
+            }
+            try {
+                // 이미지 생성
+                file.createNewFile();
+                uploadImage.transferTo(file);
+            } catch (Exception e) {
+                throw new BadRequestException(UNKNOWN_EXCEPTION, "파일 생성 실패");
+            }
+        }
+
+        DochaAdminEventRequest updateEventRequest = new DochaAdminEventRequest();
+
+        // 저장 할 quIdx
+        updateEventRequest.setEvIdx(eventRequest.getEvIdx());
+        // 새로운 파일 명
+        updateEventRequest.setEvImgIdx(saveImgName + "." + uploadImageExtension);
+
+        // 파일을 path에 저장 후, DB에 파일 명 저장
+        menuMapper.updateEvent(updateEventRequest);
+    }
+
+    @Override
+    public void getEventDetail(ServiceMessage message) {
+        DochaAdminEventRequest eventRequest = new DochaAdminEventRequest();
+
+        String evIdx = message.getString("evIdx");
+        eventRequest.setEvIdx(Integer.parseInt(evIdx));
+
+        List<DochaAdminEventResponse> eventResponseList = menuMapper.selectEventList(eventRequest);
+
+        message.addData("result", eventResponseList);
+    }
+
+    @Override
+    public void deleteEvent(ServiceMessage message) {
+        DochaAdminEventRequest eventRequest = message.getObject("eventRequest", DochaAdminEventRequest.class);
+
+        int res = menuMapper.deleteEvent(eventRequest);
+
+        message.addData("res", res);
+    }
+
 
     @Override
     public void getQuestionList(ServiceMessage message) {
@@ -354,13 +492,13 @@ public class MenuServiceImpl extends ServiceExtension implements MenuService {
 
         int res = 0;
 
-        if (noticeRequest.getNtIdx() == 0){
+        if (noticeRequest.getNtIdx() == 0) {
             res = menuMapper.insertNotice(noticeRequest);
-        }else {
+        } else {
             res = menuMapper.updateNotice(noticeRequest);
         }
 
-        message.addData("res",res);
+        message.addData("res", res);
     }
 
     @Override
@@ -369,7 +507,7 @@ public class MenuServiceImpl extends ServiceExtension implements MenuService {
 
         int res = menuMapper.deleteNotice(noticeRequest);
 
-        message.addData("res",res);
+        message.addData("res", res);
     }
 
     @Override
