@@ -25,12 +25,12 @@
                         <div class="row">
                             <h6 class="col-12 mb-3 font-weight-bold">일정</h6>
                             <div class="col-3 mb-3">
-                                <label class="form-label" for="miStartDt">시작일시</label>
-                                <a id="miStartDt" name="miStartDt" class=""></a>
+                                <label>시작일시</label>
+                                <input type="datetime-local" class="form-control" id="miStartDt" name="miStartDt"/>
                             </div>
                             <div class="col-3 mb-3">
-                                <label class="form-label" for="miEndDt">종료일시</label>
-                                <a id="miEndDt" name="miEndDt" class=""></a>
+                                <label>종료일시</label>
+                                <input type="datetime-local" class="form-control" id="miEndDt" name="miEndDt"/>
                             </div>
                         </div>
                     </div>
@@ -131,27 +131,12 @@
     var mainImgDetail = /*[[${result}]]*/ '';
     var loginUser = /*[[${session.LOGIN_SESSION}]]*/'';
 
-    var miStartCalendar = new WinkelCalendar({
-        container: 'miStartDt',
-        bigBanner: true,
-        defaultDate: new Date(),
-        format: "YYYY년 MM월 DD일"
-    });
-
-    var miEndCalendar = new WinkelCalendar({
-        container: 'miEndDt',
-        bigBanner: true,
-        defaultDate: new Date(),
-        format: "YYYY년 MM월 DD일"
-    });
-
     if(mainImgDetail !== null){
 
         $('#miIdx').val(mainImgDetail[0].miIdx);
         $('#miTitle').val(mainImgDetail[0].miTitle);
-
-        miStartCalendar.setDate(new Date(mainImgDetail[0].miStartDt));
-        miEndCalendar.setDate(new Date(mainImgDetail[0].miEndDt));
+        $('#miStartDt').val(mainImgDetail[0].miStartDt);
+        $('#miEndDt').val(mainImgDetail[0].miEndDt);
 
         $('#mi_Img').attr('src','https://admin-ohdocha.sharenshare.kr/img/main/' + mainImgDetail[0].miImgIdx);
 
@@ -162,10 +147,21 @@
     function saveMainImg() {
         var miIdx = $('#miIdx').val();
         var miTitle = $('#miTitle').val();
-        var miStartDt = miStartCalendar.date;
-        var miEndDt = miEndCalendar.date;
+        var miStartDt = $('#miStartDt').val();
+        var miEndDt = $('#miEndDt').val();
+        // var miEndDt = miEndCalendar.date;
         var regId = loginUser.urIdx;
         var modId = loginUser.urIdx;
+
+        if (isEmpty(miStartDt)) {
+            errorAlert('시작일시', '시작일시를 선택해 주세요');
+            return;
+        }
+        else if (isEmpty(miEndDt)) {
+            errorAlert('종료일시', '종료일시를 선택해 주세요');
+            return;
+        }
+
 
         var url = '/api/v1.0/insertMain.json';
         var req = {

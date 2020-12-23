@@ -25,12 +25,12 @@
                         <div class="row">
                             <h6 class="col-12 mb-3 font-weight-bold">일정</h6>
                             <div class="col-3 mb-3">
-                                <label class="form-label" for="evStartDt">시작일시</label>
-                                <a id="evStartDt" name="evStartDt" class=""></a>
+                                <label>시작일시</label>
+                                <input type="datetime-local" class="form-control" id="evStartDt" name="evStartDt"/>
                             </div>
                             <div class="col-3 mb-3">
-                                <label class="form-label" for="evEndDt">종료일시</label>
-                                <a id="evEndDt" name="evEndDt" class=""></a>
+                                <label>종료일시</label>
+                                <input type="datetime-local" class="form-control" id="evEndDt" name="evEndDt"/>
                             </div>
                         </div>
                     </div>
@@ -138,19 +138,6 @@
     var eventDetail = /*[[${result}]]*/ '';
     var loginUser = /*[[${session.LOGIN_SESSION}]]*/'';
 
-    var evStartCalendar = new WinkelCalendar({
-        container: 'evStartDt',
-        bigBanner: true,
-        defaultDate: new Date(),
-        format: "YYYY년 MM월 DD일"
-    });
-
-    var evEndCalendar = new WinkelCalendar({
-        container: 'evEndDt',
-        bigBanner: true,
-        defaultDate: new Date(),
-        format: "YYYY년 MM월 DD일"
-    });
 
     if(eventDetail !== null){
 
@@ -158,8 +145,8 @@
         $('#evTitle').val(eventDetail[0].evTitle);
         $('#evContent').val(eventDetail[0].evContent);
 
-        evStartCalendar.setDate(new Date(eventDetail[0].evStartDt));
-        evEndCalendar.setDate(new Date(eventDetail[0].evEndDt));
+        $('#evStartDt').val(eventDetail[0].evStartDt);
+        $('#evEndDt').val(eventDetail[0].evEndDt);
 
         $('#eventImg').attr('src','https://admin-ohdocha.sharenshare.kr/img/main/' + eventDetail[0].evImgIdx);
 
@@ -171,10 +158,19 @@
         var evIdx = $('#evIdx').val();
         var evTitle = $('#evTitle').val();
         var evContent = $('#evContent').val();
-        var evStartDt = evStartCalendar.date;
-        var evEndDt = evEndCalendar.date;
+        var evStartDt = $('#evStartDt').val();
+        var evEndDt = $('#evEndDt').val();
         var regId = loginUser.urIdx;
         var modId = loginUser.urIdx;
+
+        if (isEmpty(evStartDt)) {
+            errorAlert('시작일시', '시작일시를 선택해 주세요');
+            return;
+        }
+        else if (isEmpty(evEndDt)) {
+            errorAlert('종료일시', '종료일시를 선택해 주세요');
+            return;
+        }
 
         var url = '/api/v1.0/insertEvent.json';
         var req = {

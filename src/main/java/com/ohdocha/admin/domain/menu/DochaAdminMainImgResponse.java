@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.ibatis.type.Alias;
 
+import java.time.LocalDateTime;
+
 @Data
 @Getter
 @Setter
@@ -13,12 +15,12 @@ public class DochaAdminMainImgResponse {
 
 	private int miIdx;
 	private String miImgIdx;
-	private String miStartDt;
-	private String miEndDt;
+	private LocalDateTime miStartDt;
+	private LocalDateTime miEndDt;
 	private String miTitle;
 	private String regId;
-	private String regDt;
+	private LocalDateTime regDt;
 	private String modId;
-	private String modDt;
+	private LocalDateTime modDt;
 
 }

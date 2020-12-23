@@ -65,9 +65,9 @@
                                 <tr th:each="main, index : ${result}" style="cursor: pointer" th:data-value="${main.getMiIdx()}">
                                     <td th:text="${main.getMiIdx()}"></td>
                                     <td th:text="${main.getMiTitle()}"></td>
-                                    <td th:text="${main.getRegDt()}"></td>
-                                    <td th:text="${main.getMiStartDt()}"></td>
-                                    <td th:text="${main.getMiEndDt()}"></td>
+                                    <td th:text="${#temporals.format(main.getRegDt(), 'yyyy-MM-dd HH:mm')}"></td>
+                                    <td th:text="${#temporals.format(main.getMiStartDt(), 'yyyy-MM-dd HH:mm')}"></td>
+                                    <td th:text="${#temporals.format(main.getMiEndDt(), 'yyyy-MM-dd HH:mm')}"></td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -115,7 +115,6 @@
     </div>
 </div>
 <script th:inline="javascript">
-
     initializingPageData();
     initDataTables();
 

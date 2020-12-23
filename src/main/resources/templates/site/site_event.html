@@ -59,9 +59,9 @@
                                 <tr th:each="event, index : ${result}" style="cursor: pointer" th:data-value="${event.getEvIdx()}">
                                     <td th:text="${event.getEvIdx()}"></td>
                                     <td th:text="${event.getEvTitle()}"></td>
-                                    <td th:text="${event.getRegDt()}"></td>
-                                    <td th:text="${event.getEvStartDt()}"></td>
-                                    <td th:text="${event.getEvEndDt()}"></td>
+                                    <td th:text="${#temporals.format(event.getRegDt(), 'yyyy-MM-dd HH:mm')}"></td>
+                                    <td th:text="${#temporals.format(event.getEvStartDt(), 'yyyy-MM-dd HH:mm')}"></td>
+                                    <td th:text="${#temporals.format(event.getEvEndDt(), 'yyyy-MM-dd HH:mm')}"></td>
                                 </tr>
                                 </tbody>
                             </table>
