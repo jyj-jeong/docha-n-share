@@ -1229,7 +1229,7 @@ function detailValidation(save_type){
 				let year 				= $("#year option:selected").val();
 				let carRegDt 			= $("#carRegDt option:selected").val();
 				let modelName 			= $("#sel_modelName").val();
-				let modelDetailName 	= $("#sel_modelDetailName option:selected").val();
+				let modelDetailName 	= $("#sel_modelDetailName option:selected").text();
 				let mdIdx 				= $("#sel_modelDetailName").val();
 				let fuelCode			= $("#sel_fuel").val();
 				let colorName 			= $("#sel_colorName").val();
