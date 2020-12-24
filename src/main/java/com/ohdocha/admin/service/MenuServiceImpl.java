@@ -240,7 +240,7 @@ public class MenuServiceImpl extends ServiceExtension implements MenuService {
 
         // 파일 랜덤 UUID 생성 (파일 명 중복시 파일 생성 안됌)
         String saveImgName = UUID.randomUUID().toString();
-        File file = new File(properties.getTempFolderPath() + "question/" + saveImgName + "." + uploadImageExtension);
+        File file = new File(properties.getTempFolderPath() + "event/" + saveImgName + "." + uploadImageExtension);
         FileHelper.makeFolder(file.getParentFile());
 
         // 기존의 문의 조회
@@ -264,7 +264,7 @@ public class MenuServiceImpl extends ServiceExtension implements MenuService {
             }
         } else {
             // 현재 DB에 이미지가 있으면
-            File FileList = new File(properties.getTempFolderPath() + "question/");
+            File FileList = new File(properties.getTempFolderPath() + "event/");
             String[] fileList = FileList.list();
             for (int i = 0; i < fileList.length; i++) {
                 // DB에서 파일 명을 가져와서 일치하는 것이 있는지 검사
@@ -287,7 +287,7 @@ public class MenuServiceImpl extends ServiceExtension implements MenuService {
 
         DochaAdminEventRequest updateEventRequest = new DochaAdminEventRequest();
 
-        // 저장 할 quIdx
+        // 저장 할 evIdx
         updateEventRequest.setEvIdx(eventRequest.getEvIdx());
         // 새로운 파일 명
         updateEventRequest.setEvImgIdx(saveImgName + "." + uploadImageExtension);
