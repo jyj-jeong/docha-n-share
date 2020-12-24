@@ -532,14 +532,16 @@ function initDetailInfo(seq){
 		$("#personalCover").val(personalCover);
 		$("#propertyDamageCover").val(propertyDamageCover);
 		$("#onselfDamageCover").val(onselfDamageCover);
-		$("#insuranceCopayment").val(insuranceCopayment);
-		$("#carDamageCover").val(carDamageCover);
+
+		$("#insuranceCopayment").val('미가입');
+		$("#carDamageCover").val('미가입');
 		$("#insuranceCopayment2").val(insuranceCopayment2);
 		$("#carDamageCover2").val(carDamageCover2);
 		$("#insuranceCopayment3").val(insuranceCopayment3);
 		$("#carDamageCover3").val(carDamageCover3);
 		$("#insuranceCopayment4").val(insuranceCopayment4);
 		$("#carDamageCover4").val(carDamageCover4);
+
 		$("input:checkbox[name='carDamage1Yn']:checkbox[value='"+ carDamage1Yn +"']").prop('checked', true);
 		$("input:checkbox[name='carDamage2Yn']:checkbox[value='"+ carDamage2Yn +"']").prop('checked', true);
 		$("input:checkbox[name='carDamage3Yn']:checkbox[value='"+ carDamage3Yn +"']").prop('checked', true);
@@ -1142,8 +1144,8 @@ function setData(set_type, _data){
 			$('#onselfDamageCover').val(onselfDamageCover);		//자손보상금액
 			$('#propertyDamageCover').val(propertyDamageCover);	//대물보상금액
 
-			$('#carDamageCover').val(carDamageCover);			//자차보상금액(고객부담금)
-			$('#insuranceCopayment').val(insuranceCopayment);	//고객부담금(보험료)
+			$('#carDamageCover').val('미가입');			//자차보상금액(고객부담금)
+			$('#insuranceCopayment').val('미가입');	//고객부담금(보험료)
 			$('#carDamageCover2').val(carDamageCover2);			//자차보상금액2(고객부담금)
 			$('#insuranceCopayment2').val(insuranceCopayment2);	//고객부담금2(보험료)
 			$('#carDamageCover3').val(carDamageCover3);			//자차보상금액3(고객부담금)
@@ -1383,13 +1385,7 @@ function detailValidation(save_type){
 					return;
 				}
 
-				else if(isEmpty(insuranceCopayment)){
-					errorAlert('자차보험1', '자차 보험 요금/일은 필수 입력값 입니다.');
-					return;
-				}else if(isEmpty(carDamageCover)){
-					errorAlert('자차보험1', '자차보험 고객부담금은 필수 입력값 입니다.');
-					return;
-				}else if(!isEmpty(insuranceCopayment2) && !$.isNumeric(insuranceCopayment2)){
+				if(!isEmpty(insuranceCopayment2) && !$.isNumeric(insuranceCopayment2)){
 					errorAlert('자차보험2', '자차 보험 요금/일 숫자만 입력 가능합니다.');
 					return;
 				}else if(!isEmpty(carDamageCover2) && !$.isNumeric(carDamageCover2)){

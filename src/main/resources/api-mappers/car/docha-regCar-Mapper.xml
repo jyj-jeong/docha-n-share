@@ -303,10 +303,10 @@
 			<if test="insuranceCopayment3         != null"><![CDATA[  , INSURANCE_COPAYMENT3     = #{insuranceCopayment3}           ]]></if>    <!-- 주행거리 -->
 			<if test="carDamageCover4             != null"><![CDATA[  , CAR_DAMAGE_COVER4        = #{carDamageCover4}           ]]></if>    <!-- 대여연령제한(장기,단기) -->
 			<if test="insuranceCopayment4         != null"><![CDATA[  , INSURANCE_COPAYMENT4     = #{insuranceCopayment4}           ]]></if>    <!-- 주행거리 -->
-			<if test="carDamage1Yn                != null"><![CDATA[  , CAR_DAMAGE1_YN    		 = #{carDamage1Yn}           ]]></if>    <!-- 주행거리 -->
-			<if test="carDamage2Yn        		  != null"><![CDATA[  , CAR_DAMAGE2_YN    		 = #{carDamage2Yn}           ]]></if>    <!-- 주행거리 -->
-			<if test="carDamage3Yn        		  != null"><![CDATA[  , CAR_DAMAGE3_YN    		 = #{carDamage3Yn}           ]]></if>    <!-- 주행거리 -->
-			<if test="carDamage4Yn        		  != null"><![CDATA[  , CAR_DAMAGE4_YN    		 = #{carDamage4Yn}           ]]></if>    <!-- 주행거리 -->
+			<if test="carDamage1Yn                != null"><![CDATA[  , CAR_DAMAGE1_YN    		 = #{carDamage1Yn}           ]]></if>    <!-- 자차보험Yn -->
+			<if test="carDamage2Yn        		  != null"><![CDATA[  , CAR_DAMAGE2_YN    		 = #{carDamage2Yn}           ]]></if>    <!-- 자차보험Yn -->
+			<if test="carDamage3Yn        		  != null"><![CDATA[  , CAR_DAMAGE3_YN    		 = #{carDamage3Yn}           ]]></if>    <!-- 자차보험Yn -->
+			<if test="carDamage4Yn        		  != null"><![CDATA[  , CAR_DAMAGE4_YN    		 = #{carDamage4Yn}           ]]></if>    <!-- 자차보험Yn -->
 
 		</trim>
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
@@ -467,11 +467,11 @@
          ,     #{insuranceCopayment3}
          ,     #{carDamageCover4}
          ,     #{insuranceCopayment4}
-         ,     #{ageLimit}
          ,     #{carDamage1Yn}
          ,     #{carDamage2Yn}
          ,     #{carDamage3Yn}
          ,     #{carDamage4Yn}
+         ,     #{ageLimit}
          ,   'N'
          ,     #{regId}
          ,   NOW()
