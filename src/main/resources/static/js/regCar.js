@@ -1231,7 +1231,7 @@ function detailValidation(save_type){
 				let year 				= $("#year option:selected").val();
 				let carRegDt 			= $("#carRegDt option:selected").val();
 				let modelName 			= $("#sel_modelName").val();
-				let modelDetailName 	= $("#sel_modelDetailName option:selected").val();
+				let modelDetailName 	= $("#sel_modelDetailName option:selected").text();
 				let mdIdx 				= $("#sel_modelDetailName").val();
 				let fuelCode			= $("#sel_fuel").val();
 				let colorName 			= $("#sel_colorName").val();
@@ -1474,42 +1474,47 @@ function detailValidation(save_type){
 				call_before_save(title, text, icon, cancel_text, save_type, req);
 
 				break;
+
+			/*
+			*  요금에 빈칸이 들어가면 계산에서 에러가 나기 때문에 빈칸이면 0을 넣는다
+			*  필수 입력은 숫자로 입력했는지만 거른다.
+			*  */
 			case 'savePaymentinfo':	// 기본요금정보
 				let pyTIdx 				= $("#sel_pyTIdx option:selected").val();
-				let dailyStandardPay 	= getPureText($('#dailyStandardPay').val().trim());
-				let dailyMaxRate 		= getPureText($('#dailyMaxRate').val().trim()).trim();
-				let monthlyStandardPay 	= getPureText($('#monthlyStandardPay').val().trim());
-				let monthlyMaxRate 		= getPureText($('#monthlyMaxRate').val().trim()).trim();
-				let month3Deposit 		= getPureText($('#month3Deposit').val().trim());
-				let month6Deposit 		= getPureText($('#month6Deposit').val().trim());
-				let month9Deposit 		= getPureText($('#month9Deposit').val().trim());
-				let month12Deposit 		= getPureText($('#month12Deposit').val().trim());
-				let deliveryStandardPay = getPureText($('#deliveryStandardPay').val().trim());
-				let deliveryAddPay 		= getPureText($('#deliveryAddPay').val().trim());
+				let dailyStandardPay 	= getPureText($('#dailyStandardPay').val().trim()) === "" ?
+					"0" : getPureText($('#dailyStandardPay').val().trim());
+				let dailyMaxRate 		= getPureText($('#dailyMaxRate').val().trim()).trim()=== "" ?
+					"0" : getPureText($('#dailyMaxRate').val().trim());
+				let monthlyStandardPay 	= getPureText($('#monthlyStandardPay').val().trim())=== "" ?
+					"0" : getPureText($('#monthlyStandardPay').val().trim());
+				let monthlyMaxRate 		= getPureText($('#monthlyMaxRate').val().trim()).trim()=== "" ?
+					"0" : getPureText($('#monthlyMaxRate').val().trim());
+				let month3Deposit 		= getPureText($('#month3Deposit').val().trim())=== "" ?
+					"0" : getPureText($('#month3Deposit').val().trim());
+				let month6Deposit 		= getPureText($('#month6Deposit').val().trim())=== "" ?
+					"0" : getPureText($('#month6Deposit').val().trim());
+				let month9Deposit 		= getPureText($('#month9Deposit').val().trim())=== "" ?
+					"0" : getPureText($('#month9Deposit').val().trim());
+				let month12Deposit 		= getPureText($('#month12Deposit').val().trim())=== "" ?
+					"0" : getPureText($('#month12Deposit').val().trim());
+				let deliveryStandardPay = getPureText($('#deliveryStandardPay').val().trim())=== "" ?
+					"0" : getPureText($('#deliveryStandardPay').val().trim());
+				let deliveryAddPay 		= getPureText($('#deliveryAddPay').val().trim())=== "" ?
+					"0" : getPureText($('#deliveryAddPay').val().trim());
 
 				if (isEmpty(crIdx)) {
 					errorAlert('차량정보', '차량정보를 먼저 저장해 주세요.');
 					return;
 				}
-				if(isEmpty(dailyStandardPay)){
-					errorAlert('요금정보', '일 기본요금은 필수 입력값 입니다.');
-					return;
-				}else if(!isEmpty(dailyStandardPay) && !$.isNumeric(dailyStandardPay)){
+				else if(!isEmpty(dailyStandardPay) &&!$.isNumeric(dailyStandardPay)){
 					errorAlert('요금정보', '일 기본요금은 숫자만 입력 가능합니다.');
 					return;
-				}else if(isEmpty(dailyMaxRate)){
-					errorAlert('요금정보', '일대여 최대 할인율은 필수 입력값 입니다.');
-				}else if(!isEmpty(dailyMaxRate) && !$.isNumeric(dailyMaxRate)){
+				}
+				else if(!isEmpty(dailyMaxRate) && !$.isNumeric(dailyMaxRate)){
 					errorAlert('요금정보', '일대여 최대 할인율은 숫자만 입력 가능합니다.');
-					return;
-				}else if(isEmpty(monthlyStandardPay)){
-					errorAlert('요금정보', '월 기본요금은 필수 입력값 입니다.');
 					return;
 				}else if(!isEmpty(monthlyStandardPay) && !$.isNumeric(monthlyStandardPay)){
 					errorAlert('요금정보', '월 기본요금은 숫자만 입력 가능합니다.');
-					return;
-				}else if(isEmpty(monthlyMaxRate)){
-					errorAlert('요금정보', '월 최대 할인율은 필수 입력값 입니다.');
 					return;
 				}else if(!isEmpty(monthlyMaxRate) && !$.isNumeric(monthlyMaxRate)){
 					errorAlert('요금정보', '월 최대 할인율은 숫자만 입력 가능합니다.');
@@ -1520,16 +1525,16 @@ function detailValidation(save_type){
 				}else if(!isEmpty(month6Deposit) && !$.isNumeric(month6Deposit)){
 					errorAlert('요금정보', '6개월 보증금은 숫자만 입력 가능합니다.');
 					return;
-				}else if(!isEmpty(month3Deposit) && !$.isNumeric(month9Deposit)){
+				}else if(!isEmpty(month9Deposit) && !$.isNumeric(month9Deposit)){
 					errorAlert('요금정보', '9개월 보증금은 숫자만 입력 가능합니다.');
 					return;
-				}else if(!isEmpty(month3Deposit) && !$.isNumeric(month12Deposit)){
+				}else if(!isEmpty(month12Deposit) && !$.isNumeric(month12Deposit)){
 					errorAlert('요금정보', '12개월 보증금은 숫자만 입력 가능합니다.');
 					return;
-				}else if(!isEmpty(month3Deposit) && !$.isNumeric(deliveryStandardPay)){
+				}else if(!isEmpty(deliveryStandardPay) && !$.isNumeric(deliveryStandardPay)){
 					errorAlert('요금정보', '배달기본요금은 숫자만 입력 가능합니다.');
 					return;
-				}else if(!isEmpty(month3Deposit) && !$.isNumeric(deliveryAddPay)){
+				}else if(!isEmpty(deliveryAddPay) && !$.isNumeric(deliveryAddPay)){
 					errorAlert('요금정보', '배달10KM단위추가요금은 숫자만 입력 가능합니다.');
 					return;
 				}

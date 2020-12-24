@@ -29,6 +29,8 @@ public interface DochaAdminMenuMapper {
 
     List<DochaAdminNoticeResponse> selectNoticeList(DochaAdminNoticeRequest noticeRequest);
 
+    List<DochaAdminEventResponse> selectEventList(DochaAdminEventRequest questionRequest);
+
     int updateAnswer(DochaAdminQuestionRequest questionRequest);
 
     int insertNotice(DochaAdminNoticeRequest noticeRequest);
@@ -36,4 +38,10 @@ public interface DochaAdminMenuMapper {
     int updateNotice(DochaAdminNoticeRequest noticeRequest);
 
     int deleteNotice(DochaAdminNoticeRequest noticeRequest);
+
+    int insertEvent(DochaAdminEventRequest eventRequest);
+
+    int updateEvent(DochaAdminEventRequest eventRequest);
+
+    int deleteEvent(DochaAdminEventRequest eventRequest);
 }

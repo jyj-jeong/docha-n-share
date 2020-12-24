@@ -10,14 +10,15 @@ import java.time.LocalDateTime;
 @Data
 @Getter
 @Setter
-@Alias("mainImgRequest")
-public class DochaAdminMainImgRequest {
+@Alias("eventRequest")
+public class DochaAdminEventRequest {
 
-    private int miIdx;
-    private String miImgIdx;
-    private LocalDateTime miStartDt;
-    private LocalDateTime miEndDt;
-    private String miTitle;
+    private int evIdx;
+    private String evImgIdx;
+    private LocalDateTime evStartDt;
+    private LocalDateTime evEndDt;
+    private String evTitle;
+    private String evContent;
     private String regId;
     private LocalDateTime regDt;
     private String modId;

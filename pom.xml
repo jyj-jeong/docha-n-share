@@ -116,6 +116,13 @@
             <version>1.4</version>
         </dependency>
 
+        <!--mybatis LocalDateTime 자동 매핑 -->
+        <dependency>
+            <groupId>org.mybatis</groupId>
+            <artifactId>mybatis-typehandlers-jsr310</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>

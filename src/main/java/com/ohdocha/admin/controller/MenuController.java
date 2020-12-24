@@ -1,9 +1,6 @@
 package com.ohdocha.admin.controller;
 
-import com.ohdocha.admin.domain.menu.DochaAdminMainImgRequest;
-import com.ohdocha.admin.domain.menu.DochaAdminMenuRequest;
-import com.ohdocha.admin.domain.menu.DochaAdminNoticeRequest;
-import com.ohdocha.admin.domain.menu.DochaAdminQuestionRequest;
+import com.ohdocha.admin.domain.menu.*;
 import com.ohdocha.admin.service.MenuService;
 import com.ohdocha.admin.util.ServiceMessage;
 import lombok.AllArgsConstructor;
@@ -146,9 +143,70 @@ public class MenuController extends ControllerExtension {
     public String siteEventView(HttpServletRequest request, ModelMap modelMap) {
         ServiceMessage serviceMessage = createServiceMessage(request);
 
+        menuService.getEventList(serviceMessage);
+
         modelMap.addAllAttributes(serviceMessage);
         return "site/site_event";
     }
+
+    /* 사이트 - 이벤트 등록 화면 */
+    @GetMapping(value = "/site/event/add")
+    public String siteEventAddView(HttpServletRequest request, ModelMap modelMap) {
+        ServiceMessage serviceMessage = createServiceMessage(request);
+
+        modelMap.addAllAttributes(serviceMessage);
+        return "site/site_event_detail";
+    }
+
+    /* 사이트 - 메인 이벤트 내용 등록 */
+    @PostMapping(value = "/api/v1.0/insertEvent.json")
+    @ResponseBody
+    public Object insertEvent(@RequestBody DochaAdminEventRequest eventRequest, HttpServletRequest request){
+        ServiceMessage serviceMessage = createServiceMessage(request);
+        serviceMessage.addData("eventRequest", eventRequest);
+
+        menuService.insertEvent(serviceMessage);
+
+        return serviceMessage;
+    }
+
+    /* 사이트 - 이벤트 이미지 등록 */
+    @PostMapping(value = "/api/v1.0/uploadEventImage.do")
+    @ResponseBody
+    public Object uploadEventImage(@RequestParam("image") MultipartFile uploadImage, int evIdx, HttpServletRequest request) {
+        ServiceMessage serviceMessage = createServiceMessage(request);
+        serviceMessage.addData("uploadImage", uploadImage)
+                .addData("evIdx", evIdx);
+
+        menuService.uploadEventImage(serviceMessage);
+
+        return serviceMessage;
+    }
+
+    /* 사이트 - 이벤트 상세 화면 */
+    @GetMapping(value = "/site/event/{evIdx}")
+    public String siteEventDetailView(@PathVariable String evIdx, HttpServletRequest request, ModelMap modelMap) {
+        ServiceMessage serviceMessage = createServiceMessage(request);
+        serviceMessage.addData("evIdx",evIdx);
+
+        menuService.getEventDetail(serviceMessage);
+
+        modelMap.addAllAttributes(serviceMessage);
+        return "site/site_event_detail";
+    }
+
+    /* 사이트 - 이벤트 삭제 */
+    @PostMapping(value = "/api/v1.0/deleteEvent.json")
+    @ResponseBody
+    public Object deleteEvent(@RequestBody DochaAdminEventRequest eventRequest, HttpServletRequest request){
+        ServiceMessage serviceMessage = createServiceMessage(request);
+        serviceMessage.addData("eventRequest", eventRequest);
+
+        menuService.deleteEvent(serviceMessage);
+
+        return serviceMessage;
+    }
+
 
     /* 사이트 - 문의 화면 */
     @GetMapping(value = "/site/question")

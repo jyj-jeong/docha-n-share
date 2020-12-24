@@ -29,12 +29,42 @@
                     <div class="card-header py-3">
                         <h6 class="m-0 font-weight-bold text-primary">이벤트</h6>
                     </div>
+
                     <div class="card-body">
-                        <div class="empty">
-                            <p class="empty-title h3">준비중</p>
-                            <p class="empty-subtitle text-muted">
-                                페이지 준비중 입니다.
-                            </p>
+                        <div class="table-responsive">
+                            <div class="mb-4 text-right">
+                                <button class="btn btn-primary" onclick="addEvent()">이벤트 등록</button>
+                                <button class="btn" id="btnExcel"></button>
+                            </div>
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                <tr>
+                                    <th>이벤트번호</th>
+                                    <th>제목</th>
+                                    <th>등록일시</th>
+                                    <th>시작일시</th>
+                                    <th>종료일시</th>
+                                </tr>
+                                </thead>
+                                <tfoot>
+                                <tr>
+                                    <th width="10%">이벤트번호</th>
+                                    <th>제목</th>
+                                    <th>등록일시</th>
+                                    <th>시작일시</th>
+                                    <th>종료일시</th>
+                                </tr>
+                                </tfoot>
+                                <tbody>
+                                <tr th:each="event, index : ${result}" style="cursor: pointer" th:data-value="${event.getEvIdx()}">
+                                    <td th:text="${event.getEvIdx()}"></td>
+                                    <td th:text="${event.getEvTitle()}"></td>
+                                    <td th:text="${#temporals.format(event.getRegDt(), 'yyyy-MM-dd HH:mm')}"></td>
+                                    <td th:text="${#temporals.format(event.getEvStartDt(), 'yyyy-MM-dd HH:mm')}"></td>
+                                    <td th:text="${#temporals.format(event.getEvEndDt(), 'yyyy-MM-dd HH:mm')}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -78,7 +108,30 @@
         </div>
     </div>
 </div>
-<script>
+<script th:inline="javascript">
+
+    initDataTables();
+
+    /* 이벤트 상세 페이지 이동 */
+    $('table > tbody').on('click', 'tr', function () {
+        let evIdx = $(this).attr('data-value');
+        if (evIdx === "" || evIdx === undefined) return;
+
+        var url = "/site/event/" + evIdx;
+        var name = "test";
+        var option = "width = 1400, height =800 ,location=no, left=500, top=50";
+
+        window.open(url, name, option);
+    });
+
+    /* 공지사항 등록 */
+    function addEvent() {
+        var url = "/site/event/add";
+        var name = "test";
+        var option = "width = 1400, height =800 ,location=no, left=500, top=50";
+
+        window.open(url, name, option);
+    }
 
 </script>
 </body>
