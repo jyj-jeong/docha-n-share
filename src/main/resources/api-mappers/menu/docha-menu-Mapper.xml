@@ -157,7 +157,6 @@
 						  IFNULL(QU_IDX, '') AS QU_IDX
 						 ,IFNULL(QU_TITLE, '') AS QU_TITLE
 						 ,IFNULL(QU_CONTENTS, '') AS QU_CONTENTS
-						 ,(SELECT USER_ID FROM DC_USER_INFO WHERE UR_IDX = QUESTIONER_ID) AS QUESTIONER_ID
 						 ,IFNULL(QUESTIONER_PHONE, '') AS QUESTIONER_PHONE
 						 ,IFNULL(QUESTION_DT, '') AS QUESTION_DT
 						 ,IFNULL(QU_ANSWER, '') AS QU_ANSWER
@@ -165,7 +164,9 @@
 						 ,IFNULL(ANSWERER_ID, '') AS ANSWERER_ID
 						 ,IFNULL(ANSWER_DT, '') AS ANSWER_DT
 						 ,IFNULL(IMG_IDX, '') AS IMG_IDX
-				  FROM DC_QUESTION  ]]>
+						 ,IFNULL(T2.USER_ID, '') AS QUESTIONER_ID
+				  FROM DC_QUESTION T1 LEFT OUTER JOIN DC_USER_INFO T2
+					ON T1.QUESTIONER_ID = T2.UR_IDX  ]]>
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
 			<if test="quIdx != null and quIdx != ''">
 				<![CDATA[ AND QU_IDX = #{quIdx} ]]>
@@ -180,16 +181,19 @@
 						 ,IFNULL(NT_TITLE, '') AS NT_TITLE
 						 ,IFNULL(NT_CONTENT, '') AS NT_CONTENT
 						 ,IFNULL(IMG_IDX, '') AS IMG_IDX
-						 ,(SELECT USER_ID FROM DC_USER_INFO WHERE UR_IDX = REG_ID) AS REG_ID
-						 ,IFNULL(REG_DT, '') AS REG_DT
-						 ,IFNULL(MOD_ID, '') AS MOD_ID
-						 ,IFNULL(MOD_DT, '') AS MOD_DT
-				  FROM DC_NOTICE  ]]>
+						 ,IFNULL(T1.REG_DT, '') AS REG_DT
+						 ,IFNULL(T1.MOD_ID, '') AS MOD_ID
+						 ,IFNULL(T1.MOD_DT, '') AS MOD_DT
+						 ,IFNULL(T2.USER_ID, '') AS REG_ID
+				  FROM DC_NOTICE T1
+				  LEFT OUTER JOIN DC_USER_INFO T2
+		ON T1.REG_ID = T2.UR_IDX]]>
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
 			<if test="ntIdx != null and ntIdx != ''">
 				<![CDATA[ AND NT_IDX = #{ntIdx} ]]>
 			</if>
 		</trim>
+
 	</select>
 
 	<update id="updateAnswer" parameterType="questionRequest">
