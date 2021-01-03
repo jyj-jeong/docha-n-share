@@ -183,6 +183,32 @@ public class MenuController extends ControllerExtension {
         return serviceMessage;
     }
 
+    /* 사이트 - 이벤트 이미지 리스트 등록 */
+    @PostMapping(value = "/api/v1.0/uploadEventListImage.do")
+    @ResponseBody
+    public Object uploadEventListImage(@RequestParam("image") MultipartFile uploadImage, int evIdx, HttpServletRequest request) {
+        ServiceMessage serviceMessage = createServiceMessage(request);
+        serviceMessage.addData("uploadImage", uploadImage)
+                .addData("evIdx", evIdx);
+
+        menuService.uploadEventListImage(serviceMessage);
+
+        return serviceMessage;
+    }
+
+    /* 사이트 - 이벤트 이미지 배너 등록 */
+    @PostMapping(value = "/api/v1.0/uploadEventBannerImage.do")
+    @ResponseBody
+    public Object uploadEventBannerImage(@RequestParam("image") MultipartFile uploadImage, int evIdx, HttpServletRequest request) {
+        ServiceMessage serviceMessage = createServiceMessage(request);
+        serviceMessage.addData("uploadImage", uploadImage)
+                .addData("evIdx", evIdx);
+
+        menuService.uploadEventBannerImage(serviceMessage);
+
+        return serviceMessage;
+    }
+
     /* 사이트 - 이벤트 상세 화면 */
     @GetMapping(value = "/site/event/{evIdx}")
     public String siteEventDetailView(@PathVariable String evIdx, HttpServletRequest request, ModelMap modelMap) {

@@ -43,4 +43,8 @@ public interface MenuService {
     void getEventDetail(ServiceMessage serviceMessage);
 
     void deleteEvent(ServiceMessage serviceMessage);
+
+    void uploadEventListImage(ServiceMessage serviceMessage);
+
+    void uploadEventBannerImage(ServiceMessage serviceMessage);
 }

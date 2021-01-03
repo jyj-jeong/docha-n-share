@@ -15,6 +15,8 @@ public class DochaAdminEventResponse {
 
 	private String evIdx;
 	private String evImgIdx ;
+	private String evListImgIdx ;
+	private String evBannerImgIdx ;
 	private LocalDateTime evStartDt;
 	private LocalDateTime evEndDt;
 	private String evTitle;

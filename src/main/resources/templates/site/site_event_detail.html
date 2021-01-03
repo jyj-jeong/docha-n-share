@@ -21,7 +21,6 @@
                     </div>
 
                     <div class="card-body">
-                        <input type="text" class="form-control" id="miIdx" style="display: none"/>
                         <div class="row">
                             <h6 class="col-12 mb-3 font-weight-bold">일정</h6>
                             <div class="col-3 mb-3">
@@ -38,11 +37,11 @@
 
                     <div id="notice">
                         <div class="card-body">
-                            <input type="text" class="form-control" id="evIdx" style="display: none"/>
+                            <input type="text" class="form-control d-none" id="evIdx"/>
                             <div class="row">
                                 <div class=" col-lg-12 mb-3 float-l flex-1">
                                     <label>제목</label>
-                                    <input type="text" class="form-control" id="evTitle"  />
+                                    <input type="text" class="form-control" id="evTitle"/>
                                 </div>
                             </div>
                             <div class="row">
@@ -53,10 +52,11 @@
                             </div>
                             <div class="row">
                                 <div class="col-12 mb-3">
-                                    <label class="form-label" for="eventImg">이미지 첨부</label>
+                                    <label class="form-label" for="eventImg">상세 화면 이미지 첨부</label>
                                     <div class="input-group">
                                         <div class="custom-file">
-                                            <input type="file" accept="image/*" class="custom-file-input" id="eventImg" aria-describedby="eventImg">
+                                            <input type="file" accept="image/*" class="custom-file-input" id="eventImg"
+                                                   aria-describedby="eventImg">
                                             <label class="custom-file-label" for="eventImg">파일을 선택하세요</label>
                                         </div>
                                     </div>
@@ -67,31 +67,121 @@
                                 var inputFile = document.querySelector("#eventImg");
 
                                 $("#eventImg").change(function (file) {
-                                    if(this.files && this.files[0]) {
+                                    if (this.files && this.files[0]) {
                                         let reader = new FileReader;
                                         reader.onload = function (date) {
-                                            $(".select_img img").attr("src", date.target.result).width(500);
+                                            document.getElementById('event_img').src=date.target.result;
                                         };
                                         reader.readAsDataURL(this.files[0]);
                                     }
                                 });
-
                             </script>
                             <div class="row">
                                 <div class="col-12">
                                     <div class="select_img">
-                                        <img class="d-block mx-auto bg-gray-200 mb-4" src="" width="500" height="300" alt="IMG" id="event_img">
+                                        <img class="d-block mx-auto bg-gray-200 mb-4" src="" width="1030" height="280"
+                                             alt="IMG" id="event_img">
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </div>
 
-                    <div class="card-footer">
-                        <div class="text-right">
-                            <button id="btnSave" class="btn btn-primary" type="button" onclick="saveEventImg()">저장</button>
-                            <button id="btnDelete" class="btn btn-danger" type="button" onclick="deleteEventImg()">삭제</button>
-                            <button id="btnClose" class="btn btn-primary" type="button" onclick="self.close()">창 닫기</button>
+                            <div class="text-right">
+                                <button id="btnSave" class="btn btn-primary" type="button" onclick="saveEventImg()">저장
+                                </button>
+                                <button id="btnDelete" class="btn btn-danger" type="button" onclick="deleteEventImg()">
+                                    삭제
+                                </button>
+                                <button id="btnClose" class="btn btn-primary" type="button" onclick="self.close()">창
+                                    닫기
+                                </button>
+                            </div>
+
+                            <div class="row mt-4">
+                                <div class="col-12 mb-3">
+                                    <label class="form-label" for="eventImg">리스트 화면 이미지 첨부</label>
+                                    <div class="input-group">
+                                        <div class="custom-file">
+                                            <input type="file" accept="image/*" class="custom-file-input"
+                                                   id="eventListImg" aria-describedby="eventListImg">
+                                            <label class="custom-file-label" for="eventImg">파일을 선택하세요</label>
+                                        </div>
+                                    </div>
+                                    <p> 이미지의 크기는 505x276을 권장합니다. ( 지원형식 : jpg, jpeg, png, 20MB 이내 )</p>
+                                </div>
+                            </div>
+                            <script th:inline="javascript">
+                                var listInputFile = document.querySelector("#eventListImg");
+
+                                $("#eventListImg").change(function (file) {
+                                    if (this.files && this.files[0]) {
+                                        let reader = new FileReader;
+                                        reader.onload = function (date) {
+                                            document.getElementById('event_list_img').src=date.target.result;
+                                        };
+                                        reader.readAsDataURL(this.files[0]);
+                                    }
+                                });
+                            </script>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="select_img">
+                                        <img class="d-block mx-auto bg-gray-200 mb-4" src="" width="505" height="276"
+                                             alt="IMG" id="event_list_img">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <button id="btnListImgSave" class="btn btn-primary" type="button"
+                                        onclick="saveEventListImg()">리스트 이미지 저장
+                                </button>
+                            </div>
+
+                        </div>
+
+                        <div class="card-body">
+
+                            <div class="row mt-4">
+                                <h6 class="col-12 mb-3 font-weight-bold">배너 이미지 (선택)</h6>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 mb-3">
+                                    <label class="form-label" for="eventImg">리스트 화면 이미지 첨부</label>
+                                    <div class="input-group">
+                                        <div class="custom-file">
+                                            <input type="file" accept="image/*" class="custom-file-input"
+                                                   id="eventBannerImg" aria-describedby="eventBannerImg">
+                                            <label class="custom-file-label" for="eventBannerImg">파일을 선택하세요</label>
+                                        </div>
+                                    </div>
+                                    <p> 이미지의 크기는 1030x280을 권장합니다. ( 지원형식 : jpg, jpeg, png, 20MB 이내 )</p>
+                                </div>
+                            </div>
+                            <script th:inline="javascript">
+                                var bannerInputFile = document.querySelector("#eventBannerImg");
+
+                                $("#eventBannerImg").change(function (file) {
+                                    if (this.files && this.files[0]) {
+                                        let reader = new FileReader;
+                                        reader.onload = function (date) {
+                                            document.getElementById('event_banner_img').src=date.target.result;
+                                        };
+                                        reader.readAsDataURL(this.files[0]);
+                                    }
+                                });
+                            </script>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="select_img">
+                                        <img class="d-block mx-auto bg-gray-200 mb-4" src="" width="1030" height="280"
+                                             alt="IMG" id="event_banner_img">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <button id="btnBannerImgSave" class="btn btn-primary" type="button"
+                                        onclick="saveEventBannerImg()">배너 이미지 저장
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -116,7 +206,8 @@
 </a>
 
 <!-- Logout Modal-->
-<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -139,7 +230,7 @@
     var loginUser = /*[[${session.LOGIN_SESSION}]]*/'';
 
 
-    if(eventDetail !== null){
+    if (eventDetail !== null) {
 
         $('#evIdx').val(eventDetail[0].evIdx);
         $('#evTitle').val(eventDetail[0].evTitle);
@@ -148,9 +239,11 @@
         $('#evStartDt').val(eventDetail[0].evStartDt);
         $('#evEndDt').val(eventDetail[0].evEndDt);
 
-        $('#event_img').attr('src','https://admin-ohdocha.sharenshare.kr/img/event/' + eventDetail[0].evImgIdx);
+        $('#event_img').attr('src', 'https://admin-ohdocha.sharenshare.kr/img/event/' + eventDetail[0].evImgIdx);
+        $('#event_list_img').attr('src', 'https://admin-ohdocha.sharenshare.kr/img/event/' + eventDetail[0].evListImgIdx);
+        $('#event_banner_img').attr('src', 'https://admin-ohdocha.sharenshare.kr/img/event/' + eventDetail[0].evBannerImgIdx);
 
-    }else {
+    } else {
         $('#btnDelete').addClass('d-none');
     }
 
@@ -166,21 +259,20 @@
         if (isEmpty(evStartDt)) {
             errorAlert('시작일시', '시작일시를 선택해 주세요');
             return;
-        }
-        else if (isEmpty(evEndDt)) {
+        } else if (isEmpty(evEndDt)) {
             errorAlert('종료일시', '종료일시를 선택해 주세요');
             return;
         }
 
         var url = '/api/v1.0/insertEvent.json';
         var req = {
-            evIdx : evIdx,
-            evTitle : evTitle,
-            evContent : evContent,
-            evStartDt : evStartDt,
-            evEndDt : evEndDt,
-            regId : regId,
-            modId : modId
+            evIdx: evIdx,
+            evTitle: evTitle,
+            evContent: evContent,
+            evStartDt: evStartDt,
+            evEndDt: evEndDt,
+            regId: regId,
+            modId: modId
         };
 
         $.ajax({
@@ -189,13 +281,14 @@
             data: JSON.stringify(req),
             contentType: 'application/json',
             cache: false,
-            async : false,
+            async: false,
             timeout: 10000
         }).done(function (data, textStatus, jqXHR) {
 
-            if (data.res === 1){
+            if (data.res === 1) {
+                document.getElementById("evIdx").value = data.eventRequest.evIdx;
                 if (inputFile.files.length === 0) {
-                    swal("저장 성공", { icon: "success"});
+                    swal("저장 성공", {icon: "success"});
                 } else {
                     /* 이미지 저장 */
                     var formData = new FormData();
@@ -232,7 +325,7 @@
                     path = ($("#depth_container").text()).replace("/" + "");
                     var type = "html";
                 }
-            }else {
+            } else {
                 errorAlert("저장 실패", "저장에 실패하였습니다.")
             }
 
@@ -246,7 +339,7 @@
 
         var url = '/api/v1.0/deleteEvent.json';
         var req = {
-            evIdx : evIdx
+            evIdx: evIdx
         };
 
         $.ajax({
@@ -255,17 +348,113 @@
             data: JSON.stringify(req),
             contentType: 'application/json',
             cache: false,
-            async : false,
+            async: false,
             timeout: 10000
         }).done(function (data, textStatus, jqXHR) {
 
-            if (data.res === 1){
-                swal("삭제 성공", {icon : "success"});
-            }else {
+            if (data.res === 1) {
+                swal("삭제 성공", {icon: "success"});
+            } else {
                 errorAlert("삭제 실패", "삭제에 실패하였습니다.")
             }
 
         });
+    }
+
+    function saveEventListImg() {
+        var evIdx = $('#evIdx').val();
+
+        if (isEmpty(evIdx)) {
+            errorAlert('이벤트', '이벤트를 먼저 저장해 주세요.');
+            return;
+        }
+
+        if (listInputFile.files.length === 0) {
+            errorAlert('이벤트', '첨부할 사진을 선택해 주세요.');
+            return;
+        }
+
+        /* 이미지 저장 */
+        var formData = new FormData();
+
+        formData.append("image", listInputFile.files[0]);
+        formData.append("evIdx", evIdx);
+
+        for (var pair of formData.entries()) {
+            console.log(pair[0] + ', ' + pair[1]);
+        }
+
+        var oReq = new XMLHttpRequest();
+        oReq.addEventListener("load", function () {
+
+            if (oReq.status === 200) {
+                location.href = "";
+                alert(err.responseJSON.message);
+            } else if (oReq.status === 400) {
+                errorAlert('저장 실패', '관리자에게 문의하세요.');
+            } else if (oReq.status === 500) {
+                swal("저장 성공", {icon: "success"});
+                console.log(oReq.response);
+            }
+
+        });
+        oReq.open("POST", "/api/v1.0/uploadEventListImage.do", true);
+        oReq.send(formData);
+
+        var editor;
+        var path;
+        editor = $("#eventImg").val();
+        path = ($("#depth_container").text()).replace("/" + "");
+        var type = "html";
+
+    }
+
+    function saveEventBannerImg() {
+        var evIdx = $('#evIdx').val();
+
+        if (isEmpty(evIdx)) {
+            errorAlert('이벤트', '이벤트를 먼저 저장해 주세요.');
+            return;
+        }
+
+        if (bannerInputFile.files.length === 0) {
+            errorAlert('이벤트', '첨부할 사진을 선택해 주세요.');
+            return;
+        }
+
+        /* 이미지 저장 */
+        var formData = new FormData();
+
+        formData.append("image", bannerInputFile.files[0]);
+        formData.append("evIdx", evIdx);
+
+        for (var pair of formData.entries()) {
+            console.log(pair[0] + ', ' + pair[1]);
+        }
+
+        var oReq = new XMLHttpRequest();
+        oReq.addEventListener("load", function () {
+
+            if (oReq.status === 200) {
+                location.href = "";
+                alert(err.responseJSON.message);
+            } else if (oReq.status === 400) {
+                errorAlert('저장 실패', '관리자에게 문의하세요.');
+            } else if (oReq.status === 500) {
+                swal("저장 성공", {icon: "success"});
+                console.log(oReq.response);
+            }
+
+        });
+        oReq.open("POST", "/api/v1.0/uploadEventBannerImage.do", true);
+        oReq.send(formData);
+
+        var editor;
+        var path;
+        editor = $("#eventImg").val();
+        path = ($("#depth_container").text()).replace("/" + "");
+        var type = "html";
+
     }
 </script>
 </body>

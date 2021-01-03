@@ -309,6 +309,8 @@
 			<if test="evStartDt    != null"><![CDATA[   EV_START_DT       = #{evStartDt}  ,      ]]></if>    <!-- evStartDt -->
 			<if test="evEndDt      != null"><![CDATA[   EV_END_DT         = #{evEndDt}  ,      ]]></if>    <!-- evEndDt -->
 			<if test="evImgIdx     != null"><![CDATA[   EV_IMG_IDX         = #{evImgIdx}  ,      ]]></if>    <!-- evImgIdx -->
+			<if test="evListImgIdx     != null"><![CDATA[   EV_LIST_IMG_IDX         = #{evListImgIdx}  ,      ]]></if>    <!-- evImgIdx -->
+			<if test="evBannerImgIdx     != null"><![CDATA[   EV_BANNER_IMG_IDX         = #{evBannerImgIdx}  ,      ]]></if>    <!-- evImgIdx -->
 			<if test="modId        != null"><![CDATA[   MOD_ID            = #{modId}  ,      ]]></if>    <!-- modId -->
 			MOD_DT = NOW()
 		</trim>
