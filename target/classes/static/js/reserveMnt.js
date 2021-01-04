@@ -553,6 +553,7 @@ function initDetailInfo(seq){
         let carDamageCover = nullCheck(data.carDamageCover) == ''?'':objectConvertToPriceFormat(data.carDamageCover);
         let insuranceCopayment = nullCheck(data.insuranceCopayment) == ''?'':objectConvertToPriceFormat(data.insuranceCopayment);
         let fuelCode = nullCheck(data.fuelCode);
+        let carDamageNumber = nullCheck(data.carDamageNumber);
 
         $("#rtIdx").val(rtIdx);
         $("#staffName").val(staffName);
@@ -565,6 +566,8 @@ function initDetailInfo(seq){
 
         $("#carDamageCover").val(carDamageCover); // 예약시 고객부담금
         $("#insuranceCopayment").val(insuranceCopayment); // 예약시 보험료
+
+        $("#carDamageNumber").val(carDamageNumber); // 예약시 선택한 보험
 
         $("#sel_fuel").val(fuelCode).prop("selected", true);
 

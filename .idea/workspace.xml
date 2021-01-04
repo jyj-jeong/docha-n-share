@@ -18,188 +18,185 @@
     <select />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e0c2fac4-e679-440e-8ffe-06e1c0fd9c27" name="Default Changelist" comment="21-01-04 최신">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ohdocha/admin/domain/menu/DochaAdminFAQRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/ohdocha/admin/domain/menu/DochaAdminFAQResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/font/summernote.eot" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/font/summernote.ttf" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/font/summernote.woff" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/font/summernote.woff2" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-ar-AR.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-ar-AR.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-ar-AR.min.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-az-AZ.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-az-AZ.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-az-AZ.min.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-bg-BG.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-bg-BG.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-bg-BG.min.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-ca-ES.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-ca-ES.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-ca-ES.min.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-cs-CZ.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-cs-CZ.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-cs-CZ.min.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-da-DK.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-da-DK.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-da-DK.min.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-de-DE.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-de-DE.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-de-DE.min.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-el-GR.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-el-GR.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-el-GR.min.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-es-ES.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-es-ES.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-es-ES.min.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-es-EU.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-es-EU.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-es-EU.min.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-fa-IR.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-fa-IR.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-fa-IR.min.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-fi-FI.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-fi-FI.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-fi-FI.min.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-fr-FR.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-fr-FR.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-fr-FR.min.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-gl-ES.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-gl-ES.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-gl-ES.min.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-he-IL.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-he-IL.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-he-IL.min.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-hr-HR.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-hr-HR.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-hr-HR.min.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-hu-HU.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-hu-HU.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-hu-HU.min.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-id-ID.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-id-ID.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-id-ID.min.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-it-IT.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-it-IT.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-it-IT.min.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-ja-JP.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-ja-JP.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-ja-JP.min.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-ko-KR.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-ko-KR.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-ko-KR.min.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-lt-LT.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-lt-LT.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-lt-LT.min.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-lt-LV.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-lt-LV.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-lt-LV.min.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-mn-MN.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-mn-MN.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-mn-MN.min.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-nb-NO.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-nb-NO.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-nb-NO.min.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-nl-NL.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-nl-NL.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-nl-NL.min.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-pl-PL.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-pl-PL.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-pl-PL.min.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-pt-BR.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-pt-BR.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-pt-BR.min.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-pt-PT.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-pt-PT.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-pt-PT.min.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-ro-RO.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-ro-RO.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-ro-RO.min.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-ru-RU.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-ru-RU.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-ru-RU.min.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-sk-SK.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-sk-SK.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-sk-SK.min.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-sl-SI.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-sl-SI.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-sl-SI.min.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-sr-RS-Latin.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-sr-RS-Latin.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-sr-RS-Latin.min.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-sr-RS.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-sr-RS.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-sr-RS.min.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-sv-SE.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-sv-SE.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-sv-SE.min.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-ta-IN.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-ta-IN.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-ta-IN.min.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-th-TH.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-th-TH.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-th-TH.min.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-tr-TR.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-tr-TR.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-tr-TR.min.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-uk-UA.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-uk-UA.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-uk-UA.min.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-uz-UZ.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-uz-UZ.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-uz-UZ.min.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-vi-VN.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-vi-VN.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-vi-VN.min.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-zh-CN.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-zh-CN.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-zh-CN.min.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-zh-TW.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-zh-TW.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-zh-TW.min.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/plugin/databasic/summernote-ext-databasic.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/plugin/databasic/summernote-ext-databasic.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/plugin/hello/summernote-ext-hello.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/plugin/specialchars/summernote-ext-specialchars.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/summernote-bs4.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/summernote-bs4.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/summernote-bs4.js.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/summernote-bs4.min.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/summernote-bs4.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/summernote-bs4.min.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/summernote-bs4.min.js.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/summernote-lite.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/summernote-lite.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/summernote-lite.js.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/summernote-lite.min.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/summernote-lite.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/summernote-lite.min.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/summernote-lite.min.js.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/summernote.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/summernote.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/summernote.js.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/summernote.min.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/summernote.min.js" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/summernote.min.js.LICENSE.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/static/js/summernote/summernote.min.js.map" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/site/site_FAQ.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/templates/site/site_FAQ_detail.html" afterDir="false" />
+    <list default="true" id="e0c2fac4-e679-440e-8ffe-06e1c0fd9c27" name="Default Changelist" comment="21-01-04(2) &#10;FAQ 게시판&#10;share -&gt; docha 링크수정&#10;notice textarea 수정">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ohdocha/admin/controller/MenuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ohdocha/admin/controller/MenuController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ohdocha/admin/mapper/DochaAdminMenuMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ohdocha/admin/mapper/DochaAdminMenuMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ohdocha/admin/service/MenuService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ohdocha/admin/service/MenuService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/ohdocha/admin/service/MenuServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/ohdocha/admin/service/MenuServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/api-mappers/menu/docha-menu-Mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/api-mappers/menu/docha-menu-Mapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/project-config/mapper-config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/project-config/mapper-config.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/carModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/js/carModel.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/integratedMember.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/js/integratedMember.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/header.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/header.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/login.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/main_aside.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/main_aside.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/site/site_event_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/site/site_event_detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/site/site_main_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/site/site_main_detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/site/site_notice_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/site/site_notice_detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/templates/site/site_question_detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/templates/site/site_question_detail.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/font/summernote.eot" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/font/summernote.eot" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/font/summernote.ttf" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/font/summernote.ttf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/font/summernote.woff" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/font/summernote.woff" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/font/summernote.woff2" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/font/summernote.woff2" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-ar-AR.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-ar-AR.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-ar-AR.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-ar-AR.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-ar-AR.min.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-ar-AR.min.js.LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-az-AZ.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-az-AZ.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-az-AZ.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-az-AZ.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-az-AZ.min.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-az-AZ.min.js.LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-bg-BG.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-bg-BG.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-bg-BG.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-bg-BG.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-bg-BG.min.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-bg-BG.min.js.LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-ca-ES.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-ca-ES.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-ca-ES.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-ca-ES.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-ca-ES.min.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-ca-ES.min.js.LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-cs-CZ.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-cs-CZ.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-cs-CZ.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-cs-CZ.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-cs-CZ.min.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-cs-CZ.min.js.LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-da-DK.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-da-DK.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-da-DK.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-da-DK.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-da-DK.min.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-da-DK.min.js.LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-de-DE.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-de-DE.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-de-DE.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-de-DE.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-de-DE.min.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-de-DE.min.js.LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-el-GR.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-el-GR.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-el-GR.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-el-GR.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-el-GR.min.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-el-GR.min.js.LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-es-ES.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-es-ES.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-es-ES.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-es-ES.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-es-ES.min.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-es-ES.min.js.LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-es-EU.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-es-EU.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-es-EU.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-es-EU.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-es-EU.min.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-es-EU.min.js.LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-fa-IR.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-fa-IR.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-fa-IR.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-fa-IR.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-fa-IR.min.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-fa-IR.min.js.LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-fi-FI.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-fi-FI.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-fi-FI.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-fi-FI.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-fi-FI.min.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-fi-FI.min.js.LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-fr-FR.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-fr-FR.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-fr-FR.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-fr-FR.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-fr-FR.min.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-fr-FR.min.js.LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-gl-ES.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-gl-ES.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-gl-ES.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-gl-ES.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-gl-ES.min.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-gl-ES.min.js.LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-he-IL.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-he-IL.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-he-IL.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-he-IL.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-he-IL.min.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-he-IL.min.js.LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-hr-HR.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-hr-HR.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-hr-HR.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-hr-HR.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-hr-HR.min.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-hr-HR.min.js.LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-hu-HU.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-hu-HU.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-hu-HU.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-hu-HU.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-hu-HU.min.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-hu-HU.min.js.LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-id-ID.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-id-ID.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-id-ID.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-id-ID.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-id-ID.min.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-id-ID.min.js.LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-it-IT.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-it-IT.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-it-IT.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-it-IT.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-it-IT.min.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-it-IT.min.js.LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-ja-JP.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-ja-JP.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-ja-JP.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-ja-JP.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-ja-JP.min.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-ja-JP.min.js.LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-ko-KR.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-ko-KR.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-ko-KR.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-ko-KR.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-ko-KR.min.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-ko-KR.min.js.LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-lt-LT.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-lt-LT.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-lt-LT.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-lt-LT.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-lt-LT.min.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-lt-LT.min.js.LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-lt-LV.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-lt-LV.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-lt-LV.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-lt-LV.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-lt-LV.min.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-lt-LV.min.js.LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-mn-MN.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-mn-MN.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-mn-MN.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-mn-MN.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-mn-MN.min.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-mn-MN.min.js.LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-nb-NO.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-nb-NO.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-nb-NO.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-nb-NO.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-nb-NO.min.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-nb-NO.min.js.LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-nl-NL.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-nl-NL.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-nl-NL.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-nl-NL.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-nl-NL.min.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-nl-NL.min.js.LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-pl-PL.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-pl-PL.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-pl-PL.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-pl-PL.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-pl-PL.min.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-pl-PL.min.js.LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-pt-BR.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-pt-BR.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-pt-BR.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-pt-BR.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-pt-BR.min.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-pt-BR.min.js.LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-pt-PT.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-pt-PT.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-pt-PT.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-pt-PT.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-pt-PT.min.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-pt-PT.min.js.LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-ro-RO.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-ro-RO.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-ro-RO.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-ro-RO.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-ro-RO.min.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-ro-RO.min.js.LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-ru-RU.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-ru-RU.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-ru-RU.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-ru-RU.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-ru-RU.min.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-ru-RU.min.js.LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-sk-SK.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-sk-SK.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-sk-SK.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-sk-SK.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-sk-SK.min.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-sk-SK.min.js.LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-sl-SI.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-sl-SI.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-sl-SI.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-sl-SI.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-sl-SI.min.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-sl-SI.min.js.LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-sr-RS-Latin.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-sr-RS-Latin.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-sr-RS-Latin.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-sr-RS-Latin.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-sr-RS-Latin.min.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-sr-RS-Latin.min.js.LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-sr-RS.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-sr-RS.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-sr-RS.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-sr-RS.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-sr-RS.min.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-sr-RS.min.js.LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-sv-SE.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-sv-SE.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-sv-SE.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-sv-SE.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-sv-SE.min.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-sv-SE.min.js.LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-ta-IN.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-ta-IN.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-ta-IN.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-ta-IN.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-ta-IN.min.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-ta-IN.min.js.LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-th-TH.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-th-TH.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-th-TH.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-th-TH.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-th-TH.min.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-th-TH.min.js.LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-tr-TR.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-tr-TR.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-tr-TR.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-tr-TR.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-tr-TR.min.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-tr-TR.min.js.LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-uk-UA.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-uk-UA.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-uk-UA.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-uk-UA.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-uk-UA.min.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-uk-UA.min.js.LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-uz-UZ.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-uz-UZ.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-uz-UZ.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-uz-UZ.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-uz-UZ.min.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-uz-UZ.min.js.LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-vi-VN.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-vi-VN.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-vi-VN.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-vi-VN.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-vi-VN.min.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-vi-VN.min.js.LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-zh-CN.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-zh-CN.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-zh-CN.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-zh-CN.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-zh-CN.min.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-zh-CN.min.js.LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-zh-TW.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-zh-TW.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-zh-TW.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-zh-TW.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/lang/summernote-zh-TW.min.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/lang/summernote-zh-TW.min.js.LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/plugin/databasic/summernote-ext-databasic.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/plugin/databasic/summernote-ext-databasic.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/plugin/databasic/summernote-ext-databasic.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/plugin/databasic/summernote-ext-databasic.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/plugin/hello/summernote-ext-hello.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/plugin/hello/summernote-ext-hello.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/plugin/specialchars/summernote-ext-specialchars.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/plugin/specialchars/summernote-ext-specialchars.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/summernote-bs4.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/summernote-bs4.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/summernote-bs4.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/summernote-bs4.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/summernote-bs4.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/summernote-bs4.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/summernote-bs4.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/summernote-bs4.min.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/summernote-bs4.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/summernote-bs4.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/summernote-bs4.min.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/summernote-bs4.min.js.LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/summernote-bs4.min.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/summernote-bs4.min.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/summernote-lite.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/summernote-lite.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/summernote-lite.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/summernote-lite.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/summernote-lite.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/summernote-lite.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/summernote-lite.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/summernote-lite.min.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/summernote-lite.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/summernote-lite.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/summernote-lite.min.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/summernote-lite.min.js.LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/summernote-lite.min.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/summernote-lite.min.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/summernote.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/summernote.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/summernote.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/summernote.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/summernote.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/summernote.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/summernote.min.css" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/summernote.min.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/summernote.min.js" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/summernote.min.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/summernote.min.js.LICENSE.txt" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/summernote.min.js.LICENSE.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/static/js/summernote/summernote.min.js.map" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/static/summernote/summernote.min.js.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/api-mappers/calculate/docha-calculate-Mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/api-mappers/calculate/docha-calculate-Mapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/api-mappers/car/docha-regCar-Mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/api-mappers/car/docha-regCar-Mapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/api-mappers/menu/docha-menu-Mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/api-mappers/menu/docha-menu-Mapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/api-mappers/reservation/docha-reserveInfo-Mapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/api-mappers/reservation/docha-reserveInfo-Mapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ohdocha/admin/domain/reserve/reserveInfoMnt/DochaAdminReserveInfoDetailResponse.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ohdocha/admin/domain/reserve/reserveInfoMnt/DochaAdminReserveInfoDetailResponse.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/ohdocha/admin/mapper/DochaAdminMenuMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/ohdocha/admin/mapper/DochaAdminMenuMapper.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/project-config/mapper-config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/project-config/mapper-config.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/basicPlan.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/static/js/basicPlan.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/carModel.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/static/js/carModel.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/integratedMember.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/static/js/integratedMember.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/regCar.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/static/js/regCar.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/static/js/reserveMnt.js" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/static/js/reserveMnt.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/car/regCar.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/car/regCar.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/header.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/header.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/templates/main_aside.html" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/templates/main_aside.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -293,11 +290,11 @@
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\docha_mobility-k-admin2021-01-04\src\main\resources\static" />
       <recent name="C:\Users\jungsoon.lee\IdeaProjects\k-Project-Admin\src\main\resources\static\img" />
       <recent name="C:\Users\jungsoon.lee\IdeaProjects\k-Project-Admin\src\main\resources\static" />
       <recent name="C:\Users\jungsoon.lee\IdeaProjects\k-Project-Admin\src\main\resources\static\js" />
       <recent name="C:\Users\jungsoon.lee\IdeaProjects\k-Project-Admin\src\main\resources\static\css" />
-      <recent name="C:\Users\jungsoon.lee\IdeaProjects\k-Project-Admin\src\main\resources\templates\calculate" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="com.ohdocha.admin.domain.common" />
@@ -500,14 +497,7 @@
       <workItem from="1608733989372" duration="41000" />
       <workItem from="1608799211954" duration="1258000" />
       <workItem from="1609121199676" duration="1572000" />
-      <workItem from="1609743867972" duration="3487000" />
-    </task>
-    <task id="LOCAL-00009" summary="회원, 회원 면허 CRUD 기능">
-      <created>1599473134115</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1599473134115</updated>
+      <workItem from="1609743867972" duration="4511000" />
     </task>
     <task id="LOCAL-00010" summary="userBirthday rename (카멜표기법 적용)">
       <created>1599473217638</created>
@@ -845,7 +835,14 @@
       <option name="project" value="LOCAL" />
       <updated>1609745599129</updated>
     </task>
-    <option name="localTasksCounter" value="58" />
+    <task id="LOCAL-00058" summary="21-01-04(2) &#10;FAQ 게시판&#10;share -&gt; docha 링크수정&#10;notice textarea 수정">
+      <created>1609748460728</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1609748460728</updated>
+    </task>
+    <option name="localTasksCounter" value="59" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -899,7 +896,6 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="권한 관리" />
     <MESSAGE value="매퍼 쿼리 오류 수정" />
     <MESSAGE value="메인화면 대쉬보드 수정" />
     <MESSAGE value="정산, 정기결제 리스트" />
@@ -924,7 +920,8 @@
     <MESSAGE value="- 숫자 Numberic 검사 추가" />
     <MESSAGE value="- 문의, 공지사항 수정" />
     <MESSAGE value="21-01-04 최신" />
-    <option name="LAST_COMMIT_MESSAGE" value="21-01-04 최신" />
+    <MESSAGE value="21-01-04(2) &#10;FAQ 게시판&#10;share -&gt; docha 링크수정&#10;notice textarea 수정" />
+    <option name="LAST_COMMIT_MESSAGE" value="21-01-04(2) &#10;FAQ 게시판&#10;share -&gt; docha 링크수정&#10;notice textarea 수정" />
   </component>
   <component name="WindowStateProjectService">
     <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1607575229858" />
@@ -944,27 +941,31 @@
     </state>
     <state x="473" y="216" key="FileChooserDialogImpl/0.0.1536.824/-1920.0.1920.1040@0.0.1536.824" timestamp="1609745477407" />
     <state x="473" y="216" width="440" height="549" key="FileChooserDialogImpl/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1607575229858" />
-    <state width="1877" height="173" key="GridCell.Tab.0.bottom" timestamp="1608734030340">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1877" height="297" key="GridCell.Tab.0.bottom" timestamp="1609748516856">
+      <screen x="-1920" y="0" width="1920" height="1040" />
     </state>
+    <state width="1877" height="297" key="GridCell.Tab.0.bottom/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1609748516856" />
     <state width="1877" height="173" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1608734030340" />
     <state width="1877" height="221" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1608188937229" />
     <state width="1877" height="191" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1608076845458" />
-    <state width="1877" height="173" key="GridCell.Tab.0.center" timestamp="1608734030339">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1877" height="297" key="GridCell.Tab.0.center" timestamp="1609748516855">
+      <screen x="-1920" y="0" width="1920" height="1040" />
     </state>
+    <state width="1877" height="297" key="GridCell.Tab.0.center/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1609748516855" />
     <state width="1877" height="173" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1608734030339" />
     <state width="1877" height="221" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1608188937229" />
     <state width="1877" height="191" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1608076845458" />
-    <state width="1877" height="173" key="GridCell.Tab.0.left" timestamp="1608734030339">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1877" height="297" key="GridCell.Tab.0.left" timestamp="1609748516855">
+      <screen x="-1920" y="0" width="1920" height="1040" />
     </state>
+    <state width="1877" height="297" key="GridCell.Tab.0.left/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1609748516855" />
     <state width="1877" height="173" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1608734030339" />
     <state width="1877" height="221" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1608188937229" />
     <state width="1877" height="191" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1608076845458" />
-    <state width="1877" height="173" key="GridCell.Tab.0.right" timestamp="1608734030340">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state width="1877" height="297" key="GridCell.Tab.0.right" timestamp="1609748516856">
+      <screen x="-1920" y="0" width="1920" height="1040" />
     </state>
+    <state width="1877" height="297" key="GridCell.Tab.0.right/0.0.1536.824/-1920.0.1920.1040@-1920.0.1920.1040" timestamp="1609748516856" />
     <state width="1877" height="173" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1608734030340" />
     <state width="1877" height="221" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1608188937229" />
     <state width="1877" height="191" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1608076845458" />

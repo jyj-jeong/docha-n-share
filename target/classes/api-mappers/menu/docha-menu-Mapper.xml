@@ -6,14 +6,14 @@
     <select id="selectMenuInfoList" parameterType="menuRequest"	resultType="menuResponse">
 	    <![CDATA[
 	    	SELECT
-			 			DISTINCT	
-						T1.MENU_CD  AS MENU_CD   													/* 메뉴코드 */ 
-					,	T1.MENU_NM  AS MENU_NM   													/* 메뉴명  */ 
+			 			DISTINCT
+						T1.MENU_CD  AS MENU_CD   													/* 메뉴코드 */
+					,	T1.MENU_NM  AS MENU_NM   													/* 메뉴명  */
 					,	T1.MENU_URL AS MENU_URL  													/* 메뉴경로 */
-					,	T1.UPPER_MENU_CD AS UPPER_MENU_CD											/* 부모번호 */ 
+					,	T1.UPPER_MENU_CD AS UPPER_MENU_CD											/* 부모번호 */
 -- 					,	LTRIM (GROUP_CONCAT (T1.MENU_NM separator ' > ')) AS DEPTH_FULLNAME	/*전체 메뉴 경로*/
 					,	IFNULL(T1.USE_YN, 'N') AS USE_YN  												/* 메뉴코드 사용여부 */
-					,	T2.NEW_YN			AS NEW_YN												/* 등록권한여부 1 사용 0 미사용*/	  
+					,	T2.NEW_YN			AS NEW_YN												/* 등록권한여부 1 사용 0 미사용*/
 					,	T2.READ_YN			AS READ_YN												/* 읽기권한여부 1 사용 0 미사용*/
 					,	T2.DEL_YN 			AS DEL_YN												/* 삭제권한여부 1 사용 0 미사용*/
 					,	T2.EXCELDOWN_YN	AS EXCELDOWN_YN												/* 엑셀다운권한여부 1 사용 0 미사용*/
@@ -37,7 +37,7 @@
 
     <select id="selectMenuTemplateList" parameterType="menuRequest"	resultType="menuResponse">
 		<![CDATA[
-				SELECT 
+				SELECT
 						  	   IFNULL(TEMPLATE_CD   , '') AS TEMPLATE_CD    /*템플릿코드*/
 							,  IFNULL(TEMPLATE_NM   , '') AS TEMPLATE_NM    /*템플릿명*/
 							,  IFNULL(TEMPLATE_MEMO , '') AS TEMPLATE_MEMO  /*템플릿설명*/
@@ -54,20 +54,20 @@
        		</if>
        		<if test="templateNm != null and templateNm != ''">
 	        <![CDATA[ AND  TEMPLATE_NM= #{templateNm}   ]]>
-	        </if>       		
-		</trim>			
+	        </if>
+		</trim>
     </select>
-    
+
 	<select id="selectMenuInfoAll" parameterType="menuRequest"	resultType="menuResponse">
 		<![CDATA[
-				SELECT 
+				SELECT
 						  IFNULL(A.MENU_CD, '')  AS MENU_CD   											/* 메뉴코드 */
 						, IFNULL(A.MENU_NM, '')  AS MENU_NM   											/* 메뉴명  */
 						, IFNULL(A.MENU_URL, '') AS MENU_URL  											/* 메뉴경로 */
 						, IFNULL(A.UPPER_MENU_CD , '0') AS UPPER_MENU_CD								/* 부모번호 */
- 						, LTRIM (SYS_CONNECT_BY_PATH (A.MENU_NM, ' > '), ' > ') AS DEPTH_FULLNAME	/*전체 메뉴 경로*/ 
+ 						, LTRIM (SYS_CONNECT_BY_PATH (A.MENU_NM, ' > '), ' > ') AS DEPTH_FULLNAME	/*전체 메뉴 경로*/
 						, IFNULL(A.USE_YN, '') AS USE_YN  												/* 메뉴코드 사용여부 */
-	                    , B.NEW_YN			AS NEW_YN												/* 등록권한여부 1 사용 0 미사용*/	  
+	                    , B.NEW_YN			AS NEW_YN												/* 등록권한여부 1 사용 0 미사용*/
 	                    , B.READ_YN			AS READ_YN												/* 읽기권한여부 1 사용 0 미사용*/
 	                    , B.DEL_YN 			AS DEL_YN												/* 삭제권한여부 1 사용 0 미사용*/
 	                    , B.EXCELDOWN_YN	AS EXCELDOWN_YN											/* 엑셀다운권한여부 1 사용 0 미사용*/
@@ -78,14 +78,14 @@
 	         LEFT JOIN DC_MENU_AUTH B
                     ON A.MENU_CD = B.MENU_CD   ]]>
         <trim prefix="WHERE" prefixOverrides="AND|OR">
-        	<![CDATA[	 A.USE_YN='Y'             
-					AND  B.READ_YN='Y' 
+        	<![CDATA[	 A.USE_YN='Y'
+					AND  B.READ_YN='Y'
 					START WITH A.MENU_LEVEL=1
 					CONNECT BY PRIOR
  					A.MENU_CD = DECODE(B.MENU_CD, A.UPPER_MENU_CD, NULL, A.UPPER_MENU_CD)
  					ORDER BY A.MENU_CD ASC
 			]]>
-		</trim>			
+		</trim>
     </select>
 
 	<select id="selectMainImgList" parameterType="mainImgRequest"	resultType="mainImgResponse">
@@ -93,11 +93,11 @@
 				SELECT
 						  IFNULL(MI_IDX, '') AS MI_IDX
 						 ,IFNULL(MI_IMG_IDX, '') AS MI_IMG_IDX
-						 ,IFNULL(DATE_FORMAT(MI_START_DT, '%Y-%m-%d'), '') AS MI_START_DT
-						 ,IFNULL(DATE_FORMAT(MI_END_DT, '%Y-%m-%d'), '') AS MI_END_DT
+						 ,IFNULL(MI_START_DT, '') AS MI_START_DT
+						 ,IFNULL(MI_END_DT, '') AS MI_END_DT
 						 ,IFNULL(MI_TITLE, '') AS MI_TITLE
 						 ,IFNULL(REG_ID, '') AS REG_ID
-						 ,IFNULL(DATE_FORMAT(REG_DT , '%Y-%m-%d'), '') AS REG_DT
+						 ,IFNULL(REG_DT, '') AS REG_DT
 						 ,IFNULL(MOD_ID, '') AS MOD_ID
 						 ,IFNULL(MOD_DT, '') AS MOD_DT
 				  FROM DC_MAIN_IMG  ]]>
@@ -157,7 +157,6 @@
 						  IFNULL(QU_IDX, '') AS QU_IDX
 						 ,IFNULL(QU_TITLE, '') AS QU_TITLE
 						 ,IFNULL(QU_CONTENTS, '') AS QU_CONTENTS
-						 ,(SELECT USER_ID FROM DC_USER_INFO WHERE UR_IDX = QUESTIONER_ID) AS QUESTIONER_ID
 						 ,IFNULL(QUESTIONER_PHONE, '') AS QUESTIONER_PHONE
 						 ,IFNULL(QUESTION_DT, '') AS QUESTION_DT
 						 ,IFNULL(QU_ANSWER, '') AS QU_ANSWER
@@ -165,7 +164,9 @@
 						 ,IFNULL(ANSWERER_ID, '') AS ANSWERER_ID
 						 ,IFNULL(ANSWER_DT, '') AS ANSWER_DT
 						 ,IFNULL(IMG_IDX, '') AS IMG_IDX
-				  FROM DC_QUESTION  ]]>
+						 ,IFNULL(T2.USER_ID, '') AS QUESTIONER_ID
+				  FROM DC_QUESTION T1 LEFT OUTER JOIN DC_USER_INFO T2
+					ON T1.QUESTIONER_ID = T2.UR_IDX  ]]>
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
 			<if test="quIdx != null and quIdx != ''">
 				<![CDATA[ AND QU_IDX = #{quIdx} ]]>
@@ -180,16 +181,19 @@
 						 ,IFNULL(NT_TITLE, '') AS NT_TITLE
 						 ,IFNULL(NT_CONTENT, '') AS NT_CONTENT
 						 ,IFNULL(IMG_IDX, '') AS IMG_IDX
-						 ,(SELECT USER_ID FROM DC_USER_INFO WHERE UR_IDX = REG_ID) AS REG_ID
-						 ,IFNULL(REG_DT, '') AS REG_DT
-						 ,IFNULL(MOD_ID, '') AS MOD_ID
-						 ,IFNULL(MOD_DT, '') AS MOD_DT
-				  FROM DC_NOTICE  ]]>
+						 ,IFNULL(T1.REG_DT, '') AS REG_DT
+						 ,IFNULL(T1.MOD_ID, '') AS MOD_ID
+						 ,IFNULL(T1.MOD_DT, '') AS MOD_DT
+						 ,IFNULL(T2.USER_ID, '') AS REG_ID
+				  FROM DC_NOTICE T1
+				  LEFT OUTER JOIN DC_USER_INFO T2
+		ON T1.REG_ID = T2.UR_IDX]]>
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
 			<if test="ntIdx != null and ntIdx != ''">
 				<![CDATA[ AND NT_IDX = #{ntIdx} ]]>
 			</if>
 		</trim>
+
 	</select>
 
 	<update id="updateAnswer" parameterType="questionRequest">
@@ -247,6 +251,142 @@
 	<delete id="deleteNotice" parameterType="noticeRequest">
            <![CDATA[ DELETE FROM DC_NOTICE WHERE NT_IDX = #{ntIdx} ]]>
     </delete>
+
+	<!-- 이벤트 가져오기 -->
+	<select id="selectEventList" parameterType="eventRequest"	resultType="eventResponse">
+		<![CDATA[
+				SELECT
+						  IFNULL(EV_IDX, '') AS EV_IDX
+						 ,IFNULL(EV_TITLE, '') AS EV_TITLE
+						 ,IFNULL(EV_CONTENT, '') AS EV_CONTENT
+						 ,IFNULL(EV_IMG_IDX, '') AS EV_IMG_IDX
+						 ,IFNULL(EV_LIST_IMG_IDX, '') AS EV_LIST_IMG_IDX
+						 ,IFNULL(EV_BANNER_IMG_IDX, '') AS EV_BANNER_IMG_IDX
+						 ,IFNULL(EV_START_DT, '') AS EV_START_DT
+						 ,IFNULL(EV_END_DT, '') AS EV_END_DT
+						 ,IFNULL(REG_ID, '') AS REG_ID
+						 ,IFNULL(MOD_ID, '') AS MOD_ID
+						 ,IFNULL(REG_DT , '') AS REG_DT
+						 ,IFNULL(MOD_DT , '') AS MOD_DT
+				  FROM DC_EVENT  ]]>
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="evIdx != null and evIdx != ''">
+				<![CDATA[ AND EV_IDX = #{evIdx} ]]>
+			</if>
+		</trim>
+	</select>
+
+	<!-- 이벤트 생성 -->
+	<insert id="insertEvent" parameterType="eventRequest">
+		<![CDATA[
+       INSERT INTO DC_EVENT(
+           EV_IMG_IDX
+         , EV_START_DT
+         , EV_END_DT
+         , EV_TITLE
+         , EV_CONTENT
+         , REG_ID
+         , REG_DT
+       )VALUES (
+          #{evImgIdx}
+          , #{evStartDt}
+          , #{evEndDt}
+          , #{evTitle}
+          , #{evContent}
+          , #{regId}
+          , NOW()
+      )
+      ]]>
+		<selectKey keyProperty="evIdx" resultType="Integer" order="AFTER">
+			SELECT LAST_INSERT_ID();
+		</selectKey>
+	</insert>
+
+	<!-- 이벤트 업데이트 -->
+	<update id="updateEvent" parameterType="EventRequest">
+		<![CDATA[ UPDATE DC_EVENT ]]>
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="evTitle      != null"><![CDATA[   EV_TITLE          = #{evTitle}  ,      ]]></if>    <!-- miTitle -->
+			<if test="evContent      != null"><![CDATA[   EV_CONTENT          = #{evContent}  ,      ]]></if>    <!-- evContent -->
+			<if test="evStartDt    != null"><![CDATA[   EV_START_DT       = #{evStartDt}  ,      ]]></if>    <!-- evStartDt -->
+			<if test="evEndDt      != null"><![CDATA[   EV_END_DT         = #{evEndDt}  ,      ]]></if>    <!-- evEndDt -->
+			<if test="evImgIdx     != null"><![CDATA[   EV_IMG_IDX         = #{evImgIdx}  ,      ]]></if>    <!-- evImgIdx -->
+			<if test="evListImgIdx     != null"><![CDATA[   EV_LIST_IMG_IDX         = #{evListImgIdx}  ,      ]]></if>    <!-- evImgIdx -->
+			<if test="evBannerImgIdx     != null"><![CDATA[   EV_BANNER_IMG_IDX         = #{evBannerImgIdx}  ,      ]]></if>    <!-- evImgIdx -->
+			<if test="modId        != null"><![CDATA[   MOD_ID            = #{modId}  ,      ]]></if>    <!-- modId -->
+			MOD_DT = NOW()
+		</trim>
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="evIdx != null and evIdx != ''">
+				<![CDATA[ EV_IDX = #{evIdx} ]]>
+			</if>
+		</trim>
+	</update>
+
+	<!-- 이벤트 삭제 -->
+	<delete id="deleteEvent" parameterType="eventRequest">
+           <![CDATA[ DELETE FROM DC_EVENT WHERE EV_IDX = #{evIdx} ]]>
+    </delete>
+
+	<!-- FAQ CRUD -->
+	<select id="selectFAQList" parameterType="faqRequest"	resultType="faqResponse">
+		<![CDATA[
+				SELECT
+						  IFNULL(FA_IDX, '') AS FA_IDX
+						 ,IFNULL(FA_TITLE, '') AS FA_TITLE
+						 ,IFNULL(FA_CONTENT, '') AS FA_CONTENT
+						 ,IFNULL(IMG_IDX, '') AS IMG_IDX
+						 ,IFNULL(T1.REG_DT, '') AS REG_DT
+						 ,IFNULL(T1.MOD_ID, '') AS MOD_ID
+						 ,IFNULL(T1.MOD_DT, '') AS MOD_DT
+						 ,IFNULL(UI.USER_ID, '') AS REG_ID
+				  FROM DC_FAQ T1 LEFT OUTER JOIN DC_USER_INFO UI ON UI.UR_IDX = T1.REG_ID ]]>
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="faIdx != null and faIdx != ''">
+				<![CDATA[ AND FA_IDX = #{faIdx} ]]>
+			</if>
+		</trim>
+	</select>
+
+	<insert id="insertFAQ" parameterType="faqRequest">
+		<![CDATA[
+       INSERT INTO DC_FAQ(
+           FA_TITLE
+         , FA_CONTENT
+         , REG_ID
+         , REG_DT
+       )VALUES (
+          #{faTitle}
+          , #{faContent}
+          , #{regId}
+          , NOW()
+      )
+      ]]>
+		<selectKey keyProperty="faIdx" resultType="Integer" order="AFTER">
+			SELECT LAST_INSERT_ID();
+		</selectKey>
+	</insert>
+
+	<update id="updateFAQ" parameterType="faqRequest">
+		<![CDATA[ UPDATE DC_FAQ ]]>
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="faTitle      != null"><![CDATA[   FA_TITLE          = #{faTitle}  ,      ]]></if>    <!-- ntTitle -->
+			<if test="faContent      != null"><![CDATA[   FA_CONTENT          = #{faContent}  ,      ]]></if>    <!-- ntContent -->
+			<if test="modId      != null"><![CDATA[   MOD_ID          = #{modId}  ,      ]]></if>    <!-- modId -->
+			<if test="imgIdx      != null"><![CDATA[   IMG_IDX          = #{imgIdx}  ,      ]]></if>    <!-- modId -->
+			MOD_DT = NOW()
+		</trim>
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="faIdx != null and faIdx != ''">
+				<![CDATA[ FA_IDX = #{faIdx} ]]>
+			</if>
+		</trim>
+	</update>
+
+	<delete id="deleteFAQ" parameterType="faqRequest">
+           <![CDATA[ DELETE FROM DC_FAQ WHERE FA_IDX = #{faIdx} ]]>
+    </delete>
+
 
 </mapper>
 
