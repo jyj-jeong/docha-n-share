@@ -86,6 +86,9 @@
 		<typeAlias type="com.ohdocha.admin.domain.menu.DochaAdminEventRequest" alias="eventRequest" />
 		<typeAlias type="com.ohdocha.admin.domain.menu.DochaAdminEventResponse" alias="eventResponse" />
 
+		<typeAlias type="com.ohdocha.admin.domain.menu.DochaAdminFAQRequest" alias="faqRequest" />
+		<typeAlias type="com.ohdocha.admin.domain.menu.DochaAdminFAQResponse" alias="faqResponse" />
+
 		<!--  로그인 alias 등록 -->
 		<typeAlias type="com.ohdocha.admin.domain.user.DochaAdminDcUserInfoRequest" alias="dcUserInfoRequest" />
 		<typeAlias type="com.ohdocha.admin.domain.user.DochaAdminDcUserInfoResponse" alias="dcUserInfoResponse" />

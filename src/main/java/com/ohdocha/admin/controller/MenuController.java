@@ -1,7 +1,13 @@
 package com.ohdocha.admin.controller;
 
+
+import com.google.gson.Gson;
+import com.ohdocha.admin.config.Properties;
+import com.google.gson.JsonObject;
 import com.ohdocha.admin.domain.menu.*;
+import com.ohdocha.admin.exception.BadRequestException;
 import com.ohdocha.admin.service.MenuService;
+import com.ohdocha.admin.util.FileHelper;
 import com.ohdocha.admin.util.ServiceMessage;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +17,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.File;
+import java.util.UUID;
 
 @Slf4j
 @Controller
@@ -18,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 public class MenuController extends ControllerExtension {
 
     private final MenuService menuService;
+    private final Properties properties;
 
     /* 메뉴 리스트 조회 */
     @PostMapping(value = "/api/v1.0/menuInfoList.json")
@@ -349,6 +358,106 @@ public class MenuController extends ControllerExtension {
         menuService.deleteNotice(serviceMessage);
 
         return serviceMessage;
+    }
+
+    /* 사이트 - FAQ 화면 */
+    @GetMapping(value = "/site/FAQ")
+    public String siteFAQView(HttpServletRequest request, ModelMap modelMap) {
+        ServiceMessage serviceMessage = createServiceMessage(request);
+
+        menuService.getFAQList(serviceMessage);
+
+        modelMap.addAllAttributes(serviceMessage);
+        return "site/site_FAQ";
+    }
+
+    /* 사이트 - FAQ 등록 화면 */
+    @GetMapping(value = "/site/faq/add")
+    public String siteFAQAddView(HttpServletRequest request, ModelMap modelMap) {
+        ServiceMessage serviceMessage = createServiceMessage(request);
+
+        modelMap.addAllAttributes(serviceMessage);
+        return "site/site_FAQ_detail";
+    }
+
+    /* 사이트 - FAQ 상세 화면 */
+    @GetMapping(value = "/site/faq/{faIdx}")
+    public String siteFAQDetailView(@PathVariable int faIdx, HttpServletRequest request, ModelMap modelMap) {
+        ServiceMessage serviceMessage = createServiceMessage(request);
+        serviceMessage.addData("faIdx",faIdx);
+
+        menuService.getFAQDetail(serviceMessage);
+
+        modelMap.addAllAttributes(serviceMessage);
+        return "site/site_FAQ_detail";
+    }
+
+    /* 사이트 - FAQ 등록 */
+    @PostMapping(value = "/api/v1.0/insertFAQ.json")
+    @ResponseBody
+    public Object insertFAQ(@RequestBody DochaAdminFAQRequest faqRequest, HttpServletRequest request){
+        ServiceMessage serviceMessage = createServiceMessage(request);
+        serviceMessage.addData("faqRequest", faqRequest);
+
+        menuService.insertFAQ(serviceMessage);
+
+        return serviceMessage;
+    }
+
+    /* 사이트 - FAQ 이미지 등록 */
+    @PostMapping(value = "/api/v1.0/uploadFAQImage.do")
+    @ResponseBody
+    public Object uploadFAQImage(@RequestParam("image") MultipartFile uploadImage, String faIdx, HttpServletRequest request) {
+        ServiceMessage serviceMessage = createServiceMessage(request);
+        serviceMessage.addData("uploadImage", uploadImage)
+                .addData("faIdx", faIdx);
+
+        menuService.uploadFAQImage(serviceMessage);
+
+        return serviceMessage;
+    }
+
+    /* 사이트 - FAQ 삭제 */
+    @PostMapping(value = "/api/v1.0/deleteFAQ.json")
+    @ResponseBody
+    public Object deleteFAQ(@RequestBody DochaAdminFAQRequest faqRequest, HttpServletRequest request){
+        ServiceMessage serviceMessage = createServiceMessage(request);
+        serviceMessage.addData("faqRequest", faqRequest);
+
+        menuService.deleteFAQ(serviceMessage);
+
+        return serviceMessage;
+    }
+
+    /* 사이트 - 섬머노트 이미지 */
+    @PostMapping(value="/uploadSummernoteImageFile", produces = "application/json")
+    @ResponseBody
+    public String uploadSummernoteImageFile(@RequestParam("file") MultipartFile multipartFile) {
+
+        JsonObject jsonObject = new JsonObject();
+
+        String fileRoot = "C:\\docha_mobility-k-admin2020-12-21/src/main/resources";	//저장될 외부 파일 경로
+        String originalFileName = multipartFile.getOriginalFilename();	//오리지날 파일명
+        String extension = originalFileName.substring(originalFileName.lastIndexOf("."));	//파일 확장자
+
+        String savedFileName = UUID.randomUUID() + extension;	//저장될 파일 명
+
+        File file = new File(properties.getTempFolderPath() + "summernote/" + savedFileName); //서버일경우
+        //File file = new File(fileRoot + "/summernote/" + savedFileName);
+        FileHelper.makeFolder(file.getParentFile());
+
+        try {
+            file.createNewFile();
+            multipartFile.transferTo(file);
+            jsonObject.addProperty("url", "https://admin.docha.co.kr/img/summernote/" + savedFileName); //서버일경우
+            //  jsonObject.addProperty("url", fileRoot + "/summernote/"+ savedFileName);
+
+        } catch (Exception e) {
+            throw new BadRequestException(9998, "파일 생성 실패");
+        }
+
+
+        return new Gson().toJson(jsonObject);
     }
 
     // endregion

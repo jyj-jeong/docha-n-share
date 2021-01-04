@@ -44,4 +44,12 @@ public interface DochaAdminMenuMapper {
     int updateEvent(DochaAdminEventRequest eventRequest);
 
     int deleteEvent(DochaAdminEventRequest eventRequest);
+
+    List<DochaAdminFAQResponse> selectFAQList(DochaAdminFAQRequest faqRequest);
+
+    int insertFAQ(DochaAdminFAQRequest faqRequest);
+
+    int updateFAQ(DochaAdminFAQRequest faqRequest);
+
+    int deleteFAQ(DochaAdminFAQRequest faqRequest);
 }

@@ -328,6 +328,66 @@
            <![CDATA[ DELETE FROM DC_EVENT WHERE EV_IDX = #{evIdx} ]]>
     </delete>
 
+	<!-- FAQ CRUD -->
+	<select id="selectFAQList" parameterType="faqRequest"	resultType="faqResponse">
+		<![CDATA[
+				SELECT
+						  IFNULL(FA_IDX, '') AS FA_IDX
+						 ,IFNULL(FA_TITLE, '') AS FA_TITLE
+						 ,IFNULL(FA_CONTENT, '') AS FA_CONTENT
+						 ,IFNULL(IMG_IDX, '') AS IMG_IDX
+						 ,IFNULL(T1.REG_DT, '') AS REG_DT
+						 ,IFNULL(T1.MOD_ID, '') AS MOD_ID
+						 ,IFNULL(T1.MOD_DT, '') AS MOD_DT
+						 ,IFNULL(UI.USER_ID, '') AS REG_ID
+				  FROM DC_FAQ T1 LEFT OUTER JOIN DC_USER_INFO UI ON UI.UR_IDX = T1.REG_ID ]]>
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="faIdx != null and faIdx != ''">
+				<![CDATA[ AND FA_IDX = #{faIdx} ]]>
+			</if>
+		</trim>
+	</select>
+
+	<insert id="insertFAQ" parameterType="faqRequest">
+		<![CDATA[
+       INSERT INTO DC_FAQ(
+           FA_TITLE
+         , FA_CONTENT
+         , REG_ID
+         , REG_DT
+       )VALUES (
+          #{faTitle}
+          , #{faContent}
+          , #{regId}
+          , NOW()
+      )
+      ]]>
+		<selectKey keyProperty="faIdx" resultType="Integer" order="AFTER">
+			SELECT LAST_INSERT_ID();
+		</selectKey>
+	</insert>
+
+	<update id="updateFAQ" parameterType="faqRequest">
+		<![CDATA[ UPDATE DC_FAQ ]]>
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="faTitle      != null"><![CDATA[   FA_TITLE          = #{faTitle}  ,      ]]></if>    <!-- ntTitle -->
+			<if test="faContent      != null"><![CDATA[   FA_CONTENT          = #{faContent}  ,      ]]></if>    <!-- ntContent -->
+			<if test="modId      != null"><![CDATA[   MOD_ID          = #{modId}  ,      ]]></if>    <!-- modId -->
+			<if test="imgIdx      != null"><![CDATA[   IMG_IDX          = #{imgIdx}  ,      ]]></if>    <!-- modId -->
+			MOD_DT = NOW()
+		</trim>
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="faIdx != null and faIdx != ''">
+				<![CDATA[ FA_IDX = #{faIdx} ]]>
+			</if>
+		</trim>
+	</update>
+
+	<delete id="deleteFAQ" parameterType="faqRequest">
+           <![CDATA[ DELETE FROM DC_FAQ WHERE FA_IDX = #{faIdx} ]]>
+    </delete>
+
+
 </mapper>
 
     

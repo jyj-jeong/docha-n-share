@@ -788,4 +788,142 @@ public class MenuServiceImpl extends ServiceExtension implements MenuService {
         menuMapper.updateNotice(updateNoticeRequest);
     }
 
+    @Override
+    public void getFAQList(ServiceMessage message) {
+        DochaAdminFAQRequest faqRequest = new DochaAdminFAQRequest();
+
+        List<DochaAdminFAQResponse> faqResponseList = menuMapper.selectFAQList(faqRequest);
+
+        message.addData("result", faqResponseList);
+    }
+
+    @Override
+    public void getFAQDetail(ServiceMessage message) {
+        DochaAdminFAQRequest faqRequest = new DochaAdminFAQRequest();
+
+        int faIdx = message.getInt("faIdx", 0);
+        faqRequest.setFaIdx(faIdx);
+
+        List<DochaAdminFAQResponse> faqResponseList = menuMapper.selectFAQList(faqRequest);
+
+        message.addData("result", faqResponseList);
+    }
+
+    @Override
+    public void insertFAQ(ServiceMessage message) {
+        DochaAdminFAQRequest faqRequest = message.getObject("faqRequest", DochaAdminFAQRequest.class);
+
+        int res = 0;
+
+        if (faqRequest.getFaIdx() == 0){
+            res = menuMapper.insertFAQ(faqRequest);
+        }else {
+            res = menuMapper.updateFAQ(faqRequest);
+        }
+
+        message.addData("res",res);
+    }
+
+
+    @Override
+    public void uploadFAQImage(ServiceMessage message) {
+        String faIdx = message.getString("faIdx");
+        DochaAdminFAQResponse faqResponse;
+
+        Object uploadImageObj = message.get("uploadImage");
+        if (!(uploadImageObj instanceof MultipartFile))
+            throw new BadRequestException(IMAGE_NOT_MULTIPART_FILE, IMAGE_NOT_MULTIPART_FILE_MSG);
+
+        MultipartFile uploadImage = (MultipartFile) uploadImageObj;
+
+        if (uploadImage.isEmpty())
+            throw new BadRequestException(IMAGE_IS_EMPTY, IMAGE_IS_EMPTY_MSG);
+
+        String uploadImageName = uploadImage.getOriginalFilename();
+        if (uploadImageName == null || uploadImageName.isEmpty())
+            throw new BadRequestException(IMAGE_PARSING_ERROR, IMAGE_PARSING_ERROR_MSG + "(이미지 파일이름이 없습니다.)");
+
+        String uploadImageMime = uploadImage.getContentType();
+        if (uploadImageMime == null || uploadImageMime.isEmpty() || !uploadImageMime.contains("image/"))
+            throw new BadRequestException(IMAGE_PARSING_ERROR, IMAGE_PARSING_ERROR_MSG + "(이미지 MIME 이 올바르지 않습니다.)");
+
+        int extensionIndexOf = uploadImageName.lastIndexOf('.');
+        if (extensionIndexOf == -1)
+            throw new BadRequestException(IMAGE_PARSING_ERROR, IMAGE_PARSING_ERROR_MSG + "(확장자가 존재하지 않습니다.)");
+
+        String uploadImageExtension = uploadImageName.substring(extensionIndexOf).replaceAll("\\.", "").toLowerCase();
+        if (!properties.getSupportImageExtension().contains(uploadImageExtension))
+            throw new BadRequestException(IMAGE_PARSING_ERROR, IMAGE_PARSING_ERROR_MSG + "(지원하지 않는 이미지 확장자 입니다.)");
+
+        long uploadImageSize = uploadImage.getSize();
+        if (uploadImageSize > properties.getUploadImageSize())
+            throw new BadRequestException(IMAGE_PARSING_ERROR, IMAGE_PARSING_ERROR_MSG + "(이미지 크기가 20MB를 초과 합니다.)");
+
+        // 파일 랜덤 UUID 생성 (파일 명 중복시 파일 생성 안됌)
+        String saveImgName = UUID.randomUUID().toString();
+        File file = new File(properties.getTempFolderPath() + "faq/" + saveImgName + "." + uploadImageExtension);
+        FileHelper.makeFolder(file.getParentFile());
+
+        // 기존의 공지사항 조회
+        DochaAdminFAQRequest faqRequest = new DochaAdminFAQRequest();
+        faqRequest.setFaIdx(Integer.parseInt(faIdx));
+
+        List<DochaAdminFAQResponse> faqResponseList = menuMapper.selectFAQList(faqRequest);
+
+        // 해당 모델의 정보를 가져옴 ( 이미지 파일 체크하기 위함 )
+        faqResponse = faqResponseList.get(0);
+
+        // 이미 DB에 img 정보가 있는지 여부
+        if (faqResponse.getImgIdx() == null || faqResponse.getImgIdx().equals("")) {
+            // 저장된 이미지가 없을 경우
+            try {
+                // 바로 이미지 생성
+                file.createNewFile();
+                uploadImage.transferTo(file);
+            } catch (Exception e) {
+                throw new BadRequestException(UNKNOWN_EXCEPTION, "파일 생성 실패");
+            }
+        } else {
+            // 현재 DB에 이미지가 있으면
+            File FileList = new File(properties.getTempFolderPath() + "faq/");
+            String[] fileList = FileList.list();
+            for (int i = 0; i < fileList.length; i++) {
+                // DB에서 파일 명을 가져와서 일치하는 것이 있는지 검사
+                String FileName = fileList[i];
+
+                if (FileName.contains(faqResponse.getImgIdx())) {
+                    File deleteFile = new File(properties.getTempFolderPath() + "faq/" + faqResponse.getImgIdx());
+                    // path에서 이미 있는 파일을 제거 후
+                    deleteFile.delete();
+                }
+            }
+            try {
+                // 이미지 생성
+                file.createNewFile();
+                uploadImage.transferTo(file);
+            } catch (Exception e) {
+                throw new BadRequestException(UNKNOWN_EXCEPTION, "파일 생성 실패");
+            }
+        }
+
+        DochaAdminFAQRequest updateFAQRequest = new DochaAdminFAQRequest();
+
+        // 저장 할 ntIdx
+        updateFAQRequest.setFaIdx(faqRequest.getFaIdx());
+        // 새로운 파일 명
+        updateFAQRequest.setImgIdx(saveImgName + "." + uploadImageExtension);
+
+        // 파일을 path에 저장 후, DB에 파일 명 저장
+        menuMapper.updateFAQ(updateFAQRequest);
+    }
+
+
+    @Override
+    public void deleteFAQ(ServiceMessage message) {
+        DochaAdminFAQRequest faqRequest = message.getObject("faqRequest", DochaAdminFAQRequest.class);
+
+        int res = menuMapper.deleteFAQ(faqRequest);
+
+        message.addData("res",res);
+    }
 }
