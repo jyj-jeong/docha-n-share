@@ -928,11 +928,56 @@ function selectCarModelDetail(modelName, year, _data){
 }
 
 /*
+ * 연식에 따른 차종 호출
+ */
+function yearchange() {
+    let year = $("#year option:selected").val();
+	selectYear(year,  null);
+}
+
+/*
+ * 차종상세 정보 가져오기
+ */
+function selectYear(year, _data){
+
+	// 차종상세  select box
+	let target = 'selectYearForCarModelSelectBox';
+	let method = 'select';
+	//연료
+	let req = {
+		year : year
+	};
+
+	fn_callApi(method, target, req, function (response) {
+		let data = response;
+
+		//200이라면 페이징을 구한다.
+		// if(res.code == 200) {
+		// 	let data = res.data.result;
+		carmodeldetaildata = data;
+
+		let strOption = "";
+		strOption += "<option value = '0'>선택하세요</option>";
+
+		for ( var i in data) {
+			if (data[i].modelName) {
+				strOption += "<option>" + nullCheck(data[i].modelName) + "</option>";
+			}
+		}
+		$('#sel_modelName').empty();
+		$('#sel_modelName').append(strOption);
+		$('#sel_modelDetailName').empty();
+		// }
+
+	});//end fn_callApi
+}
+
+/*
  * 차종 변경에 따른 차종 상세 호출
  */
 function modelNamechange() {
 	let modelName = $("#sel_modelName option:selected").val(); //모델명
-    let year = $("#year option:selected").val();
+	let year = $("#year option:selected").val();
 	selectCarModelDetail(modelName, year,  null);
 }
 
@@ -1658,6 +1703,7 @@ function initDetailData(data){
 
 	var currentYear = new Date().getFullYear();
 	var str = '';
+	str += '<option>선택하세요</option>';
 	for(var i = 7; i >= 0; i--){
 		str += "<option value = '" + (currentYear-i) + "'>" + (currentYear-i) + "</option>";
 	}
@@ -1794,6 +1840,7 @@ function rentcal(){
 		let commissionPer	= data.commissionPer; 	//회원사 수수료 -->
 		let calcPeriodDt	= data.calcPeriodDt; 	//대여일수
 		let totalPaymentAmount	= data.totalPaymentAmount; 	//총금액
+		let addPay	= data.addPay; 	//할증요금
 
 		if(rentFee === '0' && insuranceFee === '0'){
 			errorAlert('요금계산', '보험료정보 또는 기본요금 정보를 확인하세요.');
@@ -1818,16 +1865,18 @@ function rentcal(){
 		var geocoder = new kakao.maps.services.Geocoder();
 		var rentlocation = $("#rentlocation").val();
 		var returnAddr = $("#returnAddr").val();
-		var deliveryFee;
+		var deliveryFee = deliveryStandardPay;
 
 		var deliveryTypeCode = $("input[name='customRadioInline1']:checked").val();
 
 		if (deliveryTypeCode === 'OF') {
 			deliveryFee = 0;
 			$("#deliveryFee").val(deliveryFee);
+			var totalFee = parseInt(insuranceFee) + parseInt(disRentFee) ;
 
-			$("#calRentTotAmount").val(objectConvertToPriceFormat(rentFee));
-			$("#calPaymentAmount").val(objectConvertToPriceFormat(rentFee));
+			$("#calRentTotAmount").val(objectConvertToPriceFormat(totalFee));
+			$("#calPaymentAmount").val(objectConvertToPriceFormat(totalFee));
+			$("#cardeposit").val(objectConvertToPriceFormat(addPay));
 		} else {
 			geocoder.addressSearch(rentlocation, function (result, status) {
 				if (status === kakao.maps.services.Status.OK) {
@@ -1852,10 +1901,12 @@ function rentcal(){
 								lineLine.setPath(linePath);
 							}
 							distance = Math.round(lineLine.getLength() / 1000);
-							console.log(distance);
+							if (isNaN(distance)){
+								errorAlert('배달 위치', '거리 계산을 할 수 없습니다. 다시 주소를 검색해주세요.');
+							}
 
 							// 10km 초과 시 추가 금액
-							if (distance > 10) {
+							if (parseInt(distance) > 10) {
 								console.log(distance);
 								var addDistance = Math.ceil((distance - 10) / 10);
 								deliveryAddPay = parseInt(addDistance) * parseInt(deliveryAddPay);
@@ -1867,6 +1918,7 @@ function rentcal(){
 							var totalFee = parseInt(insuranceFee) + parseInt(deliveryFee) + parseInt(disRentFee);
 							$("#calRentTotAmount").val(objectConvertToPriceFormat(totalFee));
 							$("#calPaymentAmount").val(objectConvertToPriceFormat(totalFee));
+							$("#cardeposit").val(objectConvertToPriceFormat(addPay));
 						}
 					});
 				}

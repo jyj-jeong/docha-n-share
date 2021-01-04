@@ -428,43 +428,50 @@ function detailValidation(){
 		errorAlert('회원사', '회원사를 선택하여 주세요.');
 		$('#companyName').focus();
 		return;
-	}else if(isEmpty(pyEtc.length)){
+	}else if(isEmpty(pyEtc.length)) {
 		errorAlert('제목', '제목을 입력해 주세요.');
 		$('#pyEtc').focus();
 		return;
-	}else if(!isEmpty(dailyStandardPay) && !$.isNumeric(dailyStandardPay)){
-		errorAlert('일 기본요금', '일 기본요금은 숫자만 입력 가능합니다.');
-		$('#dailyStandardPay').focus();
-		return;
-	}else if(!isEmpty(dailyMaxRate) && !$.isNumeric(dailyMaxRate)){
-		errorAlert('일대여 최대 할인율', '일대여 최대 할인율은 숫자만 입력 가능합니다.');
-		$('#dailyMaxRate').focus();
-		return;
-	}else if(!isEmpty(monthlyStandardPay) && !$.isNumeric(monthlyStandardPay)){
-		errorAlert('월 기본요금', '월 기본요금은 숫자만 입력 가능합니다.');
-		$('#monthlyStandardPay').focus();
-		return;
-	}else if(!isEmpty(monthlyMaxRate) && !$.isNumeric(monthlyMaxRate)){
-		errorAlert('월 최대 할인율', '월 최대 할인율은 숫자만 입력 가능합니다.');
-		$('#monthlyMaxRate').focus();
-		return;
-	}else if(!isEmpty(month3Deposit) && !$.isNumeric(month3Deposit)){
-		errorAlert('3개월 보증금', '3개월 보증금은 숫자만 입력 가능합니다.');
-		$('#month3Deposit').focus();
-		return;
-	}else if(!isEmpty(month6Deposit) && !$.isNumeric(month6Deposit)){
-		errorAlert('6개월 보증금', '6개월 보증금은 숫자만 입력 가능합니다.');
-		$('#month6Deposit').focus();
-		return;
-	}else if(!isEmpty(month3Deposit) && !$.isNumeric(month9Deposit)){
-		errorAlert('9개월 보증금', '9개월 보증금은 숫자만 입력 가능합니다.');
-		$('#month9Deposit').focus();
-		return;
-	}else if(!isEmpty(month3Deposit) && !$.isNumeric(month12Deposit)){
-		errorAlert('12개월 보증금', '12개월 보증금은 숫자만 입력 가능합니다.');
-		$('#month12Deposit').focus();
-		return;
 	}
+
+		if(isEmpty(dailyStandardPay)){
+			errorAlert('요금정보', '일 기본요금은 필수 입력값 입니다.');
+			return;
+		}else if(!isEmpty(dailyStandardPay) && !$.isNumeric(dailyStandardPay)){
+			errorAlert('요금정보', '일 기본요금은 숫자만 입력 가능합니다.');
+			return;
+		}else if(isEmpty(dailyMaxRate)){
+			errorAlert('요금정보', '일대여 최대 할인율은 필수 입력값 입니다.');
+			return;
+		}else if(!isEmpty(dailyMaxRate) && !$.isNumeric(dailyMaxRate)){
+			errorAlert('요금정보', '일대여 최대 할인율은 숫자만 입력 가능합니다.');
+			return;
+		}else if(isEmpty(monthlyStandardPay)){
+			errorAlert('요금정보', '월 기본요금은 필수 입력값 입니다.');
+			return;
+		}else if(!isEmpty(monthlyStandardPay) && !$.isNumeric(monthlyStandardPay)){
+			errorAlert('요금정보', '월 기본요금은 숫자만 입력 가능합니다.');
+			return;
+		}else if(isEmpty(monthlyMaxRate)){
+			errorAlert('요금정보', '월 최대 할인율은 필수 입력값 입니다.');
+			return;
+		}else if(!isEmpty(monthlyMaxRate) && !$.isNumeric(monthlyMaxRate)){
+			errorAlert('요금정보', '월 최대 할인율은 숫자만 입력 가능합니다.');
+			return;
+		}
+		else if(!isEmpty(month3Deposit) && !$.isNumeric(month3Deposit)){
+			errorAlert('요금정보', '3개월 보증금은 숫자만 입력 가능합니다.');
+			return;
+		}else if(!isEmpty(month6Deposit) && !$.isNumeric(month6Deposit)){
+			errorAlert('요금정보', '6개월 보증금은 숫자만 입력 가능합니다.');
+			return;
+		}else if(!isEmpty(month3Deposit) && !$.isNumeric(month9Deposit)){
+			errorAlert('요금정보', '9개월 보증금은 숫자만 입력 가능합니다.');
+			return;
+		}else if(!isEmpty(month3Deposit) && !$.isNumeric(month12Deposit)){
+			errorAlert('요금정보', '12개월 보증금은 숫자만 입력 가능합니다.');
+			return;
+		}
 
 	let rtIdx = companyName;
 

@@ -23,8 +23,10 @@
 
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 th:if="${CRUD == 'insert'}" class="m-0 font-weight-bold text-primary" style="cursor: pointer">회원사 - 신규등록</h6>
-                        <h6 th:if="${CRUD == 'modify'}" id="rentShopTitle" class="m-0 font-weight-bold text-primary" style="cursor: pointer"></h6>
+                        <h6 th:if="${CRUD == 'insert'}" class="m-0 font-weight-bold text-primary"
+                            style="cursor: pointer">회원사 - 신규등록</h6>
+                        <h6 th:if="${CRUD == 'modify'}" id="rentShopTitle" class="m-0 font-weight-bold text-primary"
+                            style="cursor: pointer"></h6>
                     </div>
 
                     <div class="row">
@@ -33,64 +35,80 @@
 
                                 <div class="card-body"><h5 class="card-title">회원사정보</h5>
                                     <div class="row mt-3">
-                                        <input type="hidden" id="rtIdx" name="rtIdx" />
-                                        <div class="col-lg-6 mb-3" >
+                                        <input type="hidden" id="rtIdx" name="rtIdx"/>
+                                        <div class="col-lg-6 mb-3">
                                             <label>회사명</label>
-                                            <input type="text" class="form-control" placeholder="회사명" value="" id="companyName" name="companyName" required/>
+                                            <input type="text" class="form-control" placeholder="회사명" value=""
+                                                   id="companyName" name="companyName" required/>
                                         </div>
-                                        <div class="col-lg-6 mb-3" >
+                                        <div class="col-lg-6 mb-3">
                                             <label>지점명</label>
-                                            <input type="text" class="form-control" placeholder="지점명" value="" id="branchName" />
+                                            <input type="text" class="form-control" placeholder="지점명" value=""
+                                                   id="branchName"/>
                                         </div>
-                                        <div class="col-lg-6 mb-3 float-l " >
+                                        <div class="col-lg-6 mb-3 float-l ">
                                             <label>법인명</label>
-                                            <input type="text" class="form-control" placeholder="법인명"  value="" id="companyRegistrationName" >
+                                            <input type="text" class="form-control" placeholder="법인명" value=""
+                                                   id="companyRegistrationName">
                                         </div>
-                                        <div class="col-lg-6 mb-3 float-l " >
+                                        <div class="col-lg-6 mb-3 float-l ">
                                             <label>회원사 대표 연락처</label>
-                                            <input type="text" class="form-control" placeholder="회원사 대표 연락처"  value="" id="companyContact1" onkeypress="inNumber();"/>
+                                            <input type="text" class="form-control" placeholder="회원사 대표 연락처" value=""
+                                                   id="companyContact1" onkeypress="inNumber();"/>
                                         </div>
-                                        <div class="col-lg-6 mb-3 float-l " >
+                                        <div class="col-lg-6 mb-3 float-l ">
                                             <label>사업자등록번호</label>
-                                            <input type="text" class="form-control" placeholder="사업자등록번호"  value="" id="companyRegistrationNumber" onblur="companyRegistrationAutoHyphen()" onkeypress="inNumber();"/>
+                                            <input type="text" class="form-control" placeholder="사업자등록번호" value=""
+                                                   id="companyRegistrationNumber"
+                                                   onblur="companyRegistrationAutoHyphen()" onkeypress="inNumber();"/>
                                         </div>
                                         <div class="col-lg-6 mb-3 float-l flex-1">
                                             <label>총 차량 대수</label>
-                                            <input type="text"  class="form-control" placeholder="총 차량 대수"  value="" id="carCount">
+                                            <input type="text" class="form-control" placeholder="총 차량 대수" value=""
+                                                   id="carCount">
                                         </div>
                                         <div class="col-lg-6 mb-3 float-l flex-1">
                                             <label>등록 차량 대수</label>
-                                            <input type="text"  class="form-control" placeholder="등록 차량 대수"  value="" id="regCarCount">
+                                            <input type="text" class="form-control" placeholder="등록 차량 대수" value=""
+                                                   id="regCarCount">
                                         </div>
-                                        <div class="col-lg-12 mb-3 float-l" >
+                                        <div class="col-lg-12 mb-3 float-l">
                                             <label>주소</label>
                                             <div class="input-group">
-                                                <input type="text"  class="form-control" placeholder="주소"  id="companyAddress" readonly>
-                                                <div th:if="${session.LOGIN_SESSION.userRole.equals('RA')}" class="input-group-append">
-                                                    <button class="btn btn-primary" onclick="openDaumAddrApi('companyAddress');" >주소찾기</button>
+                                                <input type="text" class="form-control" placeholder="주소"
+                                                       id="companyAddress" readonly>
+                                                <div th:if="${session.LOGIN_SESSION.userRole.equals('RA')}"
+                                                     class="input-group-append">
+                                                    <button class="btn btn-primary"
+                                                            onclick="openDaumAddrApi('companyAddress');">주소찾기
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-lg-12 mb-3 float-l flex-1">
                                             <label>상세주소</label>
-                                            <input type="text"  class="form-control" placeholder="상세주소" id="companyAddressDetail">
+                                            <input type="text" class="form-control" placeholder="상세주소"
+                                                   id="companyAddressDetail">
                                         </div>
-                                        <div class="col-lg-6 mb-3 float-l flex-1" >
+                                        <div class="col-lg-6 mb-3 float-l flex-1">
                                             <label>은행</label>
-                                            <select id="sel_bank" name="sel_bank" class="custom-select" >
+                                            <select id="sel_bank" name="sel_bank" class="custom-select">
                                             </select>
                                         </div>
-                                        <div class="col-lg-6 mb-3 float-l " >
+                                        <div class="col-lg-6 mb-3 float-l ">
                                             <label>계좌번호</label>
-                                            <input type="text" class="form-control" placeholder="계좌번호" value="" id="accountNumber" onkeypress="inNumber();"/>
+                                            <input type="text" class="form-control" placeholder="계좌번호" value=""
+                                                   id="accountNumber" onkeypress="inNumber();"/>
                                         </div>
-                                        <div class="col-lg-6 mb-3 float-l " >
+                                        <div class="col-lg-6 mb-3 float-l ">
                                             <label>예금주</label>
-                                            <input type="text"  class="form-control" placeholder="예금주" value="" id="accountHolder" />
+                                            <input type="text" class="form-control" placeholder="예금주" value=""
+                                                   id="accountHolder"/>
                                         </div>
-                                        <div class="col-lg-6 mb-3 float-l " >
+                                        <div class="col-lg-6 mb-3 float-l ">
                                             <label>세금 계산서 이메일</label>
-                                            <input type="text"  class="form-control" placeholder="세금 계산서 이메일" value="" id="taxEmail" />
+                                            <input type="text" class="form-control" placeholder="세금 계산서 이메일" value=""
+                                                   id="taxEmail"/>
                                         </div>
 
                                         <!--
@@ -108,23 +126,26 @@
                                         </div>
                                         -->
 
-                                        <div th:if="${#session.getAttribute('LOGIN_SESSION').userRole == 'RA'}" class="col-lg-6 mb-3 float-l flex-1" >
+                                        <div th:if="${#session.getAttribute('LOGIN_SESSION').userRole == 'RA'}"
+                                             class="col-lg-6 mb-3 float-l flex-1">
                                             <label>접속 허용 여부</label>
-                                            <select id="sel_accessYn" name="sel_accessYn" class="custom-select" >
+                                            <select id="sel_accessYn" name="sel_accessYn" class="custom-select">
                                                 <option value="Y">예</option>
                                                 <option value="N">아니요</option>
                                             </select>
                                         </div>
-                                        <div class="col-lg-6 mb-3 float-l flex-1" >
+                                        <div class="col-lg-6 mb-3 float-l flex-1">
                                             <label>알림톡 수신 여부</label>
-                                            <select id="sel_alarmYn" name="sel_alarmYn" class="custom-select" >
+                                            <select id="sel_alarmYn" name="sel_alarmYn" class="custom-select">
                                                 <option value="Y">예</option>
                                                 <option value="N">아니요</option>
                                             </select>
                                         </div>
                                         <div class="col-lg-12 mt-2 float-l flex-1 text-right">
                                             <div class="p-b-20 p-r-40">
-                                                <button class="btn btn-primary" type="button" onclick="detailValidation('saveRentCompanyInfo')">회원사 저장</button>
+                                                <button class="btn btn-primary" type="button"
+                                                        onclick="detailValidation('saveRentCompanyInfo')">회원사 저장
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -135,30 +156,35 @@
                             <div class="main-card mb-3 card">
                                 <div class="card-body"><h5 class="card-title">담당자 정보</h5>
                                     <div class="row mt-3">
-                                        <input type="hidden" id="staffurIdx" />
-                                        <input type="hidden" id="rsIdx" />
+                                        <input type="hidden" id="staffurIdx"/>
+                                        <input type="hidden" id="rsIdx"/>
                                         <div class="col-lg-12 mb-3 float-l">
                                             <label>이메일(검색시 회원ID)</label>
                                             <div class="input-group">
-                                                <input type="text" class="form-control"  placeholder="이메일" value="" id="staffEmail" />
+                                                <input type="text" class="form-control" placeholder="이메일" value=""
+                                                       id="staffEmail"/>
                                                 <div class="input-group-append">
-                                                    <button class="btn btn-primary" onclick="searchUserInfo();" id="btnstaffEmail">회원검색</button>
+                                                    <button class="btn btn-primary" onclick="searchUserInfo();"
+                                                            id="btnstaffEmail">회원검색
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="col-lg-6 mb-3 float-l flex-1">
                                             <label>이름</label>
-                                            <input type="text" class="form-control" placeholder="이름" value="" id="staffName" readonly />
+                                            <input type="text" class="form-control" placeholder="이름" value=""
+                                                   id="staffName" readonly/>
                                         </div>
-                                        <div class="col-lg-6 mb-3 float-l flex-1" >
+                                        <div class="col-lg-6 mb-3 float-l flex-1">
                                             <label>직위</label>
                                             <!-- <select id="sel_staffTypeCode" name="sel_staffTypeCode" class="custom-select" >
                                             </select> -->
-                                            <input type="text" class="form-control" placeholder="직위" value="" id="staffTitle" />
+                                            <input type="text" class="form-control" placeholder="직위" value=""
+                                                   id="staffTitle"/>
                                         </div>
-                                        <div class="col-lg-6 mb-3 float-l flex-1" >
+                                        <div class="col-lg-6 mb-3 float-l flex-1">
                                             <label>대표여부</label>
-                                            <select id="sel_ownerYn" name="sel_ownerYn" class="custom-select" >
+                                            <select id="sel_ownerYn" name="sel_ownerYn" class="custom-select">
                                                 <option value="0">선택</option>
                                                 <option value="Y">예</option>
                                                 <option value="N">아니요</option>
@@ -166,19 +192,27 @@
                                         </div>
                                         <div class="col-lg-6 mb-3 float-l">
                                             <label>연락처</label>
-                                            <input type="text" class="form-control"  placeholder="연락처" value="" id="staffContact1" onkeypress="inNumber();" readonly/>
+                                            <input type="text" class="form-control" placeholder="연락처" value=""
+                                                   id="staffContact1" onkeypress="inNumber();" readonly/>
                                         </div>
                                         <!-- <div class="col-lg-3 mb-3 float-l">
                                              <label>비밀번호</label>
                                         </div>	 -->
-                                        <input type="hidden" class="form-control"  placeholder="비밀번호" value="" id="userPassword" />
+                                        <input type="hidden" class="form-control" placeholder="비밀번호" value=""
+                                               id="userPassword"/>
                                         <div class="col-lg-12 mt-2 mb-3 float-l flex-1 text-right p-b-10">
-                                            <br><p>
-                                            <button class="btn btn-primary" type="button" onclick="detailValidation('saveStaff');">담당자정보 저장</button>
-                                            <button class="btn btn-danger" type="button"  onclick="cancelData('saveStaff')">취소</button>
+                                            <br>
+                                            <p>
+                                                <button class="btn btn-primary" type="button"
+                                                        onclick="detailValidation('saveStaff');">담당자정보 저장
+                                                </button>
+                                                <button class="btn btn-danger" type="button"
+                                                        onclick="cancelData('saveStaff')">취소
+                                                </button>
                                         </div>
                                         <div class="col-lg-12 mb-3 float-l">
-                                            <table id="rentStaffList" class="table table-hover" data-show-toggle="false" data-sorting="true">
+                                            <table id="rentStaffList" class="table table-hover" data-show-toggle="false"
+                                                   data-sorting="true">
                                                 <thead>
 
                                                 </thead>
@@ -194,7 +228,7 @@
                                 <div class="card-body"><h5 class="card-title">수수료 (%)</h5>
                                     <div class="col-lg-12 mb-3 float-l flex-1">
                                         <label>부가세 포함 수수료</label>
-                                        <input type="text" class="form-control" id="commissionPer" th:value="15.0" />
+                                        <input type="text" class="form-control" id="commissionPer" th:value="15.0"/>
                                         <div id="commissionPerText" class="invalid-feedback"></div>
                                     </div>
                                     <script>
@@ -204,15 +238,15 @@
                                             var prev = "";
                                             var regexp = /^\d*[.]\d{2}$/;
 
-                                            if (commissionPer.val() !== '' && !$.isNumeric(commissionPer.val())){
+                                            if (commissionPer.val() !== '' && !$.isNumeric(commissionPer.val())) {
                                                 $('#commissionPerText').text('수수료는 숫자만 입력 가능합니다.');
                                                 commissionPer.addClass('is-invalid');
-                                            }else {
+                                            } else {
                                                 commissionPer.removeClass('is-invalid');
 
-                                                if(commissionPer.val().indexOf('.') !== -1){
-                                                    var str = commissionPer.val().substring(commissionPer.val().lastIndexOf(".")+1);
-                                                    if (str.length > 1){
+                                                if (commissionPer.val().indexOf('.') !== -1) {
+                                                    var str = commissionPer.val().substring(commissionPer.val().lastIndexOf(".") + 1);
+                                                    if (str.length > 1) {
                                                         $('#commissionPerText').text('소숫점 첫째자리까지만 입력이 가능합니다.');
                                                         commissionPer.addClass('is-invalid');
                                                     }
@@ -228,7 +262,11 @@
                                     </div> -->
                                     <div class="col-lg-12 mt-2 float-l text-right">
                                         <div class="p-t-30">
-                                            <button class="btn btn-primary" th:if="${!session.LOGIN_SESSION.userRole.equals('MU')}" type="button" onclick="detailValidation('updateCommission');">수수료정보 저장</button>
+                                            <button class="btn btn-primary"
+                                                    th:if="${!session.LOGIN_SESSION.userRole.equals('MU')}"
+                                                    type="button" onclick="detailValidation('updateCommission');">수수료정보
+                                                저장
+                                            </button>
                                             <!-- <button class="btn btn-danger" type="button" >취소</button> -->
                                         </div>
                                     </div>
@@ -239,95 +277,123 @@
                     <div class="main-card mb-3 card">
                         <div class="card-body"><h5 class="card-title">예약정보</h5>
                             <div class="row mt-3">
-                                <div class="col-lg-3 mb-3 float-l flex-1" >
+                                <div class="col-lg-3 mb-3 float-l flex-1">
                                     <label>평일 영업시간 시작</label>
-                                    <select id="sel_weekdayOpenStart" name="sel_weekdayOpenStart" class="custom-select" ></select>
+                                    <select id="sel_weekdayOpenStart" name="sel_weekdayOpenStart"
+                                            class="custom-select"></select>
                                     <!-- <input type="text" class="form-control " placeholder="평일 영업시간 시작  예) 09:00 or 0009" id="weekdayOpenStart" > -->
                                 </div>
                                 <div class="col-lg-3 mb-3 float-l">
                                     <label>종료</label>
-                                    <select id="sel_weekdayOpenEnd" name="sel_weekdayOpenEnd" class="custom-select" ></select>
+                                    <select id="sel_weekdayOpenEnd" name="sel_weekdayOpenEnd"
+                                            class="custom-select"></select>
                                     <!-- <input type="text" class="form-control " placeholder="평일 영업시간 종료  예) 23:00 or 2300" id="weekdayOpenEnd" > -->
                                 </div>
-                                <div class="col-lg-6 mb-3 float-l flex-1" ><h5 class="card-title" style="color:blue">설명</h5>
+                                <div class="col-lg-6 mb-3 float-l flex-1"><h5 class="card-title" style="color:blue">
+                                    설명</h5>
                                     평일 영업시간<br>
                                     00:00 ~ 00:00 이면 영업 하지 않음 , 00:00 ~ 24:00 24시간 영업
                                 </div>
                                 <div class="col-lg-3 mb-3 float-l">
                                     <label>주말/공휴일 영업시간 시작</label>
-                                    <select id="sel_weekendOpenStart" name="sel_weekendOpenStart" class="custom-select" ></select>
+                                    <select id="sel_weekendOpenStart" name="sel_weekendOpenStart"
+                                            class="custom-select"></select>
                                     <!-- <input type="text" placeholder="주말/공휴일 영업시간 시작  예) 09:00 or 0009" id="weekendOpenStart"  class="form-control"> -->
                                 </div>
                                 <div class="col-lg-3 mb-3 float-l">
                                     <label>종료</label>
-                                    <select id="sel_weekendOpenEnd" name="sel_weekendOpenEnd" class="custom-select" ></select>
+                                    <select id="sel_weekendOpenEnd" name="sel_weekendOpenEnd"
+                                            class="custom-select"></select>
                                     <!-- <input type="text" placeholder="주말/공휴일 영업시간 종료 예) 23:00 or 2300" id="weekendOpenEnd"  class="form-control"> -->
                                 </div>
-                                <div class="col-lg-6 mb-3 float-l flex-1" ><h5 class="card-title" style="color:blue">설명</h5>
+                                <div class="col-lg-6 mb-3 float-l flex-1"><h5 class="card-title" style="color:blue">
+                                    설명</h5>
                                     주말/공휴일 영업시간<br>
                                     00:00 ~ 00:00 이면 영업 하지 않음 , 00:00 ~ 24:00 24시간 영업
                                 </div>
                                 <div class="col-lg-3 mb-3 float-l flex-1">
                                     <label>평일 왕복배달가능 시간 시작</label>
-                                    <select id="sel_weekdayDeliveryStart" name="sel_weekdayDeliveryStart" class="custom-select" ></select>
+                                    <select id="sel_weekdayDeliveryStart" name="sel_weekdayDeliveryStart"
+                                            class="custom-select"></select>
                                     <!-- <input type="text" placeholder="평일 왕복배달가능 시간 시작  예) 09:00 or 0009" id="weekdayDeliveryStart"   class="form-control"> -->
                                 </div>
                                 <div class="col-lg-3 mb-3 float-l">
                                     <label>종료</label>
-                                    <select id="sel_weekdayDeliveryEnd" name="sel_weekdayDeliveryEnd" class="custom-select" ></select>
+                                    <select id="sel_weekdayDeliveryEnd" name="sel_weekdayDeliveryEnd"
+                                            class="custom-select"></select>
                                     <!-- <input type="text" placeholder="평일 왕복배달가능 시간 종료 예) 23:00 or 2300" id="weekdayDeliveryEnd"  class="form-control"> -->
                                 </div>
-                                <div class="col-lg-6 mb-3 float-l flex-1" ><h5 class="card-title" style="color:blue">설명</h5>
+                                <div class="col-lg-6 mb-3 float-l flex-1"><h5 class="card-title" style="color:blue">
+                                    설명</h5>
                                     평일 왕복배달가능 시간<br>
                                     00:00 ~ 00:00 이면 영업 하지 않음 , 00:00 ~ 24:00 24시간 영업
                                 </div>
                                 <div class="col-lg-3 mb-3 float-l">
                                     <label>주말/공휴일 왕복배달가능 시작</label>
-                                    <select id="sel_weekendDeliveryStart" name="sel_weekendDeliveryStart" class="custom-select" ></select>
+                                    <select id="sel_weekendDeliveryStart" name="sel_weekendDeliveryStart"
+                                            class="custom-select"></select>
                                     <!-- <input type="text" placeholder="주말/공휴일 왕복배달가능시간 시작 예) 09:00 or 0009" id="weekendDeliveryStart"    class="form-control"> -->
                                 </div>
                                 <div class="col-lg-3 mb-3 float-l">
                                     <label>종료</label>
-                                    <select id="sel_weekendDeliveryEnd" name="sel_weekendDeliveryEnd" class="custom-select" ></select>
+                                    <select id="sel_weekendDeliveryEnd" name="sel_weekendDeliveryEnd"
+                                            class="custom-select"></select>
                                     <!-- <input type="text" placeholder="주말/공휴일 왕복배달가능시간 종료 예) 23:00 or 2300" id="weekendDeliveryEnd"  class="form-control"> -->
                                 </div>
-                                <div class="col-lg-6 mb-3 float-l flex-1" ><h5 class="card-title" style="color:blue">설명</h5>
+                                <div class="col-lg-6 mb-3 float-l flex-1"><h5 class="card-title" style="color:blue">
+                                    설명</h5>
                                     주말/공휴일 왕복배달가능 시간<br>
                                     00:00 ~ 00:00 이면 영업 하지 않음 , 00:00 ~ 24:00 24시간 영업
                                 </div>
-                                <div class="col-lg-3 mb-3 float-l " >
-                                    <br><p>
-                                    <label>평일 배달 정비시간</label>
-                                    <select id="sel_weekdayAbleDeliveryTime" name="sel_weekdayAbleDeliveryTime" class="custom-select" >
-                                    </select>
+                                <div class="col-lg-3 mb-3 float-l ">
+                                    <br>
+                                    <p>
+                                        <label>평일 배달 정비시간</label>
+                                        <select id="sel_weekdayAbleDeliveryTime" name="sel_weekdayAbleDeliveryTime"
+                                                class="custom-select">
+                                        </select>
                                 </div>
-                                <div class="col-lg-3 mb-3 float-l " >
-                                    <br><p>
-                                    <label>주말 배달 정비시간</label>
-                                    <select id="sel_weekendAbleDeliveryTime" name="sel_weekendAbleDeliveryTime" class="custom-select" >
-                                    </select>
+                                <div class="col-lg-3 mb-3 float-l ">
+                                    <br>
+                                    <p>
+                                        <label>주말 배달 정비시간</label>
+                                        <select id="sel_weekendAbleDeliveryTime" name="sel_weekendAbleDeliveryTime"
+                                                class="custom-select">
+                                        </select>
                                 </div>
-                                <div class="col-lg-3 mb-3 float-l flex-1" >
-                                    <br><p>
-                                    <label>지점 방문 정비시간</label>
-                                    <select id="sel_returnInspectionTime" name="sel_returnInspectionTime" class="custom-select" >
-                                    </select>
+                                <div class="col-lg-3 mb-3 float-l flex-1">
+                                    <br>
+                                    <p>
+                                        <label>지점 방문 정비시간</label>
+                                        <select id="sel_returnInspectionTime" name="sel_returnInspectionTime"
+                                                class="custom-select">
+                                        </select>
                                 </div>
-                                <div class="col-lg-3 mb-3 float-l flex-1" >
-                                    <br><p>
-                                    <label>주말/공휴일 최소 예약 시간</label>
-                                    <select id="sel_weekendReserveMinimumTime" name="sel_weekendReserveMinimumTime" class="custom-select" >
-                                    </select>
+                                <div class="col-lg-3 mb-3 float-l flex-1">
+                                    <br>
+                                    <p>
+                                        <label>주말/공휴일 최소 예약 시간</label>
+                                        <select id="sel_weekendReserveMinimumTime" name="sel_weekendReserveMinimumTime"
+                                                class="custom-select">
+                                        </select>
                                 </div>
-                                <div class="col-lg-3 mb-3 float-l flex-1" >
+                                <div class="col-lg-3 mb-3 float-l flex-1">
                                     <label>주말/공휴일 할증율</label>
-                                    <input th:if="${#session.getAttribute('LOGIN_SESSION').userRole == 'RA'}" type="text" placeholder="15%" id="weekendReserveMinimumRate"  class="form-control">
-                                    <input th:if="${#session.getAttribute('LOGIN_SESSION').userRole != 'RA'}" type="text" placeholder="15%" id="weekendReserveMinimumRate"  class="form-control" readonly>
+                                    <input th:if="${#session.getAttribute('LOGIN_SESSION').userRole == 'RA'}"
+                                           type="text" placeholder="15%" id="weekendReserveMinimumRate"
+                                           class="form-control">
+                                    <input th:if="${#session.getAttribute('LOGIN_SESSION').userRole != 'RA'}"
+                                           type="text" placeholder="15%" id="weekendReserveMinimumRate"
+                                           class="form-control" readonly>
                                 </div>
                                 <div class="col-lg-12 mb-3 float-l text-right">
                                     <div class="p-t-20 p-b-20 text-right">
-                                        <button class="btn btn-primary" type="button" onclick="detailValidation('saveRentCompanyTime');">예약정보 저장</button>
-                                        <button class="btn btn-danger" type="button" onclick="cancelData('saveRentCompanyTime')">취소</button>
+                                        <button class="btn btn-primary" type="button"
+                                                onclick="detailValidation('saveRentCompanyTime');">예약정보 저장
+                                        </button>
+                                        <button class="btn btn-danger" type="button"
+                                                onclick="cancelData('saveRentCompanyTime')">취소
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -336,30 +402,35 @@
                     <div class="main-card mb-3 card">
                         <div class="card-body"><h5 class="card-title">예약정보(선택 입력 항목) - 특정 기간 최소 예약 시간</h5>
                             <div class="row mt-3">
-                                <input type="hidden" id="minIdx" name="minIdx" />
+                                <input type="hidden" id="minIdx" name="minIdx"/>
                                 <div class="col-lg-3 mb-3 float-l flex-1">
                                     <label>시작일</label>
-                                    <a id="minimumStartDt" name="minimumStartDt" ></a>
+                                    <a id="minimumStartDt" name="minimumStartDt"></a>
                                 </div>
-                                <div class="col-lg-3 mb-3 float-l flex-1" >
+                                <div class="col-lg-3 mb-3 float-l flex-1">
                                     <label>종료일</label>
                                     <a id="minimumEndDt" name="minimumEndDt"></a>
                                 </div>
-                                <div class="col-lg-3 mb-3 float-l flex-1" >
+                                <div class="col-lg-3 mb-3 float-l flex-1">
                                     <label>최소시간</label>
-                                    <select id="sel_minimumTime" name="sel_minimumTime" class="custom-select" >
+                                    <select id="sel_minimumTime" name="sel_minimumTime" class="custom-select">
                                     </select>
                                 </div>
                             </div>
                             <br/>
                             <div class="col-lg-12 mb-3 float-l text-right">
                                 <div class="p-t-20 p-b-20 text-right">
-                                    <button class="btn btn-primary" type="button" onclick="detailValidation('saveRentCompanyMin');">특정기간 저장</button>
-                                    <button class="btn btn-danger" type="button"  onclick="cancelData('saveRentCompanyMin')">취소</button>
+                                    <button class="btn btn-primary" type="button"
+                                            onclick="detailValidation('saveRentCompanyMin');">특정기간 저장
+                                    </button>
+                                    <button class="btn btn-danger" type="button"
+                                            onclick="cancelData('saveRentCompanyMin')">취소
+                                    </button>
                                 </div>
                             </div>
                             <div class="col-lg-12 mb-3 float-l">
-                                <table id="rentReserveMinList" class="table table-hover" data-show-toggle="false" data-sorting="true">
+                                <table id="rentReserveMinList" class="table table-hover" data-show-toggle="false"
+                                       data-sorting="true">
                                     <thead>
 
                                     </thead>
@@ -373,29 +444,35 @@
                     <div class="main-card mb-3 card">
                         <div class="card-body"><h5 class="card-title">예약정보(선택 입력 항목) - 자체휴무일</h5>
                             <div class="row mt-3">
-                                <input type="hidden" id="holIdx" name="minIdx" />
+                                <input type="hidden" id="holIdx" name="minIdx"/>
                                 <div class="col-lg-3 mb-3 float-l flex-1">
                                     <label>시작일</label>
                                     <a id="holidayStartDt" name="holidayStartDt"></a>
                                 </div>
-                                <div class="col-lg-3 mb-3 float-l flex-1" >
+                                <div class="col-lg-3 mb-3 float-l flex-1">
                                     <label>종료일</label>
                                     <a id="holidayEndDt" name="holidayEndDt"></a>
                                 </div>
-                                <div class="col-lg-3 mb-3 float-l flex-1" >
+                                <div class="col-lg-3 mb-3 float-l flex-1">
                                     <label>휴일명</label>
-                                    <input type="text" id="holidayName" placeholder="휴일명" value="" class="form-control" />
+                                    <input type="text" id="holidayName" placeholder="휴일명" value=""
+                                           class="form-control"/>
                                 </div>
                             </div>
                             <br/>
                             <div class="col-lg-12 mb-3 float-l text-right">
                                 <div class="p-t-20 p-b-20 text-right">
-                                    <button class="btn btn-primary" type="button" onclick="detailValidation('saveRentCompanyHoliday');">자체휴무일 저장</button>
-                                    <button class="btn btn-danger" type="button"  onclick="cancelData('saveRentCompanyHoliday')">취소</button>
+                                    <button class="btn btn-primary" type="button"
+                                            onclick="detailValidation('saveRentCompanyHoliday');">자체휴무일 저장
+                                    </button>
+                                    <button class="btn btn-danger" type="button"
+                                            onclick="cancelData('saveRentCompanyHoliday')">취소
+                                    </button>
                                 </div>
                             </div>
                             <div class="col-lg-12 mb-3 float-l">
-                                <table id="holidayList" class="table table-hover" data-show-toggle="false" data-sorting="true">
+                                <table id="holidayList" class="table table-hover" data-show-toggle="false"
+                                       data-sorting="true">
                                     <thead>
 
                                     </thead>
@@ -411,9 +488,11 @@
                             <div class="col-lg-6 mb-3 float-l flex-1">
                                 <label>일대여</label>
                                 <div class="input-group">
-                                    <input type="text" class="form-control"  id="raGbnSt">
+                                    <input type="text" class="form-control" id="raGbnSt">
                                     <div class="input-group-append">
-                                        <button class="btn btn-primary" type="button" onclick="selectLocation('S')">일대여 설정하기</button>
+                                        <button class="btn btn-primary" type="button" onclick="selectLocation('S')">일대여
+                                            설정하기
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -439,9 +518,11 @@
                             <div class="col-lg-6 mb-3 float-l flex-1">
                                 <label>월대여</label>
                                 <div class="input-group">
-                                    <input type="text" class="form-control"  id="raGbnLt">
+                                    <input type="text" class="form-control" id="raGbnLt">
                                     <div class="input-group-append">
-                                        <button class="btn btn-primary" type="button" onclick="selectLocation('L')">월대여 설정하기</button>
+                                        <button class="btn btn-primary" type="button" onclick="selectLocation('L')">월대여
+                                            설정하기
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -466,9 +547,12 @@
                     </div><!-- end 왕복 배달지역 설정-->
                     <div class="main-card mb-3 card">
                         <div class="card-body text-right">
-                            <button class="btn btn-primary" type="button" onclick="movieMenu('calculate');" id="btnCalculate">정산관리</button>
+                            <button class="btn btn-primary" type="button" onclick="movieMenu('calculate');"
+                                    id="btnCalculate">정산관리
+                            </button>
                             <button class="btn btn-primary" type="button" onclick="movieMenu('regCar');">등록차량</button>
-                            <button class="btn btn-primary" type="button" onclick="movieMenu('reserveMnt');">예약내역</button>
+                            <button class="btn btn-primary" type="button" onclick="movieMenu('reserveMnt');">예약내역
+                            </button>
                             <button class="btn btn-primary" type="button" onclick="movieMenu('review');">후기</button>
                             <button class="btn btn-danger" type="button" onclick="self.close()">닫기</button>
                         </div>
@@ -480,10 +564,10 @@
                     <div class="card-body">
                         <div class="col-12 mb-2">
                             <label class="form-label" for="commentMsg">댓글</label>
-                            <input type="text" class="form-control underline-text" name="commentMsg" id="commentMsg" />
+                            <input type="text" class="form-control underline-text" name="commentMsg" id="commentMsg"/>
                         </div>
                         <div class="flex-1 text-right p-b-10">
-                            <button class="btn" type="button" onclick="comment()" >댓글 등록</button>
+                            <button class="btn" type="button" onclick="comment()">댓글 등록</button>
                         </div>
                     </div>
                 </div>
@@ -509,7 +593,8 @@
 </a>
 
 <!-- Logout Modal-->
-<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -529,7 +614,8 @@
 
 
 <!-- Select Locaion Modal-->
-<div id="selectLocationModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="selectLocationModal" aria-hidden="true">
+<div id="selectLocationModal" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog"
+     aria-labelledby="selectLocationModal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-select modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -553,13 +639,16 @@
                     <tbody>
                     <tr>
                         <td>
-                            <select class="LocationSelect" id="sel_addDo" name="sel_addDo" size="20" onchange="selectLocationDetail('selectDo')" ></select>
+                            <select class="LocationSelect" id="sel_addDo" name="sel_addDo" size="20"
+                                    onchange="selectLocationDetail('selectDo')"></select>
                         </td>
                         <td>
-                            <select class="LocationSelect" id="sel_addSi" name="sel_addSi" size="20" onchange="selectLocationDetail('selectSi')"></select>
+                            <select class="LocationSelect" id="sel_addSi" name="sel_addSi" size="20"
+                                    onchange="selectLocationDetail('selectSi')"></select>
                         </td>
                         <td>
-                            <select class="LocationSelect" id="sel_addDong" name="sel_addDong" size="20" onchange="selectLocationDetail('selectDong')"></select>
+                            <select class="LocationSelect" id="sel_addDong" name="sel_addDong" size="20"
+                                    onchange="selectLocationDetail('selectDong')"></select>
                         </td>
                         <td>
                             <select class="LocationSelect" id="sel_addLi" name="sel_addLi" size="20" multiple></select>
@@ -572,7 +661,7 @@
                     <button id="btnSelectedAddSave" type="button" class="btn btn-primary">배달 지역 추가하기</button>
                 </div>
 
-                <table id="selectedLocationTable"  class="table table-bordered mt-4">
+                <table id="selectedLocationTable" class="table table-bordered mt-4">
                     <thead>
                     <tr>
                         <th>선택 지역</th>
@@ -594,7 +683,8 @@
 </div>
 
 <!-- Select Locaion Modal 2 -->
-<div id="selectLocationModal2" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="selectLocationModal2" aria-hidden="true">
+<div id="selectLocationModal2" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog"
+     aria-labelledby="selectLocationModal2" aria-hidden="true">
     <div class="modal-dialog modal-dialog-select modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -618,13 +708,16 @@
                     <tbody>
                     <tr>
                         <td>
-                            <select class="LocationSelect" id="sel_addDo2" name="sel_addDo" size="20" onchange="selectLocationDetail('selectDo2')" ></select>
+                            <select class="LocationSelect" id="sel_addDo2" name="sel_addDo" size="20"
+                                    onchange="selectLocationDetail('selectDo2')"></select>
                         </td>
                         <td>
-                            <select class="LocationSelect" id="sel_addSi2" name="sel_addSi" size="20" onchange="selectLocationDetail('selectSi2')"></select>
+                            <select class="LocationSelect" id="sel_addSi2" name="sel_addSi" size="20"
+                                    onchange="selectLocationDetail('selectSi2')"></select>
                         </td>
                         <td>
-                            <select class="LocationSelect" id="sel_addDong2" name="sel_addDong" size="20" onchange="selectLocationDetail('selectDong2')"></select>
+                            <select class="LocationSelect" id="sel_addDong2" name="sel_addDong" size="20"
+                                    onchange="selectLocationDetail('selectDong2')"></select>
                         </td>
                         <td>
                             <select class="LocationSelect" id="sel_addLi2" name="sel_addLi" size="20" multiple></select>
@@ -637,7 +730,7 @@
                     <button id="btnSelectedAddSave2" type="button" class="btn btn-primary">배달 지역 추가하기</button>
                 </div>
 
-                <table id="selectedLocationTable"  class="table table-bordered mt-4">
+                <table id="selectedLocationTable" class="table table-bordered mt-4">
                     <thead>
                     <tr>
                         <th>선택 지역</th>
@@ -663,12 +756,9 @@
     var rtIdx = /*[[${rtIdx}]]*/'';
     var CRUD = /*[[${CRUD}]]*/'';
 
-    var req = {
-        rtIdx : isEmpty(rtIdx) ? '등록' : rtIdx,
-        raGbnCode : 'S'
-    };
+    $('#rtIdx').val(rtIdx);
 
-    var stTable = $('#stDataTable').DataTable( {
+    var stTable = $('#stDataTable').DataTable({
         language: {
             emptyTable: "데이터가 존재하지 않습니다.",
             lengthMenu: "페이지당 _MENU_ 개씩 보기",
@@ -678,60 +768,58 @@
             search: "검색: ",
             zeroRecords: "일치하는 데이터가 존재하지 않습니다.",
             loadingRecords: "로딩중...",
-            processing:     "잠시만 기다려 주세요...",
+            processing: "잠시만 기다려 주세요...",
             paginate: {
                 next: "다음",
                 previous: "이전"
             }
         },
         pageMenu: 10,
-        dom : 'ftp',
+        dom: 'ftp',
         orderMulti: true,
         columns: [
-            { data : 'raIdx' },
-            { data : 'addrDepth1' },
-            { data : 'addrDepth2' },
-            { data : 'addrDepth3' },
-            { data : 'addrDepth4' }
+            {data: 'raIdx'},
+            {data: 'addrDepth1'},
+            {data: 'addrDepth2'},
+            {data: 'addrDepth3'},
+            {data: 'addrDepth4'}
         ],
         columnDefs: [{
-            targets : [0],
+            targets: [0],
             data: 'raIdx',
-            visible : false,
+            visible: false,
             searchable: false
         }, {
-            targets : [5],
-            data : null,
+            targets: [5],
+            data: null,
             visible: true,
-            defaultContent : '<button class="btn btn-danger">삭제</button>'
+            defaultContent: '<button class="btn btn-danger">삭제</button>'
         }],
-        ajax : {
+        ajax: {
             url: '/api/v1.0/selectDcRentCompanyAblearea.json',
             type: 'POST',
-            contentType : 'application/json',
-            dataType : 'json',
-            data : function () {
-                return JSON.stringify(req);
+            contentType: 'application/json',
+            dataType: 'json',
+            data: function () {
+                return JSON.stringify({
+                    rtIdx: $('#rtIdx').val() === '' ? '등록' : $('#rtIdx').val(),
+                    raGbnCode: 'S'
+                });
             },
-            dataSrc : function (json) {
+            dataSrc: function (json) {
                 var data = json.result;
-                if (data === null || data === undefined){
+                if (data === null || data === undefined) {
                     data = [];
                 }
                 return data;
             },
-            error : function (xhr, error, code) {
+            error: function (xhr, error, code) {
                 console.log(error);
             }
         }
-    } );
+    });
 
-    var ltReq = {
-        rtIdx : rtIdx === null ? '등록' : rtIdx,
-        raGbnCode : 'L'
-    };
-
-    var ltTable = $('#ltDataTable').DataTable( {
+    var ltTable = $('#ltDataTable').DataTable({
         language: {
             emptyTable: "데이터가 존재하지 않습니다.",
             lengthMenu: "페이지당 _MENU_ 개씩 보기",
@@ -741,68 +829,71 @@
             search: "검색: ",
             zeroRecords: "일치하는 데이터가 존재하지 않습니다.",
             loadingRecords: "로딩중...",
-            processing:     "잠시만 기다려 주세요...",
+            processing: "잠시만 기다려 주세요...",
             paginate: {
                 next: "다음",
                 previous: "이전"
             }
         },
         pageMenu: 10,
-        dom : 'ftp',
+        dom: 'ftp',
         orderMulti: true,
         columns: [
-            { data : 'raIdx' },
-            { data : 'addrDepth1' },
-            { data : 'addrDepth2' },
-            { data : 'addrDepth3' },
-            { data : 'addrDepth4' }
+            {data: 'raIdx'},
+            {data: 'addrDepth1'},
+            {data: 'addrDepth2'},
+            {data: 'addrDepth3'},
+            {data: 'addrDepth4'}
         ],
         columnDefs: [{
-            targets : [0],
+            targets: [0],
             data: 'raIdx',
-            visible : false,
+            visible: false,
             searchable: false
-        },{
-            targets : [5],
-            data : null,
-            visible : true,
-            defaultContent : '<button class="btn btn-danger">삭제</button>'
+        }, {
+            targets: [5],
+            data: null,
+            visible: true,
+            defaultContent: '<button class="btn btn-danger">삭제</button>'
         }],
-        ajax : {
+        ajax: {
             url: '/api/v1.0/selectDcRentCompanyAblearea.json',
             type: 'POST',
-            contentType : 'application/json',
-            dataType : 'json',
-            data : function () {
-                return JSON.stringify(ltReq);
+            contentType: 'application/json',
+            dataType: 'json',
+            data: function () {
+                return JSON.stringify({
+                    rtIdx: $('#rtIdx').val() === '' ? '등록' : $('#rtIdx').val(),
+                    raGbnCode: 'L'
+                });
             },
-            dataSrc : function (json) {
+            dataSrc: function (json) {
                 var data = json.result;
-                if (data === null || data === undefined){
+                if (data === null || data === undefined) {
                     data = [];
                 }
                 return data;
             },
-            error : function (xhr, error, code) {
+            error: function (xhr, error, code) {
                 console.log(error);
             }
         }
-    } );
+    });
 
     $('#stDataTable tbody').on('click', 'button', function () {
-        var row = stTable.row( this.parentElement ).data() ;
+        var row = stTable.row(this.parentElement).data();
         deleteDeliveryLocation(row.raIdx);
     });
 
     $('#ltDataTable tbody').on('click', 'button', function () {
-        var row = ltTable.row( this.parentElement ).data();
+        var row = ltTable.row(this.parentElement).data();
         deleteDeliveryLocation(row.raIdx);
     });
 
     function deleteDeliveryLocation(raIdx) {
 
         var req = {
-            raIdx : raIdx
+            raIdx: raIdx
         };
         var target = 'deleteDcRentCompanyAblearea';
         var method = 'delete';
@@ -810,9 +901,14 @@
         fn_callApi(method, target, req, function (response) {
 
             var data = response;
-            if (data.code === 200){
-                location.reload();
-            }else {
+            if (data.code === 200) {
+
+                stTable.context[0].ajax.data({"rtIdx" : $('#rtIdx').val(), "rbGbnCode" : "S"});
+                stTable.ajax.reload();
+
+                ltTable.context[0].ajax.data({"rtIdx" : $('#rtIdx').val(), "rbGbnCode" : "L"});
+                ltTable.ajax.reload();
+            } else {
                 errorAlert('삭제 실패', '관리자에게 문의하세요.');
             }
 
@@ -823,9 +919,9 @@
         return /*[[${session.LOGIN_SESSION}]]*/ '';
     }
 
-    if(CRUD === "insert"){
+    if (CRUD === "insert") {
         openCreateRentCompany();
-    }else if (CRUD === "modify"){
+    } else if (CRUD === "modify") {
         initDetailInfo(rtIdx)
     }
 
@@ -838,13 +934,13 @@
         var selectedLocation;
 
         var strOption = '';
-        if (addLi.length === 0){
+        if (addLi.length === 0) {
             selectedLocation = addDo + ' ' + addSi + ' ' + addDong + ' ' + addLi + ' ';
 
             strOption += '<tr><td>' + selectedLocation + '</td>' +
                 '<td><button id="deleteSelectedLocation" class="btn">x</button></td></tr>';
-        }else {
-            for (var i=0; i < addLi.length; i++){
+        } else {
+            for (var i = 0; i < addLi.length; i++) {
                 selectedLocation = addDo + ' ' + addSi + ' ' + addDong + ' ' + addLi[i] + ' ';
 
                 strOption += '<tr><td>' + selectedLocation + '</td><td><button id="deleteSelectedLocation" class="btn">x</button></td></tr>';
@@ -863,13 +959,13 @@
         var selectedLocation;
 
         var strOption = '';
-        if (addLi.length === 0){
+        if (addLi.length === 0) {
             selectedLocation = addDo + ' ' + addSi + ' ' + addDong + ' ' + addLi + ' ';
 
             strOption += '<tr><td>' + selectedLocation + '</td>' +
                 '<td><button id="deleteSelectedLocation" class="btn">x</button></td></tr>';
-        }else {
-            for (var i=0; i < addLi.length; i++){
+        } else {
+            for (var i = 0; i < addLi.length; i++) {
                 selectedLocation = addDo + ' ' + addSi + ' ' + addDong + ' ' + addLi[i] + ' ';
 
                 strOption += '<tr><td>' + selectedLocation + '</td><td><button id="deleteSelectedLocation" class="btn">x</button></td></tr>';
@@ -879,11 +975,10 @@
         $('#selectedLocationTable tbody').append(strOption);
     });
 
-    $(document).on('click' , '#deleteSelectedLocation', function () {
+    $(document).on('click', '#deleteSelectedLocation', function () {
         var deleteData = this.parentElement.parentElement;
         deleteData.remove();
     });
-
 
     var minimumStartDt = new WinkelCalendar({
         container: 'minimumStartDt',
