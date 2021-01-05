@@ -101,7 +101,11 @@
                                     <td style="display: none" th:text="${car.getRtIdx()}"></td>
                                     <td th:text="${car.getCrIdx()}"></td>
                                     <td th:text="${car.getCompanyName() + '(' + car.getBranchName() + ')'}"></td>
-                                    <td th:text="${car.getModelName() + '(' + car.getCarNumber() + ')'}"></td>
+                                    <td>
+                                        <span th:text="${car.getModelName()}+' '+${car.getModelDetailName()}"></span>
+                                        <br>
+                                        <span th:text="${'(' + car.getCarNumber() + ')'}"></span>
+                                    </td>
                                     <td th:text="${#numbers.formatInteger(car.getMileage(), 3, 'COMMA')}"></td>
                                     <td th:text="${car.getYear()}"></td>
                                     <td th:text="${#numbers.formatInteger(car.getDailyStandardPay(), 0, 'COMMA')}"></td>
