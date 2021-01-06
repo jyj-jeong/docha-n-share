@@ -13,5 +13,11 @@
       <jdbc-driver>org.mariadb.jdbc.Driver</jdbc-driver>
       <jdbc-url>jdbc:mariadb://139.150.79.210:3306/ohdocha</jdbc-url>
     </data-source>
+    <data-source source="LOCAL" name="@139.150.79.210" uuid="b2ed1553-4618-400b-885c-9f25e6f26056">
+      <driver-ref>mariadb</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.mariadb.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mariadb://139.150.79.210:3306</jdbc-url>
+    </data-source>
   </component>
 </project>

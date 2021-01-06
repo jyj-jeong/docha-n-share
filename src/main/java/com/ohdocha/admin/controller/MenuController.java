@@ -429,28 +429,99 @@ public class MenuController extends ControllerExtension {
         return serviceMessage;
     }
 
-    /* 사이트 - 섬머노트 이미지 */
-    @PostMapping(value="/uploadSummernoteImageFile", produces = "application/json")
+    /* 사이트 - notice 섬머노트 이미지 */
+    @PostMapping(value="/noticeuploadSummernoteImageFile", produces = "application/json")
     @ResponseBody
-    public String uploadSummernoteImageFile(@RequestParam("file") MultipartFile multipartFile) {
+    public String noticeuploadSummernoteImageFile(@RequestParam("file") MultipartFile multipartFile) {
 
         JsonObject jsonObject = new JsonObject();
 
-        String fileRoot = "C:\\docha_mobility-k-admin2020-12-21/src/main/resources";	//저장될 외부 파일 경로
+       // String fileRoot = "C:\\docha_mobility-k-admin2020-12-21/src/main/resources";	//저장될 외부 파일 경로
+        String fileRoot = "file:///C:/summer/";	//저장될 외부 파일 경로
         String originalFileName = multipartFile.getOriginalFilename();	//오리지날 파일명
         String extension = originalFileName.substring(originalFileName.lastIndexOf("."));	//파일 확장자
 
         String savedFileName = UUID.randomUUID() + extension;	//저장될 파일 명
 
-        File file = new File(properties.getTempFolderPath() + "summernote/" + savedFileName); //서버일경우
-        //File file = new File(fileRoot + "/summernote/" + savedFileName);
+
+        File file = new File(properties.getTempFolderPath() + "sumnotice/" + savedFileName); //서버일경우
+      //  File file = new File(properties.getTempFolderPath() + "summernotelocal/" + savedFileName);  //로컬일경우
+
         FileHelper.makeFolder(file.getParentFile());
 
         try {
             file.createNewFile();
             multipartFile.transferTo(file);
-            jsonObject.addProperty("url", "https://admin.docha.co.kr/img/summernote/" + savedFileName); //서버일경우
-            //  jsonObject.addProperty("url", fileRoot + "/summernote/"+ savedFileName);
+            jsonObject.addProperty("url", "https://admin.docha.co.kr/img/sumnotice/" + savedFileName); //서버일경우
+      //        jsonObject.addProperty("url", fileRoot + "summernotelocal/"+ savedFileName);  //로컬일경우
+
+        } catch (Exception e) {
+            throw new BadRequestException(9998, "파일 생성 실패");
+        }
+
+
+        return new Gson().toJson(jsonObject);
+    }
+
+    /* 사이트 - faq 섬머노트 이미지 */
+    @PostMapping(value="/faquploadSummernoteImageFile", produces = "application/json")
+    @ResponseBody
+    public String faquploadSummernoteImageFile(@RequestParam("file") MultipartFile multipartFile) {
+
+        JsonObject jsonObject = new JsonObject();
+
+        // String fileRoot = "C:\\docha_mobility-k-admin2020-12-21/src/main/resources";	//저장될 외부 파일 경로
+        String fileRoot = "file:///C:/summer/";	//저장될 외부 파일 경로
+        String originalFileName = multipartFile.getOriginalFilename();	//오리지날 파일명
+        String extension = originalFileName.substring(originalFileName.lastIndexOf("."));	//파일 확장자
+
+        String savedFileName = UUID.randomUUID() + extension;	//저장될 파일 명
+
+
+         File file = new File(properties.getTempFolderPath() + "sumfaq/" + savedFileName); //서버일경우
+      //  File file = new File(properties.getTempFolderPath() + "summernotelocal/" + savedFileName);  //로컬일경우
+
+        FileHelper.makeFolder(file.getParentFile());
+
+        try {
+            file.createNewFile();
+            multipartFile.transferTo(file);
+            jsonObject.addProperty("url", "https://admin.docha.co.kr/img/sumfaq/" + savedFileName); //서버일경우
+        //    jsonObject.addProperty("url", fileRoot + "summernotelocal/"+ savedFileName);  //로컬일경우
+
+        } catch (Exception e) {
+            throw new BadRequestException(9998, "파일 생성 실패");
+        }
+
+
+        return new Gson().toJson(jsonObject);
+    }
+
+    /* 사이트 - 문의 섬머노트 이미지 */
+    @PostMapping(value="/questionuploadSummernoteImageFile", produces = "application/json")
+    @ResponseBody
+    public String questionuploadSummernoteImageFile(@RequestParam("file") MultipartFile multipartFile) {
+
+        JsonObject jsonObject = new JsonObject();
+
+        // String fileRoot = "C:\\docha_mobility-k-admin2020-12-21/src/main/resources";	//저장될 외부 파일 경로
+        String fileRoot = "file:///C:/summer/";	//저장될 외부 파일 경로
+        String originalFileName = multipartFile.getOriginalFilename();	//오리지날 파일명
+        String extension = originalFileName.substring(originalFileName.lastIndexOf("."));	//파일 확장자
+
+        String savedFileName = UUID.randomUUID() + extension;	//저장될 파일 명
+
+
+        File file = new File(properties.getTempFolderPath() + "sumquestion/" + savedFileName); //서버일경우
+        //  File file = new File(properties.getTempFolderPath() + "summernotelocal/" + savedFileName);  //로컬일경우
+
+        FileHelper.makeFolder(file.getParentFile());
+
+        try {
+            file.createNewFile();
+            multipartFile.transferTo(file);
+            jsonObject.addProperty("url", "https://admin.docha.co.kr/img/sumquestion/" + savedFileName); //서버일경우
+            //    jsonObject.addProperty("url", fileRoot + "summernotelocal/"+ savedFileName);  //로컬일경우
 
         } catch (Exception e) {
             throw new BadRequestException(9998, "파일 생성 실패");

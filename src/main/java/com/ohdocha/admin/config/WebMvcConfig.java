@@ -33,14 +33,18 @@ public class WebMvcConfig implements WebMvcConfigurer {
                 "/img/**",
                 "/css/**",
                 "/js/**",
-                "/vendor/**")
+                "/vendor/**"
+     //           ,"/summernotelocal/**"
+                            )
                 .addResourceLocations(
                         "classpath:/META-INF/resources/webjars/",
                         "classpath:/static/assets/",
                         "classpath:/static/img/",
                         "classpath:/static/css/",
                         "classpath:/static/js/",
-                        "classpath:/static/vendor/");
+                        "classpath:/static/vendor/"
+         //               ,"classpath:/upload/summersummer/summernotelocal/"
+                                                    );
     }
 
 }

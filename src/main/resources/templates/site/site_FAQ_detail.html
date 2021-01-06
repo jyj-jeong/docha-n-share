@@ -32,21 +32,22 @@
                             <div class="row">
                                 <div class=" col-lg-12 mb-3 float-l flex-1">
                                     <label>내용</label>
-                                    <textarea type="text" class="form-control" id="faContent" rows="5"></textarea>
+<!--                                    <textarea type="text" class="form-control" id="faContent" rows="5"></textarea>-->
+                                    <textarea id="summernote" class="form-control" name="summercontent"></textarea>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-12 mb-3">
-                                    <label class="form-label" for="faqImg">이미지 첨부</label>
-                                    <div class="input-group">
-                                        <div class="custom-file">
-                                            <input type="file" accept="image/*" class="custom-file-input" id="faqImg" aria-describedby="carImg">
-                                            <label class="custom-file-label" for="faqImg">파일을 선택하세요</label>
-                                        </div>
-                                    </div>
-                                    <p> 이미지의 크기는 500x300을 권장합니다. ( 지원형식 : jpg, jpeg, png, 20MB 이내 )</p>
-                                </div>
-                            </div>
+<!--                            <div class="row">-->
+<!--                                <div class="col-12 mb-3">-->
+<!--                                    <label class="form-label" for="faqImg">이미지 첨부</label>-->
+<!--                                    <div class="input-group">-->
+<!--                                        <div class="custom-file">-->
+<!--                                            <input type="file" accept="image/*" class="custom-file-input" id="faqImg" aria-describedby="carImg">-->
+<!--                                            <label class="custom-file-label" for="faqImg">파일을 선택하세요</label>-->
+<!--                                        </div>-->
+<!--                                    </div>-->
+<!--                                    <p> 이미지의 크기는 500x300을 권장합니다. ( 지원형식 : jpg, jpeg, png, 20MB 이내 )</p>-->
+<!--                                </div>-->
+<!--                            </div>-->
                             <script th:inline="javascript">
                                 var inputFile = document.querySelector("#faqImg");
 
@@ -64,7 +65,7 @@
                             <div class="row">
                                 <div class="col-12">
                                     <div class="select_img">
-                                        <img class="d-block mx-auto bg-gray-200 mb-4" src="" width="500" height="300" alt="IMG" id="car_img">
+<!--                                        <img class="d-block mx-auto bg-gray-200 mb-4" src="" width="500" height="300" alt="IMG" id="car_img">-->
                                     </div>
                                 </div>
                             </div>
@@ -126,7 +127,8 @@
 
         $('#faIdx').val(faqDetail[0].faIdx);
         $('#faTitle').val(faqDetail[0].faTitle);
-        $('#faContent').val(faqDetail[0].faContent);
+       // $('#faContent').val(faqDetail[0].faContent);
+        $("#summernote").val(faqDetail[0].faContent);
 
         $('#car_img').attr('src','https://admin.docha.co.kr/img/faq/' + faqDetail[0].imgIdx);
 
@@ -137,7 +139,9 @@
     function saveFAQ() {
         var faIdx = $('#faIdx').val();
         var faTitle = $('#faTitle').val();
-        var faContent = $('#faContent').val();
+   //     var faContent = $('#faContent').val();
+        var faContent = $("#summernote").val();
+
 
         var url = '/api/v1.0/insertFAQ.json';
         var req = {
@@ -159,7 +163,8 @@
         }).done(function (data, textStatus, jqXHR) {
 
             if (data.res === 1){
-                if (inputFile.files.length === 0) {
+                // if (inputFile.files.length === 0) {
+                if (1==1) {
                     swal("저장 성공", { icon: "success"});
                 } else {
                 /* 이미지 저장 */
@@ -233,6 +238,67 @@
 
         });
     }
+
+    // 섬머노트에디터 이미지업로드, 툴바 설정
+
+    $(document).ready(function() {
+        $('#summernote').summernote({
+            toolbar: [
+                // [groupName, [list of button]]
+                ['fontname', ['fontname']],
+                ['fontsize', ['fontsize']],
+                ['style', ['bold', 'italic', 'underline','strikethrough', 'clear']],
+                ['color', ['forecolor','color']],
+                ['table', ['table']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['height', ['height']],
+                ['insert',['picture']],
+                ['view', ['help']]
+            ],
+            fontNames: ['Arial', 'Arial Black', 'Comic Sans MS', 'Courier New','맑은 고딕','궁서','굴림체','굴림','돋음체','바탕체'],
+            fontSizes: ['8','9','10','11','12','14','16','18','20','22','24','28','30','36','50','72'],
+            placeholder: 'content',
+            minHeight: 200,
+            maxHeight: null,
+            focus: true,
+            lang : 'ko-KR',
+
+            callbacks: {	//여기 부분이 이미지를 첨부하는 부분
+                onImageUpload : function(files) {
+                    faquploadSummernoteImageFile(files[0],this);
+                }
+                // onPaste: function (e) {
+                //     var clipboardData = e.originalEvent.clipboardData;
+                //     if (clipboardData && clipboardData.items && clipboardData.items.length) {
+                //         var item = clipboardData.items[0];
+                //         if (item.kind === 'file' && item.type.indexOf('image/') !== -1) {
+                //             e.preventDefault();
+                //         }
+                //     }
+                // }
+            }
+
+        });
+    });
+
+    function faquploadSummernoteImageFile(file, editor) {
+        data = new FormData();
+        data.append("file", file);
+        $.ajax({
+            data : data,
+            type : "POST",
+            url : "/faquploadSummernoteImageFile",
+            contentType : false,
+            processData : false,
+            success : function(data) {
+                //항상 업로드된 파일의 url이 있어야 한다.
+                $(editor).summernote('insertImage',data.url);
+            }
+        });
+
+
+    }
+
 
 </script>
 </body>
