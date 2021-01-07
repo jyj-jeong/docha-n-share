@@ -91,5 +91,6 @@ public class DochaAdminRegCarDetailRequest extends CommonRequestDto {
 	private String calRentStartDt	  ; //요금계산시작일시
 	private String calRentEndDt		  ; //요금계산종료일시
 
-	
+	private String[] deleteCarIdxList;  //차량 삭제시 idx 리스트
+
 }

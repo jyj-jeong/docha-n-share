@@ -167,6 +167,18 @@ public class CarController extends ControllerExtension {
         return serviceMessage;
     }
 
+    /* 등록차량 삭제 */
+    @PostMapping(value = "/api/v1.0/deleteDcCarInfo.do")
+    @ResponseBody
+    public Object deleteCarInfo(@RequestBody DochaAdminRegCarDetailRequest deleteCarRequest, HttpServletRequest request) {
+        ServiceMessage serviceMessage = createServiceMessage(request);
+        serviceMessage.addData("deleteCarRequest", deleteCarRequest);
+
+        carService.deleteCarInfo(serviceMessage);
+
+        return serviceMessage;
+    }
+
     /* 차량 일대여, 월대여 설정 */
     @PostMapping(value = "/car/rentAble.json")
     @ResponseBody

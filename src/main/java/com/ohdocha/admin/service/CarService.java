@@ -101,4 +101,6 @@ public interface CarService {
     void deleteCarMpdelInfo(ServiceMessage serviceMessage);
 
     void selectYearForCarModelSelectBox(ServiceMessage message);
+
+    void deleteCarInfo(ServiceMessage serviceMessage);
 }

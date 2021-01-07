@@ -66,13 +66,13 @@
                         , CASE WHEN INSTR(D.COMPANY_AddRESS||D.COMPANY_AddRESS_DETAIL, '제주') > 0 THEN 'JJ' ELSE 'IL' END AS LAND_CODE /* 내륙/제주 구분 [JJ:제주,IL:내륙,IS:제주 제외한 섬] */
                      FROM DC_RESERVE_MASTER A INNER JOIN DC_CAR_INFO C ON A.CR_IDX = C.CR_IDX
                                          INNER JOIN DC_RENT_COMPANY D ON A.RT_IDX = D.RT_IDX ]]>
-                                         <if test="rtIdx != null and rtIdx != '' ">
-                                             <![CDATA[ AND D.RT_IDX = #{rtIdx} ]]>
-                                         </if>
-                                         <if test="rtPIdx != null and rtPIdx != '' ">
-                                             <![CDATA[  AND D.RT_P_IDX = #{rtPIdx} ]]>
-                                         </if>
-                  ) X ) X2 ORDER BY RESERVE_DATE DESC
+        <if test="rtIdx != null and rtIdx != '' ">
+            <![CDATA[ AND D.RT_IDX = #{rtIdx} ]]>
+        </if>
+        <if test="rtPIdx != null and rtPIdx != '' ">
+            <![CDATA[  AND D.RT_P_IDX = #{rtPIdx} ]]>
+        </if>
+        ) X ) X2 ORDER BY RESERVE_DATE DESC
     </select>
 
     <!-- 예약 상세 -->
@@ -884,6 +884,7 @@
                            INNER JOIN DC_CAR_INFO_INSURANCE Z
                                   ON T1.CR_IDX = Z.CR_IDX
          WHERE  T1.RT_IDX = #{rtIdx}
+         AND IFNULL(T1.DEL_YN, 'N') = 'N'
       ]]>
         <if test="rentStartDay != null and rentStartDay != '' and rentEndDay != null and rentEndDay != ''">
             AND T1.CR_IDX NOT IN (

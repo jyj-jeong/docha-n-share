@@ -24,9 +24,9 @@ function initializingPageData(){
 	bindEvent();
 
 	/*
-	 * IE 브라우저인경우 data-mask="____-__-__ __:__" 사용
-	 * 이외 부라우저인 경우 type="datetime-local" 사용
-	 */
+     * IE 브라우저인경우 data-mask="____-__-__ __:__" 사용
+     * 이외 부라우저인 경우 type="datetime-local" 사용
+     */
 	var browse = navigator.userAgent.toLowerCase();
 	if( (navigator.appName === 'Netscape' && browse.indexOf('trident') !== -1) || (browse.indexOf("msie") !== -1)) {
 		$("input[name=calRentStartDt2]").remove();
@@ -891,7 +891,7 @@ function selectCarModelDetail(modelName, year, _data){
 	//연료
 	let req = {
 		modelName:modelName,
-        year : year
+		year : year
 	};
 
 	fn_callApi(method, target, req, function (response) {
@@ -933,7 +933,7 @@ function selectCarModelDetail(modelName, year, _data){
  * 연식에 따른 차종 호출
  */
 function yearchange() {
-    let year = $("#year option:selected").val();
+	let year = $("#year option:selected").val();
 	selectYear(year,  null);
 }
 
@@ -1221,7 +1221,6 @@ function detailValidation(save_type){
 	let crIdx 	= $("#crIdx").val();
 
 
-
 	if (!isEmpty(save_type)) { // is not empty
 		switch (save_type) {
 			case 'saveCarinfo':		// 차량기본정보
@@ -1474,11 +1473,10 @@ function detailValidation(save_type){
 				call_before_save(title, text, icon, cancel_text, save_type, req);
 
 				break;
-
 			/*
-			*  요금에 빈칸이 들어가면 계산에서 에러가 나기 때문에 빈칸이면 0을 넣는다
-			*  필수 입력은 숫자로 입력했는지만 거른다.
-			*  */
+            *  요금에 빈칸이 들어가면 계산에서 에러가 나기 때문에 빈칸이면 0을 넣는다
+            *  필수 입력은 숫자로 입력했는지만 거른다.
+            *  */
 			case 'savePaymentinfo':	// 기본요금정보
 				let pyTIdx 				= $("#sel_pyTIdx option:selected").val();
 				let dailyStandardPay 	= getPureText($('#dailyStandardPay').val().trim()) === "" ?
@@ -1641,6 +1639,10 @@ function detailSubmit(save_type, req){
 			method = 'update';
 			// }
 			break;
+		case 'deleteDcCarInfo':
+			target = 'deleteDcCarInfo'; // 차량삭제
+			method = 'delete';
+			break;
 
 	}// end switch
 
@@ -1666,6 +1668,10 @@ function detailSubmit(save_type, req){
 		// if (res.code == 200) {
 
 		if (data.res === 1) {
+			if(save_type === 'deleteDcCarInfo'){
+				swal("삭제 성공", {icon : "success"});
+				return;
+			}
 			swal("저장 성공", {icon : "success"});
 
 			switch (save_type) {
@@ -1687,6 +1693,9 @@ function detailSubmit(save_type, req){
 			}// end switch
 		}
 		else { // 200이 아닐때 empty처리 error처리 등을 기록한다.
+			if(save_type === 'deleteDcCarInfo'){
+				errorAlert('삭제 실패', '관리자에게 문의하세요.');
+			}
 			errorAlert('저장 실패', '관리자에게 문의하세요.');
 		}
 	});// end fn_callApi
@@ -1755,6 +1764,40 @@ function initDetailData(data){
 	// select box 가져오기
 	initDetailSelectBox(null);
 
+}
+
+// 차량 삭제
+function deleteCarData() {
+	var deleteCarIdxList = [];
+
+	$("input:checkbox[name='deleteCheck']:checked").each(function() {
+		deleteCarIdxList.push(this.parentElement.parentElement.dataset.value);
+	});
+
+	if (deleteCarIdxList.length === 0){
+		errorAlert('차량 삭제', '삭제할 차량을 선택해주세요.');
+		return;
+	}
+
+	var checkedCarCount;
+
+	var deleteAllYn = $('input:checkbox[id=deleteAllCar]').is(":checked");
+	checkedCarCount = deleteAllYn ? deleteCarIdxList.length - 1 : deleteCarIdxList.length;
+
+	req = {
+		'deleteCarIdxList' : deleteCarIdxList
+		,	'delYn' : 'Y'
+		,	'modId' : getLoginUser().urIdx
+	};
+
+	save_type = 'deleteDcCarInfo';
+
+	title = '차량 삭제';
+	text = "총 "+ checkedCarCount + " 건의 차량이 선택되었습니다.\n삭제하시겠습니까?";
+	icon = 'info';
+	cancel_text = '취소하셨습니다.';
+
+	call_before_save(title, text, icon, cancel_text, save_type, req);
 }
 
 /*

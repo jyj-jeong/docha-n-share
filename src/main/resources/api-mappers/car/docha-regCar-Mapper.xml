@@ -58,8 +58,9 @@
              ]]>
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
 			1=1
+			AND IFNULL(T1.DEL_YN, 'N') = 'N'
 			<if test=" rtIdx != null and rtIdx != '' ">
-			      AND   T1.RT_IDX    = #{rtIdx}
+				AND   T1.RT_IDX    = #{rtIdx}
 			</if>
 			<if test="reserveStatus != null and reserveStatus != '' ">
 				<![CDATA[
@@ -213,7 +214,7 @@
                     ON T1.RT_IDX = T2.RT_IDX
          ]]>
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
-			 <![CDATA[   T1.DEL_YN='N' ]]>
+			<![CDATA[   IFNULL(T1.DEL_YN, 'N')='N' ]]>
 			<if test="rtIdx != null and rtIdx != ''">
 				<![CDATA[ AND T1.RT_IDX = #{rtIdx} ]]>
 			</if>
@@ -234,12 +235,12 @@
             FROM   DC_CAR_INFO_OPTION T1
             WHERE IFNULL(T1.DEL_YN, 'N') = 'N'
      ]]>
-	<if test="crIdx != null and crIdx != ''">
-		<![CDATA[ AND T1.CR_IDX = #{crIdx} ]]>
-	</if>
+		<if test="crIdx != null and crIdx != ''">
+			<![CDATA[ AND T1.CR_IDX = #{crIdx} ]]>
+		</if>
 	</select>
 
-    <delete id="deleteRegCarDetailOption" parameterType="regCarDetailRequest">
+	<delete id="deleteRegCarDetailOption" parameterType="regCarDetailRequest">
            <![CDATA[ DELETE FROM DC_CAR_INFO_OPTION WHERE CR_IDX = #{crIdx} ]]>
     </delete>
 
@@ -263,7 +264,7 @@
 			<if test="monthlyYn         != null"><![CDATA[  , MONTHLY_YN          = #{monthlyYn}           ]]></if>    <!-- 월대여 -->
 			<if test="modId         != null"><![CDATA[  , MOD_ID          = #{modId}        ]]></if>    <!-- 월대여 -->
 			<if test="modDt         != null"><![CDATA[  , MOD_DT          = NOW()          ]]></if>    <!-- 월대여 -->
-
+			<if test="delYn         != null"><![CDATA[  , DEL_YN          = #{delYn}           ]]></if>    <!-- 삭제 여부 -->
 		</trim>
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
 			<if test="crIdx != null and crIdx != '' ">
@@ -569,7 +570,6 @@
     </insert>
 
 
-
 	<!-- 공휴일 가져오기-->
 	<select id="selectHolidayList" resultType="DochaHolidayDto" parameterType="DochaMap" >
    		<![CDATA[
@@ -591,8 +591,6 @@
                     AND HOLIDAY_END_DT >= #{holidayTime})
                     OR (HOLIDAY_START_DT <= #{holidayTime}
                         AND HOLIDAY_END_DT >= #{holidayTime}))
-
-
 
         ]]>
    </select>

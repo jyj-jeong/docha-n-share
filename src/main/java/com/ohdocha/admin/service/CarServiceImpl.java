@@ -627,6 +627,21 @@ public class CarServiceImpl extends ServiceExtension implements CarService {
 
     }
 
+    @Override
+    public void deleteCarInfo(ServiceMessage serviceMessage) {
+        DochaAdminRegCarDetailRequest deleteCarRequest = serviceMessage.getObject("deleteCarRequest", DochaAdminRegCarDetailRequest.class);
+
+        int res = 0;
+
+        for (String crIdx : deleteCarRequest.getDeleteCarIdxList()){
+            deleteCarRequest.setCrIdx(crIdx);
+
+            res = regCarMapper.updateDcCarInfo(deleteCarRequest);
+        }
+
+        serviceMessage.addData("res", res);
+    }
+
     /* 차종 옵션 선택 */
     @Override
     public void selectCarModelForSelectBox(ServiceMessage message) {
