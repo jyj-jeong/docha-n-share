@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="header :: mainHead"></head>
+<head>
+    <title>이용후기 :: DoCha Admin Web</title>
+</head>
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary" style="cursor: pointer" >이벤트</h6>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="row">
+                            <h6 class="col-12 mb-3 font-weight-bold">작성정보</h6>
+                            <div class="col-3 mb-3">
+                                <label>등록일시</label>
+                                <input type="text" class="form-control" readonly th:value="${result.getRegDt()}" />
+                            </div>
+                            <div class="col-3 mb-3">
+                                <label>회원사</label>
+                                <input type="text" class="form-control" readonly th:value="${result.getCompanyName() + '(' + result.getCompanyZipCode() + ')'}" />
+                            </div>
+                            <div class="col-3 mb-3">
+                                <label>모델</label>
+                                <input type="text" class="form-control" readonly th:value="${result.getModelName() + result.getModelDetailName() + '('  + result.getCarNumber() + ')' }"  />
+                            </div>
+                            <div class="col-3 mb-3">
+                                <label>번호</label>
+                                <input type="text" class="form-control" readonly th:value="${result.getCarNumber()}" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                    	<h6 class="col-12 mb-3 font-weight-bold">내용</h6>
+                        <div class="row">
+                            <div class="col-1 mb-1">
+                                <label>평점</label>
+                                <input type="text" class="form-control" readonly th:value="${result.getRating()}" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <h6 class="col-12 mb-3 font-weight-bold"></h6>
+                            <div class="col-12 mb-12">
+                                <label>내용</label>
+                                <input type="text" class="form-control" readonly th:value="${result.getComment()}" />
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card-body">
+                    	<h6 class="col-12 mb-3 font-weight-bold">사진</h6>
+                        <div class="row">
+                            <div class="col-1 mb-1">
+                                <label>평점</label>
+                                <input type="text" class="form-control" readonly th:value="${result.getRating()}" />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <h6 class="col-12 mb-3 font-weight-bold"></h6>
+                            <div class="col-12 mb-12">
+                                <label>내용</label>
+                                <input type="text" class="form-control" readonly th:value="${result.getComment()}" />
+                            </div>
+                        </div>
+                    </div>
+					<!-- fileList  -->
+					<th:block th:each="item,status : ${fileList}">
+						<img src="${item}"></img>
+						<span th:text="${item}"></span>
+					</th:block>
+                </div>
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <div th:replace="main_footer :: mainFooter"></div>
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+<!-- Logout Modal-->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">알림</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">로그아웃을 하시겠습니까?</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-primary" href="/api/v1.0/docha.logout">Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:inline="javascript">
+
+    var eventDetail = /*[[${result}]]*/ '';
+    var loginUser = /*[[${session.LOGIN_SESSION}]]*/'';
+
+
+    if (eventDetail !== null) {
+
+        $('#evIdx').val(eventDetail[0].evIdx);
+        $('#evTitle').val(eventDetail[0].evTitle);
+        $('#evContent').val(eventDetail[0].evContent);
+
+        $('#evStartDt').val(eventDetail[0].evStartDt);
+        $('#evEndDt').val(eventDetail[0].evEndDt);
+
+        $('#event_img').attr('src', 'https://admin.docha.co.kr/img/event/' + eventDetail[0].evImgIdx);
+        $('#event_list_img').attr('src', 'https://admin.docha.co.kr/img/event/' + eventDetail[0].evListImgIdx);
+        $('#event_banner_img').attr('src', 'https://admin.docha.co.kr/img/event/' + eventDetail[0].evBannerImgIdx);
+
+    } 
+
+    function saveEventImg() {
+        var evIdx = $('#evIdx').val();
+        var evTitle = $('#evTitle').val();
+        var evContent = $('#evContent').val();
+        var evStartDt = $('#evStartDt').val();
+        var evEndDt = $('#evEndDt').val();
+        var regId = loginUser.urIdx;
+        var modId = loginUser.urIdx;
+
+        if (isEmpty(evStartDt)) {
+            errorAlert('시작일시', '시작일시를 선택해 주세요');
+            return;
+        } else if (isEmpty(evEndDt)) {
+            errorAlert('종료일시', '종료일시를 선택해 주세요');
+            return;
+        }
+
+        var url = '/api/v1.0/insertEvent.json';
+        var req = {
+            evIdx: evIdx,
+            evTitle: evTitle,
+            evContent: evContent,
+            evStartDt: evStartDt,
+            evEndDt: evEndDt,
+            regId: regId,
+            modId: modId
+        };
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: JSON.stringify(req),
+            contentType: 'application/json',
+            cache: false,
+            async: false,
+            timeout: 10000
+        }).done(function (data, textStatus, jqXHR) {
+
+            if (data.res === 1) {
+                document.getElementById("evIdx").value = data.eventRequest.evIdx;
+                if (inputFile.files.length === 0) {
+                    swal("저장 성공", {icon: "success"});
+                } else {
+                    /* 이미지 저장 */
+                    var formData = new FormData();
+                    evIdx = data.eventRequest.evIdx;
+
+                    formData.append("image", inputFile.files[0]);
+                    formData.append("evIdx", evIdx);
+
+                    for (var pair of formData.entries()) {
+                        console.log(pair[0] + ', ' + pair[1]);
+                    }
+
+                    var oReq = new XMLHttpRequest();
+                    oReq.addEventListener("load", function () {
+
+                        if (oReq.status === 200) {
+                            location.href = "";
+                            alert(err.responseJSON.message);
+                        } else if (oReq.status === 400) {
+                            errorAlert('저장 실패', '관리자에게 문의하세요.');
+                        } else if (oReq.status === 500) {
+                            swal("저장 성공", {icon: "success"});
+                            console.log(oReq.response);
+                        }
+
+                    });
+                    oReq.open("POST", "/api/v1.0/uploadEventImage.do", true);
+                    oReq.send(formData);
+
+
+                    var editor;
+                    var path;
+                    editor = $("#eventImg").val();
+                    path = ($("#depth_container").text()).replace("/" + "");
+                    var type = "html";
+                }
+            } else {
+                errorAlert("저장 실패", "저장에 실패하였습니다.")
+            }
+
+        });
+
+
+    }
+
+    function deleteEventImg() {
+        var evIdx = $('#evIdx').val();
+
+        var url = '/api/v1.0/deleteEvent.json';
+        var req = {
+            evIdx: evIdx
+        };
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: JSON.stringify(req),
+            contentType: 'application/json',
+            cache: false,
+            async: false,
+            timeout: 10000
+        }).done(function (data, textStatus, jqXHR) {
+
+            if (data.res === 1) {
+                swal("삭제 성공", {icon: "success"});
+            } else {
+                errorAlert("삭제 실패", "삭제에 실패하였습니다.")
+            }
+
+        });
+    }
+
+    function saveEventListImg() {
+        var evIdx = $('#evIdx').val();
+
+        if (isEmpty(evIdx)) {
+            errorAlert('이벤트', '이벤트를 먼저 저장해 주세요.');
+            return;
+        }
+
+        if (listInputFile.files.length === 0) {
+            errorAlert('이벤트', '첨부할 사진을 선택해 주세요.');
+            return;
+        }
+
+        /* 이미지 저장 */
+        var formData = new FormData();
+
+        formData.append("image", listInputFile.files[0]);
+        formData.append("evIdx", evIdx);
+
+        for (var pair of formData.entries()) {
+            console.log(pair[0] + ', ' + pair[1]);
+        }
+
+        var oReq = new XMLHttpRequest();
+        oReq.addEventListener("load", function () {
+
+            if (oReq.status === 200) {
+                location.href = "";
+                alert(err.responseJSON.message);
+            } else if (oReq.status === 400) {
+                errorAlert('저장 실패', '관리자에게 문의하세요.');
+            } else if (oReq.status === 500) {
+                swal("저장 성공", {icon: "success"});
+                console.log(oReq.response);
+            }
+
+        });
+        oReq.open("POST", "/api/v1.0/uploadEventListImage.do", true);
+        oReq.send(formData);
+
+        var editor;
+        var path;
+        editor = $("#eventImg").val();
+        path = ($("#depth_container").text()).replace("/" + "");
+        var type = "html";
+
+    }
+
+    function saveEventBannerImg() {
+        var evIdx = $('#evIdx').val();
+
+        if (isEmpty(evIdx)) {
+            errorAlert('이벤트', '이벤트를 먼저 저장해 주세요.');
+            return;
+        }
+
+        if (bannerInputFile.files.length === 0) {
+            errorAlert('이벤트', '첨부할 사진을 선택해 주세요.');
+            return;
+        }
+
+        /* 이미지 저장 */
+        var formData = new FormData();
+
+        formData.append("image", bannerInputFile.files[0]);
+        formData.append("evIdx", evIdx);
+
+        for (var pair of formData.entries()) {
+            console.log(pair[0] + ', ' + pair[1]);
+        }
+
+        var oReq = new XMLHttpRequest();
+        oReq.addEventListener("load", function () {
+
+            if (oReq.status === 200) {
+                location.href = "";
+                alert(err.responseJSON.message);
+            } else if (oReq.status === 400) {
+                errorAlert('저장 실패', '관리자에게 문의하세요.');
+            } else if (oReq.status === 500) {
+                swal("저장 성공", {icon: "success"});
+                console.log(oReq.response);
+            }
+
+        });
+        oReq.open("POST", "/api/v1.0/uploadEventBannerImage.do", true);
+        oReq.send(formData);
+
+        var editor;
+        var path;
+        editor = $("#eventImg").val();
+        path = ($("#depth_container").text()).replace("/" + "");
+        var type = "html";
+
+    }
+</script>
+</body>
+</html>

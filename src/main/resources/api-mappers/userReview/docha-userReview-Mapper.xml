@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.ohdocha.admin.mapper.DochaUserReviewMapper">
+
+
+    <select id="selectUserReviewList" parameterType="userReviewDto" resultType="userReviewDto">
+        <![CDATA[
+			SELECT 	T1.RV_IDX 					/* SEQUENCE   */
+			,		T1.COMMENT 					/* 후기내용     */
+			,		T1.RATING					/* 평가점수     */
+			,		T1.REG_DT 					/* 등록일시     */
+			,		T1.REG_ID 					/* 등록자      */
+			,		T1.MOD_DT 					/* 수정일시     */
+			,		T1.MOD_ID 					/* 수정자      */
+			,		T1.DEL_YN 					/* 삭제여부     */
+			,       UR.USER_ID					/* 고객아이디	  */
+			,		UR.USER_NAME    			/* 고객명		  */
+			,       T3.RM_IDX					/* RM_IDX     */
+			,       T3.RT_IDX					/* RT_IDX	  */
+			,       T3.CR_IDX					/* CR_IDX     */
+			,       T4.MODEL_NAME				/* 차량모델명    */
+			,       T4.MODEL_DETAIL_NAME		/* 차량모델디테일  */
+			,       T4.CAR_NUMBER
+			,       T5.COMPANY_NAME
+			,       COUNT(T6.RV_IDX)		 AS IMG_COUNT
+			FROM    DC_USER_REVIEW T1
+			LEFT JOIN DC_RESERVE_MASTER T3 	ON T1.RM_IDX = T3.RM_IDX
+			LEFT JOIN DC_USER_INFO UR 		ON T3.UR_IDX = UR.UR_IDX
+			LEFT JOIN DC_CAR_INFO T4 		ON T3.CR_IDX = T4.CR_IDX
+			LEFT JOIN DC_RENT_COMPANY T5	ON T3.RT_IDX = T5.RT_IDX
+			LEFT JOIN DC_USER_REVIEW_FILE T6 ON T1.RV_IDX = T6.RV_IDX
+			GROUP BY T1.RV_IDX
+         ]]>
+    </select>
+
+    <select id="selectUserReviewInfo" parameterType="userReviewDto" resultType="userReviewDto">
+    
+        <![CDATA[
+			SELECT 	T1.RV_IDX 					/* SEQUENCE   */
+			,		T1.COMMENT 					/* 후기내용     */
+			,		T1.RATING					/* 평가점수     */
+			,		T1.REG_DT 					/* 등록일시     */
+			,		T1.REG_ID 					/* 등록자      */
+			,		T1.MOD_DT 					/* 수정일시     */
+			,		T1.MOD_ID 					/* 수정자      */
+			,		T1.DEL_YN 					/* 삭제여부     */
+			,       UR.USER_ID					/* 고객아이디	  */
+			,		UR.USER_NAME    			/* 고객명		  */
+			,       T3.RM_IDX					/* RM_IDX     */
+			,       T3.RT_IDX					/* RT_IDX	  */
+			,       T3.CR_IDX					/* CR_IDX     */
+			,       T4.MODEL_NAME				/* 차량모델명    */
+			,       T4.MODEL_DETAIL_NAME		/* 차량모델디테일  */
+			,       T4.CAR_NUMBER
+			,       T5.COMPANY_NAME
+			,       T5.COMPANY_ZIPCODE
+			FROM    DC_USER_REVIEW T1
+			LEFT JOIN DC_RESERVE_MASTER T3 	ON T1.RM_IDX = T3.RM_IDX
+			LEFT JOIN DC_USER_INFO UR 		ON T3.UR_IDX = UR.UR_IDX
+			LEFT JOIN DC_CAR_INFO T4 		ON T3.CR_IDX = T4.CR_IDX
+			LEFT JOIN DC_RENT_COMPANY T5	ON T3.RT_IDX = T5.RT_IDX
+			WHERE T1.RV_IDX = #{rvIdx} 
+         ]]>
+
+    </select>
+
+	<select id="selectUserReviewFile" parameterType="userReviewDto" resultType="userReviewDto">
+		SELECT FILE
+		FROM   DC_USER_REVIEW_FILE
+		WHERE  RV_IDX = #{rvIdx}
+	</select>
+	
+	
+    <update id="updateUserReviewInfo" parameterType="userReviewDto">
+        UPDATE DC_USER_REVIEW 
+        SET    MOD_DT = NOW()
+        <if test="comment != null and comment != '' ">COMMENT = #{comment}</if>
+        <if test="rating != null and rating != '' ">RATING = #{rating}</if>
+		WEHRE RV_IDX = #{rvIdx}
+
+    </update>
+
+</mapper>
+
+
+    
+    
+    
+    
+  
+    
+    
+    
+
+    
