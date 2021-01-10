@@ -1482,11 +1482,11 @@ function detailValidation(save_type){
 				let dailyStandardPay 	= getPureText($('#dailyStandardPay').val().trim()) === "" ?
 					"0" : getPureText($('#dailyStandardPay').val().trim());
 				let dailyMaxRate 		= getPureText($('#dailyMaxRate').val().trim()).trim()=== "" ?
-					"0" : getPureText($('#dailyMaxRate').val().trim());
+					"0" : getPureText($('#dailyMaxRate').val().trim()).trim();
 				let monthlyStandardPay 	= getPureText($('#monthlyStandardPay').val().trim())=== "" ?
 					"0" : getPureText($('#monthlyStandardPay').val().trim());
 				let monthlyMaxRate 		= getPureText($('#monthlyMaxRate').val().trim()).trim()=== "" ?
-					"0" : getPureText($('#monthlyMaxRate').val().trim());
+					"0" : getPureText($('#monthlyMaxRate').val().trim()).trim();
 				let month3Deposit 		= getPureText($('#month3Deposit').val().trim())=== "" ?
 					"0" : getPureText($('#month3Deposit').val().trim());
 				let month6Deposit 		= getPureText($('#month6Deposit').val().trim())=== "" ?
