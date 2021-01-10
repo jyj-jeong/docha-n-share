@@ -47,16 +47,18 @@
                     (
                       SELECT IFNULL(COUNT(CI.CR_IDX), '0') AS REG_CAR_COUNT
                       ,      CI.RT_IDX AS RT_IDX
-                      FROM   DC_CAR_INFO CI GROUP BY CI.RT_IDX
+                      FROM   DC_CAR_INFO CI
+                      WHERE IFNULL(CI.DEL_YN, 'N') = 'N'
+                      GROUP BY CI.RT_IDX
                     ) T3 ON T1.RT_IDX = T3.RT_IDX ]]>
-				<trim prefix="WHERE" prefixOverrides="AND|OR">
-					<if test="rtIdx != null and rtIdx != '' ">
-				     		AND <![CDATA[ T1.RT_IDX = #{rtIdx}  ]]>
-				 	</if>
-					<if test="rtPIdx != null and rtPIdx != '' ">
-						AND <![CDATA[ T1.RT_P_IDX = #{rtPIdx}  ]]>
-					</if>
-				        </trim>
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="rtIdx != null and rtIdx != '' ">
+				AND <![CDATA[ T1.RT_IDX = #{rtIdx}  ]]>
+			</if>
+			<if test="rtPIdx != null and rtPIdx != '' ">
+				AND <![CDATA[ T1.RT_P_IDX = #{rtPIdx}  ]]>
+			</if>
+		</trim>
 		ORDER BY T1.REG_DT DESC
 	</select>
 
@@ -97,7 +99,11 @@
 		, IFNULL(T1.BRANCH_NAME                 	, '') AS BRANCH_NAME                    /*지점명*/
 		, IFNULL(T1.ACCESS_YN                   	, '') AS ACCESS_YN                      /*접속허용여부*/
 		, IFNULL(T1.CAR_COUNT				  	 	, 0)  AS CAR_COUNT                      /* 보유한 차량 카운트*/
-		, (SELECT COUNT(RT_IDX) FROM DC_CAR_INFO WHERE RT_IDX = T1.RT_IDX) AS REG_CAR_COUNT  /* 등록한 차량 카운트*/
+		, ( SELECT COUNT(CI.RT_IDX)
+			FROM DC_CAR_INFO CI
+		 	WHERE CI.RT_IDX = T1.RT_IDX
+		 	AND IFNULL(CI.DEL_YN, 'N') = 'N'
+		 ) AS REG_CAR_COUNT  /* 등록한 차량 카운트*/
 		, IFNULL(T2.COMMISSION_PER					, '') AS COMMISSION_PER					/*수수료윯*/
 		, IFNULL(T2.TAX_INVOICE_CODE				, '') AS TAX_INVOICE_CODE				/*세금계산서 발행주체*/
 		, IFNULL(T3.WEEKDAY_OPEN_START				, '') AS WEEKDAY_OPEN_START				/*평일영업시작시간*/
@@ -251,21 +257,21 @@
 			FROM DC_RENT_COMPANY_STAFF
               WHERE 'N' = IFNULL(DEL_YN, 'N')
 		]]>
-			<if test="rtIdx != null and rtIdx != ''">
-				<![CDATA[ AND RT_IDX = #{rtIdx} ]]>
-			</if>
-			<if test="rsIdx != null and rsIdx != ''">
-				<![CDATA[ AND RS_IDX = #{rsIdx} ]]>
-			</if>
-			<if test="staffName != null and staffName != ''">
-				<![CDATA[ AND STAFF_NAME = #{staffName} ]]>
-			</if>
-			<if test="staffEmail != null and staffEmail != ''">
-				<![CDATA[ AND STAFF_EMAIL = #{staffEmail} ]]>
-			</if>
-			<if test="staffContact1 != null and staffContact1 != ''">
-				<![CDATA[ AND STAFF_CONTACT1 = #{staffContact1} ]]>
-			</if>
+		<if test="rtIdx != null and rtIdx != ''">
+			<![CDATA[ AND RT_IDX = #{rtIdx} ]]>
+		</if>
+		<if test="rsIdx != null and rsIdx != ''">
+			<![CDATA[ AND RS_IDX = #{rsIdx} ]]>
+		</if>
+		<if test="staffName != null and staffName != ''">
+			<![CDATA[ AND STAFF_NAME = #{staffName} ]]>
+		</if>
+		<if test="staffEmail != null and staffEmail != ''">
+			<![CDATA[ AND STAFF_EMAIL = #{staffEmail} ]]>
+		</if>
+		<if test="staffContact1 != null and staffContact1 != ''">
+			<![CDATA[ AND STAFF_CONTACT1 = #{staffContact1} ]]>
+		</if>
 	</select>
 
 	<update  id="updateDcRentStaff" parameterType="dcRentCompanyStaffRequest">
@@ -369,24 +375,24 @@
 				WHERE 'N' = IFNULL(DEL_YN, 'N')
 
 		]]>
-			<if test="rtIdx != null and rtIdx != ''">
-				AND <![CDATA[ RT_IDX = #{rtIdx} ]]>
-			</if>
-			<if test="minIdx != null and minIdx != ''">
-				AND <![CDATA[ MIN_IDX = #{minIdx} ]]>
-			</if>
-			<if test="tminIdx != null and tminIdx != ''">
-				AND <![CDATA[ MIN_IDX != #{tminIdx} ]]>
-			</if>
-			<if test="minimumStartDt != null and minimumStartDt != ''">
-				AND <![CDATA[
+		<if test="rtIdx != null and rtIdx != ''">
+			AND <![CDATA[ RT_IDX = #{rtIdx} ]]>
+		</if>
+		<if test="minIdx != null and minIdx != ''">
+			AND <![CDATA[ MIN_IDX = #{minIdx} ]]>
+		</if>
+		<if test="tminIdx != null and tminIdx != ''">
+			AND <![CDATA[ MIN_IDX != #{tminIdx} ]]>
+		</if>
+		<if test="minimumStartDt != null and minimumStartDt != ''">
+			AND <![CDATA[
 	    		( MINIMUM_START_DT between #{minimumStartDt} and #{minimumEndDt}
 	    		OR MINIMUM_END_DT between #{minimumStartDt} and #{minimumEndDt}
 	    		OR #{minimumStartDt} BETWEEN MINIMUM_START_DT AND MINIMUM_END_DT
 	    		OR #{minimumEndDt} BETWEEN MINIMUM_START_DT AND MINIMUM_END_DT
 	    		)
 	    		]]>
-			</if>
+		</if>
 	</select>
 
 	<update  id="updateDcRentCompanyReserveMin" parameterType="dcRentCompanyReserveMinRequest">
@@ -685,7 +691,7 @@
 				AND <![CDATA[ RA_GBN_CODE = #{raGbnCode} ]]>
 			</if>
 		</trim>
-			<![CDATA[ ORDER BY RA_IDX  ]]>
+		<![CDATA[ ORDER BY RA_IDX  ]]>
 	</select>
 
 	<update  id="updateDcRentCompanyAblearea" parameterType="DcRentCompanyAbleareaRequest">
@@ -709,20 +715,20 @@
 	<insert id="insertDcRentCompanyAblearea" parameterType="java.util.List">
 		INSERT INTO DC_RENT_COMPANY_ABLEAREA
 		(
-			RT_IDX
-			,	ADDR_DEPTH1
-			,	ADDR_DEPTH2
-			,	ADDR_DEPTH3
-			,	ADDR_DEPTH4
-			,	RA_GBN_CODE
-			,	RA_GBN_LT
-			,	RA_GBN_ST
-			,	REG_ID
-			,	REG_DT
+		RT_IDX
+		,	ADDR_DEPTH1
+		,	ADDR_DEPTH2
+		,	ADDR_DEPTH3
+		,	ADDR_DEPTH4
+		,	RA_GBN_CODE
+		,	RA_GBN_LT
+		,	RA_GBN_ST
+		,	REG_ID
+		,	REG_DT
 		)
 		VALUES
 		<foreach collection="list" item="item" separator="," >
-		(
+			(
 			#{item.rtIdx}
 			,#{item.addrDepth1}
 			,#{item.addrDepth2}

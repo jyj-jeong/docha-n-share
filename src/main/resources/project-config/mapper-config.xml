@@ -182,6 +182,11 @@
 		<typeAlias type="com.ohdocha.admin.domain.car.plan.insuranceTemplate.DochaAdminInsuranceTemplateResponse" alias="insuranceTemplateResponse" />
 		<typeAlias type="com.ohdocha.admin.domain.car.plan.insuranceTemplate.DochaAdminInsuranceTemplateDetailRequest" alias="insuranceTemplateDetailRequest" />
 
+
+		<!-- 고객 이용후기 -->
+		<typeAlias type="com.ohdocha.admin.domain.review.model.UserReviewDto" alias="userReviewDto" />
+		
+		
 	</typeAliases>
 
 </configuration>

@@ -133,7 +133,7 @@ public class MenuController extends ControllerExtension {
     @GetMapping(value = "/site/review")
     public String siteReviewView(HttpServletRequest request, ModelMap modelMap) {
         ServiceMessage serviceMessage = createServiceMessage(request);
-
+        menuService.getEventList(serviceMessage);
         modelMap.addAllAttributes(serviceMessage);
         return "site/site_review";
     }
