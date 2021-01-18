@@ -65,8 +65,15 @@
 
     </select>
 
-	<select id="selectUserReviewFile" parameterType="userReviewDto" resultType="userReviewDto">
-		SELECT FILE
+	<select id="selectUserReviewFile" parameterType="userReviewDto" resultType="userReviewFile">
+		SELECT	IDX
+		,		RV_IDX
+		,		FILE
+		,  		REG_DT
+		,		REG_ID
+		,		MOD_DT
+		,		MOD_ID
+		,		DEL_YN
 		FROM   DC_USER_REVIEW_FILE
 		WHERE  RV_IDX = #{rvIdx}
 	</select>

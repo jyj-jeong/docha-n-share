@@ -31,8 +31,8 @@ public class UserReviewServiceImpl implements UserReviewService {
 	@Override
 	public void selectUserReviewInfo(ServiceMessage param) {
 		// TODO Auto-generated method stub
-		param.addData("fileList" , userReviewMapper.selectUserReviewFile(param));
 		param.addData("result", userReviewMapper.selectUserReviewInfo(param));
+		param.addData("userReviewFile" , userReviewMapper.selectUserReviewFile(param));
 	}
 
 }

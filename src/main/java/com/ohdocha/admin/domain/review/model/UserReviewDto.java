@@ -1,5 +1,7 @@
 package com.ohdocha.admin.domain.review.model;
 
+
+
 import org.apache.ibatis.type.Alias;
 import lombok.Data;
 import lombok.Getter;
@@ -38,6 +40,5 @@ public class UserReviewDto {
 	
 	private Integer imgCount;
 	private String companyZipCode;
-	
-	
+
 }
