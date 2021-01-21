@@ -54,6 +54,7 @@
                                     <th>정산예정금액</th>
                                     <th>정산완료금액</th>
                                     <th>미정산금액</th>
+                                    <th>상태</th>
                                 </tr>
                                 </thead>
                                 <tfoot>
@@ -68,6 +69,7 @@
                                     <th>정산예정금액</th>
                                     <th>정산완료금액</th>
                                     <th>미정산금액</th>
+                                    <th>상태</th>
                                 </tr>
                                 </tfoot>
                                 <tbody>
@@ -79,9 +81,12 @@
                                     <td th:text="${calculateInfo.getDisCountFee() == '0'? '0': #numbers.formatInteger(calculateInfo.getDisCountFee(), 3 , 'COMMA')}"></td>
                                     <td th:text="${calculateInfo.getTotalFee() == '0'? '0': #numbers.formatInteger(calculateInfo.getTotalFee(), 3 , 'COMMA')}"></td>
                                     <td th:text="${calculateInfo.getDochaDisFee() == '0'? '0': #numbers.formatInteger(calculateInfo.getDochaDisFee(), 3 , 'COMMA')}"></td>
-                                    <td th:text="${calculateInfo.getOnMissFee() == '0'? '0': #numbers.formatInteger(calculateInfo.getOnMissFee(), 3, 'COMMA')}"></td>
+                                    <td th:text="${calculateInfo.getEstimatedFee() == '0'? '0': #numbers.formatInteger(calculateInfo.getEstimatedFee(), 3, 'COMMA')}"></td>
                                     <td th:text="${calculateInfo.getSuccessFee() == '0'? '0': #numbers.formatInteger(calculateInfo.getSuccessFee(), 3 , 'COMMA')}"></td>
                                     <td th:text="${calculateInfo.getOnMissFee() == '0'? '0': #numbers.formatInteger(calculateInfo.getOnMissFee(), 3 , 'COMMA')}"></td>
+                                    <td>
+                                        <button id="btnCalculate" class="btn btn-secondary">정산</button>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
