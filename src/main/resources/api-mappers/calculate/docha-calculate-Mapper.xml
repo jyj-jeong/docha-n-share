@@ -163,7 +163,7 @@
 
 	<select id="selectCalculateDateReserveList" parameterType="calculateRequest" resultType="calculateResponse">
 		SELECT
-		DATE_FORMAT(T1.MOD_DT, '%Y-%m-%d') AS ACCOUNT_EXP_DT                        /*정산일*/
+		DATE_FORMAT(T1.ACCOUNT_EXP_DT, '%Y-%m-%d') AS ACCOUNT_EXP_DT                        /*정산일*/
 		,SUM(T1.RENT_FEE + T1.INSURANCE_FEE + T1.DELIVERY_FEE) AS TOTAL_FEE         /*총금액*/
 		,SUM(T1.PAYMENT_TOTAL_AMOUNT) AS PAYMENT_AMOUNT                              /*결제금액*/
 		,SUM(T1.DISCOUNT_FEE) AS DISCOUNT_FEE                                        /*할인액*/
@@ -180,6 +180,7 @@
 		, PD.PD_IDX
 		, PL.SETTLEMENT_AMOUNT
 		, PL.SETTLEMENT_DATE
+		, PL.ACCOUNT_EXP_DT
 		, RM.*
 		, CASE
 		WHEN DATE_FORMAT(STR_TO_DATE(PD.PAYMENT_DATE, '%Y-%m-%d'), '%Y-%m-%d') > DATE_FORMAT(RM.RENT_START_DAY, '%Y-%m-%d') THEN DATE_FORMAT(STR_TO_DATE(PD.PAYMENT_DATE, '%Y-%m-%d'), '%Y-%m-%d')
@@ -196,13 +197,13 @@
 		<if test="rtIdx != null and rtIdx != ''">
 			<![CDATA[ WHERE T1.RT_IDX = #{rtIdx} ]]>
 		</if>
-		GROUP BY DATE_FORMAT(T1.MOD_DT, '%Y-%m-%d')
+		GROUP BY DATE_FORMAT(T1.ACCOUNT_EXP_DT, '%Y-%m-%d')
 
 	</select>
 
 	<select id="selectCalculateDateReserveInfo" parameterType="calculateRequest" resultType="calculateResponse">
 		SELECT
-		DATE_FORMAT(T1.MOD_DT, '%Y-%m-%d') AS ACCOUNT_EXP_DT                        /*정산일*/
+		DATE_FORMAT(T1.ACCOUNT_EXP_DT, '%Y-%m-%d') AS ACCOUNT_EXP_DT                        /*정산일*/
 		,SUM(T1.RENT_FEE + T1.INSURANCE_FEE + T1.DELIVERY_FEE) AS TOTAL_FEE         /*총금액*/
 		,SUM(T1.PAYMENT_TOTAL_AMOUNT) AS PAYMENT_AMOUNT                              /*결제금액*/
 		,SUM(T1.DISCOUNT_FEE) AS DISCOUNT_FEE                                         /*할인액*/
@@ -238,6 +239,7 @@
 		,RC.ACCOUNT_NUMBER
 		,PL.SETTLEMENT_AMOUNT
 		,PL.SETTLEMENT_DATE
+		,PL.ACCOUNT_EXP_DT
 		FROM DC_PAYMENT_DETAIL PD
 		INNER JOIN DC_RESERVE_MASTER RM
 		ON PD.RM_IDX = RM.RM_IDX
@@ -253,7 +255,7 @@
 				<![CDATA[ AND T1.RT_IDX = #{rtIdx} ]]>
 			</if>
 			<if test="accountExpDt != null and accountExpDt != ''">
-				<![CDATA[ AND DATE_FORMAT(T1.MOD_DT, '%Y-%m-%d') = DATE_FORMAT(#{accountExpDt}, '%Y-%m-%d')]]>
+				<![CDATA[ AND DATE_FORMAT(T1.ACCOUNT_EXP_DT, '%Y-%m-%d') = DATE_FORMAT(#{accountExpDt}, '%Y-%m-%d')]]>
 			</if>
 		</trim>
 		GROUP BY RT_IDX
@@ -261,7 +263,7 @@
 
 	<select id="selectCalculateDateRentCompanyReserveInfo" parameterType="calculateRequest" resultType="calculateResponse">
 		SELECT
-		DATE_FORMAT(T1.MOD_DT, '%Y-%m-%d') AS ACCOUNT_EXP_DT                        /*정산일*/
+		DATE_FORMAT(T1.ACCOUNT_EXP_DT, '%Y-%m-%d') AS ACCOUNT_EXP_DT                        /*정산일*/
 		,T1.RENT_FEE + T1.INSURANCE_FEE + T1.DELIVERY_FEE AS TOTAL_FEE         /*총금액*/
 		,T1.PAYMENT_TOTAL_AMOUNT AS PAYMENT_AMOUNT                              /*결제금액*/
 		,T1.DISCOUNT_FEE AS DISCOUNT_FEE                                        /*할인액*/
@@ -302,6 +304,7 @@
 		,RCC.COMMISSION_PER
 		,PL.SETTLEMENT_AMOUNT
 		,PL.SETTLEMENT_DATE
+		,PL.ACCOUNT_EXP_DT
 		FROM DC_PAYMENT_DETAIL PD
 		INNER JOIN DC_RESERVE_MASTER RM
 		ON PD.RM_IDX = RM.RM_IDX
@@ -316,7 +319,7 @@
 		) T1
 		<trim prefix="WHERE" prefixOverrides="AND|OR">
 			<if test="accountExpDt != null and accountExpDt != ''">
-				<![CDATA[ AND DATE_FORMAT(T1.MOD_DT, '%Y-%m-%d') = DATE_FORMAT(#{accountExpDt}, '%Y-%m-%d') ]]>
+				<![CDATA[ AND DATE_FORMAT(T1.ACCOUNT_EXP_DT, '%Y-%m-%d') = DATE_FORMAT(#{accountExpDt}, '%Y-%m-%d') ]]>
 			</if>
 			<if test="rtIdx != null and rtIdx != ''">
 				<![CDATA[ AND T1.RT_IDX = #{rtIdx} ]]>
