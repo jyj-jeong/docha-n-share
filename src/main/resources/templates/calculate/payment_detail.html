@@ -84,7 +84,8 @@
                                     <td th:text="${calculateInfo.getEstimatedFee() == '0'? '0' : #numbers.formatInteger(calculateInfo.getEstimatedFee() , 3, 'COMMA')}"></td>
                                     <td th:text="${calculateInfo.getSuccessFee() == '0'? '0' : #numbers.formatInteger(calculateInfo.getSuccessFee() , 3, 'COMMA')}"></td>
                                     <td th:text="${calculateInfo.getOnMissFee() == '0'? '0' : #numbers.formatInteger(calculateInfo.getOnMissFee() , 3, 'COMMA')}"></td>
-                                    <td onclick="event.cancelBubble=true">
+                                    <td th:if="${calculateInfo.getOnMissFee() == '0'}" th:text="${calculateInfo.getSettlementDate()}"></td>
+                                    <td th:if="${calculateInfo.getOnMissFee() != '0'}" onclick="event.cancelBubble=true">
                                         <button id="btnCalculate" class="btn btn-secondary" onclick="openCalculateModal(this)">정산</button>
                                     </td>
                                 </tr>
@@ -271,7 +272,8 @@
                 { data : 'dochaDisFee' },
                 { data : 'estimatedFee' },
                 { data : 'successFee' },
-                { data : 'onMissFee' }
+                { data : 'onMissFee' },
+                { data : 'settlementDate' }
             ],
             columnDefs: [ {
                 targets : [3],
@@ -307,9 +309,15 @@
                     return objectConvertToPriceFormat(row['onMissFee']);
                 }},{
                 targets: [11],
-                data: null,
-                visible: true,
-                defaultContent: '<button class="btn btn-secondary">정산</button>'
+                render: function(data, type, row, meta){
+                    console.log(row);
+                    console.log(data);
+                    if(row['onMissFee'] === "0"){
+                        return row['settlementDate'];
+                    }else {
+                        return "<button class=\"btn btn-secondary\">정산</button>";
+                    }
+                }
             }],
             ajax : {
                 url: url,

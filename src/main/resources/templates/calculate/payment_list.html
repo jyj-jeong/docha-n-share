@@ -84,8 +84,9 @@
                                     <td th:text="${calculateInfo.getEstimatedFee() == '0'? '0': #numbers.formatInteger(calculateInfo.getEstimatedFee(), 3, 'COMMA')}"></td>
                                     <td th:text="${calculateInfo.getSuccessFee() == '0'? '0': #numbers.formatInteger(calculateInfo.getSuccessFee(), 3 , 'COMMA')}"></td>
                                     <td th:text="${calculateInfo.getOnMissFee() == '0'? '0': #numbers.formatInteger(calculateInfo.getOnMissFee(), 3 , 'COMMA')}"></td>
-                                    <td>
-                                        <button id="btnCalculate" class="btn btn-secondary">정산</button>
+                                    <td th:if="${calculateInfo.getOnMissFee() == '0'}" th:text="${calculateInfo.getSettlementDate()}"></td>
+                                    <td th:if="${calculateInfo.getOnMissFee() != '0'}" onclick="event.cancelBubble=true">
+                                        <button id="btnCalculate" class="btn btn-secondary" onclick="openCalculateModal(this)">정산</button>
                                     </td>
                                 </tr>
                                 </tbody>

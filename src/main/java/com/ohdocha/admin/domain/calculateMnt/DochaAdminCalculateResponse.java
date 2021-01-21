@@ -36,6 +36,7 @@ public class DochaAdminCalculateResponse extends CommonResponseDto {
 	private String companyRegistrationName;
 	private String successFee;
 	private String settlementAmount;
+	private String settlementDate;
 	private String estimatedFee;
 	private String accountBank;
 	private String accountNumber;
