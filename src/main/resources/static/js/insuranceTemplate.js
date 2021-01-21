@@ -546,13 +546,13 @@ function getCompanyCarList(selectedCar) {
 
 function makeCheckBox(data, target, all) {
 	var strOption = "<label class='d-inline-block mr-3 checkbox-inline'>" +
-		"<input id='" + target + "All' type='checkbox' value='" + all + "' name='carList'/> " + all + "전체</label>";
+		"<input id='" + target + "All' type='checkbox' value='" + all + "' name='carList'/> " + all + "전체</label><br>";
 
 	for ( var i=0; i< data.length; i++) {
 		strOption += "<label class='d-inline-block mr-3 checkbox-inline'>" +
 			"<input id='" + data[i].crIdx + "' type='checkbox' value='" + data[i].modelName + "' name='carList'/> "
-			+ data[i].modelName
-			+ "</label>";
+			+ "("+ data[i].carNumber +") "+ data[i].year + " "+ data[i].modelName + " " +  data[i].modelDetailName + " (" + data[i].fuelCode + ")"
+			+ "</label><br>";
 	}
 
 	$('#' + target).empty();

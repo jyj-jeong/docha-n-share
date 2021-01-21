@@ -166,11 +166,18 @@ function saveSettlementAmount(){
 	var rmIdx = $('#rmIdx').val().trim();
 	var reserveDate = $('#reserveDate').val();
 
+	var modalOnMissFee = $('#modalOnMissFee').val();
+
 	var successFee = $('#modalSuccessFee').val();
 	var settlementAmount = $('#settlementAmount').val();
 
 	if (isEmpty(settlementAmount)){
 		errorAlert('정산금액', '정산금액을 입력해주세요.');
+		return;
+	}
+
+	if (modalOnMissFee < settlementAmount){
+		errorAlert('정산금액', '미정산 금액보다 정산금액이 클 수 없습니다.');
 		return;
 	}
 

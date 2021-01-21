@@ -208,7 +208,10 @@
                         ,   IFNULL(T1.MD_IDX                 , '' ) AS    MD_IDX                /*모델idx*/
                         ,   IFNULL(T1.MODEL_NAME              , '' ) AS    MODEL_NAME            /*모델명*/
                         ,   IFNULL(T1.MODEL_DETAIL_NAME      , '' ) AS    MODEL_DETAIL_NAME     /*모델상세명*/
-                        ,   IFNULL(T1.CARTYPE_CODE      , '' ) AS    CAR_TYPE_CODE        /*차종*/
+                        ,   IFNULL(T1.CARTYPE_CODE      , '' ) AS    CAR_TYPE_CODE     		    /*차종*/
+                        ,   IFNULL(T1.CAR_NUMBER      , '' ) AS    CAR_NUMBER        			/*차량 번호*/
+                        ,   IFNULL(T1.FUEL_CODE      , '' ) AS    FUEL_CODE     			    /*연료*/
+                        ,   IFNULL(T1.YEAR      , '' ) AS    YEAR     		    	             /*연식*/
                   FROM DC_CAR_INFO T1
          INNER JOIN DC_RENT_COMPANY T2
                     ON T1.RT_IDX = T2.RT_IDX
