@@ -73,8 +73,9 @@
                                 </tr>
                                 </tfoot>
                                 <tbody>
+                                <!--/*@thymesVar id="calculateResponseList" type="java.util.List<com.ohdocha.admin.domain.calculateMnt.DochaAdminCalculateResponse>"*/-->
                                 <tr th:each="calculateInfo, index : ${calculateResponseList}" style="cursor: pointer" th:data-value="${calculateInfo.getRmIdx()}">
-                                    <td th:text="${calculateInfo.getAccountExpDt()}"></td>
+                                    <td th:text="${#dates.format(calculateInfo.getAccountExpDt(), 'yyyy-MM-dd')}"></td>
                                     <td th:text="${calculateInfo.getCompanyCount()}"></td>
                                     <td th:text="${calculateInfo.getRmCount()}"></td>
                                     <td th:text="${calculateInfo.getPaymentAmount() == '0'? '0': #numbers.formatInteger(calculateInfo.getPaymentAmount(), 3, 'COMMA')}"></td>
@@ -85,8 +86,8 @@
                                     <td th:text="${calculateInfo.getSuccessFee() == '0'? '0': #numbers.formatInteger(calculateInfo.getSuccessFee(), 3 , 'COMMA')}"></td>
                                     <td th:text="${calculateInfo.getOnMissFee() == '0'? '0': #numbers.formatInteger(calculateInfo.getOnMissFee(), 3 , 'COMMA')}"></td>
                                     <td th:if="${calculateInfo.getOnMissFee() == '0'}" th:text="${calculateInfo.getSettlementDate()}"></td>
-                                    <td th:if="${calculateInfo.getOnMissFee() != '0'}">
-                                        <button id="btnCalculate" class="btn btn-secondary">정산</button>
+                                    <td th:if="${calculateInfo.getOnMissFee() != '0'}" th:with="accountExptDt = ${calculateInfo.getAccountExpDt()}" th:data-setting="${accountExptDt.setDate(calculateInfo.getAccountExpDt().getDate() - 2)}">
+                                        <button id="btnCalculate" class="btn" th:classappend="${accountExptDt.getTime() < #dates.createToday().getTime()} ? 'btn-primary' : 'btn-secondary'">정산</button>
                                     </td>
                                 </tr>
                                 </tbody>

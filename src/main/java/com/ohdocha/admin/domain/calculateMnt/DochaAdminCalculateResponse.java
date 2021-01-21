@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.apache.ibatis.type.Alias;
 
+import java.util.Date;
+
 @Data
 @Getter
 @Setter
@@ -18,7 +20,7 @@ public class DochaAdminCalculateResponse extends CommonResponseDto {
 	private String rmIdx;
 	private String pdIdx;
 	//private String rentGbnDt;
-	private String accountExpDt;
+	private Date accountExpDt;
 	private String totalFee;
 	private String totalAmount;
 	private String dochaDisFee;

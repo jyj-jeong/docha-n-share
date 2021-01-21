@@ -26,7 +26,8 @@
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 id="calListTitle" class="m-0 font-weight-bold text-primary" onclick="location.reload();" style="cursor: pointer" th:text="${'정산 (' + reserveDate + ')'}"></h6>
+                        <h6 id="calListTitle" class="m-0 font-weight-bold text-primary" onclick="location.reload();"
+                            style="cursor: pointer" th:text="${'정산 (' + reserveDate + ')'}"></h6>
                         <div class="ml-auto align-bottom">
                         </div>
                     </div>
@@ -71,7 +72,8 @@
                                 </tr>
                                 </tfoot>
                                 <tbody>
-                                <tr th:each="calculateInfo, index : ${calculateResponseList}" style="cursor: pointer" th:data-value="${calculateInfo.getRtIdx()}">
+                                <tr th:each="calculateInfo, index : ${calculateResponseList}" style="cursor: pointer"
+                                    th:data-value="${calculateInfo.getRtIdx()}">
                                     <td class="d-none" th:text="${calculateInfo.getRtIdx()}"></td>
                                     <td th:text="${calculateInfo.getCompanyName() + ' (' + calculateInfo.getBranchName() +')'}"></td>
                                     <td th:text="${calculateInfo.getCompanyRegistrationName()}"></td>
@@ -84,9 +86,19 @@
                                     <td th:text="${calculateInfo.getEstimatedFee() == '0'? '0' : #numbers.formatInteger(calculateInfo.getEstimatedFee() , 3, 'COMMA')}"></td>
                                     <td th:text="${calculateInfo.getSuccessFee() == '0'? '0' : #numbers.formatInteger(calculateInfo.getSuccessFee() , 3, 'COMMA')}"></td>
                                     <td th:text="${calculateInfo.getOnMissFee() == '0'? '0' : #numbers.formatInteger(calculateInfo.getOnMissFee() , 3, 'COMMA')}"></td>
-                                    <td th:if="${calculateInfo.getOnMissFee() == '0'}" th:text="${calculateInfo.getSettlementDate()}"></td>
-                                    <td th:if="${calculateInfo.getOnMissFee() != '0'}" onclick="event.cancelBubble=true">
-                                        <button id="btnCalculate" class="btn btn-secondary" onclick="openCalculateModal(this)">정산</button>
+                                    <td th:if="${calculateInfo.getOnMissFee() == '0'}"
+                                        th:text="${calculateInfo.getSettlementDate()}"></td>
+                                    <td th:if="${calculateInfo.getOnMissFee() != '0'}"
+                                        onclick="event.cancelBubble = true"
+                                        th:with="accountExptDt = ${calculateInfo.getAccountExpDt()}"
+                                        th:data-setting="${accountExptDt.setDate(calculateInfo.getAccountExpDt().getDate() - 2)}">
+                                        <button id="btnCalculate" class="btn btn-primary"
+                                                th:if="${accountExptDt.getTime() < #dates.createToday().getTime()}"
+                                                onclick="openCalculateModal(this)">정산
+                                        </button>
+                                        <button id="btnCalculate" class="btn btn-secondary"
+                                                th:if="${accountExptDt.getTime() >= #dates.createToday().getTime()}">정산
+                                        </button>
                                     </td>
                                 </tr>
                                 </tbody>
@@ -174,7 +186,8 @@
 </a>
 
 <!-- Logout Modal-->
-<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -214,7 +227,8 @@
                 <div class="row">
                     <div class="col-12 mb-3">
                         <label for="settlementAmount">정산 완료 금액 추가</label>
-                        <input type="text" class="form-control" name="settlementAmount" id="settlementAmount" onblur="this.value = objectConvertToPriceFormat(this.value)" placeholder="금액을 입력하세요"/>
+                        <input type="text" class="form-control" name="settlementAmount" id="settlementAmount"
+                               onblur="this.value = objectConvertToPriceFormat(this.value)" placeholder="금액을 입력하세요"/>
                     </div>
                 </div>
             </div>
@@ -238,11 +252,11 @@
 
         var url = '../settlement/rentCompanySettlement.json';
         var req = {
-            rtIdx : rtIdx,
-            accountExpDt : accountExpDt
+            rtIdx: rtIdx,
+            accountExpDt: accountExpDt
         };
 
-        rentCompanyTable = $('#rentCompanyTable').DataTable( {
+        rentCompanyTable = $('#rentCompanyTable').DataTable({
             language: {
                 emptyTable: "데이터가 존재하지 않습니다.",
                 lengthMenu: "페이지당 _MENU_ 개씩 보기",
@@ -252,102 +266,120 @@
                 search: "검색: ",
                 zeroRecords: "일치하는 데이터가 존재하지 않습니다.",
                 loadingRecords: "로딩중...",
-                processing:     "잠시만 기다려 주세요...",
+                processing: "잠시만 기다려 주세요...",
                 paginate: {
                     next: "다음",
                     previous: "이전"
                 }
             },
             pageMenu: 10,
-            dom : 'ftp',
+            dom: 'ftp',
             orderMulti: true,
             columns: [
-                { data : 'rmIdx' },
-                { data : 'rentStartDay' },
-                { data : 'rentEndDay' },
-                { data : 'modelName' },
-                { data : 'paymentAmount' },
-                { data : 'disCountFee' },
-                { data : 'totalFee' },
-                { data : 'dochaDisFee' },
-                { data : 'estimatedFee' },
-                { data : 'successFee' },
-                { data : 'onMissFee' },
-                { data : 'settlementDate' }
+                {data: 'rmIdx'},
+                {data: 'rentStartDay'},
+                {data: 'rentEndDay'},
+                {data: 'modelName'},
+                {data: 'paymentAmount'},
+                {data: 'disCountFee'},
+                {data: 'totalFee'},
+                {data: 'dochaDisFee'},
+                {data: 'estimatedFee'},
+                {data: 'successFee'},
+                {data: 'onMissFee'},
+                {data: 'settlementDate'}
             ],
-            columnDefs: [ {
-                targets : [3],
-                render: function(data, type, row, meta){
-                    return row['modelName'] +'(' + row['carNumber'] + ')';
-                }},{
-                targets : [4],
-                render: function(data, type, row, meta){
+            columnDefs: [{
+                targets: [3],
+                render: function (data, type, row, meta) {
+                    return row['modelName'] + '(' + row['carNumber'] + ')';
+                }
+            }, {
+                targets: [4],
+                render: function (data, type, row, meta) {
                     return objectConvertToPriceFormat(row['paymentAmount']);
-                }},{
-                targets : [5],
-                render: function(data, type, row, meta){
+                }
+            }, {
+                targets: [5],
+                render: function (data, type, row, meta) {
                     return objectConvertToPriceFormat(row['disCountFee']);
-                }},{
-                targets : [6],
-                render: function(data, type, row, meta){
+                }
+            }, {
+                targets: [6],
+                render: function (data, type, row, meta) {
                     return objectConvertToPriceFormat(row['totalFee']);
-                }},{
-                targets : [7],
-                render: function(data, type, row, meta){
+                }
+            }, {
+                targets: [7],
+                render: function (data, type, row, meta) {
                     return objectConvertToPriceFormat(row['dochaDisFee']);
-                }},{
-                targets : [8],
-                render: function(data, type, row, meta){
+                }
+            }, {
+                targets: [8],
+                render: function (data, type, row, meta) {
                     return objectConvertToPriceFormat(row['estimatedFee']);
-                }},{
-                targets : [9],
-                render: function(data, type, row, meta){
+                }
+            }, {
+                targets: [9],
+                render: function (data, type, row, meta) {
                     return objectConvertToPriceFormat(row['successFee']);
-                }},{
-                targets : [10],
-                render: function(data, type, row, meta){
+                }
+            }, {
+                targets: [10],
+                render: function (data, type, row, meta) {
                     return objectConvertToPriceFormat(row['onMissFee']);
-                }},{
+                }
+            }, {
                 targets: [11],
-                render: function(data, type, row, meta){
+                render: function (data, type, row, meta) {
                     console.log(row);
                     console.log(data);
-                    if(row['onMissFee'] === "0"){
+                    if (row['onMissFee'] === "0") {
                         return row['settlementDate'];
-                    }else {
-                        return "<button class=\"btn btn-secondary\">정산</button>";
+                    } else {
+                        const expDt = new Date(row.accountExpDt);
+                        expDt.setDate(expDt.getDate() - 2);
+
+                        const today = new Date();
+
+                        if (today > expDt) {
+                            return '<button class="btn btn-primary">정산</button>';
+                        } else {
+                            return '<button class="btn btn-secondary">정산</button>';
+                        }
                     }
                 }
             }],
-            ajax : {
+            ajax: {
                 url: url,
                 type: 'POST',
-                contentType : 'application/json',
-                dataType : 'json',
-                data : function () {
+                contentType: 'application/json',
+                dataType: 'json',
+                data: function () {
                     return JSON.stringify(req);
                 },
-                dataSrc : function (json) {
+                dataSrc: function (json) {
                     var data = json.result;
-                    if (data === null || data === undefined){
+                    if (data === null || data === undefined) {
                         data = [];
                     }
-                    $('#calListTitle').text('정산 (' + data[0].companyName + '-' + data[0].branchName +')');
+                    $('#calListTitle').text('정산 (' + data[0].companyName + '-' + data[0].branchName + ')');
                     return data;
                 },
-                error : function (xhr, error, code) {
+                error: function (xhr, error, code) {
                     console.log(error);
                 }
             }
-        } );
+        });
 
-
-        $('#reserveDateTable').css('display','none');
-        $('#rentCompanyTableContent').css('display','block');
-
+        $('#reserveDateTable').css('display', 'none');
+        $('#rentCompanyTableContent').css('display', 'block');
     });
 
     $('#rentCompanyTable tbody').on('click', 'button', function () {
+        const btn = $(this);
+        if (btn.hasClass("btn-secondary")) return;
+
         var rmIdx = this.parentElement.parentElement.children[0].textContent;
         var successFee = this.parentElement.parentElement.children[9].textContent;
         var onMissFee = this.parentElement.parentElement.children[10].textContent;
