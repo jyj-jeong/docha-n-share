@@ -166,7 +166,7 @@ function saveSettlementAmount(){
 	var rmIdx = $('#rmIdx').val().trim();
 	var reserveDate = $('#reserveDate').val();
 
-	var modalOnMissFee = $('#modalOnMissFee').val();
+	var modalOnMissFee = $('#modalOnMissFee').text();
 
 	var successFee = $('#modalSuccessFee').val();
 	var settlementAmount = $('#settlementAmount').val();
