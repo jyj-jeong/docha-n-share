@@ -569,8 +569,8 @@ function detailValidation(){
 	let personalCover           =  getPureText($('#personalCover').val());
 	let onselfDamageCover       =  getPureText($('#onselfDamageCover').val());
 	let propertyDamageCover     =  getPureText($('#propertyDamageCover').val());
-	let carDamageCover     		=  getPureText($('#carDamageCover').val());
-	let insuranceCopayment     	=  getPureText($('#insuranceCopayment').val());
+	let carDamageCover     		=  0;
+	let insuranceCopayment     	=  0;
 	let carDamageCover2     	=  getPureText($('#carDamageCover2').val());
 	let insuranceCopayment2     =  getPureText($('#insuranceCopayment2').val());
 	let carDamageCover3    		=  getPureText($('#carDamageCover3').val());
@@ -625,6 +625,41 @@ function detailValidation(){
 		$('#onselfDamageCover').focus();
 		return;
 	}
+
+	if (carDamage2Yn === 'Y') {
+		if (isEmpty(carDamageCover2)) {
+			errorAlert('자차보험 2', '자차 보험2 고객부담금을 입력해주세요.');
+			$('#carDamageCover2').focus();
+			return;
+		} else if (isEmpty(insuranceCopayment2)) {
+			errorAlert('자차보험 2', '자차 보험2 요금/일을 입력해주세요.');
+			$('#insuranceCopayment2').focus();
+			return;
+		}
+	}
+	if (carDamage3Yn === 'Y') {
+		if (isEmpty(carDamageCover3)) {
+			errorAlert('자차보험 3', '자차 보험3 고객부담금을 입력해주세요.');
+			$('#carDamageCover3').focus();
+			return;
+		} else if (isEmpty(insuranceCopayment3)) {
+			errorAlert('자차보험 3', '자차 보험3 요금/일을 입력해주세요.');
+			$('#insuranceCopayment3').focus();
+			return;
+		}
+	}
+	if (carDamage4Yn === 'Y') {
+		if (isEmpty(carDamageCover4)) {
+			errorAlert('자차보험 4', '자차 보험4 고객부담금을 입력해주세요.');
+			$('#carDamageCover4').focus();
+			return;
+		} else if (isEmpty(insuranceCopayment4)) {
+			errorAlert('자차보험 4', '자차 보험4 요금/일을 입력해주세요.');
+			$('#insuranceCopayment4').focus();
+			return;
+		}
+	}
+
 	else if(!isEmpty(insuranceCopayment2) && !$.isNumeric(insuranceCopayment2)){
 		errorAlert('자차보험 2', '자차 보험 요금/일 숫자만 입력 가능합니다.');
 		$('#insuranceCopayment2').focus();
@@ -733,3 +768,9 @@ function initInput(){
 
 }
 /* =========================== detail function end ======================================*/
+
+/* 자차1 텍스트 변경 */
+function firstCarChange() {
+	$('#insuranceCopayment').val("미가입");
+	$('#carDamageCover').val("미가입");
+}
