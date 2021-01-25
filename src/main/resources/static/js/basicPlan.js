@@ -459,6 +459,12 @@ function detailValidation(){
 	if (month12Deposit.trim() === "") {
 		month12Deposit = '0' ;
 	}
+	if (deliveryStandardPay.trim() === "") {
+		deliveryStandardPay = '0' ;
+	}
+	if (deliveryAddPay.trim() === "") {
+		deliveryAddPay = '0' ;
+	}
 
     if (!isEmpty(dailyStandardPay) && !$.isNumeric(dailyStandardPay)) {
         errorAlert('요금정보', '일 기본요금은 숫자만 입력 가능합니다.');
@@ -484,7 +490,13 @@ function detailValidation(){
     } else if (!isEmpty(month3Deposit) && !$.isNumeric(month12Deposit)) {
         errorAlert('요금정보', '12개월 보증금은 숫자만 입력 가능합니다.');
         return;
-    }
+    } else if (!isEmpty(deliveryStandardPay) && !$.isNumeric(deliveryStandardPay)) {
+		errorAlert('요금정보', '배달 기본요금 숫자만 입력 가능합니다.');
+		return;
+	} else if (!isEmpty(deliveryAddPay) && !$.isNumeric(deliveryAddPay)) {
+		errorAlert('요금정보', '배달 10km 단위 추가요금은 숫자만 입력 가능합니다.');
+		return;
+	}
 
 	let rtIdx = companyName;
 
@@ -493,17 +505,17 @@ function detailValidation(){
 		,	'pyTIdx' : pyTIdx
 		,	'crIdx' : carList
 		,	'pyEtc' : pyEtc
-		,	'dailyStandardPay' : dailyStandardPay
-		,	'dailyMaxRate' : dailyMaxRate
-		,	'monthlyStandardPay' : monthlyStandardPay
-		,	'monthlyMaxRate' : monthlyMaxRate
-		,	'month3Deposit' : month3Deposit
-		,	'month6Deposit' : month6Deposit
-		,	'month9Deposit' : month9Deposit
-		,	'month12Deposit' : month12Deposit
-		,	'deliveryStandardPay' : deliveryStandardPay
-		,	'deliveryAddPay' : deliveryAddPay
-		,	'deliveryMaxRate' : deliveryMaxRate
+		,	'dailyStandardPay' : dailyStandardPay.trim()
+		,	'dailyMaxRate' : dailyMaxRate.trim()
+		,	'monthlyStandardPay' : monthlyStandardPay.trim()
+		,	'monthlyMaxRate' : monthlyMaxRate.trim()
+		,	'month3Deposit' : month3Deposit.trim()
+		,	'month6Deposit' : month6Deposit.trim()
+		,	'month9Deposit' : month9Deposit.trim()
+		,	'month12Deposit' : month12Deposit.trim()
+		,	'deliveryStandardPay' : deliveryStandardPay.trim()
+		,	'deliveryAddPay' : deliveryAddPay.trim()
+		,	'deliveryMaxRate' : deliveryMaxRate.trim()
 		,	'modId' : getLoginUser().urIdx
 		,	'regId' : getLoginUser().urIdx
 	}

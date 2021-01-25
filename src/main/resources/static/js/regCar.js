@@ -1496,13 +1496,13 @@ function detailValidation(save_type) {
                     , 'onselfDamageCover': onselfDamageCover
                     , 'propertyDamageCover': propertyDamageCover
                     , 'carDamageCover': carDamageCover
-                    , 'insuranceCopayment': insuranceCopayment
-                    , 'carDamageCover2': carDamageCover2
-                    , 'insuranceCopayment2': insuranceCopayment2
-                    , 'carDamageCover3': carDamageCover3
-                    , 'insuranceCopayment3': insuranceCopayment3
-                    , 'carDamageCover4': carDamageCover4
-                    , 'insuranceCopayment4': insuranceCopayment4
+                    , 'insuranceCopayment': insuranceCopayment.trim()
+                    , 'carDamageCover2': carDamageCover2.trim()
+                    , 'insuranceCopayment2': insuranceCopayment2.trim()
+                    , 'carDamageCover3': carDamageCover3.trim()
+                    , 'insuranceCopayment3': insuranceCopayment3.trim()
+                    , 'carDamageCover4': carDamageCover4.trim()
+                    , 'insuranceCopayment4': insuranceCopayment4.trim()
                     , 'carDamage1Yn': carDamage1Yn
                     , 'carDamage2Yn': carDamage2Yn
                     , 'carDamage3Yn': carDamage3Yn
@@ -1618,16 +1618,16 @@ function detailValidation(save_type) {
                     'rtIdx': _rtIdx
                     , 'pyTIdx': pyTIdx
                     , 'crIdx': crIdx
-                    , 'dailyStandardPay': dailyStandardPay
-                    , 'dailyMaxRate': dailyMaxRate
-                    , 'monthlyStandardPay': monthlyStandardPay
-                    , 'monthlyMaxRate': monthlyMaxRate
-                    , 'month3Deposit': month3Deposit
-                    , 'month6Deposit': month6Deposit
-                    , 'month9Deposit': month9Deposit
-                    , 'month12Deposit': month12Deposit
-                    , 'deliveryStandardPay': deliveryStandardPay
-                    , 'deliveryAddPay': deliveryAddPay
+                    , 'dailyStandardPay': dailyStandardPay.trim()
+                    , 'dailyMaxRate': dailyMaxRate.trim()
+                    , 'monthlyStandardPay': monthlyStandardPay.trim()
+                    , 'monthlyMaxRate': monthlyMaxRate.trim()
+                    , 'month3Deposit': month3Deposit.trim()
+                    , 'month6Deposit': month6Deposit.trim()
+                    , 'month9Deposit': month9Deposit.trim()
+                    , 'month12Deposit': month12Deposit.trim()
+                    , 'deliveryStandardPay': deliveryStandardPay.trim()
+                    , 'deliveryAddPay': deliveryAddPay.trim()
                     // ,	'modId' : GLOBAL_LOGIN_USER_IDX
                     // ,	'regId' : GLOBAL_LOGIN_USER_IDX
                 }
