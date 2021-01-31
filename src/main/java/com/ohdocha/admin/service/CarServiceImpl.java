@@ -294,8 +294,8 @@ public class CarServiceImpl extends ServiceExtension implements CarService {
             disPer = disPer * 0.02976;
             disPer = Math.round(disPer * 100) / 100.0;
 
-            // 총 대여일이 8일(192시간) 이상일 경우 할인율은 10%
-            if (totalDay >= 8 || (calMinute / 60) >= 192 || disPer >= dailyMaxRate) {
+            // 최대 할인율 검사
+            if (disPer > dailyMaxRate) {
                 disPer = dailyMaxRate;
             }
 
