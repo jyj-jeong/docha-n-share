@@ -17,4 +17,8 @@ public interface DochaAdminCalculateMapper {
 	public List<DochaAdminCalculateResponse> selectCalculateAccountsExpectedInfo(DochaAdminCalculateRequest reqParam);
 	public int insertRentAccounts(DochaAdminCalculateRequest reqParam);
 
+    List<DochaAdminCalculateResponse> selectRentCompanySettlementInfo(DochaAdminCalculateRequest calculateRequest);
+	DochaAdminCalculateResponse selectSettlementAmount(DochaAdminCalculateRequest calculateRequest);
+	int updateSettlementAmount(DochaAdminCalculateRequest calculateRequest);
+
 }

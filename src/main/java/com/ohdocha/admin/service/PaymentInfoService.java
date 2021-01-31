@@ -16,5 +16,8 @@ public interface PaymentInfoService {
 
     void reservationRefund(ServiceMessage message) throws Exception;  // 정산 상세
 
+    void updateRentCompanySettlementAmount(ServiceMessage serviceMessage);  // 정산 금액 입력 (회원사 단위)
+
+    void updateSettlementAmount(ServiceMessage serviceMessage);   // 정산 금액 입력 (예약건 단위)
 
 }

@@ -3,7 +3,7 @@
 
 <mapper namespace="com.ohdocha.admin.mapper.DochaAdminPaymentInfoMapper">
 
-	<!--
+    <!--
         <select id="selectPaymentInfoList" parameterType="paymentInfoRequest" resultType="paymentInfoResponse">
           <![CDATA[
              SELECT * FROM (SELECT ROWNUM AS ROW_NUMBER, COUNT(*) OVER() TOTAL_ROW_COUNT, A.*
@@ -168,8 +168,8 @@
 
     -->
 
-	<select id="selectPaymentInfoList" parameterType="paymentInfoRequest" resultType="paymentInfoResponse">
-		<![CDATA[
+    <select id="selectPaymentInfoList" parameterType="paymentInfoRequest" resultType="paymentInfoResponse">
+        <![CDATA[
              SELECT
                        IFNULL(M.RM_IDX                 , '' ) AS RM_IDX                   /* 예약 MASTER KEY */
                         ,      IFNULL(M.RT_IDX     			 , '' ) 	AS RT_IDX      			 /*  제휴사 IDX        */
@@ -231,14 +231,12 @@
                                         SELECT
                                             RM_IDX
                                              , PAYMENT_AMOUNT AS MONTHLY_FEE
-                                             , COUNT(RM_IDX) OVER (PARTITION BY RM_IDX) AS PAY_COUNT
-                                             , SUM(PAYMENT_AMOUNT) OVER (PARTITION BY RM_IDX) AS SUM_PAYMENT_AMOUNT
-                                             , ROW_NUMBER() OVER (PARTITION BY RM_IDX ORDER BY PAYMENT_DATE) PAYMENT_ORDER
-                                             , MAX(PAYMENT_DATE) OVER (PARTITION BY RM_IDX) AS LAST_PAY_DATE
+                                             , COUNT(RM_IDX) AS PAY_COUNT
+                                             , SUM(PAYMENT_AMOUNT) AS SUM_PAYMENT_AMOUNT
+                                             , MAX(PAYMENT_DATE) AS LAST_PAY_DATE
                                         FROM DC_PAYMENT_DETAIL A
 --                                          WHERE A.PAYMENT_KIND_CODE = 'RT'
                                     ) PD
-                                WHERE PD.PAYMENT_ORDER = 1
                             ) T2 ON RM.RM_IDX = T2.RM_IDX
                         ) M
                             LEFT OUTER JOIN DC_USER_INFO UI
@@ -251,31 +249,13 @@
                                             ON CI.FUEL_CODE = CD1.CODE
        ]]>
 
-		<if test="rtIdx != null and rtIdx != '' ">
-			AND T1.RT_IDX = #{rtIdx}
-		</if>
-<!--		<if test="gbnInput != null and gbnInput != ''">-->
-<!--			<choose>-->
-<!--				<when test =" gbnInput == 'CT' and searchKeyWord != null and searchKeyWord != '' " >-->
-<!--					AND T1.USER_CONTACT1 LIKE '%' || #{searchKeyWord} || '%'-->
-<!--				</when>-->
-<!--				<when test =" gbnInput == 'NM' and searchKeyWord != null and searchKeyWord != ''  " >-->
-<!--					AND T1.USER_NAME LIKE '%' || #{searchKeyWord} || '%'-->
-<!--				</when>-->
-<!--				<when test =" gbnInput == 'CM' and searchKeyWord != null and searchKeyWord != ''  " >-->
-<!--					AND T1.COMPANY_NAME LIKE '%' || #{searchKeyWord} || '%'-->
-<!--				</when>-->
-<!--				<when test =" gbnInput == 'CN' and searchKeyWord != null and searchKeyWord != ''  " >-->
-<!--					AND T1.CAR_NUMBER LIKE '%' || #{searchKeyWord} || '%'-->
-<!--				</when>-->
-<!--				<otherwise>-->
-<!--				</otherwise>-->
-<!--			</choose>-->
-<!--		</if>-->
+        <if test="rtIdx != null and rtIdx != '' ">
+            AND T1.RT_IDX = #{rtIdx}
+        </if>
 
-	</select>
+    </select>
 
-	<select id="selectPeriodPaymentInfo" parameterType="paymentInfoRequest" resultType="paymentInfoResponse">
+    <select id="selectPeriodPaymentInfo" parameterType="paymentInfoRequest" resultType="paymentInfoResponse">
       <![CDATA[
 
          SELECT
@@ -323,8 +303,8 @@
 
     </select>
 
-	<!-- START  INS DC_PAYMENT_DETAIL-->
-	<insert id="insertPaymentDetail" parameterType="paymentInfoRequest">
+    <!-- START  INS DC_PAYMENT_DETAIL-->
+    <insert id="insertPaymentDetail" parameterType="paymentInfoRequest">
           INSERT INTO DC_PAYMENT_DETAIL(
             PD_IDX
             , RM_IDX
@@ -349,7 +329,7 @@
                 , #{etc}
          )
    </insert>
-	<!-- END  INS DC_PAYMENT_DETAIL-->
+    <!-- END  INS DC_PAYMENT_DETAIL-->
 
 
     <select id="selectReserveInfo" parameterType="DochaMap" resultType="paymentInfoResponse" >

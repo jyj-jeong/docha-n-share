@@ -54,6 +54,7 @@
                                     <th>정산예정금액</th>
                                     <th>정산완료금액</th>
                                     <th>미정산금액</th>
+                                    <th>상태</th>
                                 </tr>
                                 </thead>
                                 <tfoot>
@@ -68,20 +69,26 @@
                                     <th>정산예정금액</th>
                                     <th>정산완료금액</th>
                                     <th>미정산금액</th>
+                                    <th>상태</th>
                                 </tr>
                                 </tfoot>
                                 <tbody>
+                                <!--/*@thymesVar id="calculateResponseList" type="java.util.List<com.ohdocha.admin.domain.calculateMnt.DochaAdminCalculateResponse>"*/-->
                                 <tr th:each="calculateInfo, index : ${calculateResponseList}" style="cursor: pointer" th:data-value="${calculateInfo.getRmIdx()}">
-                                    <td th:text="${calculateInfo.getAccountExpDt()}"></td>
+                                    <td th:text="${#dates.format(calculateInfo.getAccountExpDt(), 'yyyy-MM-dd')}"></td>
                                     <td th:text="${calculateInfo.getCompanyCount()}"></td>
                                     <td th:text="${calculateInfo.getRmCount()}"></td>
                                     <td th:text="${calculateInfo.getPaymentAmount() == '0'? '0': #numbers.formatInteger(calculateInfo.getPaymentAmount(), 3, 'COMMA')}"></td>
                                     <td th:text="${calculateInfo.getDisCountFee() == '0'? '0': #numbers.formatInteger(calculateInfo.getDisCountFee(), 3 , 'COMMA')}"></td>
                                     <td th:text="${calculateInfo.getTotalFee() == '0'? '0': #numbers.formatInteger(calculateInfo.getTotalFee(), 3 , 'COMMA')}"></td>
                                     <td th:text="${calculateInfo.getDochaDisFee() == '0'? '0': #numbers.formatInteger(calculateInfo.getDochaDisFee(), 3 , 'COMMA')}"></td>
-                                    <td th:text="${calculateInfo.getOnMissFee() == '0'? '0': #numbers.formatInteger(calculateInfo.getOnMissFee(), 3, 'COMMA')}"></td>
+                                    <td th:text="${calculateInfo.getEstimatedFee() == '0'? '0': #numbers.formatInteger(calculateInfo.getEstimatedFee(), 3, 'COMMA')}"></td>
                                     <td th:text="${calculateInfo.getSuccessFee() == '0'? '0': #numbers.formatInteger(calculateInfo.getSuccessFee(), 3 , 'COMMA')}"></td>
                                     <td th:text="${calculateInfo.getOnMissFee() == '0'? '0': #numbers.formatInteger(calculateInfo.getOnMissFee(), 3 , 'COMMA')}"></td>
+                                    <td th:if="${calculateInfo.getOnMissFee() == '0'}" th:text="${calculateInfo.getSettlementDate()}"></td>
+                                    <td th:if="${calculateInfo.getOnMissFee() != '0'}" th:with="accountExptDt = ${calculateInfo.getAccountExpDt()}" th:data-setting="${accountExptDt.setDate(calculateInfo.getAccountExpDt().getDate() - 2)}">
+                                        <button id="btnCalculate" class="btn" th:classappend="${accountExptDt.getTime() < #dates.createToday().getTime()} ? 'btn-primary' : 'btn-secondary'">정산</button>
+                                    </td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -128,7 +135,37 @@
     </div>
 </div>
 <script th:inline="javascript">
-    initDataTables();
+
+    var table = $('#dataTable').DataTable( {
+        language: {
+            emptyTable: "데이터가 존재하지 않습니다.",
+            lengthMenu: "페이지당 _MENU_ 개씩 보기",
+            info: "현재 _START_ - _END_ / _TOTAL_건",
+            infoEmpty: "0 건",
+            infoFiltered: "( _MAX_건의 데이터에서 필터링됨 )",
+            search: "검색: ",
+            zeroRecords: "일치하는 데이터가 존재하지 않습니다.",
+            loadingRecords: "로딩중...",
+            processing:     "잠시만 기다려 주세요...",
+            paginate: {
+                next: "다음",
+                previous: "이전"
+            }
+        },
+        order : [1, 'desc'],
+        orderMulti: true,
+        dom: '<\'row\'<\'col-md-6\'l><\'col-md-6\'f>><\'row\'<\'col-md-6\'B>><\'row\'<\'col-md-12\'t>><\'row\'<\'col-md-6\'i><\'col-md-6\'p>>',
+        buttons: [{
+            extend: 'excelHtml5',
+            charset: 'UTF-8',
+            bon : true,
+            text: '엑셀 다운로드',
+            footer: true,
+            className: 'exportBtn btn btn-primary'
+        }]
+    } );
+
+    table.buttons().container().appendTo($('#btnExcel'));
 
     /* 정산 관리 페이지 이동 */
     $('table > tbody').on('click', 'tr', function () {

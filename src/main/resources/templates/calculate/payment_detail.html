@@ -26,7 +26,8 @@
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 id="calListTitle" class="m-0 font-weight-bold text-primary" onclick="location.reload();" style="cursor: pointer" th:text="${'정산 (' + reserveDate + ')'}"></h6>
+                        <h6 id="calListTitle" class="m-0 font-weight-bold text-primary" onclick="location.reload();"
+                            style="cursor: pointer" th:text="${'정산 (' + reserveDate + ')'}"></h6>
                         <div class="ml-auto align-bottom">
                         </div>
                     </div>
@@ -38,6 +39,7 @@
                             <table class="table table-bordered" id="dataTable">
                                 <thead>
                                 <tr>
+                                    <th class="d-none">회원사</th>
                                     <th>회원사</th>
                                     <th>법인명</th>
                                     <th>은행 계좌번호</th>
@@ -49,10 +51,12 @@
                                     <th>정산예정금액</th>
                                     <th>정산완료금액</th>
                                     <th>미정산금액</th>
+                                    <th>상태</th>
                                 </tr>
                                 </thead>
                                 <tfoot>
                                 <tr>
+                                    <th class="d-none">회원사</th>
                                     <th>회원사</th>
                                     <th>법인명</th>
                                     <th>은행 계좌번호</th>
@@ -64,10 +68,13 @@
                                     <th>정산예정금액</th>
                                     <th>정산완료금액</th>
                                     <th>미정산금액</th>
+                                    <th>상태</th>
                                 </tr>
                                 </tfoot>
                                 <tbody>
-                                <tr th:each="calculateInfo, index : ${calculateResponseList}" style="cursor: pointer" th:data-value="${calculateInfo.getRtIdx()}">
+                                <tr th:each="calculateInfo, index : ${calculateResponseList}" style="cursor: pointer"
+                                    th:data-value="${calculateInfo.getRtIdx()}">
+                                    <td class="d-none" th:text="${calculateInfo.getRtIdx()}"></td>
                                     <td th:text="${calculateInfo.getCompanyName() + ' (' + calculateInfo.getBranchName() +')'}"></td>
                                     <td th:text="${calculateInfo.getCompanyRegistrationName()}"></td>
                                     <td th:text="${calculateInfo.getAccountBank() + ' / ' + calculateInfo.getAccountNumber()}"></td>
@@ -76,11 +83,44 @@
                                     <td th:text="${calculateInfo.getDisCountFee() == '0'? '0' : #numbers.formatInteger(calculateInfo.getDisCountFee() , 3, 'COMMA')}"></td>
                                     <td th:text="${calculateInfo.getTotalFee() == '0'? '0' : #numbers.formatInteger(calculateInfo.getTotalFee() , 3, 'COMMA')}"></td>
                                     <td th:text="${calculateInfo.getDochaDisFee() == '0'? '0' : #numbers.formatInteger(calculateInfo.getDochaDisFee(), 3, 'COMMA')}"></td>
-                                    <td th:text="${calculateInfo.getOnMissFee() == '0'? '0' : #numbers.formatInteger(calculateInfo.getOnMissFee() , 3, 'COMMA')}"></td>
+                                    <td th:text="${calculateInfo.getEstimatedFee() == '0'? '0' : #numbers.formatInteger(calculateInfo.getEstimatedFee() , 3, 'COMMA')}"></td>
                                     <td th:text="${calculateInfo.getSuccessFee() == '0'? '0' : #numbers.formatInteger(calculateInfo.getSuccessFee() , 3, 'COMMA')}"></td>
                                     <td th:text="${calculateInfo.getOnMissFee() == '0'? '0' : #numbers.formatInteger(calculateInfo.getOnMissFee() , 3, 'COMMA')}"></td>
+                                    <td th:if="${calculateInfo.getOnMissFee() == '0'}"
+                                        th:text="${calculateInfo.getSettlementDate()}"></td>
+                                    <td th:if="${calculateInfo.getOnMissFee() != '0'}"
+                                        onclick="event.cancelBubble = true"
+                                        th:with="accountExptDt = ${calculateInfo.getAccountExpDt()}"
+                                        th:data-setting="${accountExptDt.setDate(calculateInfo.getAccountExpDt().getDate() - 2)}">
+                                        <button id="btnCalculate" class="btn btn-primary"
+                                                th:if="${accountExptDt.getTime() < #dates.createToday().getTime()}"
+                                                onclick="openCalculateModal(this)">정산
+                                        </button>
+                                        <button id="btnCalculate" class="btn btn-secondary"
+                                                th:if="${accountExptDt.getTime() >= #dates.createToday().getTime()}">정산
+                                        </button>
+                                    </td>
                                 </tr>
                                 </tbody>
+                                <script th:inline="javascript">
+
+                                    function openCalculateModal(button) {
+
+                                        var reserveDate = /*[[${reserveDate}]]*/'';
+
+                                        var rtIdx = button.parentElement.parentElement.children[0].textContent;
+                                        var successFee = button.parentElement.parentElement.children[10].textContent;
+                                        var onMissFee = button.parentElement.parentElement.children[11].textContent;
+
+                                        $('#rtIdx').val(rtIdx);
+                                        $('#reserveDate').val(reserveDate);
+                                        $('#modalSuccessFee').val(successFee);
+                                        $('#modalOnMissFee').text(onMissFee + ' 원');
+
+                                        $('#enterSettlementAmountModal').modal('show');
+
+                                    }
+                                </script>
                             </table>
                         </div>
 
@@ -99,6 +139,7 @@
                                     <th>정산예정금액</th>
                                     <th>정산완료금액</th>
                                     <th>미정산금액</th>
+                                    <th>상태</th>
                                 </tr>
                                 </thead>
                                 <tfoot>
@@ -114,6 +155,7 @@
                                     <th>정산예정금액</th>
                                     <th>정산완료금액</th>
                                     <th>미정산금액</th>
+                                    <th>상태</th>
                                 </tr>
                                 </tfoot>
                                 <tbody>
@@ -144,7 +186,8 @@
 </a>
 
 <!-- Logout Modal-->
-<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -161,9 +204,46 @@
         </div>
     </div>
 </div>
+
+<div id="enterSettlementAmountModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">정산 금액 입력</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row mt-3">
+                    <input type="text" class="form-control d-none" name="rmIdx" id="rmIdx"/>
+                    <input type="text" class="form-control d-none" name="rtIdx" id="rtIdx"/>
+                    <input type="text" class="form-control d-none" name="reserveDate" id="reserveDate"/>
+                    <input type="text" class="form-control d-none" name="modalSuccessFee" id="modalSuccessFee"/>
+                    <div class="col-6 mb-4">
+                        <div>미정산 금액 : <span id="modalOnMissFee"></span></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12 mb-3">
+                        <label for="settlementAmount">정산 완료 금액 추가</label>
+                        <input type="text" class="form-control" name="settlementAmount" id="settlementAmount"
+                               onblur="this.value = objectConvertToPriceFormat(this.value)" placeholder="금액을 입력하세요"/>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="saveSettlementAmount()">저장</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">창 닫기</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script th:inline="javascript">
     initDataTables();
 
+    let rentCompanyTable;
     var accountExpDt = /*[[${reserveDate}]]*/'';
 
     /* 예약 관리 페이지 이동 */
@@ -172,11 +252,11 @@
 
         var url = '../settlement/rentCompanySettlement.json';
         var req = {
-            rtIdx : rtIdx,
-            accountExpDt : accountExpDt
+            rtIdx: rtIdx,
+            accountExpDt: accountExpDt
         };
 
-        var rentCompanyTable = $('#rentCompanyTable').DataTable( {
+        rentCompanyTable = $('#rentCompanyTable').DataTable({
             language: {
                 emptyTable: "데이터가 존재하지 않습니다.",
                 lengthMenu: "페이지당 _MENU_ 개씩 보기",
@@ -186,90 +266,129 @@
                 search: "검색: ",
                 zeroRecords: "일치하는 데이터가 존재하지 않습니다.",
                 loadingRecords: "로딩중...",
-                processing:     "잠시만 기다려 주세요...",
+                processing: "잠시만 기다려 주세요...",
                 paginate: {
                     next: "다음",
                     previous: "이전"
                 }
             },
             pageMenu: 10,
-            dom : 'ftp',
+            dom: 'ftp',
             orderMulti: true,
             columns: [
-                { data : 'rmIdx' },
-                { data : 'rentStartDay' },
-                { data : 'rentEndDay' },
-                { data : 'modelName' },
-                { data : 'paymentAmount' },
-                { data : 'disCountFee' },
-                { data : 'totalFee' },
-                { data : 'dochaDisFee' },
-                { data : 'onMissFee' },
-                { data : 'successFee' },
-                { data : 'onMissFee' }
+                {data: 'rmIdx'},
+                {data: 'rentStartDay'},
+                {data: 'rentEndDay'},
+                {data: 'modelName'},
+                {data: 'paymentAmount'},
+                {data: 'disCountFee'},
+                {data: 'totalFee'},
+                {data: 'dochaDisFee'},
+                {data: 'estimatedFee'},
+                {data: 'successFee'},
+                {data: 'onMissFee'},
+                {data: 'settlementDate'}
             ],
-            columnDefs: [ {
-                targets : [3],
-                render: function(data, type, row, meta){
-                    return row['modelName'] +'(' + row['carNumber'] + ')';
-                }},{
-                targets : [4],
-                render: function(data, type, row, meta){
+            columnDefs: [{
+                targets: [3],
+                render: function (data, type, row, meta) {
+                    return row['modelName'] + '(' + row['carNumber'] + ')';
+                }
+            }, {
+                targets: [4],
+                render: function (data, type, row, meta) {
                     return objectConvertToPriceFormat(row['paymentAmount']);
-                }},{
-                targets : [5],
-                render: function(data, type, row, meta){
+                }
+            }, {
+                targets: [5],
+                render: function (data, type, row, meta) {
                     return objectConvertToPriceFormat(row['disCountFee']);
-                }},{
-                targets : [6],
-                render: function(data, type, row, meta){
+                }
+            }, {
+                targets: [6],
+                render: function (data, type, row, meta) {
                     return objectConvertToPriceFormat(row['totalFee']);
-                }},{
-                targets : [7],
-                render: function(data, type, row, meta){
+                }
+            }, {
+                targets: [7],
+                render: function (data, type, row, meta) {
                     return objectConvertToPriceFormat(row['dochaDisFee']);
-                }},{
-                targets : [8],
-                render: function(data, type, row, meta){
-                    return objectConvertToPriceFormat(row['onMissFee']);
-                }},{
-                targets : [9],
-                render: function(data, type, row, meta){
+                }
+            }, {
+                targets: [8],
+                render: function (data, type, row, meta) {
+                    return objectConvertToPriceFormat(row['estimatedFee']);
+                }
+            }, {
+                targets: [9],
+                render: function (data, type, row, meta) {
                     return objectConvertToPriceFormat(row['successFee']);
-                }},{
-                targets : [10],
-                render: function(data, type, row, meta){
+                }
+            }, {
+                targets: [10],
+                render: function (data, type, row, meta) {
                     return objectConvertToPriceFormat(row['onMissFee']);
                 }
+            }, {
+                targets: [11],
+                render: function (data, type, row, meta) {
+                    console.log(row);
+                    console.log(data);
+                    if (row['onMissFee'] === "0") {
+                        return row['settlementDate'];
+                    } else {
+                        const expDt = new Date(row.accountExpDt);
+                        expDt.setDate(expDt.getDate() - 2);
+
+                        const today = new Date();
+
+                        if (today > expDt) {
+                            return '<button class="btn btn-primary">정산</button>';
+                        } else {
+                            return '<button class="btn btn-secondary">정산</button>';
+                        }
+                    }
+                }
             }],
-            ajax : {
+            ajax: {
                 url: url,
                 type: 'POST',
-                contentType : 'application/json',
-                dataType : 'json',
-                data : function () {
+                contentType: 'application/json',
+                dataType: 'json',
+                data: function () {
                     return JSON.stringify(req);
                 },
-                dataSrc : function (json) {
+                dataSrc: function (json) {
                     var data = json.result;
-                    if (data === null || data === undefined){
+                    if (data === null || data === undefined) {
                         data = [];
                     }
-                    $('#calListTitle').text('정산 (' + data[0].companyName + '-' + data[0].branchName +')');
+                    $('#calListTitle').text('정산 (' + data[0].companyName + '-' + data[0].branchName + ')');
                     return data;
                 },
-                error : function (xhr, error, code) {
+                error: function (xhr, error, code) {
                     console.log(error);
                 }
             }
-        } );
+        });
 
-
-        $('#reserveDateTable').css('display','none');
-        $('#rentCompanyTableContent').css('display','block');
-
+        $('#reserveDateTable').css('display', 'none');
+        $('#rentCompanyTableContent').css('display', 'block');
     });
 
+    $('#rentCompanyTable tbody').on('click', 'button', function () {
+        const btn = $(this);
+        if (btn.hasClass("btn-secondary")) return;
+
+        var rmIdx = this.parentElement.parentElement.children[0].textContent;
+        var successFee = this.parentElement.parentElement.children[9].textContent;
+        var onMissFee = this.parentElement.parentElement.children[10].textContent;
+
+        $('#enterSettlementAmountModal').modal('show');
+        $('#rmIdx').val(rmIdx);
+        $('#modalSuccessFee').val(successFee);
+        $('#modalOnMissFee').text(onMissFee + ' 원');
+    });
 
 </script>
 </body>

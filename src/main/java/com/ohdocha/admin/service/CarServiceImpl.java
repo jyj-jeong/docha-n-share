@@ -294,8 +294,8 @@ public class CarServiceImpl extends ServiceExtension implements CarService {
             disPer = disPer * 0.02976;
             disPer = Math.round(disPer * 100) / 100.0;
 
-            // 총 대여일이 8일(192시간) 이상일 경우 할인율은 10%
-            if (totalDay >= 8 || (calMinute / 60) >= 192 || disPer >= dailyMaxRate) {
+            // 최대 할인율 검사
+            if (disPer > dailyMaxRate) {
                 disPer = dailyMaxRate;
             }
 
@@ -1073,21 +1073,24 @@ public class CarServiceImpl extends ServiceExtension implements CarService {
         int res = basicPlanMapper.insertBasicPlanInfo(baiscPlanDetailRequest);
 
         if (res == 1){
-            String[] crIdxList = baiscPlanDetailRequest.getCrIdx().split(" ");
+            if (!baiscPlanDetailRequest.getCrIdx().equals("")){
+                String[] crIdxList = baiscPlanDetailRequest.getCrIdx().split(" ");
 
-            for (String crIdx : crIdxList){
-                baiscPlanDetailRequest.setCrIdx(crIdx);
+                for (String crIdx : crIdxList){
+                    res = 0;
+                    baiscPlanDetailRequest.setCrIdx(crIdx);
 
-                // 선택한 차량의 요금 정보 update
-                res = regCarMapper.updateRegCarPaymentInfo(baiscPlanDetailRequest);
+                    // 선택한 차량의 요금 정보 update
+                    res = regCarMapper.updateRegCarPaymentInfo(baiscPlanDetailRequest);
 
-                // 차량의 요금정보가 기존에 없는 경우 insert
-                if (res == 0){
-                    regCarMapper.insertRegCarPayment(baiscPlanDetailRequest);
+                    // 차량의 요금정보가 기존에 없는 경우 insert
+                    if (res == 0){
+                        res = regCarMapper.insertRegCarPayment(baiscPlanDetailRequest);
+                    }
                 }
             }
-
             message.addData("res", res);
+
         }else {
             message.addData("res", res);
         }
@@ -1126,19 +1129,22 @@ public class CarServiceImpl extends ServiceExtension implements CarService {
         int res = basicPlanMapper.updateBasicPlanInfo(baiscPlanDetailRequest);
 
         if (res == 1){
-            String[] crIdxList = baiscPlanDetailRequest.getCrIdx().split(" ");
+            if (!baiscPlanDetailRequest.getCrIdx().equals("")) {
+                String[] crIdxList = baiscPlanDetailRequest.getCrIdx().split(" ");
 
-            for (String crIdx : crIdxList){
-                baiscPlanDetailRequest.setCrIdx(crIdx);
+                for (String crIdx : crIdxList) {
+                    res = 0;
+                    baiscPlanDetailRequest.setCrIdx(crIdx);
 
-                res = regCarMapper.updateRegCarPaymentInfo(baiscPlanDetailRequest);
+                    res = regCarMapper.updateRegCarPaymentInfo(baiscPlanDetailRequest);
 
-                if (res == 0){
-                    regCarMapper.insertRegCarPayment(baiscPlanDetailRequest);
+                    if (res == 0) {
+                        res = regCarMapper.insertRegCarPayment(baiscPlanDetailRequest);
+                    }
                 }
             }
         }
-
+        message.addData("res", res);
     }
 
 
@@ -1150,21 +1156,24 @@ public class CarServiceImpl extends ServiceExtension implements CarService {
         int res = insuranceTemplateMapper.insertInsuranceTemplate(insuranceTemplateDetailRequest);
 
         if (res == 1){
-            String[] crIdxList = insuranceTemplateDetailRequest.getCrIdx().split(" ");
+            if (!insuranceTemplateDetailRequest.getCrIdx().equals("")){
+                String[] crIdxList = insuranceTemplateDetailRequest.getCrIdx().split(" ");
 
-            for (String crIdx : crIdxList){
-                insuranceTemplateDetailRequest.setCrIdx(crIdx);
+                for (String crIdx : crIdxList){
+                    res = 0;
+                    insuranceTemplateDetailRequest.setCrIdx(crIdx);
 
-                // 선택한 차량의 보험 정보 update
-                res = regCarMapper.updateRegCarInsuranceInfo(insuranceTemplateDetailRequest);
+                    // 선택한 차량의 보험 정보 update
+                    res = regCarMapper.updateRegCarInsuranceInfo(insuranceTemplateDetailRequest);
 
-                // 차량의 요금정보가 기존에 없는 경우 insert
-                if (res == 0){
-                    regCarMapper.insertRegCarInsurance(insuranceTemplateDetailRequest);
+                    // 차량의 요금정보가 기존에 없는 경우 insert
+                    if (res == 0){
+                        res = regCarMapper.insertRegCarInsurance(insuranceTemplateDetailRequest);
+                    }
+
                 }
 
             }
-
             message.addData("res", res);
         }else {
             message.addData("res", res);
@@ -1206,15 +1215,18 @@ public class CarServiceImpl extends ServiceExtension implements CarService {
         int res = insuranceTemplateMapper.updateInsuranceTemplate(insuranceTemplateDetailRequest);
 
         if (res == 1){
-            String[] crIdxList = insuranceTemplateDetailRequest.getCrIdx().split(" ");
+            if (!insuranceTemplateDetailRequest.getCrIdx().equals("")){
+                String[] crIdxList = insuranceTemplateDetailRequest.getCrIdx().split(" ");
 
-            for (String crIdx : crIdxList){
-                insuranceTemplateDetailRequest.setCrIdx(crIdx);
+                for (String crIdx : crIdxList){
+                    res = 0;
+                    insuranceTemplateDetailRequest.setCrIdx(crIdx);
 
-                res = regCarMapper.updateRegCarInsuranceInfo(insuranceTemplateDetailRequest);
+                    res = regCarMapper.updateRegCarInsuranceInfo(insuranceTemplateDetailRequest);
 
-                if(res == 0){
-                    regCarMapper.insertRegCarInsurance(insuranceTemplateDetailRequest);
+                    if(res == 0){
+                        res = regCarMapper.insertRegCarInsurance(insuranceTemplateDetailRequest);
+                    }
                 }
             }
         }

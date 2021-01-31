@@ -18,13 +18,12 @@ import java.util.Map;
 @Slf4j
 @AllArgsConstructor
 @Controller
-@RequestMapping(value = "/settlement")
 public class PaymentInfoController extends ControllerExtension {
 
     private final PaymentInfoService paymentInfoService;
 
     /* 정산 리스트 */
-    @GetMapping(value = "")
+    @GetMapping(value = "/settlement")
     public String paymentInfoList(HttpServletRequest request, ModelMap modelMap) {
         ServiceMessage serviceMessage = createServiceMessage(request);
         DochaAdminCalculateRequest calculateRequest = new DochaAdminCalculateRequest();
@@ -42,7 +41,7 @@ public class PaymentInfoController extends ControllerExtension {
     }
 
     /* 정산 상세화면 (날짜별) */
-    @GetMapping(value = "/{reserveDate}")
+    @GetMapping(value = "/settlement/{reserveDate}")
     public String paymentDetail(@PathVariable String reserveDate, HttpServletRequest request, ModelMap modelMap) {
         ServiceMessage serviceMessage = createServiceMessage(request);
         DochaAdminCalculateRequest calculateRequest = new DochaAdminCalculateRequest();
@@ -61,13 +60,37 @@ public class PaymentInfoController extends ControllerExtension {
     }
 
     /* 정산 상세화면 (날짜 > 회원사) */
-    @PostMapping(value = "/rentCompanySettlement.json")
+    @PostMapping(value = "/settlement/rentCompanySettlement.json")
     @ResponseBody
     public Object rentCompanySettlement(@RequestBody DochaAdminCalculateRequest calculateRequest, HttpServletRequest request) {
         ServiceMessage serviceMessage = createServiceMessage(request);
         serviceMessage.addData("calculateRequest", calculateRequest);
 
         paymentInfoService.calculateDateAndRtIdxReserveInfo(serviceMessage);
+
+        return serviceMessage;
+    }
+
+    /* 정산 금액 입력 (회원사 단위 입력)*/
+    @PostMapping(value = "/api/v1.0/saveRentCompanySettlementAmount.do")
+    @ResponseBody
+    public Object insertRentCompanySettlementAmount(@RequestBody DochaAdminCalculateRequest calculateRequest, HttpServletRequest request) {
+        ServiceMessage serviceMessage = createServiceMessage(request);
+        serviceMessage.addData("calculateRequest", calculateRequest);
+
+        paymentInfoService.updateRentCompanySettlementAmount(serviceMessage);
+
+        return serviceMessage;
+    }
+
+    /* 정산 금액 입력 (예약 건 단위 입력) */
+    @PostMapping(value = "/api/v1.0/saveSettlementAmount.do")
+    @ResponseBody
+    public Object insertSettlementAmount(@RequestBody DochaAdminCalculateRequest calculateRequest, HttpServletRequest request) {
+        ServiceMessage serviceMessage = createServiceMessage(request);
+        serviceMessage.addData("calculateRequest", calculateRequest);
+
+        paymentInfoService.updateSettlementAmount(serviceMessage);
 
         return serviceMessage;
     }

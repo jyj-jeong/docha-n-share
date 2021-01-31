@@ -523,13 +523,13 @@ function getCompanyCarList(selectedCar) {
 
 function makeCheckBox(data, target, all) {
 	var strOption = "<label class='d-inline-block mr-3 checkbox-inline'>" +
-		"<input id='" + target + "All' type='checkbox' value='" + all + "' name='carList'/> " + all + "전체</label>";
+		"<input id='" + target + "All' type='checkbox' value='" + all + "' name='carList'/> " + all + "전체</label><br>";
 
 	for ( var i=0; i< data.length; i++) {
 		strOption += "<label class='d-inline-block mr-3 checkbox-inline'>" +
 			"<input id='" + data[i].crIdx + "' type='checkbox' value='" + data[i].modelName + "' name='carList'/> "
-			+ data[i].modelName
-			+ "</label>";
+			+ "("+ data[i].carNumber +") "+ data[i].year + " "+ data[i].modelName + " " +  data[i].modelDetailName + " (" + data[i].fuelCode + ")"
+			+ "</label><br>";
 	}
 
 	$('#' + target).empty();
@@ -567,16 +567,24 @@ function detailValidation(){
 		errorAlert('회원사', '회원사를 선택하여 주세요.');
 		$('#companyName').focus();
 		return;
-	}else if(!isEmpty(periodStartDt) && chkValDate(periodStartDt) == null){
-		errorAlert('일정 시작', '일정 시작은 날짜만 입력 가능합니다.');
+	}else if(isEmpty(periodStartDt)){
+		errorAlert('일정 시작', '일정 시작일을 선택해주세요.');
 		$('#periodStartDt').focus();
 		return;
-	}else if(!isEmpty(periodEndDt) && chkValDate(periodEndDt) == null){
-		errorAlert('일정 종료', '일정 종료은 날짜만 입력 가능합니다.');
+	}else if(isEmpty(periodEndDt)){
+		errorAlert('일정 종료', '일정 종료일을 선택해주세요.');
 		$('#periodEndDt').focus();
 		return;
 	}else if(periodStartDt > periodEndDt){
 		errorAlert('일정', '일정 시작 시작일은 종료일 보다 클수 없습니다.');
+		return;
+	}else if(isEmpty(discountExtrachargeCode)) {
+		errorAlert('기간요금', '할인 / 할증을 선택해주세요.');
+		$('#periodPay').focus();
+		return;
+	}else if(isEmpty(periodPay)) {
+		errorAlert('기간요금', '기간요금을 입력해주세요.');
+		$('#periodPay').focus();
 		return;
 	}else if(!isEmpty(periodPay) && !$.isNumeric(periodPay)){
 		errorAlert('기간요금', '기간요금은 숫자만 입력 가능합니다.');

@@ -30,6 +30,7 @@ import org.springframework.web.client.RestTemplate;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -197,6 +198,81 @@ public class PaymentInfoServiceImpl extends ServiceExtension implements PaymentI
                 logger.error("Error", ex);
             }
         }
+    }
+
+    @Override
+    public void updateRentCompanySettlementAmount(ServiceMessage serviceMessage) {
+        DochaAdminCalculateRequest calculateRequest = serviceMessage.getObject("calculateRequest", DochaAdminCalculateRequest.class);
+        // 입력한 정산 금액
+        int settlementAmount = Integer.parseInt(calculateRequest.getSettlementAmount());
+
+        // 회원사 + 날짜 조건에 맞는 결제 조회
+        List<DochaAdminCalculateResponse> calculateResponse = calculateMapper.selectRentCompanySettlementInfo(calculateRequest);
+        List<DochaAdminCalculateRequest> calculateRequestList = new ArrayList<>();
+
+        if (calculateResponse.size() != 0){
+            for (DochaAdminCalculateResponse response : calculateResponse){
+                int onMissFee = Integer.parseInt(response.getOnMissFee());
+
+                if (onMissFee > 0 && settlementAmount > 0) {
+
+                    // 입력한 정산 완료 금액이 결제건의 미정산 금액보다 크거나 같은 경우
+                    if (settlementAmount >= onMissFee){
+
+                        DochaAdminCalculateRequest request = new DochaAdminCalculateRequest();
+
+                        request.setRmIdx(response.getRmIdx());
+
+                        // 기존의 정산 완료금액
+                        int oldSettlementAmount = Integer.parseInt(response.getSettlementAmount());
+                        oldSettlementAmount += onMissFee;
+                        request.setSettlementAmount(String.valueOf(oldSettlementAmount));
+
+                        calculateRequestList.add(request);
+
+                        settlementAmount -= onMissFee;
+
+                    }else if (settlementAmount < onMissFee){  // 입력한 정산 완료 금액이 결제건의 미정산 금액보다 작은 경우
+
+                        DochaAdminCalculateRequest request = new DochaAdminCalculateRequest();
+
+                        request.setRmIdx(response.getRmIdx());
+
+                        // 기존의 정산 완료금액
+                        int oldSettlementAmount = Integer.parseInt(response.getSettlementAmount());
+                        oldSettlementAmount += settlementAmount;
+                        request.setSettlementAmount(String.valueOf(oldSettlementAmount));
+
+                        calculateRequestList.add(request);
+
+                        settlementAmount = 0;
+                    }
+                }
+            }
+        }
+
+        int res = 0;
+        for (DochaAdminCalculateRequest req : calculateRequestList){
+            res = calculateMapper.updateSettlementAmount(req);
+        }
+
+        serviceMessage.addData("code", res);
+    }
+
+    @Override
+    public void updateSettlementAmount(ServiceMessage serviceMessage) {
+        DochaAdminCalculateRequest calculateRequest = serviceMessage.getObject("calculateRequest", DochaAdminCalculateRequest.class);
+
+        DochaAdminCalculateResponse calculateResponse = calculateMapper.selectSettlementAmount(calculateRequest);
+
+        int settlementAmount = Integer.parseInt(calculateResponse.getSettlementAmount());
+        settlementAmount += Integer.parseInt(calculateRequest.getSettlementAmount());
+
+        calculateRequest.setSettlementAmount(String.valueOf(settlementAmount));
+
+        int res = calculateMapper.updateSettlementAmount(calculateRequest);
+
+        serviceMessage.addData("code", res);
     }
 
 
