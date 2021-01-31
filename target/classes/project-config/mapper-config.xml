@@ -185,6 +185,7 @@
 
 		<!-- 고객 이용후기 -->
 		<typeAlias type="com.ohdocha.admin.domain.review.model.UserReviewDto" alias="userReviewDto" />
+		<typeAlias type="com.ohdocha.admin.domain.review.model.UserReviewFile" alias="userReviewFile" />
 		
 		
 	</typeAliases>

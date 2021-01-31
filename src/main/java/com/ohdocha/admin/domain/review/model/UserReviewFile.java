@@ -13,9 +13,11 @@ public class UserReviewFile {
 	
 	private Integer idx;
 	private Integer rvIdx;
-	private String file;
+	private String filePath;
+	private String fileRealPath;
+	private String fileNm;
+	private String orgFilePath;
 	private String regDt;
-	private String regId;
 	private String modDt;
 	private String modId;
 	private String delYn;

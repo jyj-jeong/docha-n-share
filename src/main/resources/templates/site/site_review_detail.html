@@ -25,7 +25,7 @@
                             <h6 class="col-12 mb-3 font-weight-bold">작성정보</h6>
                             <div class="col-3 mb-3">
                                 <label>등록일시</label>
-                                <input type="text" class="form-control" readonly th:value="${result.getRegDt()}" />
+                                <input type="text" class="form-control" readonly th:value="${result.getRegDt()}" /> 
                             </div>
                             <div class="col-3 mb-3">
                                 <label>회원사</label>
@@ -65,8 +65,8 @@
 								<!-- fileList  --> 
 								<th:block th:each="fileInfo : ${userReviewFile}">
 									<div class="col-6 mb-6">
-										<img class="col-12" id="img_review" src="${fileInfo.getFile()}"></img>
-										<span class="text_img" th:text="${fileInfo.getFile()}"></span>
+										<img class="col-12" id="img_review" src="${fileInfo.getFilePath() + fileInfo.getFileNm()}"></img>
+										<span class="text_img" th:text="${fileInfo.getFilePath() + fileInfo.getFileNm()}"></span>
 									</div>
 								</th:block>
 							</div>
