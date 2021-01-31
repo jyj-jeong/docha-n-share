@@ -1,19 +1,17 @@
 package com.ohdocha.admin.config;
 
-import lombok.AllArgsConstructor;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-import com.sun.media.jfxmedia.logging.Logger;
 
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
-	@Value("${com.ohdocha.admin.temp-folder-path}")
+	
+    @Value("${com.ohdocha.admin.temp-folder-path}")
 	private String LOCATION_FILE;
 	
     @Override
@@ -39,7 +37,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addResourceHandler(
                 "/webjars/**",
                 "/assets/**",
-               // "/img/**",
+                "/img/**",
                 "/css/**",
                 "/js/**",
                 "/vendor/**",
@@ -54,7 +52,6 @@ public class WebMvcConfig implements WebMvcConfigurer {
                         "classpath:/static/js/",
                         "classpath:/static/vendor/",
                         LOCATION_FILE
-                        //"file:///C:/ohdocha/data/temp/"
          //               ,"classpath:/upload/summersummer/summernotelocal/"
                                                     );
     }
