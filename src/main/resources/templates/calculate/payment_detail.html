@@ -92,7 +92,7 @@
                                         onclick="event.cancelBubble = true"
                                         th:with="accountExptDt = ${calculateInfo.getAccountExpDt()}"
                                         th:data-setting="${accountExptDt.setDate(calculateInfo.getAccountExpDt().getDate() - 2)}">
-                                        <button id="btnCalculate" class="btn btn-primary"
+                                        <button id="btnCalculate" class="btn btn-primary" style="white-space: nowrap;"
                                                 th:if="${accountExptDt.getTime() < #dates.createToday().getTime()}"
                                                 onclick="openCalculateModal(this)">정산
                                         </button>

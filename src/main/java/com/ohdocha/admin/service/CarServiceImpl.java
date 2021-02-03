@@ -1147,6 +1147,24 @@ public class CarServiceImpl extends ServiceExtension implements CarService {
         message.addData("res", res);
     }
 
+    /* 기본 요금제 삭제 */
+    @Override
+    public void deleteBasicPlanInfo(ServiceMessage message) {
+        DochaAdminBaiscPlanDetailRequest deleteBasicPlanDetailRequest = message.getObject("baiscPlanDetailRequest", DochaAdminBaiscPlanDetailRequest.class);
+
+        int res = 0;
+
+
+        for (String PyTIdx : deleteBasicPlanDetailRequest.getDeletebaiscPlanIdxList() ){
+            System.out.println(PyTIdx + "  =============service PyTIdx");
+            deleteBasicPlanDetailRequest.setPyTIdx(PyTIdx);
+
+            res = regCarMapper.deleteBasicPayment(deleteBasicPlanDetailRequest);
+        }
+
+        message.addData("res", res);
+    }
+
 
     /* 보험템플릿 등록 */
     @Override

@@ -1,8 +1,12 @@
 package com.ohdocha.admin.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.ohdocha.admin.domain.reserve.payment.DochaAdminPaymentInfoRequest;
 import com.ohdocha.admin.domain.reserve.reserveInfoMnt.DochaAdminReserveInfoDetailRequest;
 import com.ohdocha.admin.domain.reserve.reserveInfoMnt.DochaAdminReserveInfoRequest;
+import com.ohdocha.admin.service.DochaPaymentService;
+import com.ohdocha.admin.service.DochaPaymentServiceImpl;
 import com.ohdocha.admin.service.PaymentInfoService;
 import com.ohdocha.admin.service.ReserveService;
 import com.ohdocha.admin.util.DochaMap;
@@ -10,12 +14,14 @@ import com.ohdocha.admin.util.ServiceMessage;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import java.security.Principal;
 import java.util.Map;
 
 @Slf4j
@@ -25,6 +31,15 @@ public class ReserveController extends ControllerExtension{
 
     private final ReserveService reserveService;
     private final PaymentInfoService paymentInfoService;
+
+//    @Value("${import.url}")
+//    private String url;
+//
+//    @Value("${import.imp_key}")
+//    private String impKey;
+//
+//    @Value("${import.imp_secret}")
+//    private String impSecret;
 
     // region [ 예약 관리 ]
 
@@ -124,6 +139,26 @@ public class ReserveController extends ControllerExtension{
         modelMap.addAllAttributes(serviceMessage);
         return "reservation/reservation_detail";
     }
+
+//    /* 예약 내역 저장 */
+//    @RequestMapping(value = "/user/paymentSave.json")
+//    @ResponseBody
+//    public Object paymentSave(@RequestParam Map<String, Object> reqParam, ModelAndView mv, HttpServletRequest request, Authentication authentication, Principal principal) throws JsonMappingException, JsonProcessingException, Exception {
+//        DochaMap param = new DochaMap();
+//        param.putAll(reqParam);
+//
+//        //세션에서 결제 전 불러왔던 금액정보를 가져와 검증하기 위해 파라미터 셋팅
+//        param.put("resCarDto", request.getSession().getAttribute("resCarDto"));
+//       // param.put("user", authentication.getPrincipal());
+//
+//        DochaPaymentServiceImpl payservice = new DochaPaymentServiceImpl();
+//        //주문정보 저장
+//        payservice.paymentOne(param, url, impKey, impSecret);
+//
+//        return param;
+//    }
+
+
 
     // endregion
 

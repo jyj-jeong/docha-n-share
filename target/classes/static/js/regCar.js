@@ -1821,6 +1821,7 @@ function deleteCarData() {
         return;
     }
 
+
     var checkedCarCount;
 
     var deleteAllYn = $('input:checkbox[id=deleteAllCar]').is(":checked");

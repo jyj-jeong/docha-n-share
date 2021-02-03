@@ -1586,7 +1586,8 @@ function detailValidation(){
 
     let rtIdx = getPureText($('#companyName option:selected').val());
     let mdIdx = getPureText($('#mdIdx').val());
-    let crIdx = getPureText($('#sel_modelName option:selected').val()); // 차량순번
+    let crIdx = getPureText($('#sel_modelName option:selected').val()); // 차량순번+
+    let crIdxname = $('#sel_modelName option:selected').val(); // 차량순번
     let carDamageCover = getPureText($('#carDamageCover').val());
     let insuranceCopayment = getPureText($('#insuranceCopayment').val());
     let carTypeCode = getPureText($('#carTypeCode').val());
@@ -1673,9 +1674,110 @@ function detailValidation(){
     cancel_text = '취소하셨습니다.';
     save_type = CRUD;
 
+
+
     call_before_save(title, text, icon, cancel_text, save_type, req);
 
+    alert("결제로직1");
+        var IMP = window.IMP; // 생략가능
+        IMP.init('imp68389175');
+
+        IMP.request_pay({
+            pg : 'kakao', // version 1.1.0부터 지원.
+            pay_method : 'card',
+            merchant_uid : 'merchant_' + new Date().getTime() + new Date().getSeconds(),
+            name : crIdxname,
+            amount : paymentTotalAmount,
+            buyer_email : reserveUserEmail,
+            buyer_name : reserveUserName,
+            buyer_tel : reserveUserContact1,
+            buyer_addr : returnAddr,
+            buyer_postcode : 123456
+        }, function(rsp) {
+            if ( rsp.success ) {
+                var msg = '결제가 완료되었습니다.';
+                // msg += '고유ID : ' + rsp.imp_uid;
+                // msg += '상점 거래ID : ' + rsp.merchant_uid;
+                // msg += '결제 금액 : ' + rsp.paid_amount;
+                // msg += '카드 승인번호 : ' + rsp.apply_num;
+                alert(msg);
+                //   paymentSave(rsp.imp_uid, "/user/paymentSave.json",req);
+
+            } else {
+                var msg = '결제에 실패하였습니다.';
+                msg += '에러내용 : ' + rsp.error_msg;
+                alert(msg);
+            }
+
+        });
+    alert("결제로직2");
+
+
 }
+
+//결제 후 주문저장 및 검증
+function paymentSave(impUid, url, req){
+
+    //결제할 개월수, 차후 결제개월에 따라 변동되도록 수정 필요(정기결제에만 사용)
+    let rentMonth = ceilMonthly;
+
+    //파라미터로 아임포트 결제 key를 전달
+    let reqParam = {
+        'impUid': impUid
+        , 'rentMonth': 0 // 개월 수 ,0
+        , 'mmRentFee': 0 // 월요금 ,0
+        , 'mmLastRentFee': 0 // 마지막 달 요금 ,0
+        , 'calcDisRentFee': 0 // 할인 요금 ,0
+        , 'rentFee': req.paymentTotalAmount // 대어료 ,합계금액
+        , 'insuranceFee': req.insuranceFee // 보험요금 ,자차 보험
+        , 'deliveryTypeCode': req.deliveryTypeCode // 배달 / 지점 대여 구분
+        , 'rentStartDt': req.rentStartDt // 대여시작시간
+        , 'rentEndDt': req.rentEndDt // 대여종료시간
+        , 'periodDt' : req.periodDt // 대여기간
+        , 'myLocation': req.myLocation // 내 위치
+        , 'deliveryFee': req.deliveryFee // 배달요금, 왕복배달금액
+        , 'carDamageCover': req.carDamageCover // 자차 보험
+        , 'carDamageNumber': req.carDamageNumber // 자차보험 구분 (자차1, 자차2...)
+        , 'deposit': 0 // 보증금 ,없음
+        , 'ceilMonth': 0 // 마지막 달 요금이 있으면 올림한 달 0
+    };
+
+    alert(reqParam);
+
+    $.ajax({
+        type: "POST",
+        url: url,
+        dataType: 'json',
+        contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+        data : reqParam,
+        async: false,
+        success: function (res) {
+            alert("예약이 완료되었습니다");
+            var $form = $('<form method="post"></form>');
+            var rmIdx = res.rmIdx;
+
+            $form.attr('action', "/user/payment/complete.do");
+            $form.attr('method', 'post');
+            $form.attr('contentType', 'application/x-www-form-urlencoded');
+
+            rmIdx  = $('<input type="hidden" value="' + rmIdx + '" name="rmIdx">');
+
+            $form.append(rmIdx);
+
+            $form.appendTo('body');
+            $form.submit();
+
+        },error:function(request,status,error){
+            console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+            alert("결제 중 오류가 발생했습니다, 잠시 후 다시 시도 해 주시기 바랍니다");
+        }
+    })
+
+}
+
+
+
+
 
 //submit
 function detailSubmit(save_type, req){

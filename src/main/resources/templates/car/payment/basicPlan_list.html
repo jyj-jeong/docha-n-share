@@ -3,6 +3,8 @@
 <head th:replace="header :: mainHead"></head>
 <head>
     <title>기본 요금제 :: DoCha Admin Web</title>
+
+    <script src="/js/template.js" th:src="@{/js/template.js}"></script>
 </head>
 <body id="page-top">
 
@@ -32,6 +34,7 @@
                     <div class="card-body">
                         <div class="table-responsive">
                             <div class="mb-4 text-right">
+                                <button class="btn btn-danger" onclick="deleteBplanData()">기본 요금제 삭제</button>
                                 <button class="btn btn-primary" onclick="addBasicPlan()">기본요금설정 등록</button>
                                 <button class="btn" id="btnExcel"></button>
                             </div>
@@ -47,6 +50,9 @@
                                 </script>
                                 <thead>
                                 <tr>
+                                    <th onclick="event.cancelBubble=true" class="sorting_disabled">
+                                        <input type="checkbox" id="deleteAllBplan" name="deleteCheck" />
+                                    </th>
                                     <th>기본요금제번호</th>
                                     <th>회원사<br>(지점)</th>
                                     <th>제목</th>
@@ -56,6 +62,7 @@
                                 </thead>
                                 <tfoot>
                                 <tr>
+                                    <th></th>
                                     <th>기본요금제번호</th>
                                     <th>회원사<br>(지점)</th>
                                     <th>제목</th>
@@ -65,6 +72,9 @@
                                 </tfoot>
                                 <tbody>
                                 <tr th:each="basicPlan, index : ${basicPlanList}" style="cursor: pointer" th:data-value="${basicPlan.getPyTIdx()}">
+                                    <td onclick="event.cancelBubble=true">
+                                        <input type="checkbox" name="deleteCheck" />
+                                    </td>
                                     <td th:text="${basicPlan.getPyTIdx()}"></td>
                                     <td th:text="${basicPlan.getCompanyName() + '(' + basicPlan.getBranchName() + ')'}"></td>
                                     <td th:text="${basicPlan.getPyEtc()}"></td>
@@ -72,17 +82,32 @@
                                     <td th:text="${#numbers.formatInteger(basicPlan.getMonthlyStandardPay(), 0, 'COMMA')}"></td>
                                 </tr>
                                 <script th:inline="javascript">
-                                    // 상세보기 이동
-                                    $('#dataTable > tbody > tr >').click(function () {
-                                        var pyTIdx = $(this).parent().attr('data-value');
-                                        if (pyTIdx === "") return;
 
+                                    /* 기본요금제 체크박스 선택 */
+                                    $('input:checkbox[id=deleteAllBplan]').change(function () {
+                                        var deleteAllBplan = $('input:checkbox[id=deleteAllBplan]').is(":checked");
+
+                                        if (deleteAllBplan){
+                                            $('input:checkbox[name=deleteCheck]').prop("checked", true);
+                                        }else {
+                                            $('input:checkbox[name=deleteCheck]').prop("checked", false);
+                                        }
+                                    });
+                                    // 상세보기 이동
+                                    $('#dataTable > tbody > tr').click(function () {
+                                        var pyTIdx = $(this).attr('data-value');
+                                        if (pyTIdx === "") return;
                                         var url = "../../car/payment/basic/" + pyTIdx;
                                         var name = "기본 요금제 수정";
                                         var option = "width=600, height=800, location=no, left=500, top=50";
 
                                         window.open(url, name, option);
                                     });
+
+                                    function getLoginUser() {
+                                        return /*[[${session.LOGIN_SESSION}]]*/ '';
+                                    }
+
                                 </script>
                                 </tbody>
                             </table>

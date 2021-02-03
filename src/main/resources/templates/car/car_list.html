@@ -110,7 +110,8 @@
                                     <td th:text="${car.getCrIdx()}"></td>
                                     <td th:text="${car.getCompanyName() + '(' + car.getBranchName() + ')'}"></td>
                                     <td>
-                                        <span th:text="${car.getModelName()+' '+car.getModelDetailName()}"></span>
+                                        <span th:text="${car.getModelName()+' '}"></span>
+                                        <span th:text="${car.getModelDetailName()}"></span>
                                         <br>
                                         <span th:text="${'(' + car.getCarNumber() + ')'}"></span>
                                     </td>

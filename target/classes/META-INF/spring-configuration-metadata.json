@@ -4,13 +4,13 @@
       "name": "admin.datasource",
       "type": "com.ohdocha.admin.config.CustomDataSourceProperties",
       "sourceType": "com.ohdocha.admin.config.DataSourceConfig",
-      "sourceMethod": "public com.ohdocha.admin.config.CustomDataSourceProperties dataSourceProperties() "
+      "sourceMethod": "dataSourceProperties()"
     },
     {
       "name": "admin.datasource.configuration",
       "type": "javax.sql.DataSource",
       "sourceType": "com.ohdocha.admin.config.DataSourceConfig",
-      "sourceMethod": "public javax.sql.DataSource dataSource(com.ohdocha.admin.config.CustomDataSourceProperties) "
+      "sourceMethod": "dataSource(com.ohdocha.admin.config.CustomDataSourceProperties)"
     },
     {
       "name": "com.ohdocha.admin",
@@ -67,7 +67,8 @@
     {
       "name": "admin.datasource.maximum-pool-size",
       "type": "java.lang.Integer",
-      "sourceType": "com.ohdocha.admin.config.CustomDataSourceProperties"
+      "sourceType": "com.ohdocha.admin.config.CustomDataSourceProperties",
+      "defaultValue": 0
     },
     {
       "name": "admin.datasource.name",
@@ -172,7 +173,8 @@
     {
       "name": "com.ohdocha.admin.upload-image-size",
       "type": "java.lang.Long",
-      "sourceType": "com.ohdocha.admin.config.Properties"
+      "sourceType": "com.ohdocha.admin.config.Properties",
+      "defaultValue": 0
     },
     {
       "name": "spring.datasource.continue-on-error",
@@ -217,7 +219,8 @@
     {
       "name": "spring.datasource.maximum-pool-size",
       "type": "java.lang.Integer",
-      "sourceType": "com.ohdocha.admin.config.CustomDataSourceProperties"
+      "sourceType": "com.ohdocha.admin.config.CustomDataSourceProperties",
+      "defaultValue": 0
     },
     {
       "name": "spring.datasource.name",

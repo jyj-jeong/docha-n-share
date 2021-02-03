@@ -174,6 +174,9 @@ public class CarController extends ControllerExtension {
         ServiceMessage serviceMessage = createServiceMessage(request);
         serviceMessage.addData("deleteCarRequest", deleteCarRequest);
 
+        System.out.println(deleteCarRequest + " 리스트!!!!!");
+        System.out.println(request + " 리스트2222222222!!!!!");
+
         carService.deleteCarInfo(serviceMessage);
 
         return serviceMessage;
@@ -683,6 +686,21 @@ public class CarController extends ControllerExtension {
         serviceMessage.addData("baiscPlanDetailRequest", baiscPlanDetailRequest);
 
         carService.updateBasicPlanInfo(serviceMessage);
+
+        return serviceMessage;
+    }
+
+    /* 기본요금제 삭제 */
+    @PostMapping(value = "/api/v1.0/deleteDcBplanInfo.do")
+    @ResponseBody
+    public Object deleteDcBplanInfo(@RequestBody DochaAdminBaiscPlanDetailRequest baiscPlanDetailRequest, HttpServletRequest request) {
+        ServiceMessage serviceMessage = createServiceMessage(request);
+        serviceMessage.addData("baiscPlanDetailRequest", baiscPlanDetailRequest);
+
+        System.out.println(baiscPlanDetailRequest + " 리스트!!!!!");
+        System.out.println(request + " 리스트2222222222!!!!!");
+
+        carService.deleteBasicPlanInfo(serviceMessage);
 
         return serviceMessage;
     }

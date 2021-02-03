@@ -58,7 +58,7 @@ public class UserRevieController extends ControllerExtension {
         serviceMessage.addData("rvIdx",rvIdx);
         userReviewService.selectUserReviewInfo(serviceMessage);
         modelMap.addAllAttributes(serviceMessage);
-        return "/site/site_review_detail";
+        return "site/site_review_detail";
     }
 
 }

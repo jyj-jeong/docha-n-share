@@ -3,6 +3,7 @@ package com.ohdocha.admin.mapper;
 import com.ohdocha.admin.domain.car.plan.basicplan.DochaAdminBaiscPlanDetailRequest;
 import com.ohdocha.admin.domain.car.plan.insuranceTemplate.DochaAdminInsuranceTemplateDetailRequest;
 import com.ohdocha.admin.domain.car.regcar.*;
+import com.ohdocha.admin.domain.menu.DochaAdminFAQRequest;
 import com.ohdocha.admin.domain.rentCompany.DochaHolidayDto;
 import com.ohdocha.admin.domain.reserve.payment.DochaPaymentPeriodDto;
 import com.ohdocha.admin.util.DochaMap;
@@ -74,6 +75,9 @@ public interface DochaAdminRegCarMapper {
 
     // 요금 계산에 필요한 휴무일 가져옴
     public List<DochaHolidayDto> selectHolidayList(DochaMap paramMap);
+
+    // 기본 요금제 삭제
+    int deleteBasicPayment(DochaAdminBaiscPlanDetailRequest deleteBasicPlanDetailRequest);
 
 }
 

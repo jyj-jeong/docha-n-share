@@ -644,4 +644,9 @@
         ]]>
    </select>
 
+	<!-- 기본요금제 삭제-->
+	<delete id="deleteBasicPayment" parameterType="basicPlanDetailRequest">
+           <![CDATA[ DELETE FROM DC_PAYMENT_TEMPLATE WHERE PY_T_IDX = #{pyTIdx} ]]>
+    </delete>
+
 </mapper>

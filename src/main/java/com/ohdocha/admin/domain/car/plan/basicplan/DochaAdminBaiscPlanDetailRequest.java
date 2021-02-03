@@ -33,5 +33,7 @@ public class DochaAdminBaiscPlanDetailRequest extends CommonRequestDto {
 	private String modId;				//수정자 idx
 	private String crIdx;				//차량 idx
 
+
+	private String[] deletebaiscPlanIdxList;  //기본 요금제 삭제시 idx 리스트
 	
 }

@@ -76,6 +76,8 @@ public interface CarService {
 
     void updateBasicPlanInfo(ServiceMessage message);
 
+    void deleteBasicPlanInfo(ServiceMessage message);
+
     void insertInsuranceTemplate(ServiceMessage message);
 
     void getInsuranceTemplateList(ServiceMessage message);
