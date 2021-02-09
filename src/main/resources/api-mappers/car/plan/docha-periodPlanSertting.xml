@@ -121,5 +121,10 @@
 		)
 	]]>
     </insert>
+
+	<!-- 기간요금제 삭제-->
+	<delete id="deleteperiodPlan" parameterType="periodPlanDetailRequest">
+           <![CDATA[ DELETE FROM DC_PAYMENT_PERIOD WHERE PER_IDX = #{perIdx} ]]>
+    </delete>
 	 
 </mapper>

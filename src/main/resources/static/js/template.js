@@ -3,7 +3,41 @@
 
 
 
-// 템플릿 삭제
+
+// 보험 템플릿 삭제
+function deleteinsurancetemData() {
+    var deleteinsurancetemIdxList = [];
+
+    $("input:checkbox[name='deleteCheck']:checked").each(function () {
+        deleteinsurancetemIdxList.push(this.parentElement.parentElement.dataset.value);
+    });
+
+    if (deleteinsurancetemIdxList.length === 0) {
+        errorAlert('기본요금제 삭제', '요금제를 선택해주세요.');
+        return;
+    }
+
+    var checkedinsurancetemCount;
+
+    var deleteAllYn = $('input:checkbox[id=deleteAllinsurancetem]').is(":checked");
+    checkedinsurancetemCount = deleteAllYn ? deleteinsurancetemIdxList.length - 1 : deleteinsurancetemIdxList.length;
+
+    req = {
+        'deleteinsurancetemIdxList': deleteinsurancetemIdxList
+//        , 'modId': getLoginUser().urIdx
+    };
+
+    save_type = 'deleteDcinsuranceTemInfo';
+
+    title = '요금제 삭제';
+    text = "총 " + checkedinsurancetemCount + " 건의 요금제가 선택되었습니다.\n삭제하시겠습니까?";
+    icon = 'info';
+    cancel_text = '취소하셨습니다.';
+
+    call_before_save(title, text, icon, cancel_text, save_type, req);
+}
+
+// 기본 요금제 템플릿 삭제
 function deleteBplanData() {
     var deleteBplanIdxList = [];
 
@@ -18,7 +52,7 @@ function deleteBplanData() {
 
     var checkedBplanCount;
 
-    var deleteAllYn = $('input:checkbox[id=deleteAllCar]').is(":checked");
+    var deleteAllYn = $('input:checkbox[id=deleteAllBplan]').is(":checked");
     checkedBplanCount = deleteAllYn ? deleteBplanIdxList.length - 1 : deleteBplanIdxList.length;
 
     req = {
@@ -30,6 +64,39 @@ function deleteBplanData() {
 
     title = '요금제 삭제';
     text = "총 " + checkedBplanCount + " 건의 요금제가 선택되었습니다.\n삭제하시겠습니까?";
+    icon = 'info';
+    cancel_text = '취소하셨습니다.';
+
+    call_before_save(title, text, icon, cancel_text, save_type, req);
+}
+
+// 기간 요금제 템플릿 삭제
+function deletePeriontemData() {
+    var deletePeriontemIdxList = [];
+
+    $("input:checkbox[name='deleteCheck']:checked").each(function () {
+        deletePeriontemIdxList.push(this.parentElement.parentElement.dataset.value);
+    });
+
+    if (deletePeriontemIdxList.length === 0) {
+        errorAlert('기본요금제 삭제', '요금제를 선택해주세요.');
+        return;
+    }
+
+    var checkedPeriontemCount;
+
+    var deleteAllYn = $('input:checkbox[id=deleteAllperiodtem]').is(":checked");
+    checkedPeriontemCount = deleteAllYn ? deletePeriontemIdxList.length - 1 : deletePeriontemIdxList.length;
+
+    req = {
+        'deletePeriontemIdxList': deletePeriontemIdxList
+   //     , 'modId': getLoginUser().urIdx
+    };
+
+    save_type = 'deleteDcPeriontemInfo';
+
+    title = '요금제 삭제';
+    text = "총 " + checkedPeriontemCount + " 건의 요금제가 선택되었습니다.\n삭제하시겠습니까?";
     icon = 'info';
     cancel_text = '취소하셨습니다.';
 
@@ -75,7 +142,15 @@ function detailSubmit(save_type, req) {
         //     // }
         //     break;
         case 'deleteDcBplanInfo':
-            target = 'deleteDcBplanInfo'; // 요금제삭제
+            target = 'deleteDcBplanInfo'; // 기본요금제삭제
+            method = 'delete';
+            break;
+        case 'deleteDcinsuranceTemInfo':
+            target = 'deleteDcinsuranceTemInfo'; // 보험템플릿삭제
+            method = 'delete';
+            break;
+        case 'deleteDcPeriontemInfo':
+            target = 'deleteDcPeriontemInfo'; // 기간요금제삭제
             method = 'delete';
             break;
 
@@ -105,6 +180,12 @@ function detailSubmit(save_type, req) {
             if (save_type === 'deleteDcBplanInfo') {
                 swal("삭제 성공", {icon: "success"});
                 return;
+            }else if (save_type === 'deleteDcinsuranceTemInfo') {
+                    swal("삭제 성공", {icon: "success"});
+                    return;
+            }else if (save_type === 'deleteDcPeriontemInfo') {
+                swal("삭제 성공", {icon: "success"});
+                return;
             }
             swal("저장 성공", {icon: "success"});
 
@@ -127,6 +208,10 @@ function detailSubmit(save_type, req) {
             }// end switch
         } else { // 200이 아닐때 empty처리 error처리 등을 기록한다.
             if (save_type === 'deleteDcCarInfo') {
+                errorAlert('삭제 실패', '관리자에게 문의하세요.');
+            }else if (save_type === 'deleteDcinsuranceTemInfo') {
+                errorAlert('삭제 실패', '관리자에게 문의하세요.');
+            }else if (save_type === 'deleteDcPeriontemInfo') {
                 errorAlert('삭제 실패', '관리자에게 문의하세요.');
             }
             errorAlert('저장 실패', '관리자에게 문의하세요.');

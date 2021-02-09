@@ -618,6 +618,22 @@ public class CarController extends ControllerExtension {
         return serviceMessage;
     }
 
+    /* 기간요금제 삭제 */
+    @PostMapping(value = "/api/v1.0/deleteDcPeriontemInfo.do")
+    @ResponseBody
+    public Object deleteDcPeriontemInfo(@RequestBody DochaAdminPeriodPlanSettingDetailRequest deleteperiodPlanRequest, HttpServletRequest request) {
+        ServiceMessage serviceMessage = createServiceMessage(request);
+        serviceMessage.addData("deleteperiodPlanRequest", deleteperiodPlanRequest);
+
+        System.out.println(deleteperiodPlanRequest + " 리스트!!!!!");
+        System.out.println(request + " 리스트2222222222!!!!!");
+
+        carService.deleteDcPeriontemInfo(serviceMessage);
+
+        return serviceMessage;
+    }
+
+
     /* 기본요금제 등록 화면 */
     @GetMapping(value = "/car/payment/basic/add")
     public String insertBasicPlanInfoView(HttpServletRequest request, ModelMap modelMap) {
@@ -773,6 +789,21 @@ public class CarController extends ControllerExtension {
         serviceMessage.addData("insuranceTemplateDetailRequest", insuranceTemplateDetailRequest);
 
         carService.updateInsuranceTemplate(serviceMessage);
+
+        return serviceMessage;
+    }
+
+    /* 보험템플릿 삭제 */
+    @PostMapping(value = "/api/v1.0/deleteDcinsuranceTemInfo.do")
+    @ResponseBody
+    public Object deleteDcinsurancetemInfo(@RequestBody DochaAdminInsuranceTemplateDetailRequest insuranceTemDetailRequest, HttpServletRequest request) {
+        ServiceMessage serviceMessage = createServiceMessage(request);
+        serviceMessage.addData("insuranceTemDetailRequest", insuranceTemDetailRequest);
+
+        System.out.println(insuranceTemDetailRequest + " 리스트!!!!!");
+        System.out.println(request + " 리스트2222222222!!!!!");
+
+        carService.deleteInsuranceTemInfo(serviceMessage);
 
         return serviceMessage;
     }

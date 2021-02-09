@@ -1064,6 +1064,24 @@ public class CarServiceImpl extends ServiceExtension implements CarService {
         message.addData("res", res);
     }
 
+    /* 기간 요금제 삭제 */
+    @Override
+    public void deleteDcPeriontemInfo(ServiceMessage message) {
+        DochaAdminPeriodPlanSettingDetailRequest deleteperiodPlanRequest = message.getObject("deleteperiodPlanRequest", DochaAdminPeriodPlanSettingDetailRequest.class);
+
+        int res = 0;
+
+
+        for (String PerIdx : deleteperiodPlanRequest.getDeletePeriontemIdxList() ){
+            System.out.println(PerIdx + "  =============service PyTIdx");
+            deleteperiodPlanRequest.setPerIdx(PerIdx);
+
+            res = periodPlanSettingMapper.deleteperiodPlan(deleteperiodPlanRequest);
+        }
+
+        message.addData("res", res);
+    }
+
     /* 기본 요금제 등록 */
     @Override
     public void insertBasicPlanInfo(ServiceMessage message) {
@@ -1251,7 +1269,23 @@ public class CarServiceImpl extends ServiceExtension implements CarService {
 
         message.addData("res", res);
     }
+    /* 보험템플릿 삭제 */
+    @Override
+    public void deleteInsuranceTemInfo(ServiceMessage message) {
+        DochaAdminInsuranceTemplateDetailRequest deleteinsuranceTemplateDetailRequest = message.getObject("insuranceTemDetailRequest", DochaAdminInsuranceTemplateDetailRequest.class);
 
+        int res = 0;
+
+
+        for (String CiTIdx : deleteinsuranceTemplateDetailRequest.getDeleteinsurancetemIdxList() ){
+            System.out.println(CiTIdx + "  =============service CiTIdx");
+            deleteinsuranceTemplateDetailRequest.setCiTIdx(CiTIdx);
+
+            res = regCarMapper.deleteinsuranceTemplate(deleteinsuranceTemplateDetailRequest);
+        }
+
+        message.addData("res", res);
+    }
 
     /* 등록차량 상세 옵션 */
     @Override

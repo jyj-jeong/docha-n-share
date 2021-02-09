@@ -24,4 +24,7 @@ public interface DochaAdminPeriodPlanSettingMapper {
 	//차량-요금제-기간요금설정 insert
 	public int insertPlanSettingDetail(DochaAdminPeriodPlanSettingDetailRequest reqParam);
 
+	// 기간 요금제 삭제
+	int deleteperiodPlan(DochaAdminPeriodPlanSettingDetailRequest dochaAdminPeriodPlanSettingDetailRequest);
+
 }

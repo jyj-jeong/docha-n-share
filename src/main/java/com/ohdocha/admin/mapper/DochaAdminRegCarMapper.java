@@ -2,6 +2,7 @@ package com.ohdocha.admin.mapper;
 
 import com.ohdocha.admin.domain.car.plan.basicplan.DochaAdminBaiscPlanDetailRequest;
 import com.ohdocha.admin.domain.car.plan.insuranceTemplate.DochaAdminInsuranceTemplateDetailRequest;
+import com.ohdocha.admin.domain.car.plan.periodplansetting.DochaAdminPeriodPlanSettingDetailRequest;
 import com.ohdocha.admin.domain.car.regcar.*;
 import com.ohdocha.admin.domain.menu.DochaAdminFAQRequest;
 import com.ohdocha.admin.domain.rentCompany.DochaHolidayDto;
@@ -78,6 +79,9 @@ public interface DochaAdminRegCarMapper {
 
     // 기본 요금제 삭제
     int deleteBasicPayment(DochaAdminBaiscPlanDetailRequest deleteBasicPlanDetailRequest);
+
+    // 보험 템플릿 삭제
+    int deleteinsuranceTemplate(DochaAdminInsuranceTemplateDetailRequest deleteinsuranceTemplateDetailRequest);
 
 }
 

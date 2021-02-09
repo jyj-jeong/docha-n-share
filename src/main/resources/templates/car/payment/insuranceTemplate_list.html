@@ -3,6 +3,8 @@
 <head th:replace="header :: mainHead"></head>
 <head>
     <title>보험 템플릿 :: DoCha Admin Web</title>
+
+    <script src="/js/template.js" th:src="@{/js/template.js}"></script>
 </head>
 <body id="page-top">
 
@@ -31,6 +33,7 @@
                     </div>
                     <div class="card-body">
                         <div class="mb-4 text-right">
+                            <button class="btn btn-danger" onclick="deleteinsurancetemData()">보험템플릿 삭제</button>
                             <button class="btn btn-primary" onclick="addInsuranceTemplate()">보험템플릿 등록</button>
                             <button class="btn" id="btnExcel"></button>
                         </div>
@@ -49,6 +52,9 @@
                                 </script>
                                 <thead>
                                 <tr>
+                                    <th onclick="event.cancelBubble=true" class="sorting_disabled">
+                                        <input type="checkbox" id="deleteAllinsurancetem" name="deleteCheck" />
+                                    </th>
                                     <th width="10%">보험템플릿번호</th>
                                     <th>회원사<br>(지점)</th>
                                     <th>제목</th>
@@ -59,6 +65,7 @@
                                 </thead>
                                 <tfoot>
                                 <tr>
+                                    <th></th>
                                     <th>보험템플릿번호</th>
                                     <th>회원사<br>(지점)</th>
                                     <th>제목</th>
@@ -69,6 +76,9 @@
                                 </tfoot>
                                 <tbody>
                                 <tr th:each="insurance, index : ${insuranceList}" th:data-value="${insurance.getCiTIdx()}" style="cursor: pointer">
+                                    <td onclick="event.cancelBubble=true">
+                                        <input type="checkbox" name="deleteCheck" />
+                                    </td>
                                     <td th:text="${insurance.getCiTIdx()}"></td>
                                     <td th:text="${insurance.getCompanyName() + '(' + insurance.getBranchName() + ')'}"></td>
                                     <td th:text="${insurance.getCiEtc()}"></td>
@@ -79,8 +89,8 @@
                                 <script th:inline="javascript">
 
                                     // 상세보기 이동
-                                    $('#dataTable > tbody > tr >').click(function () {
-                                        var ciTIdx = $(this).parent().attr('data-value');
+                                    $('#dataTable > tbody > tr').click(function () {
+                                        var ciTIdx = $(this).attr('data-value');
                                         if (ciTIdx === "") return;
 
                                         var url = "../../car/payment/insurance/" + ciTIdx;
@@ -88,6 +98,17 @@
                                         var option = "width=1200, height=800, location=no, left=500, top=50";
 
                                         window.open(url, name, option);
+                                    });
+
+                                    /* 보험템플릿 체크박스 선택 */
+                                    $('input:checkbox[id=deleteAllinsurancetem]').change(function () {
+                                        var deleteAllinsurancetem = $('input:checkbox[id=deleteAllinsurancetem]').is(":checked");
+
+                                        if (deleteAllinsurancetem){
+                                            $('input:checkbox[name=deleteCheck]').prop("checked", true);
+                                        }else {
+                                            $('input:checkbox[name=deleteCheck]').prop("checked", false);
+                                        }
                                     });
                                 </script>
                                 </tbody>

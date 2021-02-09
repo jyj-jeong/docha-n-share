@@ -68,6 +68,8 @@ public interface CarService {
 
     void updatePeriodPlan(ServiceMessage message);
 
+    void deleteDcPeriontemInfo(ServiceMessage message);
+
     void insertBasicPlanInfo(ServiceMessage message);
 
     void getBasicPlanList(ServiceMessage message);
@@ -85,6 +87,8 @@ public interface CarService {
     void InsuranceTemplateDetail(ServiceMessage message);
 
     void updateInsuranceTemplate(ServiceMessage message);
+
+    void deleteInsuranceTemInfo(ServiceMessage message);
 
     void selectReserveAmt(ServiceMessage message) throws ParseException;
 

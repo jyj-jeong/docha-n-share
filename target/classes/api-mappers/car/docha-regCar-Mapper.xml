@@ -649,4 +649,9 @@
            <![CDATA[ DELETE FROM DC_PAYMENT_TEMPLATE WHERE PY_T_IDX = #{pyTIdx} ]]>
     </delete>
 
+	<!-- 보험템플릿 삭제-->
+	<delete id="deleteinsuranceTemplate" parameterType="insuranceTemplateDetailRequest">
+           <![CDATA[ DELETE FROM DC_INSURANCE_TEMPLATE WHERE CI_T_IDX = #{ciTIdx} ]]>
+    </delete>
+
 </mapper>

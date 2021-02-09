@@ -29,4 +29,5 @@ public class DochaAdminPeriodPlanSettingDetailRequest extends CommonRequestDto {
 	private String modId                    ; // 수정자
 	private String modDt                    ; // 수정일시
 	private String delYn				    ; // 삭제여부
+	private String[] deletePeriontemIdxList;  //기간 요금제 삭제시 idx 리스트
 }

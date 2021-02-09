@@ -3,6 +3,8 @@
 <head th:replace="header :: mainHead"></head>
 <head>
     <title>기간 요금제 :: DoCha Admin Web</title>
+
+    <script src="/js/template.js" th:src="@{/js/template.js}"></script>
 </head>
 <body id="page-top">
 
@@ -32,6 +34,7 @@
                     <div class="card-body">
                         <div class="table-responsive">
                             <div class="mb-4 text-right">
+                                <button class="btn btn-danger" onclick="deletePeriontemData()">기간 요금제 삭제</button>
                                 <button class="btn btn-primary" onclick="addPerionPlan()">기간요금설정 등록</button>
                                 <button class="btn" id="btnExcel"></button>
                             </div>
@@ -47,6 +50,9 @@
                                 </script>
                                 <thead>
                                 <tr>
+                                    <th onclick="event.cancelBubble=true" class="sorting_disabled">
+                                        <input type="checkbox" id="deleteAllperiodtem" name="deleteCheck" />
+                                    </th>
                                     <th>기간요금번호</th>
                                     <th>회원사 (지점)</th>
                                     <th>시작일 /종료일</th>
@@ -57,6 +63,7 @@
                                 </thead>
                                 <tfoot>
                                 <tr>
+                                    <th></th>
                                     <th>기간요금번호</th>
                                     <th>회원사 (지점)</th>
                                     <th>시작일 / 종료일</th>
@@ -67,6 +74,9 @@
                                 </tfoot>
                                 <tbody>
                                 <tr th:each="period, index : ${periodList}" style="cursor: pointer" th:data-value="${period.getPerIdx()}">
+                                    <td onclick="event.cancelBubble=true">
+                                        <input type="checkbox" name="deleteCheck" />
+                                    </td>
                                     <td th:text="${period.getPerIdx()}"></td>
                                     <td th:text="${period.getCompanyName() + ' (' + period.getBranchName() + ')'}"></td>
                                     <td th:text="${period.getPeriodStartDt() + ' / ' + period.getPeriodEndDt()}"></td>
@@ -78,8 +88,8 @@
                                 </tr>
                                 <script th:inline="javascript">
                                     // 상세보기 이동
-                                    $('#dataTable > tbody > tr >').click(function () {
-                                        var perIdx = $(this).parent().attr('data-value');
+                                    $('#dataTable > tbody > tr').click(function () {
+                                        var perIdx = $(this).attr('data-value');
                                         if (perIdx === "") return;
 
                                         var url = "../../car/payment/period/" + perIdx;
@@ -87,6 +97,17 @@
                                         var option = "width=600, height=800, location=no, left=500, top=50";
 
                                         window.open(url, name, option);
+                                    });
+
+                                    /* 기간 요금제 템플릿 체크박스 선택 */
+                                    $('input:checkbox[id=deleteAllperiodtem]').change(function () {
+                                        var deleteAllinsurancetem = $('input:checkbox[id=deleteAllperiodtem]').is(":checked");
+
+                                        if (deleteAllinsurancetem){
+                                            $('input:checkbox[name=deleteCheck]').prop("checked", true);
+                                        }else {
+                                            $('input:checkbox[name=deleteCheck]').prop("checked", false);
+                                        }
                                     });
                                 </script>
                                 </tbody>

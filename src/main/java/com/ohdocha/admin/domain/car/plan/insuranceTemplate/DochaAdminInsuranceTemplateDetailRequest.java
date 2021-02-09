@@ -33,6 +33,16 @@ public class DochaAdminInsuranceTemplateDetailRequest  {
 	private String regId;				//작성자 idx
 	private String modId;				//수정자 idx
 
+	private String[] deleteinsurancetemIdxList;  //보험템플릿 삭제시 idx 리스트
+
+	public String[] getDeleteinsurancetemIdxList() {
+		return deleteinsurancetemIdxList;
+	}
+
+	public void setDeleteinsurancetemIdxList(String[] deleteinsurancetemIdxList) {
+		this.deleteinsurancetemIdxList = deleteinsurancetemIdxList;
+	}
+
 	public String getciIdx() {
 		return ciIdx;
 	}
