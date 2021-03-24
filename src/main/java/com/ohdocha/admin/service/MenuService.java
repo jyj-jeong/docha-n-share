@@ -36,13 +36,25 @@ public interface MenuService {
 
     void getEventList(ServiceMessage serviceMessage);
 
+    void getLowcreditList(ServiceMessage serviceMessage);
+
     void insertEvent(ServiceMessage serviceMessage);
+
+    void insertLowcredit(ServiceMessage serviceMessage);
 
     void uploadEventImage(ServiceMessage serviceMessage);
 
+    void uploadLowcreditImage(ServiceMessage serviceMessage);
+
+    void uploadLowcreditListImage(ServiceMessage serviceMessage);
+
     void getEventDetail(ServiceMessage serviceMessage);
 
+    void getLowcreditDetail(ServiceMessage serviceMessage);
+
     void deleteEvent(ServiceMessage serviceMessage);
+
+    void deleteLowcredit(ServiceMessage serviceMessage);
 
     void uploadEventListImage(ServiceMessage serviceMessage);
 

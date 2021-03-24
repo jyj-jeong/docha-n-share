@@ -3,6 +3,8 @@ package com.ohdocha.admin.mapper;
 import com.ohdocha.admin.domain.admin.DochaAdminAdminUserInfoRequest;
 import com.ohdocha.admin.domain.admin.DochaAdminAdminUserInfoResponse;
 import com.ohdocha.admin.domain.menu.DochaAdminMenuTemplateResponse;
+import com.ohdocha.admin.domain.user.DochaAdminUserInfoRequest;
+import com.ohdocha.admin.domain.user.DochaAdminUserInfoResponse;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -13,7 +15,7 @@ public interface DochaAdminAdminUserInfoMntMapper {
 	/*
 	 * 관리자 리스트 조회
 	 * */
-	public List<DochaAdminAdminUserInfoResponse> selectAdminUserInfo(DochaAdminAdminUserInfoRequest reqParam);
+	public List<DochaAdminUserInfoResponse> selectAdminUserInfo(DochaAdminUserInfoRequest reqParam);
 
 
 	/*

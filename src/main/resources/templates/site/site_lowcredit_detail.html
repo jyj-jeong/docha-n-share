@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="header :: mainHead"></head>
+<head>
+    <title>저신용 신차장기 :: DoCha Admin Web</title>
+</head>
+<body id="page-top">
+
+<!-- Page Wrapper -->
+<div id="wrapper">
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+        <!-- Main Content -->
+        <div id="content">
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+
+                <div class="card shadow mb-4">
+                    <div class="card-header py-3">
+                        <h6 class="m-0 font-weight-bold text-primary" style="cursor: pointer" >저신용 신차장기</h6>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="row">
+                            <h6 class="col-12 mb-3 font-weight-bold">일정</h6>
+                            <div class="col-3 mb-3">
+                                <label>시작일시</label>
+                                <input type="datetime-local" class="form-control" id="lcStartDt" name="lcStartDt"/>
+                            </div>
+                            <div class="col-3 mb-3">
+                                <label>종료일시</label>
+                                <input type="datetime-local" class="form-control" id="lcEndDt" name="lcEndDt"/>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div id="notice">
+                        <div class="card-body">
+                            <input type="text" class="form-control d-none" id="lcIdx"/>
+                            <div class="row">
+                                <div class=" col-lg-12 mb-3 float-l flex-1">
+                                    <label>제목</label>
+                                    <input type="text" class="form-control" id="lcTitle"/>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class=" col-lg-12 mb-3 float-l flex-1">
+                                    <label>내용</label>
+                                    <textarea type="text" class="form-control" id="lcContent" rows="5"></textarea>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 mb-3">
+                                    <label class="form-label" for="lowcreditImg">상세 화면 이미지 첨부</label>
+                                    <div class="input-group">
+                                        <div class="custom-file">
+                                            <input type="file" accept="image/*" class="custom-file-input" id="lowcreditImg"
+                                                   aria-describedby="lowcreditImg">
+                                            <label class="custom-file-label" for="lowcreditImg">파일을 선택하세요</label>
+                                        </div>
+                                    </div>
+                                    <p> 이미지의 크기는 1030x280을 권장합니다. ( 지원형식 : jpg, jpeg, png, 20MB 이내 )</p>
+                                </div>
+                            </div>
+                            <script th:inline="javascript">
+                                var inputFile = document.querySelector("#lowcreditImg");
+
+                                $("#lowcreditImg").change(function (file) {
+                                    if (this.files && this.files[0]) {
+                                        let reader = new FileReader;
+                                        reader.onload = function (date) {
+                                            document.getElementById('event_img').src=date.target.result;
+                                        };
+                                        reader.readAsDataURL(this.files[0]);
+                                    }
+                                });
+                            </script>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="select_img">
+                                        <img class="d-block mx-auto bg-gray-200 mb-4" src="" width="1030" height="280"
+                                             alt="IMG" id="event_img">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="text-right">
+                                <button id="btnSave" class="btn btn-primary" type="button" onclick="savelowcreditImg()">저장
+                                </button>
+                                <button id="btnDelete" class="btn btn-danger" type="button" onclick="deletelowcreditImg()">
+                                    삭제
+                                </button>
+                                <button id="btnClose" class="btn btn-primary" type="button" onclick="self.close()">창
+                                    닫기
+                                </button>
+                            </div>
+
+                            <div class="row mt-4">
+                                <div class="col-12 mb-3">
+                                    <label class="form-label" for="lowcreditImg">리스트 화면 이미지 첨부</label>
+                                    <div class="input-group">
+                                        <div class="custom-file">
+                                            <input type="file" accept="image/*" class="custom-file-input"
+                                                   id="lowcreditListImg" aria-describedby="lowcreditListImg">
+                                            <label class="custom-file-label" for="lowcreditImg">파일을 선택하세요</label>
+                                        </div>
+                                    </div>
+                                    <p> 이미지의 크기는 505x276을 권장합니다. ( 지원형식 : jpg, jpeg, png, 20MB 이내 )</p>
+                                </div>
+                            </div>
+                            <script th:inline="javascript">
+                                var listInputFile = document.querySelector("#lowcreditListImg");
+
+                                $("#lowcreditListImg").change(function (file) {
+                                    if (this.files && this.files[0]) {
+                                        let reader = new FileReader;
+                                        reader.onload = function (date) {
+                                            document.getElementById('lowcredit_list_Img').src=date.target.result;
+                                        };
+                                        reader.readAsDataURL(this.files[0]);
+                                    }
+                                });
+                            </script>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="select_img">
+                                        <img class="d-block mx-auto bg-gray-200 mb-4" src="" width="505" height="276"
+                                             alt="IMG" id="lowcredit_list_Img">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <button id="btnListImgSave" class="btn btn-primary" type="button"
+                                        onclick="savelowcreditListImg()">리스트 이미지 저장
+                                </button>
+                            </div>
+
+                        </div>
+
+                        <div class="card-body" style="display:none" >
+
+                            <div class="row mt-4">
+                                <h6 class="col-12 mb-3 font-weight-bold">배너 이미지 (선택)</h6>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 mb-3">
+                                    <label class="form-label" for="lowcreditImg">리스트 화면 이미지 첨부</label>
+                                    <div class="input-group">
+                                        <div class="custom-file">
+                                            <input type="file" accept="image/*" class="custom-file-input"
+                                                   id="eventBannerImg" aria-describedby="eventBannerImg">
+                                            <label class="custom-file-label" for="eventBannerImg">파일을 선택하세요</label>
+                                        </div>
+                                    </div>
+                                    <p> 이미지의 크기는 1030x280을 권장합니다. ( 지원형식 : jpg, jpeg, png, 20MB 이내 )</p>
+                                </div>
+                            </div>
+                            <script th:inline="javascript">
+                                var bannerInputFile = document.querySelector("#eventBannerImg");
+
+                                $("#eventBannerImg").change(function (file) {
+                                    if (this.files && this.files[0]) {
+                                        let reader = new FileReader;
+                                        reader.onload = function (date) {
+                                            document.getElementById('event_banner_img').src=date.target.result;
+                                        };
+                                        reader.readAsDataURL(this.files[0]);
+                                    }
+                                });
+                            </script>
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="select_img">
+                                        <img class="d-block mx-auto bg-gray-200 mb-4" src="" width="1030" height="280"
+                                             alt="IMG" id="event_banner_img">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <button id="btnBannerImgSave" class="btn btn-primary" type="button"
+                                        onclick="saveEventBannerImg()">배너 이미지 저장
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.container-fluid -->
+
+        </div>
+        <!-- End of Main Content -->
+
+        <!-- Footer -->
+        <div th:replace="main_footer :: mainFooter"></div>
+
+    </div>
+    <!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+
+<!-- Logout Modal-->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">알림</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">로그아웃을 하시겠습니까?</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                <a class="btn btn-primary" href="/api/v1.0/docha.logout">Logout</a>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:inline="javascript">
+
+    var eventDetail = /*[[${result}]]*/ '';
+    var loginUser = /*[[${session.LOGIN_SESSION}]]*/'';
+
+
+    if (eventDetail !== null) {
+
+        $('#lcIdx').val(eventDetail[0].lcIdx);
+        $('#lcTitle').val(eventDetail[0].lcTitle);
+        $('#lcContent').val(eventDetail[0].lcContent);
+
+        $('#lcStartDt').val(eventDetail[0].lcStartDt);
+        $('#lcEndDt').val(eventDetail[0].lcEndDt);
+
+        $('#event_img').attr('src', 'https://admin.docha.co.kr/img/lowcredit/' + eventDetail[0].lcImgIdx);
+        $('#lowcredit_list_Img').attr('src', 'https://admin.docha.co.kr/img/lowcredit/' + eventDetail[0].lcListImgIdx);
+        $('#event_banner_img').attr('src', 'https://admin.docha.co.kr/img/lowcredit/' + eventDetail[0].lcBannerImgIdx);
+
+    } else {
+        $('#btnDelete').addClass('d-none');
+    }
+
+    function savelowcreditImg() {
+        var lcIdx = $('#lcIdx').val();
+        var lcTitle = $('#lcTitle').val();
+        var lcContent = $('#lcContent').val();
+        var lcStartDt = $('#lcStartDt').val();
+        var lcEndDt = $('#lcEndDt').val();
+        var regId = loginUser.urIdx;
+        var modId = loginUser.urIdx;
+
+        if (isEmpty(lcStartDt)) {
+            errorAlert('시작일시', '시작일시를 선택해 주세요');
+            return;
+        } else if (isEmpty(lcEndDt)) {
+            errorAlert('종료일시', '종료일시를 선택해 주세요');
+            return;
+        }
+
+        var url = '/api/v1.0/insertLowcredit.json';
+        var req = {
+            lcIdx: lcIdx,
+            lcTitle: lcTitle,
+            lcContent: lcContent,
+            lcStartDt: lcStartDt,
+            lcEndDt: lcEndDt,
+            regId: regId,
+            modId: modId
+        };
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: JSON.stringify(req),
+            contentType: 'application/json',
+            cache: false,
+            async: false,
+            timeout: 10000
+        }).done(function (data, textStatus, jqXHR) {
+
+            if (data.res === 1) {
+                document.getElementById("lcIdx").value = data.lowcreditRequest.lcIdx;
+                if (inputFile.files.length === 0) {
+                    swal("저장 성공", {icon: "success"});
+                } else {
+                    /* 이미지 저장 */
+                    var formData = new FormData();
+                    lcIdx = data.lowcreditRequest.lcIdx;
+
+                    formData.append("image", inputFile.files[0]);
+                    formData.append("lcIdx", lcIdx);
+
+                    for (var pair of formData.entries()) {
+                        console.log(pair[0] + ', ' + pair[1]);
+                    }
+
+                    var oReq = new XMLHttpRequest();
+                    oReq.addEventListener("load", function () {
+
+                        if (oReq.status === 200) {
+                            location.href = "";
+                            alert(err.responseJSON.message);
+                        } else if (oReq.status === 400) {
+                            errorAlert('저장 실패', '관리자에게 문의하세요.');
+                        } else if (oReq.status === 500) {
+                            swal("저장 성공", {icon: "success"});
+                            console.log(oReq.response);
+                        }
+
+                    });
+                    oReq.open("POST", "/api/v1.0/uploadLowcreditImage.do", true);
+                    oReq.send(formData);
+
+
+                    var editor;
+                    var path;
+                    editor = $("#lowcreditImg").val();
+                    path = ($("#depth_container").text()).replace("/" + "");
+                    var type = "html";
+                }
+            } else {
+                errorAlert("저장 실패", "저장에 실패하였습니다.")
+            }
+
+        });
+
+
+    }
+
+    function deletelowcreditImg() {
+        var lcIdx = $('#lcIdx').val();
+
+        var url = '/api/v1.0/deleteLowcredit.json';
+        var req = {
+            lcIdx: lcIdx
+        };
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: JSON.stringify(req),
+            contentType: 'application/json',
+            cache: false,
+            async: false,
+            timeout: 10000
+        }).done(function (data, textStatus, jqXHR) {
+
+            if (data.res === 1) {
+                swal("삭제 성공", {icon: "success"});
+            } else {
+                errorAlert("삭제 실패", "삭제에 실패하였습니다.")
+            }
+
+        });
+    }
+
+    function savelowcreditListImg() {
+        var lcIdx = $('#lcIdx').val();
+
+        if (isEmpty(lcIdx)) {
+            errorAlert('이벤트', '이벤트를 먼저 저장해 주세요.');
+            return;
+        }
+
+        if (listInputFile.files.length === 0) {
+            errorAlert('이벤트', '첨부할 사진을 선택해 주세요.');
+            return;
+        }
+
+        /* 이미지 저장 */
+        var formData = new FormData();
+
+        formData.append("image", listInputFile.files[0]);
+        formData.append("lcIdx", lcIdx);
+
+        for (var pair of formData.entries()) {
+            console.log(pair[0] + ', ' + pair[1]);
+        }
+
+        var oReq = new XMLHttpRequest();
+        oReq.addEventListener("load", function () {
+
+            if (oReq.status === 200) {
+                location.href = "";
+                alert(err.responseJSON.message);
+            } else if (oReq.status === 400) {
+                errorAlert('저장 실패', '관리자에게 문의하세요.');
+            } else if (oReq.status === 500) {
+                swal("저장 성공", {icon: "success"});
+                console.log(oReq.response);
+            }
+
+        });
+        oReq.open("POST", "/api/v1.0/uploadLowcreditListImage.do", true);
+        oReq.send(formData);
+
+        var editor;
+        var path;
+        editor = $("#lowcreditImg").val();
+        path = ($("#depth_container").text()).replace("/" + "");
+        var type = "html";
+
+    }
+
+    function saveEventBannerImg() {
+        var lcIdx = $('#lcIdx').val();
+
+        if (isEmpty(lcIdx)) {
+            errorAlert('이벤트', '이벤트를 먼저 저장해 주세요.');
+            return;
+        }
+
+        if (bannerInputFile.files.length === 0) {
+            errorAlert('이벤트', '첨부할 사진을 선택해 주세요.');
+            return;
+        }
+
+        /* 이미지 저장 */
+        var formData = new FormData();
+
+        formData.append("image", bannerInputFile.files[0]);
+        formData.append("lcIdx", lcIdx);
+
+        for (var pair of formData.entries()) {
+            console.log(pair[0] + ', ' + pair[1]);
+        }
+
+        var oReq = new XMLHttpRequest();
+        oReq.addEventListener("load", function () {
+
+            if (oReq.status === 200) {
+                location.href = "";
+                alert(err.responseJSON.message);
+            } else if (oReq.status === 400) {
+                errorAlert('저장 실패', '관리자에게 문의하세요.');
+            } else if (oReq.status === 500) {
+                swal("저장 성공", {icon: "success"});
+                console.log(oReq.response);
+            }
+
+        });
+        oReq.open("POST", "/api/v1.0/uploadEventBannerImage.do", true);
+        oReq.send(formData);
+
+        var editor;
+        var path;
+        editor = $("#lowcreditImg").val();
+        path = ($("#depth_container").text()).replace("/" + "");
+        var type = "html";
+
+    }
+</script>
+</body>
+</html>

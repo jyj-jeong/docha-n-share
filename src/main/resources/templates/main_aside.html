@@ -46,8 +46,8 @@
                     <a class="collapse-item collapsed" th:if="${#session.getAttribute('LOGIN_SESSION').userRole == 'RA'}" href="#" data-toggle="collapse" data-target="#collapseAdmin" aria-expanded="true" aria-controls="collapseAdmin">관리자</a>
                     <div id="collapseAdmin"  class="collapse" aria-labelledby="collapseAdmin" data-parent="#collapseAdmin">
                         <div><a class="collapse-item" href="#" th:href="${#request.getContextPath() + '/mem/admin'}">관리자 관리</a></div>
-                        <div><a class="collapse-item" href="#" th:href="${#request.getContextPath() + '/mem/template'}">권한 템플릿</a></div>
-<!--                    </div>-->
+<!--                        <div><a class="collapse-item" href="#" th:href="${#request.getContextPath() + '/mem/template'}">권한 템플릿</a></div>-->
+                    </div>
                 </div>
             </div>
         </li>
@@ -139,6 +139,7 @@
                         <div><a class="collapse-item" href="#" th:href="${#request.getContextPath() + '/site/review/main'}">이용후기</a></div>
                         <div><a class="collapse-item" href="#" th:href="${#request.getContextPath() + '/site/rating'}">고객평점</a></div>
                     </div>
+                    <a class="collapse-item" href="/site/lowcredit">저신용 신차장기</a>
                     <a class="collapse-item" href="/site/event">이벤트</a>
                     <a class="collapse-item" href="/site/question">문의</a>
                     <a class="collapse-item" href="/site/notice">공지사항</a>

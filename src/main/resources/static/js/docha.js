@@ -29,6 +29,12 @@ function initDataTables() {
                 previous: "이전"
             }
         },
+        order : [1, 'desc'],
+        orderMulti: true,
+        columnDefs : [{
+            targets : 0,
+            orderable : false
+        }],
         orderMulti: true,
         dom: '<\'row\'<\'col-md-6\'l><\'col-md-6\'f>><\'row\'<\'col-md-6\'B>><\'row\'<\'col-md-12\'t>><\'row\'<\'col-md-6\'i><\'col-md-6\'p>>',
         buttons: [{

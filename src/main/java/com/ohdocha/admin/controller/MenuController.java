@@ -147,6 +147,90 @@ public class MenuController extends ControllerExtension {
         return "site/site_rating";
     }
 
+    /* 사이트 - 저신용신차장기 화면 */
+    @GetMapping(value = "/site/lowcredit")
+    public String siteLowcreditView(HttpServletRequest request, ModelMap modelMap) {
+        ServiceMessage serviceMessage = createServiceMessage(request);
+
+        menuService.getLowcreditList(serviceMessage);
+
+        modelMap.addAllAttributes(serviceMessage);
+        return "site/site_lowcredit";
+    }
+
+    /* 사이트 - 저신용신차장기 등록 화면 */
+    @GetMapping(value = "/site/lowcredit/add")
+    public String siteLowcreditAddView(HttpServletRequest request, ModelMap modelMap) {
+        ServiceMessage serviceMessage = createServiceMessage(request);
+
+        modelMap.addAllAttributes(serviceMessage);
+        return "site/site_lowcredit_detail";
+    }
+
+    /* 사이트 - 저신용신차장기 내용 등록 */
+    @PostMapping(value = "/api/v1.0/insertLowcredit.json")
+    @ResponseBody
+    public Object insertLowcredit(@RequestBody DochaAdminLowcreditRequest lowcreditRequest, HttpServletRequest request){
+        ServiceMessage serviceMessage = createServiceMessage(request);
+        serviceMessage.addData("lowcreditRequest", lowcreditRequest);
+
+        menuService.insertLowcredit(serviceMessage);
+
+        return serviceMessage;
+    }
+
+    /* 사이트 - 저신용신차장기 상세 화면 */
+    @GetMapping(value = "/site/lowcredit/{lcIdx}")
+    public String siteLowcreditDetailView(@PathVariable String lcIdx, HttpServletRequest request, ModelMap modelMap) {
+        ServiceMessage serviceMessage = createServiceMessage(request);
+        serviceMessage.addData("lcIdx",lcIdx);
+
+        menuService.getLowcreditDetail(serviceMessage);
+
+        modelMap.addAllAttributes(serviceMessage);
+        return "site/site_lowcredit_detail";
+    }
+
+    /* 사이트 - 저신용신차장기 이미지 등록 */
+    @PostMapping(value = "/api/v1.0/uploadLowcreditImage.do")
+    @ResponseBody
+    public Object uploadLowcreditImage(@RequestParam("image") MultipartFile uploadImage, int lcIdx, HttpServletRequest request) {
+        ServiceMessage serviceMessage = createServiceMessage(request);
+        serviceMessage.addData("uploadImage", uploadImage)
+                .addData("lcIdx", lcIdx);
+
+        menuService.uploadLowcreditImage(serviceMessage);
+
+        return serviceMessage;
+    }
+
+    /* 사이트 - 저신용신차장기 이미지 리스트 등록 */
+    @PostMapping(value = "/api/v1.0/uploadLowcreditListImage.do")
+    @ResponseBody
+    public Object uploadLowcreditListImage(@RequestParam("image") MultipartFile uploadImage, int lcIdx, HttpServletRequest request) {
+        ServiceMessage serviceMessage = createServiceMessage(request);
+        serviceMessage.addData("uploadImage", uploadImage)
+                .addData("lcIdx", lcIdx);
+
+        menuService.uploadLowcreditListImage(serviceMessage);
+
+        return serviceMessage;
+    }
+
+    /* 사이트 - 이벤트 삭제 */
+    @PostMapping(value = "/api/v1.0/deleteLowcredit.json")
+    @ResponseBody
+    public Object deleteLowcredit(@RequestBody DochaAdminLowcreditRequest lowcreditRequest, HttpServletRequest request){
+        ServiceMessage serviceMessage = createServiceMessage(request);
+        serviceMessage.addData("lowcreditRequest", lowcreditRequest);
+
+        menuService.deleteLowcredit(serviceMessage);
+
+        return serviceMessage;
+    }
+
+
+
     /* 사이트 - 이벤트 화면 */
     @GetMapping(value = "/site/event")
     public String siteEventView(HttpServletRequest request, ModelMap modelMap) {
@@ -191,6 +275,7 @@ public class MenuController extends ControllerExtension {
 
         return serviceMessage;
     }
+
 
     /* 사이트 - 이벤트 이미지 리스트 등록 */
     @PostMapping(value = "/api/v1.0/uploadEventListImage.do")

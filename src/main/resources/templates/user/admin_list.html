@@ -44,7 +44,7 @@
                             <table class="table table-bordered cursor-point" id="dataTable">
                                 <thead>
                                 <tr>
-                                    <th></th>
+<!--                                    <th></th>-->
                                     <th>회원번호</th>
                                     <th>이름</th>
                                     <th>아이디</th>
@@ -55,7 +55,7 @@
                                 </thead>
                                 <tfoot>
                                 <tr>
-                                    <th></th>
+<!--                                    <th></th>-->
                                     <th>회원번호</th>
                                     <th>이름</th>
                                     <th>아이디</th>
@@ -65,18 +65,18 @@
                                 </tr>
                                 </tfoot>
                                 <tbody>
-                                <tr th:each="adminInfo, index : ${adminUserInfoList}" style="cursor: pointer" th:data-value="${adminInfo.getAdIdx()}">
-                                    <td>
-                                        <label for="checkBox">
-                                            <div class="ui checkbox"><input id="checkBox" type="checkbox" name="checkbox"/></div>
-                                        </label>
-                                    </td>
-                                    <td th:text="${adminInfo.getAdIdx()}"></td>
-                                    <td th:text="${adminInfo.getAdminName()}"></td>
-                                    <td th:text="${adminInfo.getAdminId()}"></td>
+                                <tr th:each="adminInfo, index : ${result}" style="cursor: pointer" th:data-value="${adminInfo.getUrIdx()}">
+<!--                                    <td>-->
+<!--                                        <label for="checkBox">-->
+<!--                                            <div class="ui checkbox"><input id="checkBox" type="checkbox" name="checkbox"/></div>-->
+<!--                                        </label>-->
+<!--                                    </td>-->
+                                    <td th:text="${adminInfo.getUrIdx()}"></td>
+                                    <td th:text="${adminInfo.getUserName()}"></td>
+                                    <td th:text="${adminInfo.getUserId()}"></td>
                                     <td th:text="${adminInfo.getUserContact1()}"></td>
                                     <td th:text="${adminInfo.getRegDt()}"></td>
-                                    <td th:text="${adminInfo.getRole()}"></td>
+                                    <td th:text="RA"></td>
                                 </tr>
                                 </tbody>
                             </table>

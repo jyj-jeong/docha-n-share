@@ -2,12 +2,7 @@
 <html lang="ko" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="header :: mainHead"></head>
 <head>
-    <title>관리자 관리 :: DoCha Admin Web</title>
-    <style>
-        .cursor-point{
-            cursor: pointer;
-        }
-    </style>
+    <title>저신용 신차장기 :: DoCha Admin Web</title>
 </head>
 <body id="page-top">
 
@@ -32,57 +27,48 @@
                 <!-- DataTales Example -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">관리자 관리</h6>
+                        <h6 class="m-0 font-weight-bold text-primary">저신용 신차장기</h6>
                     </div>
+
                     <div class="card-body">
-                        <div class="mb-4 text-right">
-                            <button class="btn btn-primary" onclick="registerAdmin()">등록</button>
-                            <button class="btn btn-primary" onclick="detailValidation('deleteAdmin()')">삭제</button>
-                            <button class="btn" id="btnExcel"></button>
-                        </div>
                         <div class="table-responsive">
-                            <table class="table table-bordered cursor-point" id="dataTable">
+                            <div class="mb-4 text-right">
+                                <button class="btn btn-primary" onclick="addLowcredit()"> 등록</button>
+                                <button class="btn" id="btnExcel"></button>
+                            </div>
+                            <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                 <thead>
                                 <tr>
-<!--                                    <th></th>-->
-                                    <th>회원번호</th>
-                                    <th>이름</th>
-                                    <th>아이디</th>
-                                    <th>연락처</th>
-                                    <th>가입일시</th>
-                                    <th>권한</th>
+                                    <th>번호</th>
+                                    <th>제목</th>
+                                    <th>등록일시</th>
+                                    <th>시작일시</th>
+                                    <th>종료일시</th>
                                 </tr>
                                 </thead>
                                 <tfoot>
                                 <tr>
-<!--                                    <th></th>-->
-                                    <th>회원번호</th>
-                                    <th>이름</th>
-                                    <th>아이디</th>
-                                    <th>연락처</th>
-                                    <th>가입일시</th>
-                                    <th>권한</th>
+                                    <th width="10%">번호</th>
+                                    <th>제목</th>
+                                    <th>등록일시</th>
+                                    <th>시작일시</th>
+                                    <th>종료일시</th>
                                 </tr>
                                 </tfoot>
                                 <tbody>
-                                <tr th:each="adminInfo, index : ${result}" style="cursor: pointer" th:data-value="${adminInfo.getUrIdx()}">
-<!--                                    <td>-->
-<!--                                        <label for="checkBox">-->
-<!--                                            <div class="ui checkbox"><input id="checkBox" type="checkbox" name="checkbox"/></div>-->
-<!--                                        </label>-->
-<!--                                    </td>-->
-                                    <td th:text="${adminInfo.getUrIdx()}"></td>
-                                    <td th:text="${adminInfo.getUserName()}"></td>
-                                    <td th:text="${adminInfo.getUserId()}"></td>
-                                    <td th:text="${adminInfo.getUserContact1()}"></td>
-                                    <td th:text="${adminInfo.getRegDt()}"></td>
-                                    <td th:text="RA"></td>
+                                <tr th:each="lowcredit, index : ${result}" style="cursor: pointer" th:data-value="${lowcredit.getLcIdx()}">
+                                    <td th:text="${lowcredit.getLcIdx()}"></td>
+                                    <td th:text="${lowcredit.getLcTitle()}"></td>
+                                    <td th:text="${#temporals.format(lowcredit.getRegDt(), 'yyyy-MM-dd HH:mm')}"></td>
+                                    <td th:text="${#temporals.format(lowcredit.getLcStartDt(), 'yyyy-MM-dd HH:mm')}"></td>
+                                    <td th:text="${#temporals.format(lowcredit.getLcEndDt(), 'yyyy-MM-dd HH:mm')}"></td>
                                 </tr>
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
+
 
             </div>
             <!-- /.container-fluid -->
@@ -122,16 +108,31 @@
         </div>
     </div>
 </div>
-<script>
+<script th:inline="javascript">
+
     initDataTables();
 
-    function registerAdmin() {
-        var url = '/mem/admin/register';
+    /* 이벤트 상세 페이지 이동 */
+    $('table > tbody').on('click', 'tr', function () {
+        let lcIdx = $(this).attr('data-value');
+        if (lcIdx === "" || lcIdx === undefined) return;
+
+        var url = "/site/lowcredit/" + lcIdx;
         var name = "test";
-        var option = "width = 800, height =500 ,location=no, left=500, top=50";
+        var option = "width = 1400, height =800 ,location=no, left=500, top=50";
+
+        window.open(url, name, option);
+    });
+
+    /* 공지사항 등록 */
+    function addLowcredit() {
+        var url = "/site/lowcredit/add";
+        var name = "test";
+        var option = "width = 1400, height =800 ,location=no, left=500, top=50";
 
         window.open(url, name, option);
     }
+
 </script>
 </body>
 </html>

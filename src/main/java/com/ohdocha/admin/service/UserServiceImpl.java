@@ -578,9 +578,11 @@ public class UserServiceImpl extends ServiceExtension implements UserService {
 
     @Override
     public void getAdminList(ServiceMessage message) {
-        DochaAdminAdminUserInfoRequest adminUserInfoRequest = message.getObject("adminUserInfoRequest", DochaAdminAdminUserInfoRequest.class);
 
-        List<DochaAdminAdminUserInfoResponse> adminUserInfoList = adminUserInfoMntMapper.selectAdminUserInfo(adminUserInfoRequest);
+
+        DochaAdminUserInfoRequest adminUserInfoRequest = message.getObject("adminUserInfoRequest", DochaAdminUserInfoRequest.class);
+
+        List<DochaAdminUserInfoResponse> adminUserInfoList = adminUserInfoMntMapper.selectAdminUserInfo(adminUserInfoRequest);
 
         if (adminUserInfoList.size() != 0){
             message.addData("code", 200);

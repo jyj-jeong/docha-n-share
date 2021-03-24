@@ -281,7 +281,7 @@ function initModalSelectBox(DetailData) {
 
     // 주말/공휴일 최소 예약 시간, 특정 기간 최소 예약 시간 최소시간
     // 48시간 단위로 설정한다.
-    for (let i = 36; i <= 72; i += 3) {
+    for (let i = 24; i <= 72; i += 3) {
         strOptionwrm += "<option value = '" + i + "'>" + i + "시간 이상 </option>";
     }
 

@@ -181,6 +181,15 @@ public class MenuServiceImpl extends ServiceExtension implements MenuService {
     }
 
     @Override
+    public void getLowcreditList(ServiceMessage message) {
+        DochaAdminLowcreditRequest lowcreditRequest = new DochaAdminLowcreditRequest();
+
+        List<DochaAdminLowcreditResponse> lowcreditResponseList = menuMapper.selectLowcreditList(lowcreditRequest);
+
+        message.addData("result", lowcreditResponseList);
+    }
+
+    @Override
     public void getEventList(ServiceMessage message) {
         DochaAdminEventRequest eventRequest = new DochaAdminEventRequest();
 
@@ -202,6 +211,216 @@ public class MenuServiceImpl extends ServiceExtension implements MenuService {
         }
 
         message.addData("res", res);
+    }
+    @Override
+    public void insertLowcredit(ServiceMessage message) {
+        DochaAdminLowcreditRequest lowcreditRequest = message.getObject("lowcreditRequest", DochaAdminLowcreditRequest.class);
+
+        int res = 0;
+
+        if (lowcreditRequest.getLcIdx() == 0) {
+            res = menuMapper.insertLowcredit(lowcreditRequest);
+        } else {
+            res = menuMapper.updateLowcredit(lowcreditRequest);
+        }
+
+        message.addData("res", res);
+    }
+
+    @Override
+    public void getLowcreditDetail(ServiceMessage message) {
+        DochaAdminLowcreditRequest lowcreditRequest = new DochaAdminLowcreditRequest();
+
+        String lcIdx = message.getString("lcIdx");
+        lowcreditRequest.setLcIdx(Integer.parseInt(lcIdx));
+
+        List<DochaAdminLowcreditResponse> lowcreditResponseList = menuMapper.selectLowcreditList(lowcreditRequest);
+
+        message.addData("result", lowcreditResponseList);
+    }
+
+    @Override
+    public void uploadLowcreditImage(ServiceMessage message) {
+        int lcIdx = message.getInt("lcIdx", 0);
+        DochaAdminLowcreditResponse lowcreditResponse;
+
+        Object uploadImageObj = message.get("uploadImage");
+        if (!(uploadImageObj instanceof MultipartFile))
+            throw new BadRequestException(IMAGE_NOT_MULTIPART_FILE, IMAGE_NOT_MULTIPART_FILE_MSG);
+
+        MultipartFile uploadImage = (MultipartFile) uploadImageObj;
+
+        if (uploadImage.isEmpty())
+            throw new BadRequestException(IMAGE_IS_EMPTY, IMAGE_IS_EMPTY_MSG);
+
+        String uploadImageName = uploadImage.getOriginalFilename();
+        if (uploadImageName == null || uploadImageName.isEmpty())
+            throw new BadRequestException(IMAGE_PARSING_ERROR, IMAGE_PARSING_ERROR_MSG + "(이미지 파일이름이 없습니다.)");
+
+        String uploadImageMime = uploadImage.getContentType();
+        if (uploadImageMime == null || uploadImageMime.isEmpty() || !uploadImageMime.contains("image/"))
+            throw new BadRequestException(IMAGE_PARSING_ERROR, IMAGE_PARSING_ERROR_MSG + "(이미지 MIME 이 올바르지 않습니다.)");
+
+        int extensionIndexOf = uploadImageName.lastIndexOf('.');
+        if (extensionIndexOf == -1)
+            throw new BadRequestException(IMAGE_PARSING_ERROR, IMAGE_PARSING_ERROR_MSG + "(확장자가 존재하지 않습니다.)");
+
+        String uploadImageExtension = uploadImageName.substring(extensionIndexOf).replaceAll("\\.", "").toLowerCase();
+        if (!properties.getSupportImageExtension().contains(uploadImageExtension))
+            throw new BadRequestException(IMAGE_PARSING_ERROR, IMAGE_PARSING_ERROR_MSG + "(지원하지 않는 이미지 확장자 입니다.)");
+
+        long uploadImageSize = uploadImage.getSize();
+        if (uploadImageSize > properties.getUploadImageSize())
+            throw new BadRequestException(IMAGE_PARSING_ERROR, IMAGE_PARSING_ERROR_MSG + "(이미지 크기가 20MB를 초과 합니다.)");
+
+        // 파일 랜덤 UUID 생성 (파일 명 중복시 파일 생성 안됌)
+        String saveImgName = UUID.randomUUID().toString();
+        File file = new File(properties.getTempFolderPath() + "lowcredit/" + saveImgName + "." + uploadImageExtension);
+        FileHelper.makeFolder(file.getParentFile());
+
+        // 기존의 이벤트 조회
+        DochaAdminLowcreditRequest lowcreditRequest = new DochaAdminLowcreditRequest();
+        lowcreditRequest.setLcIdx(lcIdx);
+
+        List<DochaAdminLowcreditResponse> lowcreditResponseList = menuMapper.selectLowcreditList(lowcreditRequest);
+
+        // 해당 모델의 정보를 가져옴 ( 이미지 파일 체크하기 위함 )
+        lowcreditResponse = lowcreditResponseList.get(0);
+
+        // 이미 DB에 img 정보가 있는지 여부
+        if (lowcreditResponse.getLcImgIdx() == null || lowcreditResponse.getLcImgIdx().equals("")) {
+            // 저장된 이미지가 없을 경우
+            try {
+                // 바로 이미지 생성
+                file.createNewFile();
+                uploadImage.transferTo(file);
+            } catch (Exception e) {
+                throw new BadRequestException(UNKNOWN_EXCEPTION, "파일 생성 실패");
+            }
+        } else {
+            // 현재 DB에 이미지가 있으면
+            File FileList = new File(properties.getTempFolderPath() + "lowcredit/");
+            String[] fileList = FileList.list();
+            for (int i = 0; i < fileList.length; i++) {
+                // DB에서 파일 명을 가져와서 일치하는 것이 있는지 검사
+                String FileName = fileList[i];
+
+                if (FileName.contains(lowcreditResponse.getLcImgIdx())) {
+                    File deleteFile = new File(properties.getTempFolderPath() + "lowcredit/" + lowcreditResponse.getLcImgIdx());
+                    // path에서 이미 있는 파일을 제거 후
+                    deleteFile.delete();
+                }
+            }
+            try {
+                // 이미지 생성
+                file.createNewFile();
+                uploadImage.transferTo(file);
+            } catch (Exception e) {
+                throw new BadRequestException(UNKNOWN_EXCEPTION, "파일 생성 실패");
+            }
+        }
+
+        DochaAdminLowcreditRequest updateLowcreditRequest = new DochaAdminLowcreditRequest();
+
+        // 저장 할 evIdx
+        updateLowcreditRequest.setLcIdx(lowcreditRequest.getLcIdx());
+        // 새로운 파일 명
+        updateLowcreditRequest.setLcImgIdx(saveImgName + "." + uploadImageExtension);
+
+        // 파일을 path에 저장 후, DB에 파일 명 저장
+        menuMapper.updateLowcredit(updateLowcreditRequest);
+    }
+
+    @Override
+    public void uploadLowcreditListImage(ServiceMessage message) {
+        int lcIdx = message.getInt("lcIdx", 0);
+        DochaAdminLowcreditResponse lowcreditResponse;
+
+        Object uploadImageObj = message.get("uploadImage");
+        if (!(uploadImageObj instanceof MultipartFile))
+            throw new BadRequestException(IMAGE_NOT_MULTIPART_FILE, IMAGE_NOT_MULTIPART_FILE_MSG);
+
+        MultipartFile uploadImage = (MultipartFile) uploadImageObj;
+
+        if (uploadImage.isEmpty())
+            throw new BadRequestException(IMAGE_IS_EMPTY, IMAGE_IS_EMPTY_MSG);
+
+        String uploadImageName = uploadImage.getOriginalFilename();
+        if (uploadImageName == null || uploadImageName.isEmpty())
+            throw new BadRequestException(IMAGE_PARSING_ERROR, IMAGE_PARSING_ERROR_MSG + "(이미지 파일이름이 없습니다.)");
+
+        String uploadImageMime = uploadImage.getContentType();
+        if (uploadImageMime == null || uploadImageMime.isEmpty() || !uploadImageMime.contains("image/"))
+            throw new BadRequestException(IMAGE_PARSING_ERROR, IMAGE_PARSING_ERROR_MSG + "(이미지 MIME 이 올바르지 않습니다.)");
+
+        int extensionIndexOf = uploadImageName.lastIndexOf('.');
+        if (extensionIndexOf == -1)
+            throw new BadRequestException(IMAGE_PARSING_ERROR, IMAGE_PARSING_ERROR_MSG + "(확장자가 존재하지 않습니다.)");
+
+        String uploadImageExtension = uploadImageName.substring(extensionIndexOf).replaceAll("\\.", "").toLowerCase();
+        if (!properties.getSupportImageExtension().contains(uploadImageExtension))
+            throw new BadRequestException(IMAGE_PARSING_ERROR, IMAGE_PARSING_ERROR_MSG + "(지원하지 않는 이미지 확장자 입니다.)");
+
+        long uploadImageSize = uploadImage.getSize();
+        if (uploadImageSize > properties.getUploadImageSize())
+            throw new BadRequestException(IMAGE_PARSING_ERROR, IMAGE_PARSING_ERROR_MSG + "(이미지 크기가 20MB를 초과 합니다.)");
+
+        // 파일 랜덤 UUID 생성 (파일 명 중복시 파일 생성 안됌)
+        String saveImgName = UUID.randomUUID().toString();
+        File file = new File(properties.getTempFolderPath() + "lowcredit/" + saveImgName + "." + uploadImageExtension);
+        FileHelper.makeFolder(file.getParentFile());
+
+        // 기존의 이벤트 조회
+        DochaAdminLowcreditRequest lowcreditRequest = new DochaAdminLowcreditRequest();
+        lowcreditRequest.setLcIdx(lcIdx);
+
+        List<DochaAdminLowcreditResponse> lowcreditResponseList = menuMapper.selectLowcreditList(lowcreditRequest);
+
+        // 해당 모델의 정보를 가져옴 ( 이미지 파일 체크하기 위함 )
+        lowcreditResponse = lowcreditResponseList.get(0);
+
+        // 이미 DB에 img 정보가 있는지 여부
+        if (lowcreditResponse.getLcListImgIdx() == null || lowcreditResponse.getLcListImgIdx().equals("")) {
+            // 저장된 이미지가 없을 경우
+            try {
+                // 바로 이미지 생성
+                file.createNewFile();
+                uploadImage.transferTo(file);
+            } catch (Exception e) {
+                throw new BadRequestException(UNKNOWN_EXCEPTION, "파일 생성 실패");
+            }
+        } else {
+            // 현재 DB에 이미지가 있으면
+            File FileList = new File(properties.getTempFolderPath() + "lowcredit/");
+            String[] fileList = FileList.list();
+            for (int i = 0; i < fileList.length; i++) {
+                // DB에서 파일 명을 가져와서 일치하는 것이 있는지 검사
+                String FileName = fileList[i];
+
+                if (FileName.contains(lowcreditResponse.getLcImgIdx())) {
+                    File deleteFile = new File(properties.getTempFolderPath() + "lowcredit/" + lowcreditResponse.getLcImgIdx());
+                    // path에서 이미 있는 파일을 제거 후
+                    deleteFile.delete();
+                }
+            }
+            try {
+                // 이미지 생성
+                file.createNewFile();
+                uploadImage.transferTo(file);
+            } catch (Exception e) {
+                throw new BadRequestException(UNKNOWN_EXCEPTION, "파일 생성 실패");
+            }
+        }
+
+        DochaAdminLowcreditRequest updateLowcreditRequest = new DochaAdminLowcreditRequest();
+
+        // 저장 할 evIdx
+        updateLowcreditRequest.setLcIdx(lowcreditRequest.getLcIdx());
+        // 새로운 파일 명
+        updateLowcreditRequest.setLcListImgIdx(saveImgName + "." + uploadImageExtension);
+
+        // 파일을 path에 저장 후, DB에 파일 명 저장
+        menuMapper.updateLowcredit(updateLowcreditRequest);
     }
 
     @Override
@@ -500,6 +719,16 @@ public class MenuServiceImpl extends ServiceExtension implements MenuService {
 
         message.addData("res", res);
     }
+
+    @Override
+    public void deleteLowcredit(ServiceMessage message) {
+        DochaAdminLowcreditRequest lowcreditRequest = message.getObject("lowcreditRequest", DochaAdminLowcreditRequest.class);
+
+        int res = menuMapper.deleteLowcredit(lowcreditRequest);
+
+        message.addData("res", res);
+    }
+
 
 
 

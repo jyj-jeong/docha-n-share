@@ -252,6 +252,83 @@
            <![CDATA[ DELETE FROM DC_NOTICE WHERE NT_IDX = #{ntIdx} ]]>
     </delete>
 
+	<!-- 저신용 가져오기 -->
+	<select id="selectLowcreditList" parameterType="lowcreditRequest"	resultType="lowcreditResponse">
+		<![CDATA[
+				SELECT
+						  IFNULL(LC_IDX, '') AS LC_IDX
+						 ,IFNULL(LC_TITLE, '') AS LC_TITLE
+						 ,IFNULL(LC_CONTENT, '') AS LC_CONTENT
+						 ,IFNULL(LC_IMG_IDX, '') AS LC_IMG_IDX
+						 ,IFNULL(LC_LIST_IMG_IDX, '') AS LC_LIST_IMG_IDX
+						 ,IFNULL(LC_BANNER_IMG_IDX, '') AS LC_BANNER_IMG_IDX
+						 ,IFNULL(lC_START_DT, '') AS LC_START_DT
+						 ,IFNULL(LC_END_DT, '') AS LC_END_DT
+						 ,IFNULL(REG_ID, '') AS REG_ID
+						 ,IFNULL(MOD_ID, '') AS MOD_ID
+						 ,IFNULL(REG_DT , '') AS REG_DT
+						 ,IFNULL(MOD_DT , '') AS MOD_DT
+				  FROM DC_LOWCREDIT  ]]>
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="lcIdx != null and lcIdx != ''">
+				<![CDATA[ AND LC_IDX = #{lcIdx} ]]>
+			</if>
+		</trim>
+	</select>
+
+	<!-- 저신용 신차 생성 -->
+	<insert id="insertLowcredit" parameterType="lowcreditRequest">
+		<![CDATA[
+       INSERT INTO DC_LOWCREDIT(
+           LC_IMG_IDX
+         , LC_START_DT
+         , LC_END_DT
+         , LC_TITLE
+         , LC_CONTENT
+         , REG_ID
+         , REG_DT
+       )VALUES (
+          #{lcImgIdx}
+          , #{lcStartDt}
+          , #{lcEndDt}
+          , #{lcTitle}
+          , #{lcContent}
+          , #{regId}
+          , NOW()
+      )
+      ]]>
+		<selectKey keyProperty="lcIdx" resultType="Integer" order="AFTER">
+			SELECT LAST_INSERT_ID();
+		</selectKey>
+	</insert>
+
+	<!-- 저신용 신차 업데이트 -->
+	<update id="updateLowcredit" parameterType="LowcreditRequest">
+		<![CDATA[ UPDATE DC_LOWCREDIT ]]>
+		<trim prefix="SET" suffixOverrides=",">
+			<if test="lcTitle      != null"><![CDATA[   LC_TITLE          = #{lcTitle}  ,      ]]></if>    <!-- miTitle -->
+			<if test="lcContent      != null"><![CDATA[   LC_CONTENT          = #{lcContent}  ,      ]]></if>    <!-- evContent -->
+			<if test="lcStartDt    != null"><![CDATA[   LC_START_DT       = #{lcStartDt}  ,      ]]></if>    <!-- evStartDt -->
+			<if test="lcEndDt      != null"><![CDATA[   LC_END_DT         = #{lcEndDt}  ,      ]]></if>    <!-- evEndDt -->
+			<if test="lcImgIdx     != null"><![CDATA[   LC_IMG_IDX         = #{lcImgIdx}  ,      ]]></if>    <!-- evImgIdx -->
+			<if test="lcListImgIdx     != null"><![CDATA[   LC_LIST_IMG_IDX         = #{lcListImgIdx}  ,      ]]></if>    <!-- evImgIdx -->
+			<if test="lcBannerImgIdx     != null"><![CDATA[   LC_BANNER_IMG_IDX         = #{lcBannerImgIdx}  ,      ]]></if>    <!-- evImgIdx -->
+			<if test="modId        != null"><![CDATA[   MOD_ID            = #{modId}  ,      ]]></if>    <!-- modId -->
+			MOD_DT = NOW()
+		</trim>
+		<trim prefix="WHERE" prefixOverrides="AND|OR">
+			<if test="lcIdx != null and lcIdx != ''">
+				<![CDATA[ LC_IDX = #{lcIdx} ]]>
+			</if>
+		</trim>
+	</update>
+
+	<!-- 저신용 신차 삭제 -->
+	<delete id="deleteLowcredit" parameterType="lowcreditRequest">
+           <![CDATA[ DELETE FROM DC_LOWCREDIT WHERE LC_IDX = #{lcIdx} ]]>
+    </delete>
+
+
 	<!-- 이벤트 가져오기 -->
 	<select id="selectEventList" parameterType="eventRequest"	resultType="eventResponse">
 		<![CDATA[

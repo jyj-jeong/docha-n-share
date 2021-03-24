@@ -31,6 +31,9 @@ public interface DochaAdminMenuMapper {
 
     List<DochaAdminEventResponse> selectEventList(DochaAdminEventRequest questionRequest);
 
+    List<DochaAdminLowcreditResponse> selectLowcreditList(DochaAdminLowcreditRequest lowcreditRequest);
+
+
     int updateAnswer(DochaAdminQuestionRequest questionRequest);
 
     int insertNotice(DochaAdminNoticeRequest noticeRequest);
@@ -44,6 +47,12 @@ public interface DochaAdminMenuMapper {
     int updateEvent(DochaAdminEventRequest eventRequest);
 
     int deleteEvent(DochaAdminEventRequest eventRequest);
+
+    int deleteLowcredit(DochaAdminLowcreditRequest lowcreditRequest);
+
+    int insertLowcredit(DochaAdminLowcreditRequest lowcreditRequest);
+
+    int updateLowcredit(DochaAdminLowcreditRequest lowcreditRequest);
 
     List<DochaAdminFAQResponse> selectFAQList(DochaAdminFAQRequest faqRequest);
 
