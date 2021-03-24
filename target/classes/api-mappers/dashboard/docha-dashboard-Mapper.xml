@@ -10,7 +10,7 @@
 				   ,RM.RM_IDX
 			FROM DC_PAYMENT_LOG AS PL
 				JOIN DC_RESERVE_MASTER RM
-				ON PL.RM_IDX = RM.RM_IDX
+				ON PL.RM_IDX = RM.RM_IDX AND RM.RESERVE_STATUS_CODE not in ('취소', '예약취소')
 			WHERE IFNULL(PL.APPROVAL_YN, 'Y') = 'Y'
 			AND DATE_FORMAT(PL.PAYMENT_DATE, '%Y-%m-%d') = DATE_FORMAT(NOW(), '%Y-%m-%d')
 		]]>
@@ -26,7 +26,7 @@
 			 FROM DC_PAYMENT_LOG PL
 			  JOIN DC_RESERVE_MASTER RM
 			  ON PL.RM_IDX = RM.RM_IDX
-			WHERE IFNULL(PL.APPROVAL_YN,'Y') = 'Y'
+			WHERE IFNULL(PL.APPROVAL_YN,'Y') = 'Y' AND RM.RESERVE_STATUS_CODE not in ('취소', '예약취소')
 			AND DATE_FORMAT(PL.PAYMENT_DATE, '%m') = DATE_FORMAT(NOW(), '%m')
 		]]>
 		<if test="rtIdx != null and rtIdx != '' ">
@@ -120,7 +120,10 @@
 
 	<select id="cntQnA" resultType="int" parameterType="DochaMap">
 		<![CDATA[
-			SELECT COUNT(QU_IDX) FROM DC_QUESTION
+			SELECT COUNT(QU_IDX)
+			FROM DC_QUESTION
+			WHERE QUESTION_DT = DATE_FORMAT(NOW(), '%Y-%m-%d')
+				AND QU_ANSWER_YN = 0
 		]]>
 	</select>
 
@@ -137,7 +140,7 @@
 			    	AND IFNULL(APPROVAL_YN, 'Y') = 'Y'
 			    GROUP BY RM_IDX
 			    ) PL
-			        JOIN DC_RESERVE_MASTER RM ON PL.RM_IDX = RM.RM_IDX  ]]>
+			        JOIN DC_RESERVE_MASTER RM ON PL.RM_IDX = RM.RM_IDX AND RM.RESERVE_STATUS_CODE NOT IN ('취소', '예약취소')  ]]>
 			    <if test="rtIdx != null and rtIdx != '' ">
 				<![CDATA[ AND RM.RT_IDX = #{rtIdx}  ]]>
 				</if>
@@ -156,7 +159,7 @@
 			    AND IFNULL(APPROVAL_YN, 'Y') = 'Y'
 			    GROUP BY RM_IDX
 			    ) PL
-			        JOIN DC_RESERVE_MASTER RM ON PL.RM_IDX = RM.RM_IDX  ]]>
+			        JOIN DC_RESERVE_MASTER RM ON PL.RM_IDX = RM.RM_IDX AND RM.RESERVE_STATUS_CODE NOT IN ('취소', '예약취소')  ]]>
 		<if test="rtIdx != null and rtIdx != '' ">
 			<![CDATA[ AND RM.RT_IDX = #{rtIdx}  ]]>
 		</if>

@@ -1000,21 +1000,21 @@ function selectCarInfo(crIdx){
         let revinsuranceCopayment = $("#insuranceFee").val();
         let revcarDamageCover = $("#carDamageCover").val();
 
-        if((isEmpty(revinsuranceCopayment) || revinsuranceCopayment == '0') && !isEmpty(revcarDamageCover) && revcarDamageCover > '0'){
-            if (carDamageCover == revcarDamageCover){
+        if((isEmpty(revinsuranceCopayment) || revinsuranceCopayment === '0') && !isEmpty(revcarDamageCover) && revcarDamageCover > '0'){
+            if (carDamageCover === revcarDamageCover){
                 revinsuranceCopayment = insuranceCopayment;
-            }else if (carDamageCover2 == revcarDamageCover){
+            }else if (carDamageCover2 === revcarDamageCover){
                 revinsuranceCopayment = insuranceCopayment2;
-            }else if (carDamageCover3 == revcarDamageCover){
+            }else if (carDamageCover3 === revcarDamageCover){
                 revinsuranceCopayment = insuranceCopayment3;
-            }else if (carDamageCover4 == revcarDamageCover){
+            }else if (carDamageCover4 === revcarDamageCover){
                 revinsuranceCopayment = insuranceCopayment4;
             }
         }
 
-        if(!isEmpty(revinsuranceCopayment) && revinsuranceCopayment != '0' && !isEmpty(crIdx) ){
+        if(!isEmpty(revinsuranceCopayment) && !isEmpty(crIdx) ){
             $("#sel_ciIdx").val(revinsuranceCopayment).prop("selected", true);
-        }else{
+        }else {
             $("#sel_ciIdx").val('').prop("selected", true);
         }
     });
@@ -1679,37 +1679,37 @@ function detailValidation(){
     call_before_save(title, text, icon, cancel_text, save_type, req);
 
     alert("결제로직1");
-        var IMP = window.IMP; // 생략가능
-        IMP.init('imp68389175');
+    var IMP = window.IMP; // 생략가능
+    IMP.init('imp68389175');
 
-        IMP.request_pay({
-            pg : 'kakao', // version 1.1.0부터 지원.
-            pay_method : 'card',
-            merchant_uid : 'merchant_' + new Date().getTime() + new Date().getSeconds(),
-            name : crIdxname,
-            amount : paymentTotalAmount,
-            buyer_email : reserveUserEmail,
-            buyer_name : reserveUserName,
-            buyer_tel : reserveUserContact1,
-            buyer_addr : returnAddr,
-            buyer_postcode : 123456
-        }, function(rsp) {
-            if ( rsp.success ) {
-                var msg = '결제가 완료되었습니다.';
-                // msg += '고유ID : ' + rsp.imp_uid;
-                // msg += '상점 거래ID : ' + rsp.merchant_uid;
-                // msg += '결제 금액 : ' + rsp.paid_amount;
-                // msg += '카드 승인번호 : ' + rsp.apply_num;
-                alert(msg);
-                //   paymentSave(rsp.imp_uid, "/user/paymentSave.json",req);
+    IMP.request_pay({
+        pg : 'kakao', // version 1.1.0부터 지원.
+        pay_method : 'card',
+        merchant_uid : 'merchant_' + new Date().getTime() + new Date().getSeconds(),
+        name : crIdxname,
+        amount : paymentTotalAmount,
+        buyer_email : reserveUserEmail,
+        buyer_name : reserveUserName,
+        buyer_tel : reserveUserContact1,
+        buyer_addr : returnAddr,
+        buyer_postcode : 123456
+    }, function(rsp) {
+        if ( rsp.success ) {
+            var msg = '결제가 완료되었습니다.';
+            // msg += '고유ID : ' + rsp.imp_uid;
+            // msg += '상점 거래ID : ' + rsp.merchant_uid;
+            // msg += '결제 금액 : ' + rsp.paid_amount;
+            // msg += '카드 승인번호 : ' + rsp.apply_num;
+            alert(msg);
+            //   paymentSave(rsp.imp_uid, "/user/paymentSave.json",req);
 
-            } else {
-                var msg = '결제에 실패하였습니다.';
-                msg += '에러내용 : ' + rsp.error_msg;
-                alert(msg);
-            }
+        } else {
+            var msg = '결제에 실패하였습니다.';
+            msg += '에러내용 : ' + rsp.error_msg;
+            alert(msg);
+        }
 
-        });
+    });
     alert("결제로직2");
 
 
